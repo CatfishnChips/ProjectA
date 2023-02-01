@@ -29,6 +29,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private float _touchMoveTreshold = 0.1f;
     private Vector3 _lastFrameTouchPos;
 
+    public UnityAction<Vector2> OnSwipe;
 
     private Vector2 _touchEndPosition;
 
@@ -36,8 +37,6 @@ public class InputManager : MonoBehaviour
     private Touch _touch1;
     private Touch _touch2;
 
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.touchCount > 0) 
@@ -54,9 +53,10 @@ public class InputManager : MonoBehaviour
             {
                 _primaryTouch = Input.GetTouch(0);
 
-                Vector3 touchScreenPosition = _primaryTouch.position;
-                touchScreenPosition.z = Camera.main.nearClipPlane;
-                Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(_primaryTouch.position);
+                // Vector3 touchScreenPosition = _primaryTouch.position;
+                // touchScreenPosition.z = Camera.main.nearClipPlane;
+                // Vector3 touchWorldPosition = Camera.main.ScreenToWorldPoint(_primaryTouch.position);
+                Vector3 touchWorldPosition = ConvertToWorldPosition(_primaryTouch.position);
 
                 pos = touchWorldPosition; // Temporary!
 
@@ -68,14 +68,14 @@ public class InputManager : MonoBehaviour
 
                 // Instead of using Touch's own states, making our own states might be better.
                 // Unity handles this automatically!
-                if (_primaryTouch.deltaPosition != Vector2.zero) 
-                {
-                    _primaryTouch.phase = TouchPhase.Stationary;
-                }
-                else
-                {
-                    _primaryTouch.phase = TouchPhase.Moved;
-                }
+                // if (_primaryTouch.deltaPosition != Vector2.zero) 
+                // {
+                //     _primaryTouch.phase = TouchPhase.Stationary;
+                // }
+                // else
+                // {
+                //     _primaryTouch.phase = TouchPhase.Moved;
+                // }
 
                 switch (_primaryTouch.phase) 
                 {
@@ -91,7 +91,7 @@ public class InputManager : MonoBehaviour
                     case TouchPhase.Ended:
                     _touchEndPosition = _primaryTouch.position;
 
-                    EventManager.Instance.OnSwipe.Invoke(touchMoveDirection); // Example of an event invocation.
+                    OnSwipe.Invoke(touchMoveDirection); // Example of an event invocation.
                     break;
                 }
 
@@ -109,7 +109,68 @@ public class InputManager : MonoBehaviour
             }
             else if (Input.touchCount == 2)
             {
+                // Touch 1
+                _touch1 = Input.GetTouch(0);
+                Vector3 touch1WorldPosition = ConvertToWorldPosition(_touch1.position);
 
+                Vector2 touch1MoveDirection = (_touch1.rawPosition - _touch1.position).normalized;
+                float touch1MoveDistanceFromInitialPosition = Vector2.Distance(_touch1.rawPosition, _touch1.position);
+                Vector2 touch1MoveDelta = _touch1.deltaPosition;
+                float touch1MoveSpeed = _touch1.deltaPosition.magnitude / _touch1.deltaTime;
+
+                switch (_touch1.phase) 
+                {
+                    case TouchPhase.Began:
+                    
+                    break;
+
+                    case TouchPhase.Moved:
+                    touch1MoveSpeed = _primaryTouch.deltaPosition.magnitude / _primaryTouch.deltaTime;
+                    touch1MoveDirection = (_primaryTouch.rawPosition - _primaryTouch.position).normalized;
+                    break;
+
+                    case TouchPhase.Ended:
+                    _touchEndPosition = _primaryTouch.position;
+
+                    OnSwipe.Invoke(touch1MoveDirection); // Example of an event invocation.
+                    break;
+                }
+
+                // Touch 2
+                _touch2 = Input.GetTouch(1);
+                Vector3 touch2WorldPosition = ConvertToWorldPosition(_touch2.position);
+
+                Vector2 touch2MoveDirection = (_touch2.rawPosition - _touch2.position).normalized;
+                float touch2MoveDistanceFromInitialPosition = Vector2.Distance(_touch2.rawPosition, _touch2.position);
+                Vector2 touch2MoveDelta = _touch2.deltaPosition;
+                float touch2MoveSpeed = _touch2.deltaPosition.magnitude / _touch2.deltaTime;
+
+                switch (_touch2.phase) 
+                {
+                    case TouchPhase.Began:
+                    
+                    break;
+
+                    case TouchPhase.Moved:
+                    touch2MoveSpeed = _primaryTouch.deltaPosition.magnitude / _primaryTouch.deltaTime;
+                    touch2MoveDirection = (_primaryTouch.rawPosition - _primaryTouch.position).normalized;
+                    break;
+
+                    case TouchPhase.Ended:
+                    _touchEndPosition = _primaryTouch.position;
+
+                    OnSwipe.Invoke(touch2MoveDirection); // Example of an event invocation.
+                    break;
+                }
+
+                if (_primaryTouch.rawPosition.x < Screen.width / 2) 
+                {
+
+                }
+                else if (_primaryTouch.rawPosition.x > Screen.width / 2) 
+                {
+                    
+                }
             }
        
            // Multiple Touches
@@ -152,6 +213,13 @@ public class InputManager : MonoBehaviour
             isTouching = false;
             StopCoroutine(AddLinePoint());
         }
+    }
+
+    private Vector3 ConvertToWorldPosition(Vector2 position) 
+    {
+        Vector3 touchScreenPosition = _primaryTouch.position;
+        touchScreenPosition.z = Camera.main.nearClipPlane;
+        return Camera.main.ScreenToWorldPoint(_primaryTouch.position);        
     }
 
     private int positionCount = 0;

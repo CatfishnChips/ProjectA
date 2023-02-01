@@ -21,5 +21,5 @@ public class EventManager : MonoBehaviour
 
     #endregion
 
-    public UnityAction<Vector2> OnSwipe;
+    
 }
