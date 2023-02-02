@@ -964,7 +964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lineRenderer: {fileID: 38355298}
   _pointAddInterval: 0.01
-  _touchMoveTreshold: 0.01
+  _touchMoveSensitivity: 1.25
   _touchHoldTreshold: 0.5
 --- !u!4 &1007115210
 Transform:

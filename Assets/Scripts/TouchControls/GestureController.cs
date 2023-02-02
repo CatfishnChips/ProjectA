@@ -22,16 +22,25 @@ public class GestureController : MonoBehaviour
 
     private InputManager _inputManager = InputManager.Instance;
 
-    [SerializeField] private float _touchDistaceTresholdToMove = 1f;
+    [SerializeField] private float _holdTreshold; // Time needed for the touch to register as Hold. Used to seperate Tap and Hold.
 
-    private TouchData _primaryTouch;
-    private TouchData _secondaryTouch;
+    private TouchData _touchA, _touchB;
 
-    private void OnEnable() 
+    private void Start() 
     {
         _inputManager.OnTouchBegin += OnTouchBegin;
         _inputManager.OnTouchDrag += OnTouchDrag;
         _inputManager.OnTouchEnd += OnTouchEnd;
+
+        _inputManager.OnTouchABegin += OnTouchABegin;
+        _inputManager.OnTouchAStationary += OnTouchAStationary;
+        _inputManager.OnTouchADrag += OnTouchADrag;
+        _inputManager.OnTouchAEnd += OnTouchAEnd;
+
+        _inputManager.OnTouchBBegin += OnTouchBBegin;
+        _inputManager.OnTouchBStationary += OnTouchBStationary;
+        _inputManager.OnTouchBDrag += OnTouchBDrag;
+        _inputManager.OnTouchBEnd += OnTouchBEnd;
 
         //_inputManager.OnTouchBBegin += 
     }
@@ -41,6 +50,16 @@ public class GestureController : MonoBehaviour
         _inputManager.OnTouchBegin -= OnTouchBegin;
         _inputManager.OnTouchDrag -= OnTouchDrag;
         _inputManager.OnTouchEnd -= OnTouchEnd;
+
+        _inputManager.OnTouchABegin -= OnTouchABegin;
+        _inputManager.OnTouchAStationary -= OnTouchAStationary;
+        _inputManager.OnTouchADrag -= OnTouchADrag;
+        _inputManager.OnTouchAEnd -= OnTouchAEnd;
+
+        _inputManager.OnTouchBBegin -= OnTouchBBegin;
+        _inputManager.OnTouchBStationary -= OnTouchBStationary;
+        _inputManager.OnTouchBDrag -= OnTouchBDrag;
+        _inputManager.OnTouchBEnd -= OnTouchBEnd;
     }
 
     private void OnTouchBegin(int touchID, Vector2 screenPosition, Vector3 worldPosition) 
@@ -58,7 +77,7 @@ public class GestureController : MonoBehaviour
 
     private void OnTouchDrag(int touchID, Vector2 screenPosition, Vector3 worldPosition) 
     {
-        UpdateTouch();
+        
     }
 
     private void OnTouchEnd(int touchID, Vector2 screenPosition, Vector3 worldPosition) 
@@ -66,40 +85,76 @@ public class GestureController : MonoBehaviour
         RecognizeGesture();
     }
 
-    private void AddTouch() 
+    #region Touch A
+
+    private void OnTouchABegin(Vector2 screenPosition, Vector3 worldPosition) 
+    {
+        _touchA = new TouchData();
+        _touchA.InitialScreenPosition = screenPosition;
+        _touchA.InitialWorldPosition = worldPosition;
+    }
+
+    private void OnTouchAStationary(Vector2 screenPosition, Vector3 worldPosition)
     {
 
     }
 
-    private void UpdateTouch() 
+    private void OnTouchADrag(InputDragEventParams inputEventDragParams) 
     {
 
     }
+
+    private void OnTouchAEnd(Vector2 screenPosition, Vector3 worldPosition) 
+    {
+        float distance = Vector2.Distance(_touchA.InitialScreenPosition, screenPosition);
+        Vector2 direction = (_touchA.InitialScreenPosition - screenPosition).normalized;
+    }
+
+    #endregion
+
+    #region Touch B
+
+    private void OnTouchBBegin(Vector2 screenPosition, Vector3 worldPosition) 
+    {
+        _touchB = new TouchData();
+        _touchB.InitialScreenPosition = screenPosition;
+        _touchB.InitialWorldPosition = worldPosition;
+    }
+
+    private void OnTouchBStationary(Vector2 screenPosition, Vector3 worldPosition)
+    {
+
+    }
+
+    private void OnTouchBDrag(InputDragEventParams inputEventDragParams) 
+    {
+
+    }
+
+    private void OnTouchBEnd(Vector2 screenPosition, Vector3 worldPosition) 
+    {
+        float distance = Vector2.Distance(_touchB.InitialScreenPosition, screenPosition);
+        Vector2 direction = (_touchB.InitialScreenPosition - screenPosition).normalized;
+    }
+
+    #endregion
 
     private void RecognizeGesture() 
     {
 
     }
-
-    private void RemoveTouch() 
-    {
-
-    }
-}
-
-public struct TouchData
-{
-    public int FingerID;
-    public ScreenSide ScreenSide;
-    public float DeltaSpeed;
-    public float TimeOnScreen;
 }
 
 [System.Serializable]
-public enum ScreenSide 
+public struct TouchData
 {
-    Left,
-    Right
+    public Vector2 InitialScreenPosition;
+    public Vector3 InitialWorldPosition;
+    public float DeltaSpeed;
+    public float TimeOnScreen;
+
+    public TouchData(Vector2 initScreenPos, Vector3 initWorldPos, float deltaSpeed, float timeOnScreen) => 
+        (InitialScreenPosition, InitialWorldPosition, DeltaSpeed, TimeOnScreen) = (initScreenPos, initWorldPos, deltaSpeed, timeOnScreen);
 }
 
 [System.Serializable]

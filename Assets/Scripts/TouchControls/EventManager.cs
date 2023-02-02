@@ -22,6 +22,9 @@ public class EventManager : MonoBehaviour
     #endregion
 
     public UnityAction LeftSideTap;
+    public UnityAction LeftSideHold;
+    public UnityAction LeftSideSwipe;
+
+
     public UnityAction RightSideTap;
-    
 }

@@ -26,8 +26,7 @@ public class InputManager : MonoBehaviour
     private bool isTouching;
     private bool isMoving;
     [SerializeField] private float _pointAddInterval = 0.1f;
-    [SerializeField] private float _touchMoveTreshold = 0.1f;
-    [SerializeField] private float _touchHoldTreshold = 0.5f;
+    [SerializeField] private float _touchMoveSensitivity = 1.25f;
 
     public UnityAction<int, Vector2, Vector3> OnTouchBegin;
     public UnityAction<int, Vector2, Vector3> OnTouchDrag; // Add move speed?
@@ -36,11 +35,13 @@ public class InputManager : MonoBehaviour
     public UnityAction<int, Vector2, Vector3> OnTouchHold; // Add delta time!
 
     public UnityAction<Vector2, Vector3> OnTouchABegin;
-    public UnityAction<Vector2, Vector3> OnTouchADrag;
+    public UnityAction<Vector2, Vector3> OnTouchAStationary;
+    public UnityAction<InputDragEventParams> OnTouchADrag;
     public UnityAction<Vector2, Vector3> OnTouchAEnd;
 
     public UnityAction<Vector2, Vector3> OnTouchBBegin;
-    public UnityAction<Vector2, Vector3> OnTouchBDrag;
+    public UnityAction<Vector2, Vector3> OnTouchBStationary;
+    public UnityAction<InputDragEventParams> OnTouchBDrag;
     public UnityAction<Vector2, Vector3> OnTouchBEnd;
 
     private Touch _primaryTouch;
@@ -48,6 +49,12 @@ public class InputManager : MonoBehaviour
     private int _primaryTouchID;
 
     private int _touchAID, _touchBID = 12;
+
+    private void Start() 
+    {
+        _touchAID = 12;
+        _touchBID = 12;
+    }
 
     void Update()
     {
@@ -61,7 +68,7 @@ public class InputManager : MonoBehaviour
                 isTouching = true;
             }
 
-            if (Input.touchCount == 3)
+            if (Input.touchCount == 11) // Deprecated. Keeping it just in case it is needed to be used.
             {
                 _primaryTouch = Input.GetTouch(0);
                 _primaryTouchID = _primaryTouch.fingerId;
@@ -83,16 +90,6 @@ public class InputManager : MonoBehaviour
                     break;
 
                     case TouchPhase.Stationary:
-
-
-                    if (_primaryTouch.deltaTime >= _touchHoldTreshold * Time.deltaTime) 
-                    {
-                        OnTouchHold?.Invoke(_primaryTouchID, _primaryTouch.position, touchWorldPosition);
-                    }
-                    else 
-                    {
-                        OnTouchTap?.Invoke(_primaryTouchID, _primaryTouch.position, touchWorldPosition);
-                    }
 
                     break;
 
@@ -117,14 +114,13 @@ public class InputManager : MonoBehaviour
             else
             {
                 // Multiple Touches
-                foreach (Touch touch in Input.touches) 
+                for (int i = 0; i < Input.touchCount; i++) 
                 {
+                    Touch touch = Input.GetTouch(i);
                     Vector3 touchWorldPosition = ConvertToWorldPosition(touch.position);
 
                     pos = touchWorldPosition; // Temporary!
 
-                    Vector2 touchMoveDirection = (touch.position - touch.position).normalized;
-                    float touchMoveDistanceFromInitialPosition = Vector2.Distance(touch.rawPosition, touch.position);
                     Vector2 touchMoveDelta = touch.deltaPosition;
                     float touchMoveSpeed = touch.deltaPosition.magnitude / touch.deltaTime;
                     //touch.tapCount;
@@ -133,23 +129,29 @@ public class InputManager : MonoBehaviour
                     {
                         case TouchPhase.Began:
 
-                        // Screen Touch Side    // Fix here!
-                        if (_touchAID == touch.fingerId) 
+                        // Screen Touch Side    // Better implementation maybe?
+                        // If first touch occupied either Touch A or Touch B, then instead of looking at the initial touch location
+                        // assign next touch to the other touch (Touch A or Touch B).
+                        if (_touchAID == 0 && _touchBID != 0) 
                         {
+                            Debug.Log("Touch A is already occupied! Assigning to Touch B.");
                             _touchBID = touch.fingerId;
                         } 
-                        else if (_touchBID == touch.fingerId) 
+                        else if (_touchBID == 0 && _touchAID != 0) 
                         {
+                            Debug.Log("Touch B is already occupied! Assigning to Touch A.");
                             _touchAID = touch.fingerId;
                         }
                         else 
                         {
                             if (touch.position.x < Screen.width / 2)
                             {
+                                Debug.Log("Left Screen! Assigning to Touch A.");
                                 _touchAID = touch.fingerId;
                             }
                             else if (touch.position.x > Screen.width / 2) 
-                            {   
+                            {
+                                Debug.Log("Right Screen! Assigning to Touch B.");
                                 _touchBID = touch.fingerId;
                             }
                         }
@@ -168,40 +170,38 @@ public class InputManager : MonoBehaviour
                         break;
 
                         case TouchPhase.Stationary:
-
                         if (touch.fingerId == _touchAID) 
                         {
                             // Touch A
-                            OnTouchABegin?.Invoke(touch.position, touchWorldPosition);
+                            OnTouchAStationary?.Invoke(touch.position, touchWorldPosition);
                         }
                         else if (touch.fingerId == _touchBID) 
                         {
                             // Touch B
-                            OnTouchBBegin?.Invoke(touch.position, touchWorldPosition);
-                        }
-
-                        if (touch.deltaTime >= _touchHoldTreshold * Time.deltaTime) 
-                        {
-                            OnTouchHold?.Invoke(touch.fingerId, touch.position, touchWorldPosition);
-                        }
-                        else 
-                        {
-                            OnTouchTap?.Invoke(touch.fingerId, touch.position, touchWorldPosition);
+                            OnTouchBStationary?.Invoke(touch.position, touchWorldPosition);
                         }
                         break;
 
                         case TouchPhase.Moved:
-                        if (touch.fingerId == _touchAID) 
+                        // Move Sensitivity Treshold
+                        if (touch.phase == TouchPhase.Moved && touch.deltaPosition.magnitude < _touchMoveSensitivity) 
+                        {
+                            touch.phase = TouchPhase.Stationary;
+                        }
+                        else
+                        {
+                            if (touch.fingerId == _touchAID) 
                         {
                             // Touch A
-                            OnTouchADrag?.Invoke(touch.position, touchWorldPosition);
+                            OnTouchADrag?.Invoke(new InputDragEventParams(touch.position, touchWorldPosition, touchMoveSpeed, touchMoveDelta));
                         }
-                        else if (touch.fingerId == _touchBID) 
-                        {
-                            // Touch B
-                            OnTouchBDrag?.Invoke(touch.position, touchWorldPosition);
-                        }
+                            else if (touch.fingerId == _touchBID) 
+                            {
+                                // Touch B
+                                OnTouchBDrag?.Invoke(new InputDragEventParams(touch.position, touchWorldPosition, touchMoveSpeed, touchMoveDelta));
+                            }
                         //OnTouchDrag?.Invoke(touch.fingerId, _primaryTouch.position, touchWorldPosition);
+                        }                   
                         break;
 
                         case TouchPhase.Ended:
@@ -223,8 +223,8 @@ public class InputManager : MonoBehaviour
                         break;
                     }
 
-                    Debug.Log("ID: " + touch.fingerId + " Phase: " + touch.phase + " RawPos: " + touch.rawPosition + " Pos: " + touch.position 
-                    + " Speed: " + touchMoveSpeed + " Dir: " + touchMoveDirection + " TapCount: " + touch.tapCount);
+                    //Debug.Log("ID: " + touch.fingerId + " Phase: " + touch.phase + " RawPos: " + touch.rawPosition + " Pos: " + touch.position 
+                    //+ " Speed: " + touchMoveSpeed + " Dir: " + touchMoveDirection + " TapCount: " + touch.tapCount);
                 }
             }   
         }
@@ -241,6 +241,17 @@ public class InputManager : MonoBehaviour
         touchScreenPosition.z = Camera.main.nearClipPlane;
         return Camera.main.ScreenToWorldPoint(_primaryTouch.position);        
     }
+}
+
+public struct InputDragEventParams 
+{
+    public Vector2 ScreenPosition;
+    public Vector3 WorldPosition;
+    public float DeltaSpeed;
+    public Vector2 Delta;
+
+    public InputDragEventParams(Vector2 screenPosition, Vector3 worldPosition, float deltaSpeed, Vector2 delta) => 
+        (ScreenPosition, WorldPosition, DeltaSpeed, Delta) = (screenPosition, worldPosition, deltaSpeed, delta);
 }
 
 // private int positionCount = 0;
