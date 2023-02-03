@@ -142,10 +142,16 @@ public class GestureController : MonoBehaviour
     #endregion
 
     //public Gesture test = new Gesture(new Point[4] , "Swipe");
+    public DollarRecognizer _recognizer = new DollarRecognizer();
+
+    public void RecordGesture(string Name) 
+    {
+        //_recognizer.SavePattern(Name, new IEnumerable<Vector2> points)
+    }
 
     private void RecognizeGesture() 
     {
-
+        //_recognizer.Recognize();
     }
 }
 
