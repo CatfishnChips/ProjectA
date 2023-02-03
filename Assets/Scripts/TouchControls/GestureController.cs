@@ -22,7 +22,9 @@ public class GestureController : MonoBehaviour
 
     private InputManager _inputManager = InputManager.Instance;
 
-    [SerializeField] private float _holdTreshold; // Time needed for the touch to register as Hold. Used to seperate Tap and Hold.
+    [SerializeField] private float _tapTime; // Time needed for distinguishing Tap from Hold.
+    [SerializeField] private float _slowTapTime; // 
+    [SerializeField] private float _holdTime; // Time needed for the touch to register as Hold. Used to distinguish Tap from Hold.
 
     private TouchData _touchA, _touchB;
 
@@ -138,6 +140,8 @@ public class GestureController : MonoBehaviour
     }
 
     #endregion
+
+    //public Gesture test = new Gesture(new Point[4] , "Swipe");
 
     private void RecognizeGesture() 
     {
