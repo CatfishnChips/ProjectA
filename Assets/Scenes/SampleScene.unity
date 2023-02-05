@@ -962,6 +962,10 @@ MonoBehaviour:
   _tapTime: 0
   _slowTapTime: 0
   _holdTime: 0
+  _dragDistance: 15
+  _touchTime: 3
+  _speedBreak: 2
+  _sensitivity: 250
   _scoreTreshold: 0
   _pointAddInterval: 0
   _pointList: []

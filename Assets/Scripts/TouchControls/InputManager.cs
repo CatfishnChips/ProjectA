@@ -28,12 +28,6 @@ public class InputManager : MonoBehaviour
     [SerializeField] private float _pointAddInterval = 0.1f;
     [SerializeField] private float _touchMoveSensitivity = 1.25f;
 
-    public UnityAction<int, Vector2, Vector3> OnTouchBegin;
-    public UnityAction<int, Vector2, Vector3> OnTouchDrag; // Add move speed?
-    public UnityAction<int, Vector2, Vector3> OnTouchEnd;
-    public UnityAction<int, Vector2, Vector3> OnTouchTap; // Add tap count!
-    public UnityAction<int, Vector2, Vector3> OnTouchHold; // Add delta time!
-
     public UnityAction<Vector2, Vector3> OnTouchABegin;
     public UnityAction<Vector2, Vector3> OnTouchAStationary;
     public UnityAction<InputDragEventParams> OnTouchADrag;
@@ -43,10 +37,6 @@ public class InputManager : MonoBehaviour
     public UnityAction<Vector2, Vector3> OnTouchBStationary;
     public UnityAction<InputDragEventParams> OnTouchBDrag;
     public UnityAction<Vector2, Vector3> OnTouchBEnd;
-
-    private Touch _primaryTouch;
-    private Touch _secondaryTouch;
-    private int _primaryTouchID;
 
     private int _touchAID, _touchBID = 12;
 
@@ -68,50 +58,7 @@ public class InputManager : MonoBehaviour
                 isTouching = true;
             }
 
-            if (Input.touchCount == 11) // Deprecated. Keeping it just in case it is needed to be used.
-            {
-                _primaryTouch = Input.GetTouch(0);
-                _primaryTouchID = _primaryTouch.fingerId;
-
-                Vector3 touchWorldPosition = ConvertToWorldPosition(_primaryTouch.position);
-
-                pos = touchWorldPosition; // Temporary!
-
-                Vector2 touchMoveDirection = (_primaryTouch.rawPosition - _primaryTouch.position).normalized;
-                float touchMoveDistanceFromInitialPosition = Vector2.Distance(_primaryTouch.rawPosition, _primaryTouch.position);
-                Vector2 touchMoveDelta = _primaryTouch.deltaPosition;
-                float touchMoveSpeed = _primaryTouch.deltaPosition.magnitude / _primaryTouch.deltaTime;
-                //_primaryTouch.tapCount;
-
-                switch (_primaryTouch.phase) 
-                {
-                    case TouchPhase.Began:
-                    OnTouchBegin?.Invoke(_primaryTouchID, _primaryTouch.position, touchWorldPosition);
-                    break;
-
-                    case TouchPhase.Stationary:
-
-                    break;
-
-                    case TouchPhase.Moved:
-                    touchMoveSpeed = _primaryTouch.deltaPosition.magnitude / _primaryTouch.deltaTime;
-                    touchMoveDirection = (_primaryTouch.rawPosition - _primaryTouch.position).normalized;
-
-                    OnTouchDrag?.Invoke(_primaryTouchID, _primaryTouch.position, touchWorldPosition);
-                    break;
-
-                    case TouchPhase.Ended:
-                    OnTouchEnd?.Invoke(_primaryTouchID, _primaryTouch.position, touchWorldPosition);
-                    
-                    //if (touchMoveSpeed > 10f) // Touch Move Treshold for Swipe Motion // Instead of invoking the event here, send to shape to the gesture recognition and invoke it there.
-                    //OnSwipe.Invoke(touchMoveDirection); // Example of an event invocation.
-                    break;
-                }
-
-                Debug.Log("Phase: " + _primaryTouch.phase + " StartPos: " + _primaryTouch.rawPosition + " Pos: " + _primaryTouch.position 
-                    + " Speed: " + touchMoveSpeed + " Dir: " + touchMoveDirection + " TapCount: " + _primaryTouch.tapCount);
-            }
-            else
+            if (Input.touchCount <= 2)
             {
                 // Multiple Touches
                 for (int i = 0; i < Input.touchCount; i++) 
@@ -237,9 +184,9 @@ public class InputManager : MonoBehaviour
 
     private Vector3 ConvertToWorldPosition(Vector2 position) 
     {
-        Vector3 touchScreenPosition = _primaryTouch.position;
+        Vector3 touchScreenPosition = position;
         touchScreenPosition.z = Camera.main.nearClipPlane;
-        return Camera.main.ScreenToWorldPoint(_primaryTouch.position);        
+        return Camera.main.ScreenToWorldPoint(position);        
     }
 }
 

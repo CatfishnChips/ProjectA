@@ -21,10 +21,14 @@ public class EventManager : MonoBehaviour
 
     #endregion
 
-    public UnityAction LeftSideTap;
-    public UnityAction LeftSideHold;
-    public UnityAction LeftSideSwipe;
+    #region Movement Events
+    // These actions are called by the Touch A, which is used primarily for movement.
+    public UnityAction<Vector2> Dash;
+    public UnityAction<float> Walk;
 
+    #endregion
 
-    public UnityAction RightSideTap;
+    #region Attack Events
+
+    #endregion
 }

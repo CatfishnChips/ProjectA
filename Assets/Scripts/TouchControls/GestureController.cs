@@ -22,10 +22,35 @@ public class GestureController : MonoBehaviour
     }
 
     #endregion
-
-    [SerializeField] private float _tapTime; // Time needed for distinguishing Tap from Hold.
-    [SerializeField] private float _slowTapTime; // 
+    
+    [Header("Touch Settings")]
+    [SerializeField] private float _tapTime; // Time needed for distinguishing Tap from Hold. !!! Currently not used !!!
+    [SerializeField] private float _slowTapTime; // !!! Currently not used !!!
     [SerializeField] private float _holdTime; // Time needed for the touch to register as Hold. Used to distinguish Tap from Hold.
+
+    #region Touch A Variables
+
+    [Header("Swipe Settings")]
+    [SerializeField] private float _dragDistance; // Minimum distance required to register as a swipe. // Can also use Screen.width and Screen.height.
+    [SerializeField] private float _touchTime; // Maximum time a touch can be on-screen before not registering as a swipe.  
+    [SerializeField] private float _speedBreak; // Minimum speed value before not registering as a swipe.
+    private bool _isSwipe; // Is input a swipe or not?
+
+    // Alternative version of isSwipe but requires the TouchData implementation to change.
+    // private bool isSwipe {
+    //     get 
+    //     {
+    //         return true;
+    //     }
+    // }
+
+    [Header("Joystick Settings")]
+    [SerializeField] private float _sensitivity; // Active area of the Joystick.
+    private Vector2 _virtualJoystick; 
+    private float _deltaVectorX;
+
+
+    #endregion
 
     [SerializeField] private float _scoreTreshold = 0.25f; // Least amount of score required for a gesture to be recognized.
     [SerializeField] private float _pointAddInterval;
@@ -39,10 +64,6 @@ public class GestureController : MonoBehaviour
 
     private void Start() 
     {
-        InputManager.Instance.OnTouchBegin += OnTouchBegin;
-        InputManager.Instance.OnTouchDrag += OnTouchDrag;
-        InputManager.Instance.OnTouchEnd += OnTouchEnd;
-
         InputManager.Instance.OnTouchABegin += OnTouchABegin;
         InputManager.Instance.OnTouchAStationary += OnTouchAStationary;
         InputManager.Instance.OnTouchADrag += OnTouchADrag;
@@ -58,10 +79,6 @@ public class GestureController : MonoBehaviour
 
     private void OnDisable()
     {
-        InputManager.Instance.OnTouchBegin -= OnTouchBegin;
-        InputManager.Instance.OnTouchDrag -= OnTouchDrag;
-        InputManager.Instance.OnTouchEnd -= OnTouchEnd;
-
         InputManager.Instance.OnTouchABegin -= OnTouchABegin;
         InputManager.Instance.OnTouchAStationary -= OnTouchAStationary;
         InputManager.Instance.OnTouchADrag -= OnTouchADrag;
@@ -81,29 +98,6 @@ public class GestureController : MonoBehaviour
         }
     }
 
-    private void OnTouchBegin(int touchID, Vector2 screenPosition, Vector3 worldPosition) 
-    {
-        // Screen Touch Side
-        if (screenPosition.x < Screen.width / 2) 
-        {
-            EventManager.Instance.LeftSideTap.Invoke();
-        }
-        else if (screenPosition.x > Screen.width / 2) 
-        {
-            EventManager.Instance.RightSideTap.Invoke();
-        }
-    }
-
-    private void OnTouchDrag(int touchID, Vector2 screenPosition, Vector3 worldPosition) 
-    {
-        
-    }
-
-    private void OnTouchEnd(int touchID, Vector2 screenPosition, Vector3 worldPosition) 
-    {
-        
-    }
-
     #region Touch A
 
     private void OnTouchABegin(Vector2 screenPosition, Vector3 worldPosition) 
@@ -111,22 +105,64 @@ public class GestureController : MonoBehaviour
         _touchA = new TouchData();
         _touchA.InitialScreenPosition = screenPosition;
         _touchA.InitialWorldPosition = worldPosition;
+
+        // Swipe
+        _isSwipe = true;
+
+        // Joystick
+        _virtualJoystick = Vector2.zero;
     }
 
     private void OnTouchAStationary(Vector2 screenPosition, Vector3 worldPosition)
     {
+        _touchA.TimeOnScreen += Time.deltaTime;
 
+        // Swipe
+        //_isSwipe = false;
+        if (!_isSwipe) EventManager.Instance.Walk?.Invoke(_deltaVectorX);
+
+        //Joystick
+        if (!_isSwipe)
+        Debug.Log("Stationary - Joystick DeltaDistance: " + _deltaVectorX);
     }
 
     private void OnTouchADrag(InputDragEventParams inputEventDragParams) 
     {
+        _touchA.TimeOnScreen += Time.deltaTime;
+        
+        // Swipe
+        if (_isSwipe && inputEventDragParams.Delta.magnitude < _speedBreak) _isSwipe = false;
 
+        // Joystick
+        if (!_isSwipe) 
+        {
+            _virtualJoystick.x += inputEventDragParams.Delta.x;
+            _virtualJoystick.x = Mathf.Clamp(_virtualJoystick.x, -_sensitivity, _sensitivity);
+
+            float deltaDistanceX = _virtualJoystick.x / _sensitivity; // Convert the distance to be within -1 and 1. Surely this can be done more efficiently.
+
+            _deltaVectorX = deltaDistanceX;
+            Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);
+            EventManager.Instance.Walk?.Invoke(_deltaVectorX);
+        }
     }
 
     private void OnTouchAEnd(Vector2 screenPosition, Vector3 worldPosition) 
     {
         float distance = Vector2.Distance(_touchA.InitialScreenPosition, screenPosition);
         Vector2 direction = (_touchA.InitialScreenPosition - screenPosition).normalized;
+
+        // Joystick
+        _deltaVectorX = 0;
+
+        // Swipe
+        if (distance < _dragDistance) return;
+        if (_touchA.TimeOnScreen >= _touchTime) return;
+        //if (_touchA.Delta.magnitude < _speedBreak) return;
+        if (!_isSwipe) return;
+        EventManager.Instance.Dash?.Invoke(direction);
+
+        Debug.Log("Swipe! " + direction);
     }
 
     #endregion
@@ -218,11 +254,11 @@ public struct TouchData
 {
     public Vector2 InitialScreenPosition;
     public Vector3 InitialWorldPosition;
-    public float DeltaSpeed;
+    public float Delta;
     public float TimeOnScreen;
 
     public TouchData(Vector2 initScreenPos, Vector3 initWorldPos, float deltaSpeed, float timeOnScreen) => 
-        (InitialScreenPosition, InitialWorldPosition, DeltaSpeed, TimeOnScreen) = (initScreenPos, initWorldPos, deltaSpeed, timeOnScreen);
+        (InitialScreenPosition, InitialWorldPosition, Delta, TimeOnScreen) = (initScreenPos, initWorldPos, deltaSpeed, timeOnScreen);
 }
 
 [System.Serializable]
