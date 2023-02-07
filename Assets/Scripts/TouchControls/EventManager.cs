@@ -21,6 +21,13 @@ public class EventManager : MonoBehaviour
 
     #endregion
 
+    #region Game Events
+
+    //public UnityAction<> OnCombatBegin;
+    //public UnityAction<> OnCombatEnd;
+
+    #endregion
+    
     #region Movement Events
     // These actions are called by the Touch A, which is used primarily for movement.
     public UnityAction<Vector2> Dash;

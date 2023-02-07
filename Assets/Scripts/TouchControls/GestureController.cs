@@ -160,6 +160,7 @@ public class GestureController : MonoBehaviour
 
         // Joystick
         _deltaVectorX = 0;
+        EventManager.Instance.Walk?.Invoke(_deltaVectorX);
 
         // Swipe
         if (distance < _swipeDistance) return;
