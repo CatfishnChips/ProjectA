@@ -56,7 +56,7 @@ public class GestureController : MonoBehaviour
     [SerializeField] private float _scoreTreshold = 0.25f; // Least amount of score required for a gesture to be recognized.
     [SerializeField] private float _pointAddInterval;
     private float _pointAddTimer;
-    private List<Vector2> _pointList;
+    private List<Vector2> _pointList = new List<Vector2>();
     private DollarRecognizer _recognizer = new DollarRecognizer();
 
     [Header("UI References")]
