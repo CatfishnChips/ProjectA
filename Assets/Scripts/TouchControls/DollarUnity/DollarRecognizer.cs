@@ -199,6 +199,23 @@ public class DollarRecognizer
 		return stroke;
 	}
 
+	public void AddToLibrary(Unistroke stroke) 
+	{
+		int index = _library.Count;
+		_library.Add(stroke);
+
+		List<int> examples = null;
+		if (_libraryIndex.ContainsKey(stroke.Name))
+			examples = _libraryIndex[stroke.Name];
+		if (examples == null)
+		{
+			examples = new List<int>();
+			_libraryIndex[stroke.Name] = examples;
+		}
+		stroke.ExampleIndex = examples.Count;
+		examples.Add(index);
+	}
+
 	public Result Recognize(IEnumerable<Vector2> points)
 	{
 		Vector2[] working = resample(points, _kNormalizedPoints);

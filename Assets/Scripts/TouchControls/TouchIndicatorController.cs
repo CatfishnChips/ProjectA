@@ -59,19 +59,19 @@ public class TouchIndicatorController : MonoBehaviour
         _trail1.emitting = true;
     }
 
-    private void DisableIndicator1(Vector2 screenPosition, Vector3 worldPosition) 
+    private void DisableIndicator1(InputEventParams inputEventParams) 
     {
        _touchText1.SetText("Ended");
        _touchIndicator1.gameObject.SetActive(false);
        _trail1.emitting = false;
     }
 
-    private void MoveIndicator1(InputDragEventParams inputEventDragParams) 
+    private void MoveIndicator1(InputEventParams inputEventParams) 
     {
-        _touchIndicator1.transform.position = inputEventDragParams.ScreenPosition;;
+        _touchIndicator1.transform.position = inputEventParams.ScreenPosition;;
         _touchText1.SetText("Dragging");
         _touchAHoldTime = 0;
-        _trailObject1.position = inputEventDragParams.ScreenPosition;
+        _trailObject1.position = inputEventParams.ScreenPosition;
     }
 
     private void UpdateIndicator1(Vector2 screenPosition, Vector3 worldPosition) 
@@ -91,19 +91,19 @@ public class TouchIndicatorController : MonoBehaviour
         _trail1.emitting = true;
     }
 
-    private void DisableIndicator2(Vector2 screenPosition, Vector3 worldPosition) 
+    private void DisableIndicator2(InputEventParams inputEventParams) 
     {
         _touchText2.SetText("Ended");
         _touchIndicator2.gameObject.SetActive(false);
         _trail2.emitting = false;
     }
 
-    private void MoveIndicator2(InputDragEventParams inputEventDragParams) 
+    private void MoveIndicator2(InputEventParams inputEventParams) 
     {
-        _touchIndicator2.transform.position = inputEventDragParams.ScreenPosition;
+        _touchIndicator2.transform.position = inputEventParams.ScreenPosition;
         _touchText2.SetText("Dragging");
         _touchBHoldTime = 0;
-        _trailObject2.position = inputEventDragParams.ScreenPosition;
+        _trailObject2.position = inputEventParams.ScreenPosition;
     }
 
     private void UpdateIndicator2(Vector2 screenPosition, Vector3 worldPosition) 
