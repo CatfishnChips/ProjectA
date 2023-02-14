@@ -36,6 +36,12 @@ public class FighterGroundedState : FighterBaseState
     public override void UpdateState()
     {
         CheckSwitchState();
-        _ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
+        //_ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
+        _ctx.Animator.SetFloat("Blend", _ctx.Velocity.x);
+
+        if (_ctx.Velocity.x != 0)
+        _ctx.Animator.SetBool("Moving", true);
+        else 
+        _ctx.Animator.SetBool("Moving", false);
     }
 }

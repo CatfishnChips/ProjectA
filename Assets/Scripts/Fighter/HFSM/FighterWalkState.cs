@@ -29,6 +29,7 @@ public class FighterWalkState : FighterBaseState
 
     public override void UpdateState()
     {
-        _ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
+        //_ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
+        _ctx.Animator.SetFloat("Blend", _ctx.Velocity.x);
     }
 }

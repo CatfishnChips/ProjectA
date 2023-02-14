@@ -16,6 +16,7 @@ public class FighterStateMachine : MonoBehaviour
     private bool _uppercutPerformed;
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _moveSpeed;
+    private float _deltaTarget;
 
     public bool IsJumpPressed{get{return _isJumpPressed;}}
     public bool IsGrounded{get{return _isGrounded;}}
@@ -24,6 +25,7 @@ public class FighterStateMachine : MonoBehaviour
     public Vector2 Velocity{get{return _velocity;}}
     public float MoveSpeed{get{return _moveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
+    public Animator Animator{get{return _animator;}}
 
     void Awake()
     {
@@ -59,13 +61,17 @@ public class FighterStateMachine : MonoBehaviour
         _isGrounded = _charController.isGrounded;
     }
 
+    private void Update(){
+        _velocity.x = Mathf.MoveTowards(_velocity.x, _deltaTarget, 0.75f * Time.deltaTime);
+    }
+
 
     public void ListenToJump(){
         _isJumpPressed = true;
     }
 
     public void OnWalk(float delta){
-        _velocity.x = delta;
+        _deltaTarget = delta;
     }
 
     public void OnUppercut(){
@@ -74,6 +80,6 @@ public class FighterStateMachine : MonoBehaviour
 
     private void OnDash(Vector2 direction) 
     {
-        _velocity.x = direction.x * _dashDistance;
+        //_velocity.x = direction.x * _dashDistance;
     }
 }

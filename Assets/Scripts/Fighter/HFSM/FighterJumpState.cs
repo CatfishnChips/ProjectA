@@ -17,6 +17,9 @@ public class FighterJumpState : FighterBaseState
     public override void EnterState()
     {
         Debug.Log("ENTERED JUMP STATE");
+
+        // Test
+        _ctx.Animator.SetTrigger("Uppercut");
     }
 
     public override void ExitState()

@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake() 
     {
-        _player = GameObject.Find("Player").transform;
+        _player = GameObject.Find("FighterA").transform;
     }
 
     void Start()
