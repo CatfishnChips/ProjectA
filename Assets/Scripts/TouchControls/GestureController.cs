@@ -215,7 +215,7 @@ public class GestureController : MonoBehaviour
         switch(Name) 
         {
             case "Uppercut":
-
+                EventManager.Instance.Uppercut?.Invoke();
             break;
 
             case "Punch":

@@ -12,6 +12,10 @@ public class FighterGroundedState : FighterBaseState
         if (_ctx.IsJumpPressed){
             SwitchState(_factory.Jump());
         }
+        if(_ctx.UppercutPerformed){
+            _ctx.UppercutPerformed = false;
+            SwitchState(_factory.Jump());
+        }
     }
 
     public override void EnterState()
@@ -32,5 +36,6 @@ public class FighterGroundedState : FighterBaseState
     public override void UpdateState()
     {
         CheckSwitchState();
+        _ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
     }
 }

@@ -534,8 +534,8 @@ GameObject:
   - component: {fileID: 138409140}
   - component: {fileID: 138409139}
   - component: {fileID: 138409138}
+  - component: {fileID: 138409144}
   - component: {fileID: 138409137}
-  - component: {fileID: 138409142}
   - component: {fileID: 138409141}
   - component: {fileID: 138409143}
   m_Layer: 6
@@ -643,21 +643,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &138409142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 138409136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e6c65a9f3f0d142aeb75615096df9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movementSpeed: 5
-  _dashDistance: 2
-  _characterController: {fileID: 138409141}
 --- !u!95 &138409143
 Animator:
   serializedVersion: 5
@@ -678,6 +663,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &138409144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138409136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dashDistance: 2
+  _moveSpeed: 1
 --- !u!1 &252996622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1452,11 +1451,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4301f7838e3e4a4f885e4deda97be28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swipeDistance: 15
-  _swipeTimeout: 3
-  _swipeDelta: 5
+  _swipeDistance: 10
+  _swipeTimeout: 0
+  _swipeDelta: 2
   _sensitivity: 150
-  _scoreTreshold: 10
+  _scoreTreshold: 0.25
   _pointAddInterval: 0
   _nameInput: {fileID: 513905939}
   _nameText: {fileID: 617982875}

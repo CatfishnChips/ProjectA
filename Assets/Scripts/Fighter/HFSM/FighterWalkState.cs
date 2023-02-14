@@ -1,3 +1,4 @@
+using UnityEngine;
 
 public class FighterWalkState : FighterBaseState
 {
@@ -28,6 +29,6 @@ public class FighterWalkState : FighterBaseState
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        _ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
     }
 }
