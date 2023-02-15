@@ -14,6 +14,9 @@ public class FighterStateMachine : MonoBehaviour
     private bool _isJumpPressed;
     private bool _isGrounded;
     private bool _uppercutPerformed;
+    [SerializeField] string _currentStateName;
+    [SerializeField] string _currentSubStateName;
+    [SerializeField] string _currentSuperStateName;
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _moveSpeed;
     private float _deltaTarget;
@@ -57,7 +60,11 @@ public class FighterStateMachine : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        _currentState.UpdateState();
+        _currentState.UpdateStates();
+        _currentState.FixedUpdateStates();
+        _currentStateName = _currentState.StateName;
+        _currentSubStateName = _currentState.SubStateName();
+        _currentSubStateName = _currentState.SuperStateName();
         _isGrounded = _charController.isGrounded;
     }
 

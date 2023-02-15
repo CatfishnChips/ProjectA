@@ -5,6 +5,8 @@ public class FighterJumpState : FighterBaseState
     public FighterJumpState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
         _stateName = "Jump";
+        _isRootState = true;
+        InitializeSubState();
     }
 
     public override void CheckSwitchState()
@@ -25,6 +27,11 @@ public class FighterJumpState : FighterBaseState
     public override void ExitState()
     {
         Debug.Log("EXITED JUMP STATE");
+    }
+
+    public override void FixedUpdateState()
+    {
+        
     }
 
     public override void InitializeSubState()

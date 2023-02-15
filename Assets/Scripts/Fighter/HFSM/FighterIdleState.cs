@@ -11,17 +11,30 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        throw new System.NotImplementedException();
+        if (_ctx.Velocity.x != 0){
+            if (_ctx.Velocity.x >= -0.5f && _ctx.Velocity.x <= 0.5f){
+                SwitchState(_factory.Walk());
+            }
+            else if(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f){
+                SwitchState(_factory.Run());
+            }
+        }
+
     }
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("ENTERED IDLE STATE");
     }
 
     public override void ExitState()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("EXITED IDLE STATE");
+    }
+
+    public override void FixedUpdateState()
+    {
+        
     }
 
     public override void InitializeSubState()
@@ -31,6 +44,6 @@ public class FighterIdleState : FighterBaseState
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        CheckSwitchState();
     }
 }

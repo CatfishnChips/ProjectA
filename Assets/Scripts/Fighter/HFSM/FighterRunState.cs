@@ -1,21 +1,22 @@
 using UnityEngine;
 
-public class FighterWalkState : FighterBaseState
+public class FighterRunState : FighterBaseState
 {
-    public FighterWalkState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    public FighterRunState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Walk";
+        _stateName = "Run";
     }
 
     public override void CheckSwitchState()
     {
-        if(_ctx.Velocity.x == 0){
-            SwitchState(_factory.Idle());
+        if (!(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f)){ // if fighter is not running
+            if (_ctx.Velocity.x >= -0.5f && _ctx.Velocity.x <= 0.5f){ // if we just slowed sown
+                SwitchState(_factory.Walk());
+            }
+            else{ // if we directly stopped
+                SwitchState(_factory.Idle());
+            }
         }
-        if(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f){
-            SwitchState(_factory.Run());
-        }
-        
     }
 
     public override void EnterState()
@@ -40,9 +41,8 @@ public class FighterWalkState : FighterBaseState
 
     public override void UpdateState()
     {
-        //_ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
         CheckSwitchState();
-        Debug.Log("WALKING!");
         _ctx.Animator.SetFloat("Blend", _ctx.Velocity.x);
+        Debug.Log("RUNNING!");
     }
 }
