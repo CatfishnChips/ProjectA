@@ -4,6 +4,7 @@ public class FighterStateMachine : MonoBehaviour
 {
 
     private CharacterController _charController;
+    private Animation _animations;
     private Animator _animator;
 
     private FighterStateFactory _states;
@@ -28,16 +29,19 @@ public class FighterStateMachine : MonoBehaviour
     public Vector2 Velocity{get{return _velocity;}}
     public float MoveSpeed{get{return _moveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
+    public Animation Animations{get{return _animations;}}
     public Animator Animator{get{return _animator;}}
 
     void Awake()
     {
         _charController = GetComponent<CharacterController>();
+        _animations = GetComponent<Animation>();
         _animator = GetComponent<Animator>();
         _isJumpPressed = false;
         _uppercutPerformed = false;
         _states = new FighterStateFactory(this);
         _currentState = _states.Grounded();
+        _currentState.EnterState();
 
     }
 

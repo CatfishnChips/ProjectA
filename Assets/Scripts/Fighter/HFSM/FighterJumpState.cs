@@ -6,7 +6,6 @@ public class FighterJumpState : FighterBaseState
     :base(currentContext, fighterStateFactory){
         _stateName = "Jump";
         _isRootState = true;
-        InitializeSubState();
     }
 
     public override void CheckSwitchState()
@@ -18,10 +17,7 @@ public class FighterJumpState : FighterBaseState
 
     public override void EnterState()
     {
-        Debug.Log("ENTERED JUMP STATE");
-
-        // Test
-        _ctx.Animator.SetTrigger("Uppercut");
+        InitializeSubState();
     }
 
     public override void ExitState()

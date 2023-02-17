@@ -9,6 +9,7 @@ public class FighterAttackState : FighterBaseState
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory, 
     int startUpTime, int activeTime, int recoveryTime):base(currentContext, fighterStateFactory){
+        _isRootState = true;
         _stateName = "Attack";
         _startUpTime = startUpTime;
         _activeTime = activeTime;
