@@ -26,6 +26,6 @@ public class FighterStateFactory
         return new FighterGroundedState(_context, this);
     }
     public FighterBaseState Attack(){
-        return new FighterAttackState(_context, this, 20, 20, 10);
+        return new FighterAttackState(_context, this);
     }
 }

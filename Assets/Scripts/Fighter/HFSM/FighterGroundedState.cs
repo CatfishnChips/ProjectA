@@ -10,11 +10,8 @@ public class FighterGroundedState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsJumpPressed){
-            SwitchState(_factory.Jump());
-        }
-        if(_ctx.UppercutPerformed){
-            _ctx.UppercutPerformed = false;
+        if(_ctx.AttackPerformed){
+            _ctx.AttackPerformed = false;
             SwitchState(_factory.Attack());
         }
     }
