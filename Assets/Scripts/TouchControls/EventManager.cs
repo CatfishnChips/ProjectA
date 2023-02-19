@@ -37,7 +37,7 @@ public class EventManager : MonoBehaviour
 
     #region Attack Events
 
-    public UnityAction Uppercut;
+    public UnityAction<string> AttackMove;
 
     #endregion
 }

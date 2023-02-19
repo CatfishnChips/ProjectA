@@ -6,28 +6,24 @@ public class FighterGroundedState : FighterBaseState
     :base(currentContext, fighterStateFactory){
         _stateName = "Grounded";
         _isRootState = true;
-        InitializeSubState();
     }
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsJumpPressed){
-            SwitchState(_factory.Jump());
-        }
-        if(_ctx.UppercutPerformed){
-            _ctx.UppercutPerformed = false;
+        if(_ctx.AttackPerformed){
+            _ctx.AttackPerformed = false;
             SwitchState(_factory.Attack());
         }
     }
 
     public override void EnterState()
     {
-        Debug.Log("ENTERED GROUNDED STATE.");
+        InitializeSubState();
     }
 
     public override void ExitState()
     {
-        Debug.Log("EXITED GROUNDED STATE");
+        
     }
 
     public override void FixedUpdateState()
@@ -40,11 +36,8 @@ public class FighterGroundedState : FighterBaseState
         if(_ctx.Velocity.x == 0){
             SetSubState(_factory.Idle());
         }
-        else if (_ctx.Velocity.x >= -0.5f && _ctx.Velocity.x <= 0.5f){
+        else{
             SetSubState(_factory.Walk());
-        }
-        else if(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f){
-            SetSubState(_factory.Run());
         }
     }
 

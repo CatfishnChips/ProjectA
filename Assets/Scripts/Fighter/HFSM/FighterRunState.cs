@@ -21,12 +21,10 @@ public class FighterRunState : FighterBaseState
 
     public override void EnterState()
     {
-        _ctx.Animator.SetBool("Moving", true);
     }
 
     public override void ExitState()
     {
-        _ctx.Animator.SetBool("Moving", false);
     }
 
     public override void FixedUpdateState()
@@ -42,7 +40,5 @@ public class FighterRunState : FighterBaseState
     public override void UpdateState()
     {
         CheckSwitchState();
-        _ctx.Animator.SetFloat("Blend", _ctx.Velocity.x);
-        Debug.Log("RUNNING!");
     }
 }

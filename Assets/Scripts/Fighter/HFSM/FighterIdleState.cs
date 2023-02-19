@@ -11,25 +11,25 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.Velocity.x != 0){
-            if (_ctx.Velocity.x >= -0.5f && _ctx.Velocity.x <= 0.5f){
-                SwitchState(_factory.Walk());
-            }
-            else if(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f){
-                SwitchState(_factory.Run());
-            }
+        if (_ctx.Velocity.x != 0){            
+            SwitchState(_factory.Walk());
         }
 
     }
 
     public override void EnterState()
     {
-        Debug.Log("ENTERED IDLE STATE");
+        string prev_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
+        _ctx.Animator.SetTrigger("ToIdle");
+        string current_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
+        if(current_anim_state == prev_anim_state){
+            _ctx.Animator.Play("Idle");
+        }
+
     }
 
     public override void ExitState()
     {
-        Debug.Log("EXITED IDLE STATE");
     }
 
     public override void FixedUpdateState()

@@ -128,8 +128,8 @@ public class GestureController : MonoBehaviour
         if (!_isSwipe) EventManager.Instance.Walk?.Invoke(_deltaVectorX);
 
         //Joystick
-        if (!_isSwipe)
-        Debug.Log("Stationary - Joystick DeltaDistance: " + _deltaVectorX);
+        //if (!_isSwipe)
+        //Debug.Log("Stationary - Joystick DeltaDistance: " + _deltaVectorX);
     }
 
     private void OnTouchADrag(InputEventParams inputEventDragParams) 
@@ -148,7 +148,7 @@ public class GestureController : MonoBehaviour
             float deltaDistanceX = _virtualJoystick.x / _sensitivity; // Convert the distance to be within -1 and 1. Surely this can be done more efficiently.
 
             _deltaVectorX = deltaDistanceX;
-            Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);
+            //Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);
             EventManager.Instance.Walk?.Invoke(_deltaVectorX);
         }
     }
@@ -169,7 +169,7 @@ public class GestureController : MonoBehaviour
         if (!_isSwipe) return;
         EventManager.Instance.Dash?.Invoke(direction);
 
-        Debug.Log("Swipe! " + direction);
+        //Debug.Log("Swipe! " + direction);
     }
 
     #endregion
@@ -215,11 +215,11 @@ public class GestureController : MonoBehaviour
         switch(Name) 
         {
             case "Uppercut":
-                EventManager.Instance.Uppercut?.Invoke();
+                EventManager.Instance.AttackMove?.Invoke(Name);
             break;
 
-            case "Punch":
-
+            case "DirectPunch":
+                EventManager.Instance.AttackMove?.Invoke(Name);
             break;
         }
     }
