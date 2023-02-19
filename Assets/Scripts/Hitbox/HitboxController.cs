@@ -26,6 +26,26 @@ public class HitboxController : MonoBehaviour
         
     }
 
+    public void CreateHitbox(SC_Hitbox hitbox){
+
+    }
+
+    public void RemoveHitbox(){
+
+    }
+    
+    public void RemoveAllHitboxes(){
+
+    }
+
+    public void ChangeHitboxDamage(){
+
+    }
+
+    public void ChangeHitboxSize(){
+
+    }
+
     private void Test() 
     {
         _currentClipInfo = _animator.GetCurrentAnimatorClipInfo(0);
