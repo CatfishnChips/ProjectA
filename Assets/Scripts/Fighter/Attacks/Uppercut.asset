@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b21ecced3b20dd4ea65a3ccbcb82a9f, type: 3}
   m_Name: Uppercut
   m_EditorClassIdentifier: 
-  name: 
-  damage: 0
-  stunDuration: 0
-  startUpFrames: 0
-  activeFrames: 0
-  recoveryFrames: 0
-  meshAnimationS: {fileID: 0}
-  meshAnimationA: {fileID: 0}
-  meshAnimationR: {fileID: 0}
+  name: Uppercut
+  damage: 50
+  stunDuration: 60
+  startUpFrames: 60
+  activeFrames: 100
+  recoveryFrames: 10
+  meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
+    type: 3}
+  meshAnimationA: {fileID: -2584105986153280350, guid: d489b905b20129841a1f1398b3665cff,
+    type: 3}
+  meshAnimationR: {fileID: 3709316462808488434, guid: d489b905b20129841a1f1398b3665cff,
+    type: 3}
   boxAnimationS: {fileID: 0}
   boxAnimationA: {fileID: 0}
   boxAnimationR: {fileID: 0}

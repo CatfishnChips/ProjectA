@@ -519,10 +519,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0422ea97c27626641aa43e4c99dc227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_hitStun: 0
-  m_blockStun: 0
-  m_damage: 0
+  m_hitbox: {fileID: 0}
+  m_offset: {x: 0, y: 0}
+  m_angle: 0
   m_knockback: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_priority: 0
+  m_part: 0
+  m_hitStun: 0
+  m_damage: 0
 --- !u!1 &138409136
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,6 +681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackMoveAttribution: []
   _currentStateName: 
   _currentSubStateName: 
   _currentSuperStateName: 
@@ -1973,6 +1980,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackMoveAttribution:
+  - name: DirectPunch
+    attackMove: {fileID: 11400000, guid: 9dde903c389eacb46ab2669c2178170f, type: 2}
+  - name: Uppercut
+    attackMove: {fileID: 11400000, guid: 5a4f52758fd01c949b53276c1350512d, type: 2}
   _currentStateName: 
   _currentSubStateName: 
   _currentSuperStateName: 
@@ -3288,8 +3300,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.29889032, y: -0.6338847, z: 0.29088053, w: 0.6513396}
-  m_LocalPosition: {x: 184.04495, y: 214.04648, z: -5}
+  m_LocalRotation: {x: 0.2988904, y: -0.6338847, z: 0.29088062, w: 0.65133953}
+  m_LocalPosition: {x: 184.04483, y: 214.04648, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3691,7 +3703,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1197121730
 GameObject:
@@ -4026,7 +4038,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426044326}
-  m_LocalRotation: {x: 0.30558288, y: -0.6094398, z: 0.27465764, w: 0.6780601}
+  m_LocalRotation: {x: 0.30558386, y: -0.6094392, z: 0.2746583, w: 0.6780599}
   m_LocalPosition: {x: 120.69689, y: 110.203896, z: -11.216947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4190,112 +4202,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1501417462}
   m_CullTransparentMesh: 1
---- !u!1001 &1533140353
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6306510132650501091, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_Name
-      value: FighterA
-      objectReference: {fileID: 0}
-    - target: {fileID: 6306510132650501091, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6576469715301264660, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: e46837b00b0240d4dafc25a84b836e71, type: 3}
-    - target: {fileID: 6576469715301264660, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:RightArm'\n\tTransform
-        'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform 'mixamorig:RightFoot'\n\tTransform
-        'mixamorig:Head'\n\tTransform 'mixamorig:LeftUpLeg'\n\tand more ...\n\tFrom
-        animation clip 'Direct Punch'"
-      objectReference: {fileID: 0}
-    - target: {fileID: 6576469715301264660, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6576469715301264663, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: _moveSpeed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6576469715301264663, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: _dashDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 229.90733
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 221.59969
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.4413161
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6687538828925253977, guid: a22a0cbd33ece154ead9cabb4be0f5ca,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6576469715301264663, guid: a22a0cbd33ece154ead9cabb4be0f5ca, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: a22a0cbd33ece154ead9cabb4be0f5ca, type: 3}
 --- !u!1 &1564201025
 GameObject:
   m_ObjectHideFlags: 0
@@ -5248,7 +5154,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881216307}
-  m_LocalRotation: {x: 0.29889032, y: -0.6338847, z: 0.29088053, w: 0.6513396}
+  m_LocalRotation: {x: 0.2988904, y: -0.6338847, z: 0.29088062, w: 0.65133953}
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5938,7 +5844,7 @@ Transform:
   - {fileID: 5465940247070923835}
   - {fileID: 290687112}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &608321762026716472
 Transform:
@@ -6036,14 +5942,7 @@ Animator:
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:RightArm'\n\tTransform
-    'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform 'mixamorig:RightFoot'\n\tTransform
-    'mixamorig:Head'\n\tTransform 'mixamorig:LeftUpLeg'\n\tand more ...\n\tFrom animation
-    clip 'DirectPunchS'\n\tFrom animation clip 'DirectPunchA'\n\tFrom animation clip
-    'DirectPunchR'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
