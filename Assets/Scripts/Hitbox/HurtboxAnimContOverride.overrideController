@@ -7,5 +7,5 @@ AnimatorOverrideController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HurtboxAnimContOverride
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f72f3bedd8536914ea8686f0f0cbf129, type: 2}
   m_Clips: []
