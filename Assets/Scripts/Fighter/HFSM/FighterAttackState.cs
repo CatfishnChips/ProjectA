@@ -38,6 +38,10 @@ public class FighterAttackState : FighterBaseState
         _ctx.ClipOverrides["DirectPunchR"] = _attackMove.meshAnimationR;
         _ctx.ClipOverrides["DirectPunchS"] = _attackMove.meshAnimationS;
 
+        _ctx.ColBoxClipOverrides["Uppercut_Startup"] = _attackMove.boxAnimationS;
+        _ctx.ColBoxClipOverrides["Uppercut_Active"] = _attackMove.boxAnimationA;
+        _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = _attackMove.boxAnimationR;
+
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
 
         _attackMove.AdjustAnimationTimes();
@@ -47,6 +51,7 @@ public class FighterAttackState : FighterBaseState
     public override void ExitState()
     {
         _ctx.Animator.Play("Idle");
+        _ctx.ColBoxAnimator.Play("Idle");
     }
 
     public override void InitializeSubState()
@@ -62,13 +67,16 @@ public class FighterAttackState : FighterBaseState
         if (_currentFrame <= _attackMove.startUpFrames){
             if(_firstFrameStartup){
                 _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedS);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedS);
                 _ctx.Animator.Play("AttackStart");
+                _ctx.ColBoxAnimator.Play("AttackStart");
                 _firstFrameStartup = false;
             }
         }
         else if (_currentFrame > _attackMove.startUpFrames && _currentFrame <= _attackMove.startUpFrames + _attackMove.activeFrames){
             if(_firstFrameActive){
                 _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedA);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedA);
                 //_ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
@@ -77,6 +85,7 @@ public class FighterAttackState : FighterBaseState
         _currentFrame <= _attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames){
             if(_firstFrameRecovery){
                 _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedR);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedR);
                 //_ctx.Animator.Play("AttackRecover");
                 _firstFrameRecovery = false;
             }

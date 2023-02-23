@@ -30,9 +30,14 @@ public class FighterStateMachine : MonoBehaviour
     private Dictionary<string, AttackMove> _attackMoveDict;
 
     private CharacterController _charController;
+
     private Animator _animator;
     private AnimatorOverrideController _animOverrideCont;
     private AnimationClipOverrides _clipOverrides;
+
+    private Animator _colBoxAnimator;
+    private AnimatorOverrideController _colBoxOverrideCont;
+    private AnimationClipOverrides _colBoxClipOverrides;
 
     private FighterStateFactory _states;
     private FighterBaseState _currentState;
@@ -58,15 +63,23 @@ public class FighterStateMachine : MonoBehaviour
     public Vector2 Velocity{get{return _velocity;}}
     public float MoveSpeed{get{return _moveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
+
     public Animator Animator{get{return _animator;}}
     public AnimatorOverrideController AnimOverrideCont{get{return _animOverrideCont;} set{_animOverrideCont = value;}}
     public AnimationClipOverrides ClipOverrides{get{return _clipOverrides;}}
+
+    public Animator ColBoxAnimator{get{return _colBoxAnimator;}}
+    public AnimatorOverrideController ColBoxOverrideCont{get{return _colBoxOverrideCont;} set{_colBoxOverrideCont = value;}}
+    public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
+
     public Dictionary<string, AttackMove> AttackMoveDict{get{return _attackMoveDict;}}
+   
 
     void Awake()
     {
         _charController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         _isJumpPressed = false;
         _attackPerformed = false;
         _states = new FighterStateFactory(this);
@@ -78,6 +91,12 @@ public class FighterStateMachine : MonoBehaviour
 
         _clipOverrides = new AnimationClipOverrides(_animOverrideCont.overridesCount);
         _animOverrideCont.GetOverrides(_clipOverrides);
+
+        _colBoxOverrideCont = new AnimatorOverrideController(_colBoxAnimator.runtimeAnimatorController);
+        _colBoxAnimator.runtimeAnimatorController = _colBoxOverrideCont;
+
+        _colBoxClipOverrides = new AnimationClipOverrides(_colBoxOverrideCont.overridesCount);
+        _colBoxOverrideCont.GetOverrides(_colBoxClipOverrides);
 
         _attackMoveDict = new Dictionary<string, AttackMove>();
 

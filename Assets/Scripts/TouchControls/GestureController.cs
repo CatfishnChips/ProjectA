@@ -212,16 +212,7 @@ public class GestureController : MonoBehaviour
 
         if (Score < _scoreTreshold) return; 
 
-        switch(Name) 
-        {
-            case "Uppercut":
-                EventManager.Instance.AttackMove?.Invoke(Name);
-            break;
-
-            case "DirectPunch":
-                EventManager.Instance.AttackMove?.Invoke(Name);
-            break;
-        }
+        EventManager.Instance.AttackMove?.Invoke(Name);
     }
 
     #endregion
