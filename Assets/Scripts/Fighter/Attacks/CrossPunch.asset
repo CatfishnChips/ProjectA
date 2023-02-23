@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b21ecced3b20dd4ea65a3ccbcb82a9f, type: 3}
+  m_Name: CrossPunch
+  m_EditorClassIdentifier: 
+  name: CrossPunch
+  damage: 5
+  stunDuration: 1
+  startUpFrames: 19
+  activeFrames: 3
+  recoveryFrames: 34
+  meshAnimationS: {fileID: 7400000, guid: 5f940138dc7f90040aa3a8a94e920035, type: 2}
+  meshAnimationA: {fileID: 7400000, guid: a4d9230559e6ad847b84c30901d0ff9b, type: 2}
+  meshAnimationR: {fileID: 7400000, guid: 07ef823091562044f9cd31abe95a25b8, type: 2}
+  boxAnimationS: {fileID: 7400000, guid: 7cf65442d76c3ae41bccdb7efe9f5cc2, type: 2}
+  boxAnimationA: {fileID: 7400000, guid: 530b046ddfbd15c4e979bb8c890474fd, type: 2}
+  boxAnimationR: {fileID: 7400000, guid: cda0786305db1cb45b998acfecf2278b, type: 2}

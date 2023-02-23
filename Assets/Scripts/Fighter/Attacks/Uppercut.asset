@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Uppercut
   m_EditorClassIdentifier: 
   name: Uppercut
-  damage: 50
-  stunDuration: 60
-  startUpFrames: 60
-  activeFrames: 100
-  recoveryFrames: 10
+  damage: 5
+  stunDuration: 10
+  startUpFrames: 27
+  activeFrames: 3
+  recoveryFrames: 21
   meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
   meshAnimationA: {fileID: -2584105986153280350, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
   meshAnimationR: {fileID: 3709316462808488434, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
-  boxAnimationS: {fileID: 0}
-  boxAnimationA: {fileID: 0}
-  boxAnimationR: {fileID: 0}
+  boxAnimationS: {fileID: 7400000, guid: 6984eaab9a83f6744b98200212f51677, type: 2}
+  boxAnimationA: {fileID: 7400000, guid: fdf29b54d5768e24690210508f70de81, type: 2}
+  boxAnimationR: {fileID: 7400000, guid: c85118f6fdb15434c9e2d49beedf08c0, type: 2}
