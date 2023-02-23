@@ -43,6 +43,7 @@ public class FighterAttackState : FighterBaseState
         _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = _attackMove.boxAnimationR;
 
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
+        _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
 
         _attackMove.AdjustAnimationTimes();
 
