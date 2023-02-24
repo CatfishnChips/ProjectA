@@ -26,6 +26,7 @@ public class FighterWalkState : FighterBaseState
 
     public override void ExitState()
     {
+        _ctx.Animator.SetFloat("Blend", 0f);
     }
 
     public override void FixedUpdateState()
