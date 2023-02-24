@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FighterAttackState : FighterBaseState
 {
-    private AttackMove _attackMove; 
+    private ActionAttack _attackMove; 
     private int _currentFrame = 0;
 
     private bool _firstFrameStartup = true;
@@ -45,7 +45,7 @@ public class FighterAttackState : FighterBaseState
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
         _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
 
-        _attackMove.AdjustAnimationTimes();
+        //_attackMove.AdjustAnimationTimes();
 
     }
 

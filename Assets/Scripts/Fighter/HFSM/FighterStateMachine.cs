@@ -23,11 +23,11 @@ public class FighterStateMachine : MonoBehaviour
     [Serializable]
     public struct AttackMoveAttribution{
         public string name;
-        public AttackMove attackMove;
+        public ActionAttack attackMove;
     }
     [SerializeField]
     private AttackMoveAttribution[] _attackMoveAttribution;
-    private Dictionary<string, AttackMove> _attackMoveDict;
+    private Dictionary<string, ActionAttack> _attackMoveDict;
 
     private Animator _animator;
     private AnimatorOverrideController _animOverrideCont;
@@ -69,7 +69,7 @@ public class FighterStateMachine : MonoBehaviour
     public AnimatorOverrideController ColBoxOverrideCont{get{return _colBoxOverrideCont;} set{_colBoxOverrideCont = value;}}
     public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
 
-    public Dictionary<string, AttackMove> AttackMoveDict{get{return _attackMoveDict;}}
+    public Dictionary<string, ActionAttack> AttackMoveDict{get{return _attackMoveDict;}}
    
 
     void Awake()
@@ -94,7 +94,7 @@ public class FighterStateMachine : MonoBehaviour
         _colBoxClipOverrides = new AnimationClipOverrides(_colBoxOverrideCont.overridesCount);
         _colBoxOverrideCont.GetOverrides(_colBoxClipOverrides);
 
-        _attackMoveDict = new Dictionary<string, AttackMove>();
+        _attackMoveDict = new Dictionary<string, ActionAttack>();
 
         foreach (AttackMoveAttribution attribution in _attackMoveAttribution)
         {
