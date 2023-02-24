@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class Hitbox : MonoBehaviour, IHitDetector
 {
     private int _part;
@@ -21,6 +21,7 @@ public class Hitbox : MonoBehaviour, IHitDetector
     private IHitResponder m_hitResponder;
 
     public IHitResponder HitResponder { get => m_hitResponder; set => m_hitResponder = value; }
+    public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
 
     public void CheckHit(){
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(m_offset.x, m_offset.y, 0), m_size, 0, m_layerMask);

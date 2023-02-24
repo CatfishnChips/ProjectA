@@ -43,6 +43,7 @@ public interface IHitResponder
 
 public interface IHitDetector 
 {
+    public bool Active { get; }
     public IHitResponder HitResponder { get; set; }
     public void CheckHit();
 }

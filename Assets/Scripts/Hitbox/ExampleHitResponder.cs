@@ -5,7 +5,6 @@ using UnityEngine;
 public class ExampleHitResponder : MonoBehaviour, IHitResponder
 {
     [Header("Hitbox Properties")]
-    [SerializeField] private bool m_attack;
     [SerializeField] private Hitbox _hitbox;
     [SerializeField] private int m_priority;
     [SerializeField] private int m_part;
@@ -28,7 +27,7 @@ public class ExampleHitResponder : MonoBehaviour, IHitResponder
     }
 
     private void Update(){
-        if (m_attack) 
+        if (_hitbox.Active)
             _hitbox.CheckHit();
     }
 

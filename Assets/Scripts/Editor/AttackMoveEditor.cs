@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(AttackMove))]
+[CustomEditor(typeof(ActionAttack))]
 public class AttackMoveEditor : Editor
 {
     private SerializedProperty _meshAnimationS, _meshAnimationA, _meshAnimationR, _boxAnimationS, _boxAnimationA, _boxAnimationR;

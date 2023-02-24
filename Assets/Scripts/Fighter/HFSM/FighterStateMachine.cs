@@ -29,8 +29,6 @@ public class FighterStateMachine : MonoBehaviour
     private AttackMoveAttribution[] _attackMoveAttribution;
     private Dictionary<string, AttackMove> _attackMoveDict;
 
-    private CharacterController _charController;
-
     private Animator _animator;
     private AnimatorOverrideController _animOverrideCont;
     private AnimationClipOverrides _clipOverrides;
@@ -59,7 +57,6 @@ public class FighterStateMachine : MonoBehaviour
     public bool IsGrounded{get{return _isGrounded;}}
     public bool AttackPerformed{get{return _attackPerformed;} set{_attackPerformed = value;}}
     public string AttackName{get{return _attackName;}}
-    public CharacterController CharController{get{return _charController;}}
     public Vector2 Velocity{get{return _velocity;}}
     public float MoveSpeed{get{return _moveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
@@ -77,7 +74,6 @@ public class FighterStateMachine : MonoBehaviour
 
     void Awake()
     {
-        _charController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         _isJumpPressed = false;
@@ -130,7 +126,6 @@ public class FighterStateMachine : MonoBehaviour
         _currentStateName = _currentState.StateName;
         _currentSubStateName = _currentState.SubStateName();
         _currentSubStateName = _currentState.SuperStateName();
-        _isGrounded = _charController.isGrounded;
     }
 
     private void Update(){
