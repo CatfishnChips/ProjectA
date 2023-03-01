@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ActionBase : ScriptableObject
 {
-    public string name;
+    public new string name;
 
     public static float AdjustAnimationTime(AnimationClip clip, int frames){
         float length;
