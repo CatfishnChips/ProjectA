@@ -15,6 +15,13 @@ public class FighterIdleState : FighterBaseState
             SwitchState(_factory.Walk());
         }
 
+        if (_ctx.IsHurt){
+            SwitchState(_factory.Stunned());
+        }
+
+        if (_ctx.AttackPerformed){
+            SwitchState(_factory.Attack());
+        }
     }
 
     public override void EnterState()
@@ -24,8 +31,8 @@ public class FighterIdleState : FighterBaseState
         string current_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
         if(current_anim_state == prev_anim_state){
             _ctx.Animator.Play("Idle");
+            _ctx.ColBoxAnimator.Play("Idle");
         }
-
     }
 
     public override void ExitState()

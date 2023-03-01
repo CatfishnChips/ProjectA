@@ -8,4 +8,8 @@ AnimatorOverrideController:
   m_PrefabAsset: {fileID: 0}
   m_Name: Cem Animaiton OR Controller
   m_Controller: {fileID: 9100000, guid: 8b4b576ce74ad81499b5cecfb2e690fc, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: -203655887218126122, guid: 46d66062a0e0ba748b69a8fb3615419f,
+      type: 3}
+    m_OverrideClip: {fileID: -203655887218126122, guid: 46d66062a0e0ba748b69a8fb3615419f,
+      type: 3}

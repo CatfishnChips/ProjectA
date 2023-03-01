@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System;
 
@@ -21,13 +22,13 @@ public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, Animation
 public class FighterStateMachine : MonoBehaviour
 {
     [Serializable]
-    public struct AttackMoveAttribution{
-        public string name;
-        public ActionAttack attackMove;
+    public struct ActionAttribution{
+        public ActionBase action;
     }
-    [SerializeField]
-    private AttackMoveAttribution[] _attackMoveAttribution;
+
+    [SerializeField] private ActionAttribution[] _actionAttribution;
     private Dictionary<string, ActionAttack> _attackMoveDict;
+    private Dictionary<string, ActionBase> _actionDictionary;
 
     private Animator _animator;
     private AnimatorOverrideController _animOverrideCont;
@@ -40,6 +41,9 @@ public class FighterStateMachine : MonoBehaviour
     private FighterStateFactory _states;
     private FighterBaseState _currentState;
 
+    private HitResponder _hitResponder;
+    private HurtResponder _hurtResponder;
+
 
     private Vector2 _velocity;
     private bool _isJumpPressed;
@@ -51,13 +55,17 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] string _currentSuperStateName;
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private int _inputTimeoutTime = 10; // in frames
     private float _deltaTarget;
+    private CollisionData _collisionData;
+    private bool _isHurt;
+    private bool _isInputLocked;
 
     public bool IsJumpPressed{get{return _isJumpPressed;}}
-    public bool IsGrounded{get{return _isGrounded;}}
+    public bool IsGrounded{get{return _isGrounded;} set{_isGrounded = value;}}
     public bool AttackPerformed{get{return _attackPerformed;} set{_attackPerformed = value;}}
     public string AttackName{get{return _attackName;}}
-    public Vector2 Velocity{get{return _velocity;}}
+    public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float MoveSpeed{get{return _moveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
 
@@ -70,6 +78,13 @@ public class FighterStateMachine : MonoBehaviour
     public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
 
     public Dictionary<string, ActionAttack> AttackMoveDict{get{return _attackMoveDict;}}
+    public Dictionary<string, ActionBase> ActionDictionary{get{return _actionDictionary;}}
+
+    public HitResponder HitResponder {get{return _hitResponder;}}
+    public HurtResponder HurtResponder {get{return _hurtResponder;}}
+    public CollisionData CollisionData {get{return _collisionData;}}
+    public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
+    public bool IsInputLocked {get{return _isInputLocked;} set{_isInputLocked = value;}}
    
 
     void Awake()
@@ -78,6 +93,8 @@ public class FighterStateMachine : MonoBehaviour
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         _isJumpPressed = false;
         _attackPerformed = false;
+        _isHurt = false;
+        _isInputLocked = false;
         _states = new FighterStateFactory(this);
         _currentState = _states.Grounded();
         _currentState.EnterState();
@@ -95,12 +112,25 @@ public class FighterStateMachine : MonoBehaviour
         _colBoxOverrideCont.GetOverrides(_colBoxClipOverrides);
 
         _attackMoveDict = new Dictionary<string, ActionAttack>();
+        _actionDictionary = new Dictionary<string, ActionBase>();
 
-        foreach (AttackMoveAttribution attribution in _attackMoveAttribution)
+        foreach (ActionAttribution attribution in _actionAttribution)
         {
-            Debug.Log(attribution.name);
-            _attackMoveDict.Add(attribution.name, attribution.attackMove);
+            if (attribution.action.GetType() == typeof(ActionAttack))
+            {
+                _attackMoveDict.Add(attribution.action.name, attribution.action as ActionAttack);
+            }
+            else 
+            {
+                _actionDictionary.Add(attribution.action.name, attribution.action);
+            }
+
+            Debug.Log("Action " + attribution.action.name + " has been added to the dictionary.");
+            
         }
+
+        if (TryGetComponent<HitResponder>(out HitResponder hitResponder)) _hitResponder = hitResponder;
+        if (TryGetComponent<HurtResponder>(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
     }
 
     void Start()
@@ -108,6 +138,9 @@ public class FighterStateMachine : MonoBehaviour
         EventManager.Instance.Walk += OnWalk;
         EventManager.Instance.Dash += OnDash;
         EventManager.Instance.AttackMove += OnAttack;
+
+        if(_hitResponder) _hitResponder.HitResponse += OnHit;
+        if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
     }
 
     private void OnDisable() 
@@ -116,10 +149,12 @@ public class FighterStateMachine : MonoBehaviour
         EventManager.Instance.Dash -= OnDash;
         EventManager.Instance.AttackMove -= OnAttack;
 
+        if(_hitResponder) _hitResponder.HitResponse -= OnHit;
+        if (_hurtResponder) _hurtResponder.HurtResponse -= OnHurt;
+
+        StopAllCoroutines();
     }
 
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         _currentState.FixedUpdateStates();
@@ -130,11 +165,17 @@ public class FighterStateMachine : MonoBehaviour
 
     private void Update(){
         _currentState.UpdateStates();
-        _velocity.x = Mathf.MoveTowards(_velocity.x, _deltaTarget, 0.75f * Time.deltaTime);
+        _velocity.x = Mathf.MoveTowards(_velocity.x, _deltaTarget, 1f * Time.deltaTime);
     }
 
     public void ListenToJump(){
+        if (_isInputLocked) return;
+        if (_isJumpPressed) return;
+        if (_currentStateName != "Grounded") return;
+        //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
         _isJumpPressed = true;
+
+        //StartCoroutine(InputTimeout(ref _isJumpPressed));
     }
 
     public void OnWalk(float delta){
@@ -142,12 +183,47 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     public void OnAttack(string attackName){
+        if (_isInputLocked) return;
+        if (_attackPerformed) return;
+        //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
+        if (attackName == "L") return; // Temporary Bugfix
         _attackName = attackName;
         _attackPerformed = true;
+        //StartCoroutine(InputTimeout(ref _attackPerformed));
+    }
+
+    public void OnHit(CollisionData data){
+
+    }
+
+    public void OnHurt(CollisionData data){
+        if (_isHurt) return;
+        _collisionData = data;
+        _isHurt = true;
     }
 
     private void OnDash(Vector2 direction) 
     {
+        if (_isInputLocked) return;
+        //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
         //_velocity.x = direction.x * _dashDistance;
+
+        //StartCoroutine(InputTimeout());
     }
+
+    // private IEnumerator InputTimeout(ref bool inputPerformed){
+    //     int currentFrame = 0;
+
+    //     while (inputPerformed) 
+    //     {
+    //         yield return new WaitForFixedUpdate();
+
+    //         if (currentFrame >= _inputTimeoutTime){
+    //             inputPerformed = false;
+    //             break;
+    //         }
+    //         currentFrame++;
+    //     }
+    //     yield return null;
+    // }
 }

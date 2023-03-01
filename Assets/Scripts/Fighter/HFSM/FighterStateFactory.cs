@@ -19,8 +19,8 @@ public class FighterStateFactory
     public FighterBaseState Run(){
         return new FighterRunState(_context, this);
     }
-    public FighterBaseState Jump(){
-        return new FighterJumpState(_context, this);
+    public FighterBaseState Airborne(){
+        return new FighterAirborneState(_context, this);
     }
     public FighterBaseState Grounded(){
         return new FighterGroundedState(_context, this);
@@ -28,4 +28,11 @@ public class FighterStateFactory
     public FighterBaseState Attack(){
         return new FighterAttackState(_context, this);
     }
+    public FighterBaseState Stunned(){
+        return new FighterStunnedState(_context, this);
+    }
+
+    // public FighterBaseState Jump(){
+    //     return new FighterJumpState(_context, this);
+    // }
 }

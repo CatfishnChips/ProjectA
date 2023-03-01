@@ -25,6 +25,7 @@ public class EventManager : MonoBehaviour
 
     //public UnityAction<> OnCombatBegin;
     //public UnityAction<> OnCombatEnd;
+    public UnityAction<GameObject, int> HealthChanged;
 
     #endregion
     

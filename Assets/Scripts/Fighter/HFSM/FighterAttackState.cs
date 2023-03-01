@@ -15,23 +15,30 @@ public class FighterAttackState : FighterBaseState
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory):
     base(currentContext, fighterStateFactory){
-        _isRootState = true;
         _stateName = "Attack";
     }
 
     public override void CheckSwitchState()
     {
-        if(_currentFrame >= (_attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames)){
-            SwitchState(_factory.Grounded());
+        if (_currentFrame >= (_attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames)){
+            SwitchState(_factory.Idle());
+        }
+
+        if (_ctx.IsHurt){
+            SwitchState(_factory.Stunned());
         }
     }
 
     public override void EnterState()
     {
+        _ctx.AttackPerformed = false;
+        _ctx.IsInputLocked = true;
+
         _firstFrameStartup = true;
         _firstFrameActive = true;
         _firstFrameRecovery = true;
         
+        if (_ctx.IsGrounded)
         _attackMove = _ctx.AttackMoveDict[_ctx.AttackName];
 
         _ctx.ClipOverrides["DirectPunchA"] = _attackMove.meshAnimationA;
@@ -45,14 +52,15 @@ public class FighterAttackState : FighterBaseState
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
         _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
 
+        _ctx.HitResponder.UpdateData(_attackMove);
+
         //_attackMove.AdjustAnimationTimes();
 
     }
 
     public override void ExitState()
     {
-        _ctx.Animator.Play("Idle");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.IsInputLocked = false;
     }
 
     public override void InitializeSubState()

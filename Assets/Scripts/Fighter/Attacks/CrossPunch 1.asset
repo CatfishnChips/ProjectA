@@ -13,8 +13,24 @@ MonoBehaviour:
   m_Name: CrossPunch 1
   m_EditorClassIdentifier: 
   name: CrossPunch
-  damage: 5
-  stunDuration: 1
+  m_damage: 10
+  m_priority: 0
+  m_part: 1
+  m_hitStun: 10
+  m_blockStun: 0
+  m_angle: 0
+  m_knockback: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_startFrames: 0
+  m_activeFrames: 0
+  m_recoveryFrames: 0
+  m_meshS: {fileID: 0}
+  m_meshA: {fileID: 0}
+  m_meshR: {fileID: 0}
+  m_boxS: {fileID: 0}
+  m_boxA: {fileID: 0}
+  m_boxR: {fileID: 0}
   startUpFrames: 18
   activeFrames: 5
   recoveryFrames: 34

@@ -12,6 +12,14 @@ public class FighterWalkState : FighterBaseState
         if(_ctx.Velocity.x == 0){
             SwitchState(_factory.Idle());
         }
+
+        if (_ctx.IsHurt){
+            SwitchState(_factory.Stunned());
+        }
+
+        if (_ctx.AttackPerformed){
+            SwitchState(_factory.Attack());
+        }
     }
 
     public override void EnterState()
@@ -26,6 +34,7 @@ public class FighterWalkState : FighterBaseState
 
     public override void ExitState()
     {
+        _ctx.Velocity = new Vector2(0f, _ctx.Velocity.y);
         _ctx.Animator.SetFloat("Blend", 0f);
     }
 
@@ -41,7 +50,6 @@ public class FighterWalkState : FighterBaseState
 
     public override void UpdateState()
     {
-        //_ctx.CharController.Move(_ctx.Velocity * _ctx.MoveSpeed);
         _ctx.Animator.SetFloat("Blend", _ctx.Velocity.x);
         CheckSwitchState();
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollisionData
 {
     public int damage;
+    public int stunDuration;
     public IHurtbox hurtbox;
     public IHitDetector hitDetector;
 
@@ -37,6 +38,7 @@ public enum HurtboxMask
 public interface IHitResponder 
 {
     int Damage { get; }
+    int StunDuration { get; }
     public bool CheckHit(CollisionData data);
     public void Response(CollisionData data);
 }

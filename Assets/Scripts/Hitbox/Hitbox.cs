@@ -6,8 +6,6 @@ using UnityEngine.Animations;
 [ExecuteAlways]
 public class Hitbox : MonoBehaviour, IHitDetector
 {
-    private int _part;
-
     [Header("Properties")]
     [SerializeField] private Vector2 m_offset;
     [SerializeField] private Vector2 m_size;
@@ -28,7 +26,8 @@ public class Hitbox : MonoBehaviour, IHitDetector
 
         CollisionData _collisionData = null;
         IHurtbox _hurtbox = null;
-        foreach (Collider2D collider in colliders){
+        foreach (Collider2D collider in colliders)
+        {
             _hurtbox = collider.GetComponent<IHurtbox>();
             if (_hurtbox != null)
             {
@@ -40,6 +39,7 @@ public class Hitbox : MonoBehaviour, IHitDetector
                         _collisionData = new CollisionData
                         {
                             damage = m_hitResponder == null ? 0 : m_hitResponder.Damage,
+                            stunDuration = m_hitResponder == null ? 0 : m_hitResponder.StunDuration,
                             hurtbox = _hurtbox,
                             hitDetector = this
                         };
@@ -49,46 +49,15 @@ public class Hitbox : MonoBehaviour, IHitDetector
                         {
                             _collisionData.hitDetector.HitResponder?.Response(_collisionData);
                             _collisionData.hurtbox.HurtResponder?.Response(_collisionData);
-                        }         
+
+                            return;       
+                        }  
                     }
                 }
             }
         }
     }
     
-    private void Awake(){
-        // Get the required references here.
-    }
-
-    // Using OnTriggerEnter / OnTriggerExit can cause performance issues.
-    // May need to find an alternative way to handle collision events.
-
-    public void StartCheckingCollision(){
-        m_state = ColliderState.Open;
-    }
-
-    public void StopCheckingCollision(){
-        m_state = ColliderState.Closed;
-    }
-
-    private void Update() {
-        if (m_state == ColliderState.Closed) return;
-
-        //if (m_target != null) transform.position = m_target.transform.position;
-
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, m_size, 0, m_layerMask);
-
-        for (int i = 0; i < _colliders.Length; i++) {
-
-        BoxCollider2D aCollider = _colliders[i];
-        }
-    }
-
-    // Update vs Coroutine
-    private IEnumerator CheckForCollision() {
-        yield return new WaitForFixedUpdate();
-    }
-
     private void OnDrawGizmos(){
         Gizmos.color = _color;
 
@@ -99,3 +68,36 @@ public class Hitbox : MonoBehaviour, IHitDetector
         Gizmos.DrawWireCube(Vector3.zero + new Vector3(m_offset.x, m_offset.y, 0), new Vector3(m_size.x / 2, m_size.y / 2, 0));
     }
 }
+
+// CheckHit for multiple colliders: 
+
+// Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(m_offset.x, m_offset.y, 0), m_size, 0, m_layerMask);
+
+//         CollisionData _collisionData = null;
+//         IHurtbox _hurtbox = null;
+//         foreach (Collider2D collider in colliders){
+//             _hurtbox = collider.GetComponent<IHurtbox>();
+//             if (_hurtbox != null)
+//             {
+//                 if (_hurtbox.Active)
+//                 {
+//                     if (m_hurtboxMask.HasFlag((HurtboxMask)_hurtbox.Type)) 
+//                     {
+//                         // Generate Collision Data
+//                         _collisionData = new CollisionData
+//                         {
+//                             damage = m_hitResponder == null ? 0 : m_hitResponder.Damage,
+//                             hurtbox = _hurtbox,
+//                             hitDetector = this
+//                         };
+
+//                         // Validate & Response
+//                         if (_collisionData.Validate()) 
+//                         {
+//                             _collisionData.hitDetector.HitResponder?.Response(_collisionData);
+//                             _collisionData.hurtbox.HurtResponder?.Response(_collisionData);
+//                         }         
+//                     }
+//                 }
+//             }
+//         }

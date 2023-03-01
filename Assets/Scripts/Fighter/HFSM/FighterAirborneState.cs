@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class FighterGroundedState : FighterBaseState
+public class FighterAirborneState : FighterBaseState
 {
-    public FighterGroundedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    public FighterAirborneState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Grounded";
+        _stateName = "Airborne";
         _isRootState = true;
     }
 
     public override void CheckSwitchState()
     {
-        if (!_ctx.IsGrounded){
-            SwitchState(_factory.Airborne());
+        if(_ctx.IsGrounded){
+            SwitchState(_factory.Grounded());
         }
     }
 
@@ -22,7 +22,7 @@ public class FighterGroundedState : FighterBaseState
 
     public override void ExitState()
     {
-        
+
     }
 
     public override void FixedUpdateState()
@@ -32,12 +32,7 @@ public class FighterGroundedState : FighterBaseState
 
     public override void InitializeSubState()
     {
-        if(_ctx.Velocity.x == 0){
-            SetSubState(_factory.Idle());
-        }
-        else{
-            SetSubState(_factory.Walk());
-        }
+        SetSubState(_factory.Idle());
     }
 
     public override void UpdateState()

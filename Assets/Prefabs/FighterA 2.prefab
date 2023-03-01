@@ -393,7 +393,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1902287820}
   - component: {fileID: 1902287821}
-  - component: {fileID: 1902287822}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -437,28 +436,6 @@ MonoBehaviour:
   m_openColor: {r: 1, g: 0, b: 0, a: 1}
   m_collidingColor: {r: 1, g: 0.7118232, b: 0, a: 1}
   m_hurtboxMask: 2
---- !u!114 &1902287822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902287819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d564d9968469e499851f21d07c7622, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hitbox: {fileID: 1902287821}
-  m_priority: 0
-  m_part: 0
-  m_hitStun: 0
-  m_blockStun: 0
-  m_damage: 10
-  m_angle: 0
-  m_knockback: 0
-  m_sound: {fileID: 0}
-  m_soundLevel: 0
 --- !u!1 &2046888159
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +667,8 @@ GameObject:
   - component: {fileID: 815378929669242412}
   - component: {fileID: 545400652093244275}
   - component: {fileID: 6976153750473958084}
+  - component: {fileID: 7839007976745551521}
+  - component: {fileID: 474040055458162382}
   m_Layer: 0
   m_Name: FighterA 2
   m_TagString: Untagged
@@ -750,11 +729,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackMoveAttribution:
   - name: DirectPunch
-    attackMove: {fileID: 11400000, guid: 9dde903c389eacb46ab2669c2178170f, type: 2}
+    attackMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
   - name: Uppercut
-    attackMove: {fileID: 11400000, guid: 5a4f52758fd01c949b53276c1350512d, type: 2}
+    attackMove: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
   - name: CrossPunch
-    attackMove: {fileID: 11400000, guid: 814e34c913fcb3640beb1781bb212191, type: 2}
+    attackMove: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
   _currentStateName: 
   _currentSubStateName: 
   _currentSuperStateName: 
@@ -768,7 +747,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815378929669242414}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
@@ -780,7 +759,41 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!114 &7839007976745551521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815378929669242414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d564d9968469e499851f21d07c7622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitbox: {fileID: 1902287821}
+  m_priority: 0
+  m_part: 1
+  m_hitStun: 0
+  m_blockStun: 0
+  m_damage: 10
+  m_angle: 0
+  m_knockback: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+--- !u!114 &474040055458162382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815378929669242414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ab04eb6cf693764c9fd1872b1360a40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1175962784115012596
 GameObject:
   m_ObjectHideFlags: 0
