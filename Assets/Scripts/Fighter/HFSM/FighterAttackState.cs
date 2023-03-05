@@ -37,9 +37,18 @@ public class FighterAttackState : FighterBaseState
         _firstFrameStartup = true;
         _firstFrameActive = true;
         _firstFrameRecovery = true;
+
         
-        if (_ctx.IsGrounded)
-        _attackMove = _ctx.AttackMoveDict[_ctx.AttackName];
+        if (_ctx.IsGrounded){
+            _attackMove = _ctx.AttackMoveDict[_ctx.AttackName];
+        }
+        else{
+
+        }
+
+        
+        _ctx.IsGravityApplied = false; // Get this value from the attack action!
+        
 
         _ctx.ClipOverrides["DirectPunchA"] = _attackMove.meshAnimationA;
         _ctx.ClipOverrides["DirectPunchR"] = _attackMove.meshAnimationR;
@@ -55,12 +64,12 @@ public class FighterAttackState : FighterBaseState
         _ctx.HitResponder.UpdateData(_attackMove);
 
         //_attackMove.AdjustAnimationTimes();
-
     }
 
     public override void ExitState()
     {
         _ctx.IsInputLocked = false;
+        _ctx.IsGravityApplied = true;
     }
 
     public override void InitializeSubState()

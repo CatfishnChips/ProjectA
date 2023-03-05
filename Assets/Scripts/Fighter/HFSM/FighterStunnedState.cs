@@ -44,19 +44,6 @@ public class FighterStunnedState : FighterBaseState
         float speedVar = AdjustAnimationTime(clip, stunDuration); 
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
     }
-    
-    // This function is already present in ActionBase class.
-    private float AdjustAnimationTime(AnimationClip clip, int frames){
-        float length;
-        float time;
-        float speed;
-
-        length = clip.length;
-        time = frames * Time.fixedDeltaTime;
-        speed = length / time;
-
-        return speed;
-    }
 
     public override void ExitState()
     {

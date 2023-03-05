@@ -43,6 +43,7 @@ public class FighterStateMachine : MonoBehaviour
 
     private HitResponder _hitResponder;
     private HurtResponder _hurtResponder;
+    private Rigidbody2D _rigidbody2D;
 
 
     private Vector2 _velocity;
@@ -56,13 +57,24 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private int _inputTimeoutTime = 10; // in frames
+    [SerializeField] private float _jumpHeight = 1f;
+    [SerializeField] private int _jumpTime; // in frames
+    [SerializeField] private float _gravityMultiplier;
+    private float _gravity;
     private float _deltaTarget;
     private CollisionData _collisionData;
     private bool _isHurt;
     private bool _isInputLocked;
+    private bool _isGravityApplied;
+    private Vector2 _swipeDirection;
+    [SerializeField] private LayerMask _rayCastLayerMask;
+    [SerializeField] private float _rayCastLenght = 1f;
+    [SerializeField] private Vector2 _rayCastPosition;
+    private Vector2 _currentMovement;
+    [SerializeField] private float _jumpDistance = 1f;
 
-    public bool IsJumpPressed{get{return _isJumpPressed;}}
-    public bool IsGrounded{get{return _isGrounded;} set{_isGrounded = value;}}
+    public bool IsJumpPressed{get{return _isJumpPressed;} set{_isJumpPressed = value;}}
+    public bool IsGrounded{get{return _isGrounded;}}
     public bool AttackPerformed{get{return _attackPerformed;} set{_attackPerformed = value;}}
     public string AttackName{get{return _attackName;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
@@ -85,7 +97,17 @@ public class FighterStateMachine : MonoBehaviour
     public CollisionData CollisionData {get{return _collisionData;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
     public bool IsInputLocked {get{return _isInputLocked;} set{_isInputLocked = value;}}
-   
+    public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
+    public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
+    
+    public float JumpHeight {get{return _jumpHeight;}}
+    public int JumpTime {get{return _jumpTime;}}
+    public float GravityMultiplier {get{return _gravityMultiplier;}}
+    public float Gravity {get{return _gravity;} set {_gravity = value;}}
+    public float DeltaTarget {get{return _deltaTarget;}}
+    public Vector2 SwipeDirection {get{return _swipeDirection;}}
+    public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
+    public float JumpDistance {get{return _jumpDistance;}}
 
     void Awake()
     {
@@ -95,9 +117,10 @@ public class FighterStateMachine : MonoBehaviour
         _attackPerformed = false;
         _isHurt = false;
         _isInputLocked = false;
+        _isGravityApplied = true;
+        _gravity = Physics2D.gravity.y;
         _states = new FighterStateFactory(this);
-        _currentState = _states.Grounded();
-        _currentState.EnterState();
+        
 
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animOverrideCont;
@@ -131,21 +154,25 @@ public class FighterStateMachine : MonoBehaviour
 
         if (TryGetComponent<HitResponder>(out HitResponder hitResponder)) _hitResponder = hitResponder;
         if (TryGetComponent<HurtResponder>(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
+        if (TryGetComponent<Rigidbody2D>(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
     }
 
     void Start()
     {
-        EventManager.Instance.Walk += OnWalk;
+        EventManager.Instance.Walk += OnMove;
         EventManager.Instance.Dash += OnDash;
         EventManager.Instance.AttackMove += OnAttack;
 
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
+
+        _currentState = _states.Grounded();
+        _currentState.EnterState();
     }
 
     private void OnDisable() 
     {
-        EventManager.Instance.Walk -= OnWalk;
+        EventManager.Instance.Walk -= OnMove;
         EventManager.Instance.Dash -= OnDash;
         EventManager.Instance.AttackMove -= OnAttack;
 
@@ -157,6 +184,10 @@ public class FighterStateMachine : MonoBehaviour
 
     void FixedUpdate()
     {
+        _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastPosition, Vector2.down, _rayCastLenght, _rayCastLayerMask);
+        //_isGrounded = _rigidbody2D.IsTouchingLayers(_rayCastLayerMask);
+        Debug.Log(_isGrounded);
+
         _currentState.FixedUpdateStates();
         _currentStateName = _currentState.StateName;
         _currentSubStateName = _currentState.SubStateName();
@@ -165,20 +196,21 @@ public class FighterStateMachine : MonoBehaviour
 
     private void Update(){
         _currentState.UpdateStates();
-        _velocity.x = Mathf.MoveTowards(_velocity.x, _deltaTarget, 1f * Time.deltaTime);
+
+        //_velocity.x = Mathf.MoveTowards(_velocity.x, _deltaTarget, 1f * Time.deltaTime);
     }
 
     public void ListenToJump(){
         if (_isInputLocked) return;
         if (_isJumpPressed) return;
-        if (_currentStateName != "Grounded") return;
+        if (!_isGrounded) return;
         //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
         _isJumpPressed = true;
 
         //StartCoroutine(InputTimeout(ref _isJumpPressed));
     }
 
-    public void OnWalk(float delta){
+    public void OnMove(float delta){
         _deltaTarget = delta;
     }
 
@@ -205,8 +237,12 @@ public class FighterStateMachine : MonoBehaviour
     private void OnDash(Vector2 direction) 
     {
         if (_isInputLocked) return;
+        _swipeDirection = direction;
+        Debug.Log("Swipe Direction: " + direction);
+
+        if (direction.y <= -0.5f)
+        ListenToJump();
         //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
-        //_velocity.x = direction.x * _dashDistance;
 
         //StartCoroutine(InputTimeout());
     }
@@ -226,4 +262,10 @@ public class FighterStateMachine : MonoBehaviour
     //     }
     //     yield return null;
     // }
+
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = Color.blue;
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
+        Gizmos.DrawLine(Vector3.zero, Vector3.zero + Vector3.down * _rayCastLenght);
+    }
 }

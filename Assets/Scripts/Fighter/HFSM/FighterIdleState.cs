@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FighterIdleState : FighterBaseState
 {
+    private ActionDefault _action;
+
     public FighterIdleState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
         _stateName = "Idle";
@@ -11,7 +13,7 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.Velocity.x != 0){            
+        if (_ctx.DeltaTarget >= 0.5f || _ctx.DeltaTarget <= -0.5f){            
             SwitchState(_factory.Walk());
         }
 
@@ -26,13 +28,31 @@ public class FighterIdleState : FighterBaseState
 
     public override void EnterState()
     {
-        string prev_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
-        _ctx.Animator.SetTrigger("ToIdle");
-        string current_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
-        if(current_anim_state == prev_anim_state){
-            _ctx.Animator.Play("Idle");
-            _ctx.ColBoxAnimator.Play("Idle");
+        if (_ctx.IsGrounded) 
+        {
+            _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;
+
+            
         }
+        else 
+        {
+            _action = _ctx.ActionDictionary["AirborneIdle"] as ActionDefault;
+        }
+
+        _ctx.AnimOverrideCont["Idle 1"] = _action.meshAnimation;
+
+         string prev_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
+             _ctx.Animator.SetTrigger("ToIdle");
+
+             string current_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
+             if(current_anim_state == prev_anim_state){
+                 _ctx.Animator.Play("Idle");
+                 _ctx.ColBoxAnimator.Play("Idle");
+             }
+
+        // _ctx.Animator.Play("Idle");
+        // _ctx.ColBoxAnimator.Play("Idle");
+       
     }
 
     public override void ExitState()

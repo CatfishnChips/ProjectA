@@ -45,6 +45,7 @@ public class GestureController : MonoBehaviour
 
     [Header("Joystick Settings")]
     [SerializeField] private float _sensitivity; // Active area of the Joystick.
+    //[SerializeField] private float _deadzone;
     private Vector2 _virtualJoystick; 
     private float _deltaVectorX;
 
@@ -148,8 +149,11 @@ public class GestureController : MonoBehaviour
             float deltaDistanceX = _virtualJoystick.x / _sensitivity; // Convert the distance to be within -1 and 1. Surely this can be done more efficiently.
 
             _deltaVectorX = deltaDistanceX;
-            //Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);
+
+            //if (_deltaVectorX <= _deadzone || _deltaVectorX >= _deadzone)
             EventManager.Instance.Walk?.Invoke(_deltaVectorX);
+
+            //Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);     
         }
     }
 

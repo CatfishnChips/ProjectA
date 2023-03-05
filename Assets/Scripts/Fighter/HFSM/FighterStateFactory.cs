@@ -32,7 +32,7 @@ public class FighterStateFactory
         return new FighterStunnedState(_context, this);
     }
 
-    // public FighterBaseState Jump(){
-    //     return new FighterJumpState(_context, this);
-    // }
+    public FighterBaseState Jump(){
+        return new FighterJumpState(_context, this);
+    }
 }

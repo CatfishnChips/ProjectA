@@ -90,4 +90,15 @@ public abstract class FighterBaseState
         }
     }
 
+    public static float AdjustAnimationTime(AnimationClip clip, int frames){
+        float length;
+        float time;
+        float speed;
+
+        length = clip.length;
+        time = frames * Time.fixedDeltaTime;
+        speed = length / time;
+
+        return speed;
+    }
 }
