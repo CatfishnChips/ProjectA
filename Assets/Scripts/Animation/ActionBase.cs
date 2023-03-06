@@ -12,7 +12,7 @@ public abstract class ActionBase : ScriptableObject
         float speed;
 
         length = clip.length;
-        time = frames * Time.fixedDeltaTime;
+        time = frames * Time.fixedDeltaTime; 
         speed = length / time;
 
         return speed;

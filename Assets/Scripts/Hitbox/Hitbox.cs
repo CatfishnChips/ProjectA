@@ -40,6 +40,8 @@ public class Hitbox : MonoBehaviour, IHitDetector
                         {
                             damage = m_hitResponder == null ? 0 : m_hitResponder.Damage,
                             stunDuration = m_hitResponder == null ? 0 : m_hitResponder.StunDuration,
+                            knockback = m_hitResponder == null ? 0 : m_hitResponder.Knockback,
+                            knockup = m_hitResponder == null ? 0 : m_hitResponder.Knockup,
                             hurtbox = _hurtbox,
                             hitDetector = this
                         };
@@ -65,7 +67,7 @@ public class Hitbox : MonoBehaviour, IHitDetector
 
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
 
-        Gizmos.DrawWireCube(Vector3.zero + new Vector3(m_offset.x, m_offset.y, 0), new Vector3(m_size.x / 2, m_size.y / 2, 0));
+        Gizmos.DrawWireCube(Vector3.zero + new Vector3(m_offset.x, m_offset.y, 0), new Vector3(m_size.x, m_size.y, 0));
     }
 }
 

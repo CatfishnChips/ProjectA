@@ -15,6 +15,10 @@ public class FighterGroundedState : FighterBaseState
         if (!_ctx.IsGrounded || _ctx.IsJumpPressed){
             SwitchState(_factory.Airborne());
         }
+
+        if (_ctx.IsHurt){
+            SwitchState(_factory.Stunned());
+        }
     }
 
     public override void EnterState()
@@ -32,7 +36,7 @@ public class FighterGroundedState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        //_ctx.Rigidbody2D.velocity = new Vector2(_ctx.Rigidbody2D.velocity.x, _ctx.Gravity);
+        
     }
 
     public override void InitializeSubState()
@@ -50,6 +54,7 @@ public class FighterGroundedState : FighterBaseState
 
     public override void UpdateState()
     {
+        //_ctx.Rigidbody2D.velocity = new Vector2(_ctx.Rigidbody2D.velocity.x, _ctx.Gravity);
         CheckSwitchState();
     }
 }

@@ -17,7 +17,7 @@ public class HitResponder : MonoBehaviour, IHitResponder
     [SerializeField] private int m_damage = 10;
 
     [Header("Knockback Properties")]
-    [SerializeField] private float m_angle;
+    [SerializeField] private float m_knockup;
     [SerializeField] private float m_knockback;
 
     [Header("SFX Properties")]
@@ -26,6 +26,8 @@ public class HitResponder : MonoBehaviour, IHitResponder
 
     int IHitResponder.Damage { get => m_damage; }
     int IHitResponder.StunDuration { get => m_hitStun; }
+    float IHitResponder.Knockback { get => m_knockback; }
+    float IHitResponder.Knockup { get => m_knockup; }
 
     private int _part;
 
@@ -34,7 +36,7 @@ public class HitResponder : MonoBehaviour, IHitResponder
         m_hitStun = action.HitStun;
         m_blockStun = action.BlockStun;
         m_damage = action.Damage;
-        m_angle = action.Angle;
+        m_knockup = action.Knockup;
         m_knockback = action.Knockback;
         m_sound = action.Sound;
         m_soundLevel = action.SoundLevel;

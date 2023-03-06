@@ -225,7 +225,7 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     public void OnHit(CollisionData data){
-
+        TimeController.Instance.SlowDown();
     }
 
     public void OnHurt(CollisionData data){

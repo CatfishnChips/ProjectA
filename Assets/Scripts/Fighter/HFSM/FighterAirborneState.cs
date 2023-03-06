@@ -15,6 +15,10 @@ public class FighterAirborneState : FighterBaseState
         if(_ctx.IsGrounded && !_ctx.IsJumpPressed){
             SwitchState(_factory.Grounded());
         }
+
+        if (_ctx.IsHurt){
+            SwitchState(_factory.Stunned());
+        }
     }
 
     public override void EnterState()
@@ -35,7 +39,12 @@ public class FighterAirborneState : FighterBaseState
     {  
         if (_ctx.IsGravityApplied){
             float previousVelocityY = _ctx.CurrentMovement.y;
-            _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + Physics2D.gravity.y * _ctx.GravityMultiplier * Time.fixedDeltaTime);
+            if (_ctx.Velocity.y <= 0){
+                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.GravityMultiplier * Time.fixedDeltaTime);
+            }
+            else{
+                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
+            }
             _ctx.Velocity = new Vector2(_ctx.Velocity.x, Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
         }
         else 

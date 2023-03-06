@@ -20,16 +20,10 @@ public class FighterJumpState : FighterBaseState
         if(_currentFrame >= _ctx.JumpTime){
             SwitchState(_factory.Idle());
         }
-
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
-        }
     }
 
     public override void EnterState()
     {
-        Debug.Log("Jump Enter State");
-        
         _action = _ctx.ActionDictionary["Jump"] as ActionDefault;
         AnimationClip clip = _action.meshAnimation;
 
@@ -42,14 +36,13 @@ public class FighterJumpState : FighterBaseState
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
         _ctx.Animator.Play("Jump");
 
-        _ctx.CurrentMovement = new Vector2(_ctx.SwipeDirection.x, _initialJumpVelocity);
+        _ctx.CurrentMovement = new Vector2(_ctx.SwipeDirection.x * _ctx.JumpDistance, _initialJumpVelocity);
         _ctx.Velocity = new Vector2(-_ctx.SwipeDirection.x * _ctx.JumpDistance, _initialJumpVelocity);
         //Debug.Log("Jump Velocity: " + _ctx.Velocity);
     }
 
     public override void ExitState()
     {
-        //_rb.velocity = new Vector2(0, 0);
         _ctx.Gravity = Physics2D.gravity.y;
         _ctx.IsJumpPressed = false;
     }

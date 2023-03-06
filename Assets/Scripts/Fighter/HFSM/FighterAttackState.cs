@@ -23,10 +23,6 @@ public class FighterAttackState : FighterBaseState
         if (_currentFrame >= (_attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames)){
             SwitchState(_factory.Idle());
         }
-
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
-        }
     }
 
     public override void EnterState()

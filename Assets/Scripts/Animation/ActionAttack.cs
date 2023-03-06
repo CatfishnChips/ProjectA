@@ -19,7 +19,7 @@ public class ActionAttack : ActionBase
     [SerializeField] private int m_blockStun;
 
     [Header("Knockback Properties")]
-    [SerializeField] private float m_angle;
+    [SerializeField] private float m_knockup;
     [SerializeField] private float m_knockback;
 
     [Header("SFX Properties")]
@@ -65,7 +65,7 @@ public class ActionAttack : ActionBase
     public int Part {get => m_part;}
     public int HitStun {get => m_hitStun;}
     public int BlockStun {get => m_blockStun;}
-    public float Angle {get => m_angle;}
+    public float Knockup {get => m_knockup;}
     public float Knockback {get => m_knockback;}
     public AudioClip Sound {get => m_sound;}
     public float SoundLevel {get => m_soundLevel;}

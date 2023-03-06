@@ -6,6 +6,8 @@ public class CollisionData
 {
     public int damage;
     public int stunDuration;
+    public float knockback;
+    public float knockup;
     public IHurtbox hurtbox;
     public IHitDetector hitDetector;
 
@@ -39,6 +41,8 @@ public interface IHitResponder
 {
     int Damage { get; }
     int StunDuration { get; }
+    float Knockback { get; }
+    float Knockup { get; }
     public bool CheckHit(CollisionData data);
     public void Response(CollisionData data);
 }
