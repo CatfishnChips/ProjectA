@@ -24,7 +24,7 @@ public class HealthManager : MonoBehaviour
     }
 
     private void HurtResponse(CollisionData data){
-        _health -= data.damage;
+        _health -= data.action.Damage;
         _health = Mathf.Clamp(_health, 0, m_health);
         EventManager.Instance.HealthChanged?.Invoke(gameObject, _health);
     }

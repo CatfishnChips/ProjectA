@@ -12,22 +12,22 @@ public class AttackMoveEditor : Editor
     private bool _status = false;
 
     private void OnEnable(){
-        _meshAnimationS = serializedObject.FindProperty("meshAnimationS");
+        _meshAnimationS = serializedObject.FindProperty("m_meshAnimationS");
         _meshSClip.Clip = _meshAnimationS.objectReferenceValue as AnimationClip;
 
-        _meshAnimationA = serializedObject.FindProperty("meshAnimationA");
+        _meshAnimationA = serializedObject.FindProperty("m_meshAnimationA");
         _meshAClip.Clip = _meshAnimationA.objectReferenceValue as AnimationClip;
 
-        _meshAnimationR = serializedObject.FindProperty("meshAnimationR");
+        _meshAnimationR = serializedObject.FindProperty("m_meshAnimationR");
         _meshRClip.Clip = _meshAnimationR.objectReferenceValue as AnimationClip;
         
-        _boxAnimationS = serializedObject.FindProperty("boxAnimationS");
+        _boxAnimationS = serializedObject.FindProperty("m_boxAnimationS");
         _boxSClip.Clip = _boxAnimationS.objectReferenceValue as AnimationClip;
 
-        _boxAnimationA = serializedObject.FindProperty("boxAnimationA");
+        _boxAnimationA = serializedObject.FindProperty("m_boxAnimationA");
         _boxAClip.Clip = _boxAnimationA.objectReferenceValue as AnimationClip;
 
-        _boxAnimationR = serializedObject.FindProperty("boxAnimationR");
+        _boxAnimationR = serializedObject.FindProperty("m_boxAnimationR");
         _boxRClip.Clip = _boxAnimationR.objectReferenceValue as AnimationClip;
     }
 

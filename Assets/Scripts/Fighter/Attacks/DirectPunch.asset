@@ -9,15 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b21ecced3b20dd4ea65a3ccbcb82a9f, type: 3}
+  m_Script: {fileID: 11500000, guid: c9f8c6625b41fc84db67271d35f757d9, type: 3}
   m_Name: DirectPunch
   m_EditorClassIdentifier: 
   name: DirectPunch
-  damage: 20
-  stunDuration: 30
-  startUpFrames: 20
-  activeFrames: 20
-  recoveryFrames: 10
+  m_damage: 0
+  m_priority: 0
+  m_part: 1
+  m_hitStun: 10
+  m_blockStun: 0
+  m_angle: 0
+  m_knockback: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_startFrames: 0
+  m_activeFrames: 0
+  m_recoveryFrames: 0
+  m_meshS: {fileID: 0}
+  m_meshA: {fileID: 0}
+  m_meshR: {fileID: 0}
+  m_boxS: {fileID: 0}
+  m_boxA: {fileID: 0}
+  m_boxR: {fileID: 0}
+  startUpFrames: 12
+  activeFrames: 7
+  recoveryFrames: 13
   meshAnimationS: {fileID: -203655887218126122, guid: 21d3cfdee44fdeb48a20aaf85687d33a,
     type: 3}
   meshAnimationA: {fileID: -4469183485442372851, guid: 21d3cfdee44fdeb48a20aaf85687d33a,

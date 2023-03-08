@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Stunned
   frames: 0
-  meshAnimation: {fileID: -203655887218126122, guid: 46d66062a0e0ba748b69a8fb3615419f,
+  meshAnimation: {fileID: 9122577553181493038, guid: 46d66062a0e0ba748b69a8fb3615419f,
     type: 3}
   boxAnimation: {fileID: 0}

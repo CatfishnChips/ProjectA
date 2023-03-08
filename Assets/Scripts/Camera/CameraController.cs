@@ -5,22 +5,49 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
+     #region Singleton
+
+    public static CameraController Instance;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
+        SetVariables();
+    }
+
+    #endregion
+
     public bool _inCombat; // Alternatively enums can be used to determine the camera state.
     [SerializeField] private GameObject _virtualCamera1, _virtualCamera2;
     [SerializeField] private Transform _combatConfineBorders;
     [SerializeField] private CinemachineTargetGroup _combatTargetGroup;
+    [SerializeField] private CinemachineImpulseSource _impulseSource;
+
+    private float orthographicSize;
+    private float previousOrthoSize;
+    private float orthoLerpPercentage;
 
     private Transform _player;
 
-    private void Awake() 
+    private void SetVariables() 
     {
-        _player = GameObject.Find("FighterA").transform;
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Start()
     {
         //EventManager.Instance.OnCombatBegin +=
         //EventManager.Instance.OnCombatEnd +=
+
+        
+        //orthographicSize = playerFollowCam.m_Lens.OrthographicSize;
+        //previousOrthoSize = orthographicSize;
 
         UpdateCamera();
     }
@@ -66,5 +93,29 @@ public class CameraController : MonoBehaviour
     private void RemoveFromTargetGroup() 
     {
         //_combatTargetGroup.RemoveMember();
+    }
+
+    public void ScreenShake(Vector3 velocity) {
+        _impulseSource.GenerateImpulseAt(transform.position, velocity);
+    }
+
+    private void Update(){
+        // if(playerFollowCam.m_Lens.OrthographicSize != orthographicSize){
+        //     SmoothAdjustOrthoSize(previousOrthoSize, orthographicSize, 1.5f);
+        // }
+        // else{
+        //     orthoLerpPercentage = 0.0f;
+        // }
+        // orthoLerpPercentage = Mathf.Clamp(orthoLerpPercentage, 0.0f, 1.0f);
+    }
+
+    private void SmoothAdjustOrthoSize(float startPoint, float target, float speed){
+        // playerFollowCam.m_Lens.OrthographicSize = Mathf.Lerp(startPoint, target, orthoLerpPercentage);
+        // orthoLerpPercentage += Time.deltaTime * speed;
+    }
+
+    public void setOrthoSize(float size){
+        // previousOrthoSize = playerFollowCam.m_Lens.OrthographicSize;
+        // orthographicSize = size;
     }
 }

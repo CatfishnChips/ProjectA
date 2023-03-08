@@ -59,7 +59,7 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private int _inputTimeoutTime = 10; // in frames
     [SerializeField] private float _jumpHeight = 1f;
     [SerializeField] private int _jumpTime; // in frames
-    [SerializeField] private float _gravityMultiplier;
+    [SerializeField] private float _fallMultiplier = 1f;
     private float _gravity;
     private float _deltaTarget;
     private CollisionData _collisionData;
@@ -102,7 +102,7 @@ public class FighterStateMachine : MonoBehaviour
     
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
-    public float GravityMultiplier {get{return _gravityMultiplier;}}
+    public float FallMultiplier {get{return _fallMultiplier;}}
     public float Gravity {get{return _gravity;} set {_gravity = value;}}
     public float DeltaTarget {get{return _deltaTarget;}}
     public Vector2 SwipeDirection {get{return _swipeDirection;}}
@@ -226,6 +226,7 @@ public class FighterStateMachine : MonoBehaviour
 
     public void OnHit(CollisionData data){
         TimeController.Instance.SlowDown();
+        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
     }
 
     public void OnHurt(CollisionData data){

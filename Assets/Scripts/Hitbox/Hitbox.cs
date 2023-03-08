@@ -38,10 +38,7 @@ public class Hitbox : MonoBehaviour, IHitDetector
                         // Generate Collision Data
                         _collisionData = new CollisionData
                         {
-                            damage = m_hitResponder == null ? 0 : m_hitResponder.Damage,
-                            stunDuration = m_hitResponder == null ? 0 : m_hitResponder.StunDuration,
-                            knockback = m_hitResponder == null ? 0 : m_hitResponder.Knockback,
-                            knockup = m_hitResponder == null ? 0 : m_hitResponder.Knockup,
+                            action = m_hitResponder == null ? null : m_hitResponder.Action,
                             hurtbox = _hurtbox,
                             hitDetector = this
                         };

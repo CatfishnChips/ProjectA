@@ -45,7 +45,7 @@ public class FighterIdleState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()
@@ -55,6 +55,6 @@ public class FighterIdleState : FighterBaseState
 
     public override void UpdateState()
     {
-        CheckSwitchState();
+
     }
 }

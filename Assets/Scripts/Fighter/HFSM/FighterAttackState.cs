@@ -20,7 +20,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= (_attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames)){
+        if (_currentFrame >= (_attackMove.StartFrames + _attackMove.ActiveFrames + _attackMove.RecoveryFrames)){
             SwitchState(_factory.Idle());
         }
     }
@@ -46,13 +46,13 @@ public class FighterAttackState : FighterBaseState
         _ctx.IsGravityApplied = false; // Get this value from the attack action!
         
 
-        _ctx.ClipOverrides["DirectPunchA"] = _attackMove.meshAnimationA;
-        _ctx.ClipOverrides["DirectPunchR"] = _attackMove.meshAnimationR;
-        _ctx.ClipOverrides["DirectPunchS"] = _attackMove.meshAnimationS;
+        _ctx.ClipOverrides["DirectPunchA"] = _attackMove.MeshAnimationA;
+        _ctx.ClipOverrides["DirectPunchR"] = _attackMove.MeshAnimationR;
+        _ctx.ClipOverrides["DirectPunchS"] = _attackMove.MeshAnimationS;
 
-        _ctx.ColBoxClipOverrides["Uppercut_Startup"] = _attackMove.boxAnimationS;
-        _ctx.ColBoxClipOverrides["Uppercut_Active"] = _attackMove.boxAnimationA;
-        _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = _attackMove.boxAnimationR;
+        _ctx.ColBoxClipOverrides["Uppercut_Startup"] = _attackMove.BoxAnimationS;
+        _ctx.ColBoxClipOverrides["Uppercut_Active"] = _attackMove.BoxAnimationA;
+        _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = _attackMove.BoxAnimationR;
 
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
         _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
@@ -78,7 +78,7 @@ public class FighterAttackState : FighterBaseState
     }
 
     public override void FixedUpdateState(){
-        if (_currentFrame <= _attackMove.startUpFrames){
+        if (_currentFrame <= _attackMove.StartFrames){
             if(_firstFrameStartup){
                 _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedS);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedS);
@@ -87,7 +87,7 @@ public class FighterAttackState : FighterBaseState
                 _firstFrameStartup = false;
             }
         }
-        else if (_currentFrame > _attackMove.startUpFrames && _currentFrame <= _attackMove.startUpFrames + _attackMove.activeFrames){
+        else if (_currentFrame > _attackMove.StartFrames && _currentFrame <= _attackMove.StartFrames + _attackMove.ActiveFrames){
             if(_firstFrameActive){
                 _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedA);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedA);
@@ -95,8 +95,8 @@ public class FighterAttackState : FighterBaseState
                 _firstFrameActive = false;
             }
         }
-        else if(_currentFrame > _attackMove.startUpFrames + _attackMove.activeFrames && 
-        _currentFrame <= _attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames){
+        else if(_currentFrame > _attackMove.StartFrames + _attackMove.ActiveFrames && 
+        _currentFrame <= _attackMove.StartFrames + _attackMove.ActiveFrames + _attackMove.RecoveryFrames){
             if(_firstFrameRecovery){
                 _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedR);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedR);
