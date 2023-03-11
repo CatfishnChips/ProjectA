@@ -17,12 +17,20 @@ public class FighterIdleState : FighterBaseState
             SwitchState(_factory.Walk());
         }
 
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
-        }
-
         if (_ctx.AttackPerformed){
             SwitchState(_factory.Attack());
+        }
+
+        if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
+            SwitchState(_factory.Block());
+        }
+
+        if (_ctx.IsDashPressed){
+            SwitchState(_factory.Dash());
+        }
+
+        if (_ctx.IsDodgePressed){
+            SwitchState(_factory.Dodge());
         }
     }
 
@@ -31,8 +39,6 @@ public class FighterIdleState : FighterBaseState
         if (_ctx.IsGrounded) 
         {
             _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;
-
-            
         }
         else 
         {
@@ -41,18 +47,8 @@ public class FighterIdleState : FighterBaseState
 
         _ctx.AnimOverrideCont["Idle 1"] = _action.meshAnimation;
 
-         string prev_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
-             _ctx.Animator.SetTrigger("ToIdle");
-
-             string current_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
-             if(current_anim_state == prev_anim_state){
-                 _ctx.Animator.Play("Idle");
-                 _ctx.ColBoxAnimator.Play("Idle");
-             }
-
-        // _ctx.Animator.Play("Idle");
-        // _ctx.ColBoxAnimator.Play("Idle");
-       
+        _ctx.Animator.Play("Idle");
+        _ctx.ColBoxAnimator.Play("Idle");
     }
 
     public override void ExitState()
@@ -61,7 +57,7 @@ public class FighterIdleState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()
@@ -71,6 +67,6 @@ public class FighterIdleState : FighterBaseState
 
     public override void UpdateState()
     {
-        CheckSwitchState();
+
     }
 }

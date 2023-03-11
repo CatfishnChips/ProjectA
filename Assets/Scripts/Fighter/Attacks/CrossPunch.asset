@@ -9,21 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b21ecced3b20dd4ea65a3ccbcb82a9f, type: 3}
+  m_Script: {fileID: 11500000, guid: c9f8c6625b41fc84db67271d35f757d9, type: 3}
   m_Name: CrossPunch
   m_EditorClassIdentifier: 
   name: CrossPunch
-  damage: 5
-  stunDuration: 1
-  startUpFrames: 19
-  activeFrames: 3
-  recoveryFrames: 34
-  meshAnimationS: {fileID: 3164648343453379813, guid: 5c36eced4a381ef44b0389cc7b8c164e,
+  m_damage: 10
+  m_tags: 0
+  m_priority: 0
+  m_part: 1
+  m_hitStun: 10
+  m_blockStun: 0
+  m_freeze: 2
+  m_knockup: 0
+  m_knockback: 1
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}
+  m_startFrames: 18
+  m_activeFrames: 5
+  m_recoveryFrames: 34
+  m_meshAnimationS: {fileID: 3164648343453379813, guid: 5c36eced4a381ef44b0389cc7b8c164e,
     type: 3}
-  meshAnimationA: {fileID: -524552742357794111, guid: 5c36eced4a381ef44b0389cc7b8c164e,
+  m_meshAnimationA: {fileID: -524552742357794111, guid: 5c36eced4a381ef44b0389cc7b8c164e,
     type: 3}
-  meshAnimationR: {fileID: -4344376562244093455, guid: 5c36eced4a381ef44b0389cc7b8c164e,
+  m_meshAnimationR: {fileID: -4344376562244093455, guid: 5c36eced4a381ef44b0389cc7b8c164e,
     type: 3}
-  boxAnimationS: {fileID: 7400000, guid: 7cf65442d76c3ae41bccdb7efe9f5cc2, type: 2}
-  boxAnimationA: {fileID: 7400000, guid: 530b046ddfbd15c4e979bb8c890474fd, type: 2}
-  boxAnimationR: {fileID: 7400000, guid: cda0786305db1cb45b998acfecf2278b, type: 2}
+  m_boxAnimationS: {fileID: 7400000, guid: 7cf65442d76c3ae41bccdb7efe9f5cc2, type: 2}
+  m_boxAnimationA: {fileID: 7400000, guid: 530b046ddfbd15c4e979bb8c890474fd, type: 2}
+  m_boxAnimationR: {fileID: 7400000, guid: cda0786305db1cb45b998acfecf2278b, type: 2}

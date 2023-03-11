@@ -43,21 +43,27 @@ public class FighterStateMachine : MonoBehaviour
     private HurtResponder _hurtResponder;
     private Rigidbody2D _rigidbody2D;
 
+    private HealthManager _healthManager;
+    private StaminaManager _staminaManager;
 
     private Vector2 _velocity;
     private bool _isJumpPressed;
+    private bool _isDashPressed;
+    private bool _isDodgePressed;
     private bool _isGrounded;
     private bool _attackPerformed;
     private string _attackName;
     [SerializeField] string _currentStateName;
     [SerializeField] string _currentSubStateName;
     [SerializeField] string _currentSuperStateName;
-    [SerializeField] private float _dashDistance;
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _dashDistance = 1f;
+    [SerializeField] private int _dashTime; // in frames
+    [SerializeField] private float _airMoveSpeed;
     [SerializeField] private int _inputTimeoutTime = 10; // in frames
     [SerializeField] private float _jumpHeight = 1f;
     [SerializeField] private int _jumpTime; // in frames
-    [SerializeField] private float _gravityMultiplier;
+    [SerializeField] private float _fallMultiplier = 1f;
+    [SerializeField] private int _dodgeTime; // in frames
     private float _gravity;
     private float _deltaTarget;
     private CollisionData _collisionData;
@@ -72,11 +78,13 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private float _jumpDistance = 1f;
 
     public bool IsJumpPressed{get{return _isJumpPressed;} set{_isJumpPressed = value;}}
+    public bool IsDashPressed{get{return _isDashPressed;} set{_isDashPressed = value;}}
+    public bool IsDodgePressed{get{return _isDodgePressed;} set {_isDodgePressed = value;}}
     public bool IsGrounded{get{return _isGrounded;}}
     public bool AttackPerformed{get{return _attackPerformed;} set{_attackPerformed = value;}}
     public string AttackName{get{return _attackName;} set{_attackName = value;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
-    public float MoveSpeed{get{return _moveSpeed;}}
+    public float AirMoveSpeed{get{return _airMoveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
 
     public Animator Animator{get{return _animator;}}
@@ -95,6 +103,8 @@ public class FighterStateMachine : MonoBehaviour
     public HitResponder HitResponder {get{return _hitResponder;}}
     public HurtResponder HurtResponder {get{return _hurtResponder;}}
     public CollisionData CollisionData {get{return _collisionData;}}
+    public HealthManager HealthManager {get{return _healthManager;}}
+    public StaminaManager StaminaManager {get{return _staminaManager;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
     public bool IsInputLocked {get{return _isInputLocked;} set{_isInputLocked = value;}}
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
@@ -102,18 +112,23 @@ public class FighterStateMachine : MonoBehaviour
     
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
-    public float GravityMultiplier {get{return _gravityMultiplier;}}
+    public float FallMultiplier {get{return _fallMultiplier;}}
     public float Gravity {get{return _gravity;} set {_gravity = value;}}
     public float DeltaTarget {get{return _deltaTarget;}}
     public Vector2 SwipeDirection {get{return _swipeDirection;}}
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
     public float JumpDistance {get{return _jumpDistance;}}
+    public float DashDistance {get{return _dashDistance;}}
+    public int DashTime {get{return _dashTime;}}
+    public int DodgeTime {get{return _dodgeTime;}}
 
     void Awake()
     {
         _animator = GetComponent<Animator>();
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         _isJumpPressed = false;
+        _isDodgePressed = false;
+        _isDashPressed = false;
         _attackPerformed = false;
         _isHurt = false;
         _isInputLocked = false;
@@ -122,7 +137,6 @@ public class FighterStateMachine : MonoBehaviour
         _states = new FighterStateFactory(this);
         _comboListener = new ComboListener(this);
         
-
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animOverrideCont;
 
@@ -156,6 +170,8 @@ public class FighterStateMachine : MonoBehaviour
         if (TryGetComponent<HitResponder>(out HitResponder hitResponder)) _hitResponder = hitResponder;
         if (TryGetComponent<HurtResponder>(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
         if (TryGetComponent<Rigidbody2D>(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
+        if (TryGetComponent<HealthManager>(out HealthManager healthManager)) _healthManager = healthManager;
+        if (TryGetComponent<StaminaManager>(out StaminaManager staminaManager)) _staminaManager = staminaManager;
     }
 
     void Start()
@@ -163,6 +179,9 @@ public class FighterStateMachine : MonoBehaviour
         EventManager.Instance.Walk += OnMove;
         EventManager.Instance.Dash += OnDash;
         EventManager.Instance.AttackMove += OnAttack;
+        EventManager.Instance.OnTap += OnTap;
+        EventManager.Instance.OnHoldA += OnHoldA;
+        EventManager.Instance.OnHoldB += OnHoldB;
 
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
@@ -176,6 +195,9 @@ public class FighterStateMachine : MonoBehaviour
         EventManager.Instance.Walk -= OnMove;
         EventManager.Instance.Dash -= OnDash;
         EventManager.Instance.AttackMove -= OnAttack;
+        EventManager.Instance.OnTap -= OnTap;
+        EventManager.Instance.OnHoldA -= OnHoldA;
+        EventManager.Instance.OnHoldB -= OnHoldB;
 
         if(_hitResponder) _hitResponder.HitResponse -= OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse -= OnHurt;
@@ -214,6 +236,18 @@ public class FighterStateMachine : MonoBehaviour
         //StartCoroutine(InputTimeout(ref _isJumpPressed));
     }
 
+    public void ListenToDash(){
+        if (_isInputLocked) return;
+        if (_isDashPressed) return;
+        _isDashPressed = true;
+    }
+
+    public void ListenToDodge(){
+        if (_isInputLocked) return;
+        if (_isDodgePressed) return;
+        _isDodgePressed = true;
+    }
+
     public void OnMove(float delta){
         _deltaTarget = delta;
     }
@@ -229,7 +263,8 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     public void OnHit(CollisionData data){
-
+        TimeController.Instance.SlowDown();
+        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
     }
 
     public void OnHurt(CollisionData data){
@@ -238,17 +273,36 @@ public class FighterStateMachine : MonoBehaviour
         _isHurt = true;
     }
 
-    private void OnDash(Vector2 direction) 
-    {
+    private void OnDash(Vector2 direction){
         if (_isInputLocked) return;
         _swipeDirection = direction;
         Debug.Log("Swipe Direction: " + direction);
 
-        if (direction.y <= -0.5f)
-        ListenToJump();
+        if (direction.y <= -0.5f) {
+            ListenToJump();
+        }
+        else if (direction.y < 0.5f && direction.y > -0.5f){
+            ListenToDash();
+        }
+        else if (direction.y >= 0.5f){
+            ListenToDodge();
+        }
+
         //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
 
         //StartCoroutine(InputTimeout());
+    }
+
+    private void OnTap(){
+
+    }
+
+    private void OnHoldA(){
+
+    }
+
+    private void OnHoldB(){
+
     }
 
     // private IEnumerator InputTimeout(ref bool inputPerformed){

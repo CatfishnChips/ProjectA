@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c65530f4e8e1c0b47bb697a55d33b870, type: 3}
-  m_Name: StunnedAction
+  m_Name: DashAction
   m_EditorClassIdentifier: 
-  name: Stunned
+  name: Dash
   frames: 0
-  meshAnimation: {fileID: 9122577553181493038, guid: 46d66062a0e0ba748b69a8fb3615419f,
-    type: 3}
+  meshAnimation: {fileID: 0}
   boxAnimation: {fileID: 0}

@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class FighterGroundedState : FighterBaseState
 {
-    private Vector2 currentMovement;
-
     public FighterGroundedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
         _stateName = "Grounded";
@@ -14,6 +12,10 @@ public class FighterGroundedState : FighterBaseState
     {
         if (!_ctx.IsGrounded || _ctx.IsJumpPressed){
             SwitchState(_factory.Airborne());
+        }
+
+        if (_ctx.IsHurt && !_ctx.StaminaManager.CanBlock){
+            SwitchState(_factory.Stunned());
         }
     }
 
@@ -32,7 +34,9 @@ public class FighterGroundedState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        //_ctx.Rigidbody2D.velocity = new Vector2(_ctx.Rigidbody2D.velocity.x, _ctx.Gravity);
+        if (_ctx.Velocity.x != 0 && _ctx.IsDashPressed)
+        _ctx.Rigidbody2D.velocity = new Vector2(_ctx.Velocity.x, _ctx.Gravity);
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()
@@ -50,6 +54,6 @@ public class FighterGroundedState : FighterBaseState
 
     public override void UpdateState()
     {
-        CheckSwitchState();
+        
     }
 }

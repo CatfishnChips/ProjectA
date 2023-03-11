@@ -15,18 +15,22 @@ public class FighterAirborneState : FighterBaseState
         if(_ctx.IsGrounded && !_ctx.IsJumpPressed){
             SwitchState(_factory.Grounded());
         }
+
+        if (_ctx.IsHurt){
+            SwitchState(_factory.Stunned());
+        }
     }
 
     public override void EnterState()
     {
         InitializeSubState();
-
+        
         _rb = _ctx.Rigidbody2D;
-        _ctx.Gravity = Physics2D.gravity.y;
     }
 
     public override void ExitState()
     {
+        _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
         _rb.velocity = Vector2.zero;
     }
@@ -35,16 +39,21 @@ public class FighterAirborneState : FighterBaseState
     {  
         if (_ctx.IsGravityApplied){
             float previousVelocityY = _ctx.CurrentMovement.y;
-            _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + Physics2D.gravity.y * _ctx.GravityMultiplier * Time.fixedDeltaTime);
-            _ctx.Velocity = new Vector2(_ctx.Velocity.x, Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
+            if (_ctx.Velocity.y <= 0){
+                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x * _ctx.AirMoveSpeed, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime);
+            }
+            else{
+                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x * _ctx.AirMoveSpeed, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
+            }
+            _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x , Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
         }
         else 
         {
-            _ctx.Velocity = new Vector2(_ctx.Velocity.x, 0);
+            _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x , 0);
         }
-
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
         Debug.Log("Velocity Applied: " + _ctx.Velocity);
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()
@@ -62,7 +71,7 @@ public class FighterAirborneState : FighterBaseState
     }
 
     public override void UpdateState()
-    {
-        CheckSwitchState();
+    { 
+        
     }
 }

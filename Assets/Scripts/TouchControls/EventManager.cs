@@ -26,6 +26,7 @@ public class EventManager : MonoBehaviour
     //public UnityAction<> OnCombatBegin;
     //public UnityAction<> OnCombatEnd;
     public UnityAction<GameObject, int> HealthChanged;
+    public UnityAction<GameObject, int> StaminaChanged;
 
     #endregion
     
@@ -33,6 +34,9 @@ public class EventManager : MonoBehaviour
     // These actions are called by the Touch A, which is used primarily for movement.
     public UnityAction<Vector2> Dash;
     public UnityAction<float> Walk;
+    public UnityAction OnTap;
+    public UnityAction OnHoldA;
+    public UnityAction OnHoldB;
 
     #endregion
 

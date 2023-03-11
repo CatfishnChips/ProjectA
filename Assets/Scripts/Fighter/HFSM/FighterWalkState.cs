@@ -13,12 +13,16 @@ public class FighterWalkState : FighterBaseState
             SwitchState(_factory.Idle());
         }
 
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
-        }
-
         if (_ctx.AttackPerformed){
             SwitchState(_factory.Attack());
+        }
+
+        if (_ctx.IsDashPressed){
+            SwitchState(_factory.Dash());
+        }
+
+        if (_ctx.IsDodgePressed){
+            SwitchState(_factory.Dodge());
         }
     }
 
@@ -26,13 +30,6 @@ public class FighterWalkState : FighterBaseState
     {
         if (_ctx.IsGrounded)
         {
-            // string prev_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
-            // _ctx.Animator.SetTrigger("ToMove");
-            // string current_anim_state = _ctx.Animator.GetCurrentAnimatorStateInfo(0).ToString();
-            // if(current_anim_state == prev_anim_state){
-            //     _ctx.Animator.Play("MoveBT");
-            // }
-
             _ctx.Animator.Play("MoveBT");
         }
     }
@@ -55,9 +52,13 @@ public class FighterWalkState : FighterBaseState
 
     public override void UpdateState()
     {
-        //_ctx.Velocity = new Vector2(Mathf.MoveTowards(_ctx.Velocity.x, _ctx.DeltaTarget, 1f * Time.deltaTime), _ctx.Velocity.y);
-        //_ctx.Animator.SetFloat("Blend", _ctx.Velocity.x);
-        _ctx.Animator.SetFloat("Blend", _ctx.DeltaTarget);
+        if (_ctx.IsGrounded){
+            _ctx.Animator.SetFloat("Blend", _ctx.DeltaTarget);
+        }
+        else{
+            _ctx.Velocity = new Vector2(_ctx.DeltaTarget, _ctx.Velocity.y);
+        }
+
         CheckSwitchState();
     }
 }

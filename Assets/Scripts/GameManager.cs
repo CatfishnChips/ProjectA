@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-     #region Singleton
+    #region Singleton
 
     public static GameManager Instance;
 
