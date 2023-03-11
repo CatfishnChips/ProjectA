@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FighterAttackState : FighterBaseState
 {
@@ -21,16 +22,22 @@ public class FighterAttackState : FighterBaseState
     public override void CheckSwitchState()
     {
         if (_currentFrame >= (_attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames)){
+            EventManager.Instance.FighterAttackEnded?.Invoke();
             SwitchState(_factory.Idle());
         }
 
         if (_ctx.IsHurt){
+            EventManager.Instance.FighterAttackInterrupted?.Invoke();
             SwitchState(_factory.Stunned());
         }
     }
 
     public override void EnterState()
     {
+        if(!_ctx.ComboListener.isActive){
+            _ctx.ComboListener.isActive = true;
+        }
+
         _ctx.AttackPerformed = false;
         _ctx.IsInputLocked = true;
 
@@ -46,10 +53,8 @@ public class FighterAttackState : FighterBaseState
 
         }
 
-        
         _ctx.IsGravityApplied = false; // Get this value from the attack action!
         
-
         _ctx.ClipOverrides["DirectPunchA"] = _attackMove.meshAnimationA;
         _ctx.ClipOverrides["DirectPunchR"] = _attackMove.meshAnimationR;
         _ctx.ClipOverrides["DirectPunchS"] = _attackMove.meshAnimationS;
@@ -62,6 +67,8 @@ public class FighterAttackState : FighterBaseState
         _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
 
         _ctx.HitResponder.UpdateData(_attackMove);
+
+        EventManager.Instance.FighterAttackStarted?.Invoke(_attackMove.name);
 
         //_attackMove.AdjustAnimationTimes();
     }

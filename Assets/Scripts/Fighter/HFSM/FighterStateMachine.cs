@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using System;
 
 public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, AnimationClip>>
 {
@@ -21,14 +20,13 @@ public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, Animation
 
 public class FighterStateMachine : MonoBehaviour
 {
-    [Serializable]
-    public struct ActionAttribution{
-        public ActionBase action;
-    }
 
     [SerializeField] private ActionAttribution[] _actionAttribution;
     private Dictionary<string, ActionAttack> _attackMoveDict;
     private Dictionary<string, ActionBase> _actionDictionary;
+
+    [SerializeField] private ComboMove[] _combosArray;
+    private ComboListener _comboListener;
 
     private Animator _animator;
     private AnimatorOverrideController _animOverrideCont;
@@ -76,7 +74,7 @@ public class FighterStateMachine : MonoBehaviour
     public bool IsJumpPressed{get{return _isJumpPressed;} set{_isJumpPressed = value;}}
     public bool IsGrounded{get{return _isGrounded;}}
     public bool AttackPerformed{get{return _attackPerformed;} set{_attackPerformed = value;}}
-    public string AttackName{get{return _attackName;}}
+    public string AttackName{get{return _attackName;} set{_attackName = value;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float MoveSpeed{get{return _moveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
@@ -91,6 +89,8 @@ public class FighterStateMachine : MonoBehaviour
 
     public Dictionary<string, ActionAttack> AttackMoveDict{get{return _attackMoveDict;}}
     public Dictionary<string, ActionBase> ActionDictionary{get{return _actionDictionary;}}
+    public ComboListener ComboListener{get{return _comboListener;} set{_comboListener = value;}}
+    public ComboMove[] CombosArray{get{return _combosArray;}}
 
     public HitResponder HitResponder {get{return _hitResponder;}}
     public HurtResponder HurtResponder {get{return _hurtResponder;}}
@@ -120,6 +120,7 @@ public class FighterStateMachine : MonoBehaviour
         _isGravityApplied = true;
         _gravity = Physics2D.gravity.y;
         _states = new FighterStateFactory(this);
+        _comboListener = new ComboListener(this);
         
 
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
@@ -188,6 +189,9 @@ public class FighterStateMachine : MonoBehaviour
         //_isGrounded = _rigidbody2D.IsTouchingLayers(_rayCastLayerMask);
         Debug.Log(_isGrounded);
 
+        if(_comboListener.isActive){
+            _comboListener.FixedUpdate();
+        }
         _currentState.FixedUpdateStates();
         _currentStateName = _currentState.StateName;
         _currentSubStateName = _currentState.SubStateName();

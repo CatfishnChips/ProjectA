@@ -39,6 +39,9 @@ public class EventManager : MonoBehaviour
     #region Attack Events
 
     public UnityAction<string> AttackMove;
+    public UnityAction<string> FighterAttackStarted;
+    public UnityAction FighterAttackEnded;
+    public UnityAction FighterAttackInterrupted;
 
     #endregion
 }
