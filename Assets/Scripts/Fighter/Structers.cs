@@ -15,13 +15,18 @@ public struct ComboMove{
 }
 
 [Serializable]
-public struct ComboMoveSpecs{
+public class ComboMoveSpecs{
     //public int comboName;
     public int moveNumber;
-    public ActionBase theMove;
+    public ActionAttack theMove;
     public bool willOverride;
-    public ActionBase moveToOverride;
+    public ActionAttack moveToOverride;
     public Dictionary<string, ComboMoveSpecs> possibleNextMoves;
+
+    public ComboMoveSpecs(){
+        possibleNextMoves = new Dictionary<string, ComboMoveSpecs>();    
+    }
+
 }
 
 

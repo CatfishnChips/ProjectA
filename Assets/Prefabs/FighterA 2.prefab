@@ -669,9 +669,13 @@ GameObject:
   - component: {fileID: 6976153750473958084}
   - component: {fileID: 7839007976745551521}
   - component: {fileID: 474040055458162382}
+  - component: {fileID: 6976153750473958081}
+  - component: {fileID: 6976153750473958082}
+  - component: {fileID: 6613479630579011162}
+  - component: {fileID: 21684642197104237}
   m_Layer: 0
   m_Name: FighterA 2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -727,18 +731,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackMoveAttribution:
-  - name: DirectPunch
-    attackMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
-  - name: Uppercut
-    attackMove: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
-  - name: CrossPunch
-    attackMove: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+  _actionAttribution:
+  - action: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+  - action: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+  - action: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
+  - action: {fileID: 11400000, guid: 2c3fb1b6d450d664cbed6d02db98fc1d, type: 2}
+  - action: {fileID: 11400000, guid: a17b9ffb7ab6660489a5a3a9bd9d75c1, type: 2}
+  - action: {fileID: 11400000, guid: 8ed5dd913eac9c3468e68e814f9a6c9e, type: 2}
+  - action: {fileID: 11400000, guid: 920e7bf801531fe4083358fbeccf562d, type: 2}
+  - action: {fileID: 11400000, guid: 362ed136e013e434cbc9bd2f64069a44, type: 2}
+  - action: {fileID: 11400000, guid: ceaa2bcdec764b04d89b11c8ca108686, type: 2}
+  - action: {fileID: 11400000, guid: 121f39da6c55dbb4ea2d698e614e2615, type: 2}
+  _combosArray:
+  - comboName: SwiftStrike
+    moves:
+    - moveNumber: 1
+      theMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+      willOverride: 0
+      moveToOverride: {fileID: 0}
+    - moveNumber: 2
+      theMove: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
+      willOverride: 0
+      moveToOverride: {fileID: 0}
+    - moveNumber: 3
+      theMove: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+      willOverride: 1
+      moveToOverride: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+  - comboName: SuckerPunch
+    moves:
+    - moveNumber: 1
+      theMove: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+      willOverride: 0
+      moveToOverride: {fileID: 0}
+    - moveNumber: 2
+      theMove: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+      willOverride: 1
+      moveToOverride: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
   _currentStateName: 
   _currentSubStateName: 
   _currentSuperStateName: 
-  _dashDistance: 0
-  _moveSpeed: 2
+  _dashDistance: 1
+  _dashTime: 10
+  _airMoveSpeed: 0
+  _inputTimeoutTime: 10
+  _jumpHeight: 1
+  _jumpTime: 24
+  _fallMultiplier: 1
+  _dodgeTime: 5
+  _rayCastLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  _rayCastLenght: 0.2
+  _rayCastPosition: {x: 0, y: 0}
+  _jumpDistance: 5
 --- !u!50 &6976153750473958084
 Rigidbody2D:
   serializedVersion: 4
@@ -754,9 +799,9 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -774,14 +819,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitbox: {fileID: 1902287821}
   m_priority: 0
-  m_part: 1
-  m_hitStun: 0
-  m_blockStun: 0
-  m_damage: 10
-  m_angle: 0
-  m_knockback: 0
-  m_sound: {fileID: 0}
-  m_soundLevel: 0
 --- !u!114 &474040055458162382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +831,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab04eb6cf693764c9fd1872b1360a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6976153750473958081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815378929669242414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8a6a2c42a950940bc27f4a5fcd5565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_stamina: 3
+  m_recoveryTime: 0
+--- !u!114 &6976153750473958082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815378929669242414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a367ab3c2dc6d74b9f04512ee74f48a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_health: 100
+--- !u!114 &6613479630579011162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815378929669242414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8a6a2c42a950940bc27f4a5fcd5565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_stamina: 3
+  m_recoveryTime: 0
+--- !u!114 &21684642197104237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815378929669242414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a367ab3c2dc6d74b9f04512ee74f48a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_health: 100
 --- !u!1 &1175962784115012596
 GameObject:
   m_ObjectHideFlags: 0

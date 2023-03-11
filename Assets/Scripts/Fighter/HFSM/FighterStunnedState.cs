@@ -111,7 +111,7 @@ public class FighterStunnedState : FighterBaseState
             _ctx.Velocity = new Vector2(_ctx.Velocity.x, Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
 
-            Debug.Log("Velocity Applied: " + _ctx.Velocity);
+            //Debug.Log("Velocity Applied: " + _ctx.Velocity);
         }
         
 

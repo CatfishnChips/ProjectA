@@ -163,7 +163,7 @@ public class FighterStateMachine : MonoBehaviour
                 _actionDictionary.Add(attribution.action.name, attribution.action);
             }
 
-            Debug.Log("Action " + attribution.action.name + " has been added to the dictionary.");
+            //Debug.Log("Action " + attribution.action.name + " has been added to the dictionary.");
             
         }
 
@@ -209,7 +209,7 @@ public class FighterStateMachine : MonoBehaviour
     {
         _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastPosition, Vector2.down, _rayCastLenght, _rayCastLayerMask);
         //_isGrounded = _rigidbody2D.IsTouchingLayers(_rayCastLayerMask);
-        Debug.Log(_isGrounded);
+        //Debug.Log(_isGrounded);
 
         if(_comboListener.isActive){
             _comboListener.FixedUpdate();
@@ -276,7 +276,7 @@ public class FighterStateMachine : MonoBehaviour
     private void OnDash(Vector2 direction){
         if (_isInputLocked) return;
         _swipeDirection = direction;
-        Debug.Log("Swipe Direction: " + direction);
+        //Debug.Log("Swipe Direction: " + direction);
 
         if (direction.y <= -0.5f) {
             ListenToJump();

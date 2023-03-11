@@ -25,9 +25,9 @@ public abstract class FighterBaseState
     public abstract void InitializeSubState();
 
     public void UpdateStates(){ // This function allows for a chained multi-substate architecture by calling update of every substate of supdates.
-    Debug.Log(_stateName);
+    //Debug.Log(_stateName);
         if(_currentSubState != null){
-            Debug.Log(_currentSubState._stateName);
+            //Debug.Log(_currentSubState._stateName);
         }
         UpdateState();
         if(_currentSubState != null){

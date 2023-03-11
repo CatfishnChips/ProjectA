@@ -13,33 +13,27 @@ MonoBehaviour:
   m_Name: Uppercut
   m_EditorClassIdentifier: 
   name: Uppercut
-  m_damage: 0
+  m_tags: 0
+  m_damage: 10
   m_priority: 0
   m_part: 1
   m_hitStun: 10
   m_blockStun: 0
-  m_angle: 0
+  m_freeze: 0
+  m_knockup: 0
   m_knockback: 0
   m_sound: {fileID: 0}
   m_soundLevel: 0
-  m_startFrames: 0
-  m_activeFrames: 0
-  m_recoveryFrames: 0
-  m_meshS: {fileID: 0}
-  m_meshA: {fileID: 0}
-  m_meshR: {fileID: 0}
-  m_boxS: {fileID: 0}
-  m_boxA: {fileID: 0}
-  m_boxR: {fileID: 0}
-  startUpFrames: 27
-  activeFrames: 3
-  recoveryFrames: 21
-  meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
+  m_screenShakeVelocity: {x: 0, y: 0, z: 0}
+  m_startFrames: 45
+  m_activeFrames: 7
+  m_recoveryFrames: 12
+  m_meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
-  meshAnimationA: {fileID: -2584105986153280350, guid: d489b905b20129841a1f1398b3665cff,
+  m_meshAnimationA: {fileID: -2584105986153280350, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
-  meshAnimationR: {fileID: 3709316462808488434, guid: d489b905b20129841a1f1398b3665cff,
+  m_meshAnimationR: {fileID: 3709316462808488434, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
-  boxAnimationS: {fileID: 7400000, guid: 6984eaab9a83f6744b98200212f51677, type: 2}
-  boxAnimationA: {fileID: 7400000, guid: fdf29b54d5768e24690210508f70de81, type: 2}
-  boxAnimationR: {fileID: 7400000, guid: c85118f6fdb15434c9e2d49beedf08c0, type: 2}
+  m_boxAnimationS: {fileID: 0}
+  m_boxAnimationA: {fileID: 0}
+  m_boxAnimationR: {fileID: 0}

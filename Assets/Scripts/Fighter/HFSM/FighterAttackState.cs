@@ -21,7 +21,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= (_attackMove.startUpFrames + _attackMove.activeFrames + _attackMove.recoveryFrames)){
+        if (_currentFrame >= (_attackMove.StartFrames + _attackMove.ActiveFrames + _attackMove.RecoveryFrames)){
             EventManager.Instance.FighterAttackEnded?.Invoke();
             SwitchState(_factory.Idle());
         }
@@ -46,13 +46,17 @@ public class FighterAttackState : FighterBaseState
         _firstFrameActive = true;
         _firstFrameRecovery = true;
 
-        
+        string attackName = _ctx.AttackName;
         if (_ctx.IsGrounded){
-            _attackMove = _ctx.AttackMoveDict[_ctx.AttackName];
+            _attackMove = _ctx.AttackMoveDict[attackName];
         }
         else{
 
         }
+
+        _attackMove = _ctx.ComboListener.AttackOverride(_attackMove);
+
+        Debug.Log(_attackMove.name);
 
         _ctx.IsGravityApplied = false; // Get this value from the attack action!
         

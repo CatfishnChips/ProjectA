@@ -90,12 +90,12 @@ public class InputManager : MonoBehaviour
                         {
                             if (touch.position.x < Screen.width / 2)
                             {
-                                Debug.Log("Left Screen! Assigning to Touch A.");
+                                //Debug.Log("Left Screen! Assigning to Touch A.");
                                 _touchAID = touch.fingerId;
                             }
                             else if (touch.position.x > Screen.width / 2) 
                             {
-                                Debug.Log("Right Screen! Assigning to Touch B.");
+                                //Debug.Log("Right Screen! Assigning to Touch B.");
                                 _touchBID = touch.fingerId;
                             }
                         }
