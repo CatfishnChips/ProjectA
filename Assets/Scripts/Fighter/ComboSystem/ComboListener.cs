@@ -35,15 +35,15 @@ public class ComboListener
     public ActionAttack AttackOverride(ActionAttack newAttack){
         ActionAttack returnAttack = null;
 
-        Debug.Log("Current Mov Number: " + _currentMoveNumber);
-        Debug.Log("Current ActionAttack : " + newAttack.name);
+        //Debug.Log("Current Mov Number: " + _currentMoveNumber);
+        //Debug.Log("Current ActionAttack : " + newAttack.name);
 
         if(_currentSearchDict == null) _currentSearchDict = _comboMovesDict;
 
-        foreach (string item in _currentSearchDict.Keys)
-        {
-            Debug.Log(item);
-        }
+        // foreach (string item in _currentSearchDict.Keys)
+        // {
+        //     Debug.Log(item);
+        // }
 
         if(!_currentSearchDict.ContainsKey(newAttack.name)){
             ResetListener();
@@ -94,7 +94,7 @@ public class ComboListener
             for(int j = 0; j < _ctx.CombosArray[i].moves.Length; j++){
                 ComboMoveSpecs comboMoveSpecs = _ctx.CombosArray[i].moves[j];
                 string comboAttackName = comboMoveSpecs.theMove.name;
-                Debug.Log("It's me!" + comboAttackName);
+                //Debug.Log("It's me!" + comboAttackName);
                 if(!tempDictWriter.ContainsKey(comboAttackName)){
                     tempDictWriter.Add(comboAttackName, comboMoveSpecs);
                 }
@@ -102,14 +102,14 @@ public class ComboListener
                 tempDictWriter = tempDictWriter[comboAttackName].possibleNextMoves;  
             }
         }
-        foreach (KeyValuePair<string, ComboMoveSpecs> item in _comboMovesDict){
-            Debug.Log("Cem: " + item.Value.theMove.name);
-            
-            //Debug.Log(item.Value.possibleNextMoves.Keys);
-            foreach (KeyValuePair<string, ComboMoveSpecs> kitem in item.Value.possibleNextMoves){
-                Debug.Log(kitem.Value.theMove.name);
-            }
-        }
+        // foreach (KeyValuePair<string, ComboMoveSpecs> item in _comboMovesDict){
+        //     //Debug.Log("Cem: " + item.Value.theMove.name);
+
+        //     //Debug.Log(item.Value.possibleNextMoves.Keys);
+        //     foreach (KeyValuePair<string, ComboMoveSpecs> kitem in item.Value.possibleNextMoves){
+        //         Debug.Log(kitem.Value.theMove.name);
+        //     }
+        // }
     }
 }
 //ş
