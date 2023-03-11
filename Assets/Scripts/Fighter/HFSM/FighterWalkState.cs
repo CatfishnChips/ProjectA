@@ -16,6 +16,14 @@ public class FighterWalkState : FighterBaseState
         if (_ctx.AttackPerformed){
             SwitchState(_factory.Attack());
         }
+
+        if (_ctx.IsDashPressed){
+            SwitchState(_factory.Dash());
+        }
+
+        if (_ctx.IsDodgePressed){
+            SwitchState(_factory.Dodge());
+        }
     }
 
     public override void EnterState()

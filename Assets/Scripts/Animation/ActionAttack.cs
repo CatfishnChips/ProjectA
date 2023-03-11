@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Attack Action", menuName = "ScriptableObject/Action/Attack")]
 public class ActionAttack : ActionBase
 {
-    public int m_damage;
+    [SerializeField] private Tags m_tags;
+    [SerializeField] private int m_damage;
 
     [Header("Hitbox Properties")]
     [Tooltip("Which type of hitbox is prioritized for hit detection.")]
@@ -47,6 +48,7 @@ public class ActionAttack : ActionBase
     public float AnimSpeedA {get{return AdjustAnimationTime(m_meshAnimationA, m_activeFrames);}}
     public float AnimSpeedR {get{return AdjustAnimationTime(m_meshAnimationR, m_recoveryFrames);}}
 
+    public Tags Tags {get => m_tags;}
     public int Damage {get => m_damage;}
     public int Priority {get => m_priority;}
     public int Part {get => m_part;}
@@ -69,4 +71,20 @@ public class ActionAttack : ActionBase
     public AnimationClip BoxAnimationS {get => m_boxAnimationS;}
     public AnimationClip BoxAnimationA {get => m_boxAnimationA;}
     public AnimationClip BoxAnimationR {get => m_boxAnimationR;}
+}
+
+[System.Flags]
+public enum Tags 
+{
+    None = 0, //0000
+    ShortRanged = 1 << 0, //0001 
+    MidRanged = 1 << 1, //0010
+    LongRanged = 1 << 2, //0100
+    HighDamage = 1 << 3, //1000
+    MidDamage = 1 << 4, 
+    LowDamage = 1 << 5,
+    Projectile = 1 << 6,
+    SlowAnimation = 1 << 7,
+    MidAnimation = 1 << 8,
+    FastAnimation = 1 << 9
 }

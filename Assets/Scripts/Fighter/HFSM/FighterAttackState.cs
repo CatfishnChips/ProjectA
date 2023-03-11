@@ -27,6 +27,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void EnterState()
     {
+        _currentFrame = 0;
         _ctx.AttackPerformed = false;
         _ctx.IsInputLocked = true;
 

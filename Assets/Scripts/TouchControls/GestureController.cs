@@ -54,8 +54,10 @@ public class GestureController : MonoBehaviour
     #region Touch B Variables
 
     [Header("Gesture Settings")]
+    [SerializeField] private float _gestureTimeout = 1f;
     [SerializeField] private float _scoreTreshold = 0.25f; // Least amount of score required for a gesture to be recognized.
-    [SerializeField] private float _pointAddInterval;
+    [SerializeField] private float _pointAddInterval; // Currently not used. Only limit add interval if there is performance problems.
+    private bool _isTouchBActive;
     private float _pointAddTimer;
     private List<Vector2> _pointList = new List<Vector2>();
     private DollarRecognizer _recognizer = new DollarRecognizer();
@@ -113,6 +115,9 @@ public class GestureController : MonoBehaviour
         _touchA.InitialScreenPosition = screenPosition;
         _touchA.InitialWorldPosition = worldPosition;
 
+        _touchA.HasMoved = false;
+        _touchA.HoldTime = 0f;
+
         // Swipe
         _isSwipe = true;
 
@@ -123,6 +128,11 @@ public class GestureController : MonoBehaviour
     private void OnTouchAStationary(Vector2 screenPosition, Vector3 worldPosition)
     {
         _touchA.TimeOnScreen += Time.deltaTime;
+        _touchA.HoldTime += Time.deltaTime;
+
+        if(_touchA.HoldTime > 0){
+            EventManager.Instance.OnHoldA?.Invoke();
+        }
 
         // Swipe
         //_isSwipe = false;
@@ -134,8 +144,10 @@ public class GestureController : MonoBehaviour
     }
 
     private void OnTouchADrag(InputEventParams inputEventDragParams) 
-    {
+    {   
+        _touchA.HasMoved = true;
         _touchA.TimeOnScreen += Time.deltaTime;
+        _touchA.HoldTime = 0f;
         
         // Swipe
         if (_isSwipe && inputEventDragParams.Delta.magnitude < _swipeDelta) _isSwipe = false;
@@ -166,14 +178,21 @@ public class GestureController : MonoBehaviour
         _deltaVectorX = 0;
         EventManager.Instance.Walk?.Invoke(_deltaVectorX);
 
-        // Swipe
-        if (distance < _swipeDistance) return;
-        if (_touchA.TimeOnScreen >= _swipeTimeout) return;
-        if (inputEventParams.Delta.magnitude < _swipeDelta) return;
-        if (!_isSwipe) return;
-        EventManager.Instance.Dash?.Invoke(direction);
+        if (distance < _swipeDistance) _isSwipe = false;
+        if (_touchA.TimeOnScreen >= _swipeTimeout) _isSwipe = false;
+        if (inputEventParams.Delta.magnitude < _swipeDelta) _isSwipe = false;
 
-        //Debug.Log("Swipe! " + direction);
+        
+        if (_isSwipe){
+            // Swipe
+            EventManager.Instance.Dash?.Invoke(direction);
+            //Debug.Log("Swipe! " + direction);
+        }
+        
+        if(!_touchA.HasMoved){
+            // Tap
+            EventManager.Instance.OnTap?.Invoke();
+        }
     }
 
     #endregion
@@ -183,6 +202,11 @@ public class GestureController : MonoBehaviour
     private void OnTouchBBegin(Vector2 screenPosition, Vector3 worldPosition) 
     {
         _touchB = new TouchData();
+
+        _touchB.HasMoved = false;
+        _isTouchBActive = true;
+        _touchB.HoldTime = 0f;
+
         _touchB.InitialScreenPosition = screenPosition;
         _touchB.InitialWorldPosition = worldPosition;
 
@@ -193,30 +217,69 @@ public class GestureController : MonoBehaviour
 
     private void OnTouchBStationary(Vector2 screenPosition, Vector3 worldPosition)
     {
+        _touchB.TimeOnScreen += Time.deltaTime;
+        _touchB.HoldTime += Time.deltaTime;
 
+        if(_touchB.HoldTime > 0){
+            EventManager.Instance.OnHoldB?.Invoke();
+        }
+
+        if (_pointAddTimer <= 0) 
+        {
+            _pointList.Add(screenPosition);
+            _pointAddTimer = _pointAddInterval;
+        }
+
+        if (_touchB.TimeOnScreen >= _gestureTimeout){
+            if (!_isTouchBActive) return;
+            _isTouchBActive = false;
+            RecognizeGesture(out string Name, out float Score);
+
+            if (Score < _scoreTreshold) return; 
+            EventManager.Instance.AttackMove?.Invoke(Name);
+        } 
     }
 
     private void OnTouchBDrag(InputEventParams inputEventDragParams) 
-    {
+    {   
+        _touchB.HasMoved = true;
+        _touchB.TimeOnScreen += Time.deltaTime;
+        _touchB.HoldTime = 0f;
+
         if (_pointAddTimer <= 0) 
         {
             _pointList.Add(inputEventDragParams.ScreenPosition);
             _pointAddTimer = _pointAddInterval;
         }
+
+        if (_touchB.TimeOnScreen >= _gestureTimeout){
+            if (!_isTouchBActive) return;
+            _isTouchBActive = false;
+            RecognizeGesture(out string Name, out float Score);
+
+            if (Score < _scoreTreshold) return; 
+            EventManager.Instance.AttackMove?.Invoke(Name);
+        } 
     }
 
     private void OnTouchBEnd(InputEventParams inputEventParams) 
     {
-        float distance = Vector2.Distance(_touchB.InitialScreenPosition, inputEventParams.ScreenPosition);
-        Vector2 direction = (_touchB.InitialScreenPosition - inputEventParams.ScreenPosition).normalized;
+        if (!_isTouchBActive) return;
+        //float distance = Vector2.Distance(_touchB.InitialScreenPosition, inputEventParams.ScreenPosition);
+        //Vector2 direction = (_touchB.InitialScreenPosition - inputEventParams.ScreenPosition).normalized;
 
-        _pointList.Add(inputEventParams.ScreenPosition);
+        if (_touchB.HasMoved){
+            _pointList.Add(inputEventParams.ScreenPosition);
 
-        RecognizeGesture(out string Name, out float Score);
+            RecognizeGesture(out string Name, out float Score);
 
-        if (Score < _scoreTreshold) return; 
-
-        EventManager.Instance.AttackMove?.Invoke(Name);
+            if (Score < _scoreTreshold) return; 
+            EventManager.Instance.AttackMove?.Invoke(Name);
+        }
+        else{
+            string name = "Stab";
+            EventManager.Instance.AttackMove?.Invoke(name);
+        }
     }
 
     #endregion
@@ -266,7 +329,6 @@ public class GestureController : MonoBehaviour
             Name = "";
             Score = 0;
         }
-     
     }
 }
 
@@ -275,14 +337,18 @@ public struct TouchData
     public Vector2 InitialScreenPosition;
     public Vector3 InitialWorldPosition;
     public float TimeOnScreen;
+    public float HoldTime;
+    public bool HasMoved;
+    public TouchState State;
 
-    public TouchData(Vector2 initScreenPos, Vector3 initWorldPos, float timeOnScreen) => 
-        (InitialScreenPosition, InitialWorldPosition, TimeOnScreen) = (initScreenPos, initWorldPos, timeOnScreen);
+    public TouchData(Vector2 initScreenPos, Vector3 initWorldPos, float timeOnScreen, float holdTime, bool hasMoved, TouchState state) => 
+        (InitialScreenPosition, InitialWorldPosition, TimeOnScreen, HoldTime, HasMoved, State) = (initScreenPos, initWorldPos, timeOnScreen, holdTime, hasMoved, state);
 }
 
-// public enum TouchState
-// {
-//     Tap,
-//     Hold,
-//     Drag
-// }
+public enum TouchState
+{
+    Tap,
+    Hold,
+    Drag,
+    Swipe
+}

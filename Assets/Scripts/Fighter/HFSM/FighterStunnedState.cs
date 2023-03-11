@@ -6,7 +6,7 @@ using System;
 public class FighterStunnedState : FighterBaseState
 {   
     private CollisionData _collisionData;
-     private ActionAttack _action;
+    private ActionAttack _action;
     private float _currentFrame = 0;
     private Vector2 _velocity;
     private float _animationSpeed;
@@ -39,6 +39,7 @@ public class FighterStunnedState : FighterBaseState
 
     public override void EnterState()
     {
+        _currentFrame = 0;
         _collisionData = _ctx.CollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
@@ -64,6 +65,8 @@ public class FighterStunnedState : FighterBaseState
         _ctx.CurrentMovement = _velocity;
         _ctx.Velocity = _ctx.CurrentMovement;
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
+
+        _ctx.HealthManager.UpdateHealth(_collisionData);
 
         if (_action.HitStun == 0) return;
 
