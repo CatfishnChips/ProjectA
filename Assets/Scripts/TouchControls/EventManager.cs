@@ -35,8 +35,8 @@ public class EventManager : MonoBehaviour
     public UnityAction<Vector2> Dash;
     public UnityAction<float> Walk;
     public UnityAction OnTap;
-    public UnityAction OnHoldA;
-    public UnityAction OnHoldB;
+    public UnityAction<bool> OnHoldA;
+    public UnityAction<bool> OnHoldB;
 
     #endregion
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Attack Action", menuName = "ScriptableObject/Action/Attack")]
 public class ActionAttack : ActionBase
-{
+{   
     [SerializeField] private Tags m_tags;
     [SerializeField] private int m_damage;
 
@@ -71,6 +71,50 @@ public class ActionAttack : ActionBase
     public AnimationClip BoxAnimationS {get => m_boxAnimationS;}
     public AnimationClip BoxAnimationA {get => m_boxAnimationA;}
     public AnimationClip BoxAnimationR {get => m_boxAnimationR;}
+
+    public bool _firstFrameStartup = true;
+    public bool _firstFrameActive = true;
+    public bool _firstFrameRecovery = true;
+
+    public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
+        _firstFrameStartup = true;
+        _firstFrameActive = true;
+        _firstFrameRecovery = true;
+    }
+
+    public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+         if (state.currentFrame <= state.action.StartFrames){
+            if(_firstFrameStartup){
+                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedS);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedS);
+                ctx.Animator.Play("AttackStart");
+                ctx.ColBoxAnimator.Play("AttackStart");
+                _firstFrameStartup = false;
+            }
+        }
+        else if (state.currentFrame > state.action.StartFrames && state.currentFrame <= state.action.StartFrames + state.action.ActiveFrames){
+            if(_firstFrameActive){
+                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedA);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedA);
+                //context.Animator.Play("AttackActive");
+                _firstFrameActive = false;
+            }
+        }
+        else if(state.currentFrame > state.action.StartFrames + state.action.ActiveFrames && 
+        state.currentFrame <= state.action.StartFrames + state.action.ActiveFrames + state.action.RecoveryFrames){
+            if(_firstFrameRecovery){
+                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedR);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedR);
+                //context.Animator.Play("AttackRecover");
+                _firstFrameRecovery = false;
+            }
+        }
+        state.currentFrame++;
+    }
+
+    public virtual void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){
+        
+    }
 }
 
 [System.Flags]

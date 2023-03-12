@@ -671,8 +671,6 @@ GameObject:
   - component: {fileID: 474040055458162382}
   - component: {fileID: 6976153750473958081}
   - component: {fileID: 6976153750473958082}
-  - component: {fileID: 6613479630579011162}
-  - component: {fileID: 21684642197104237}
   m_Layer: 0
   m_Name: FighterA 2
   m_TagString: Player
@@ -742,6 +740,7 @@ MonoBehaviour:
   - action: {fileID: 11400000, guid: 362ed136e013e434cbc9bd2f64069a44, type: 2}
   - action: {fileID: 11400000, guid: ceaa2bcdec764b04d89b11c8ca108686, type: 2}
   - action: {fileID: 11400000, guid: 121f39da6c55dbb4ea2d698e614e2615, type: 2}
+  - action: {fileID: 11400000, guid: aa8a835f251d1934ea68da2818fe808b, type: 2}
   _combosArray:
   - comboName: SwiftStrike
     moves:
@@ -846,33 +845,6 @@ MonoBehaviour:
   m_stamina: 3
   m_recoveryTime: 0
 --- !u!114 &6976153750473958082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815378929669242414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a367ab3c2dc6d74b9f04512ee74f48a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_health: 100
---- !u!114 &6613479630579011162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815378929669242414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b8a6a2c42a950940bc27f4a5fcd5565, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_stamina: 3
-  m_recoveryTime: 0
---- !u!114 &21684642197104237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

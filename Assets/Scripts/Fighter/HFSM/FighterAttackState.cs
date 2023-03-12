@@ -3,16 +3,8 @@ using UnityEngine.Events;
 
 public class FighterAttackState : FighterBaseState
 {
-    private ActionAttack _attackMove; 
-    private int _currentFrame = 0;
-
-    private bool _firstFrameStartup = true;
-    private bool _firstFrameActive = true;
-    private bool _firstFrameRecovery = true;
-
-    AnimationState startupAnim;
-    AnimationState activeAnim;
-    AnimationState recoveryAnim;
+    public ActionAttack action; 
+    public int currentFrame = 0;
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory):
     base(currentContext, fighterStateFactory){
@@ -21,7 +13,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= (_attackMove.StartFrames + _attackMove.ActiveFrames + _attackMove.RecoveryFrames)){
+        if (currentFrame >= (action.StartFrames + action.ActiveFrames + action.RecoveryFrames)){
             EventManager.Instance.FighterAttackEnded?.Invoke();
             SwitchState(_factory.Idle());
         }
@@ -38,56 +30,51 @@ public class FighterAttackState : FighterBaseState
             _ctx.ComboListener.isActive = true;
         }
 
-        _currentFrame = 0;
-        _ctx.AttackPerformed = false;
+        currentFrame = 0;
         _ctx.IsInputLocked = true;
-
-        _firstFrameStartup = true;
-        _firstFrameActive = true;
-        _firstFrameRecovery = true;
 
         string attackName = _ctx.AttackName;
         if (_ctx.IsGrounded){
-            _attackMove = _ctx.AttackMoveDict[attackName];
+            action = _ctx.AttackMoveDict[attackName];
         }
         else{
 
         }
 
-        _attackMove = _ctx.ComboListener.AttackOverride(_attackMove);
+        action = _ctx.ComboListener.AttackOverride(action);
 
-        Debug.Log(_attackMove.name);
+        //Debug.Log(_attackMove.name);
+
+        action.EnterStateFunction(_ctx, this);
 
         _ctx.IsGravityApplied = false; // Get this value from the attack action!
         
+        _ctx.ClipOverrides["DirectPunchA"] = action.MeshAnimationA;
+        _ctx.ClipOverrides["DirectPunchR"] = action.MeshAnimationR;
+        _ctx.ClipOverrides["DirectPunchS"] = action.MeshAnimationS;
 
-        _ctx.ClipOverrides["DirectPunchA"] = _attackMove.MeshAnimationA;
-        _ctx.ClipOverrides["DirectPunchR"] = _attackMove.MeshAnimationR;
-        _ctx.ClipOverrides["DirectPunchS"] = _attackMove.MeshAnimationS;
-
-        _ctx.ColBoxClipOverrides["Uppercut_Startup"] = _attackMove.BoxAnimationS;
-        _ctx.ColBoxClipOverrides["Uppercut_Active"] = _attackMove.BoxAnimationA;
-        _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = _attackMove.BoxAnimationR;
+        _ctx.ColBoxClipOverrides["Uppercut_Startup"] = action.BoxAnimationS;
+        _ctx.ColBoxClipOverrides["Uppercut_Active"] = action.BoxAnimationA;
+        _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = action.BoxAnimationR;
 
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
         _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
 
-        _ctx.HitResponder.UpdateData(_attackMove);
+        _ctx.HitResponder.UpdateData(action);
 
-        EventManager.Instance.FighterAttackStarted?.Invoke(_attackMove.name);
-
-        //_attackMove.AdjustAnimationTimes();
+        EventManager.Instance.FighterAttackStarted?.Invoke(action.name);
     }
 
     public override void ExitState()
     {
+        _ctx.AttackPerformed = false;
         _ctx.IsInputLocked = false;
         _ctx.IsGravityApplied = true;
+        action.ExitStateFunction(_ctx, this);
     }
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
@@ -95,33 +82,8 @@ public class FighterAttackState : FighterBaseState
     }
 
     public override void FixedUpdateState(){
-        if (_currentFrame <= _attackMove.StartFrames){
-            if(_firstFrameStartup){
-                _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedS);
-                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedS);
-                _ctx.Animator.Play("AttackStart");
-                _ctx.ColBoxAnimator.Play("AttackStart");
-                _firstFrameStartup = false;
-            }
-        }
-        else if (_currentFrame > _attackMove.StartFrames && _currentFrame <= _attackMove.StartFrames + _attackMove.ActiveFrames){
-            if(_firstFrameActive){
-                _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedA);
-                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedA);
-                //_ctx.Animator.Play("AttackActive");
-                _firstFrameActive = false;
-            }
-        }
-        else if(_currentFrame > _attackMove.StartFrames + _attackMove.ActiveFrames && 
-        _currentFrame <= _attackMove.StartFrames + _attackMove.ActiveFrames + _attackMove.RecoveryFrames){
-            if(_firstFrameRecovery){
-                _ctx.Animator.SetFloat("SpeedVar", _attackMove.AnimSpeedR);
-                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _attackMove.AnimSpeedR);
-                //_ctx.Animator.Play("AttackRecover");
-                _firstFrameRecovery = false;
-            }
-        }
+        
+        action.FixedUpdateFunction(_ctx, this);
         CheckSwitchState();
-        _currentFrame++;
     }
 }

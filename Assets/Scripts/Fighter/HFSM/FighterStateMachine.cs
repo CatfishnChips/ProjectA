@@ -50,6 +50,8 @@ public class FighterStateMachine : MonoBehaviour
     private bool _isJumpPressed;
     private bool _isDashPressed;
     private bool _isDodgePressed;
+    private bool _isHoldingTouchA;
+    private bool _isHoldingTouchB;
     private bool _isGrounded;
     private bool _attackPerformed;
     private string _attackName;
@@ -81,6 +83,8 @@ public class FighterStateMachine : MonoBehaviour
     public bool IsDashPressed{get{return _isDashPressed;} set{_isDashPressed = value;}}
     public bool IsDodgePressed{get{return _isDodgePressed;} set {_isDodgePressed = value;}}
     public bool IsGrounded{get{return _isGrounded;}}
+    public bool IsHoldingTouchA{get{return _isHoldingTouchA;}}
+    public bool IsHoldingTouchB{get{return _isHoldingTouchB;}}
     public bool AttackPerformed{get{return _attackPerformed;} set{_attackPerformed = value;}}
     public string AttackName{get{return _attackName;} set{_attackName = value;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
@@ -129,6 +133,8 @@ public class FighterStateMachine : MonoBehaviour
         _isJumpPressed = false;
         _isDodgePressed = false;
         _isDashPressed = false;
+        _isHoldingTouchA = false;
+        _isHoldingTouchB = false;
         _attackPerformed = false;
         _isHurt = false;
         _isInputLocked = false;
@@ -154,9 +160,10 @@ public class FighterStateMachine : MonoBehaviour
 
         foreach (ActionAttribution attribution in _actionAttribution)
         {
-            if (attribution.action.GetType() == typeof(ActionAttack))
+            if (attribution.action.GetType() == typeof(ActionAttack) || attribution.action.GetType() == typeof(ActionContinuousAttack))
             {
-                _attackMoveDict.Add(attribution.action.name, attribution.action as ActionAttack);
+                ActionAttack action = Instantiate(attribution.action) as ActionAttack;
+                _attackMoveDict.Add(action.name, action);
             }
             else 
             {
@@ -297,12 +304,13 @@ public class FighterStateMachine : MonoBehaviour
 
     }
 
-    private void OnHoldA(){
-
+    private void OnHoldA(bool value){
+        _isHoldingTouchA = value;
     }
 
-    private void OnHoldB(){
-
+    private void OnHoldB(bool value){
+        _isHoldingTouchB = value;
+        Debug.Log(value);
     }
 
     // private IEnumerator InputTimeout(ref bool inputPerformed){

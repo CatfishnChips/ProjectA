@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71737ade6c6bbef49821030ccd89aa1e, type: 3}
+  m_Name: SpinContinuousAttackAction
+  m_EditorClassIdentifier: 
+  name: Spin
+  m_tags: 0
+  m_damage: 10
+  m_priority: 0
+  m_part: 1
+  m_hitStun: 10
+  m_blockStun: 0
+  m_freeze: 0
+  m_knockup: 0
+  m_knockback: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_screenShakeVelocity: {x: 0, y: 0, z: 0}
+  m_startFrames: 15
+  m_activeFrames: 26
+  m_recoveryFrames: 80
+  m_meshAnimationS: {fileID: 5173490537559972325, guid: 13944f2126251324ca41f7b20f06276f,
+    type: 3}
+  m_meshAnimationA: {fileID: 394684705857075140, guid: 13944f2126251324ca41f7b20f06276f,
+    type: 3}
+  m_meshAnimationR: {fileID: 2108908939361071542, guid: 13944f2126251324ca41f7b20f06276f,
+    type: 3}
+  m_boxAnimationS: {fileID: 0}
+  m_boxAnimationA: {fileID: 0}
+  m_boxAnimationR: {fileID: 0}
+  m_startCondition: 0
+  m_activeCondition: 0
+  m_recoveryCondition: 0

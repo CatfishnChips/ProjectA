@@ -131,7 +131,10 @@ public class GestureController : MonoBehaviour
         _touchA.HoldTime += Time.deltaTime;
 
         if(_touchA.HoldTime > 0){
-            EventManager.Instance.OnHoldA?.Invoke();
+            EventManager.Instance.OnHoldA?.Invoke(true);
+        }
+        else{
+            EventManager.Instance.OnHoldA?.Invoke(false);
         }
 
         // Swipe
@@ -148,6 +151,8 @@ public class GestureController : MonoBehaviour
         _touchA.HasMoved = true;
         _touchA.TimeOnScreen += Time.deltaTime;
         _touchA.HoldTime = 0f;
+
+        EventManager.Instance.OnHoldA?.Invoke(false);
         
         // Swipe
         if (_isSwipe && inputEventDragParams.Delta.magnitude < _swipeDelta) _isSwipe = false;
@@ -177,6 +182,8 @@ public class GestureController : MonoBehaviour
         // Joystick
         _deltaVectorX = 0;
         EventManager.Instance.Walk?.Invoke(_deltaVectorX);
+
+        EventManager.Instance.OnHoldA?.Invoke(false);
 
         if (distance < _swipeDistance) _isSwipe = false;
         if (_touchA.TimeOnScreen >= _swipeTimeout) _isSwipe = false;
@@ -220,8 +227,11 @@ public class GestureController : MonoBehaviour
         _touchB.TimeOnScreen += Time.deltaTime;
         _touchB.HoldTime += Time.deltaTime;
 
-        if(_touchB.HoldTime > 0){
-            EventManager.Instance.OnHoldB?.Invoke();
+        if (_touchB.HoldTime > 0){
+            EventManager.Instance.OnHoldB?.Invoke(true);
+        }
+        else{
+            EventManager.Instance.OnHoldB?.Invoke(false);
         }
 
         if (_pointAddTimer <= 0) 
@@ -246,6 +256,8 @@ public class GestureController : MonoBehaviour
         _touchB.TimeOnScreen += Time.deltaTime;
         _touchB.HoldTime = 0f;
 
+        EventManager.Instance.OnHoldB?.Invoke(false);
+
         if (_pointAddTimer <= 0) 
         {
             _pointList.Add(inputEventDragParams.ScreenPosition);
@@ -267,6 +279,7 @@ public class GestureController : MonoBehaviour
         if (!_isTouchBActive) return;
         //float distance = Vector2.Distance(_touchB.InitialScreenPosition, inputEventParams.ScreenPosition);
         //Vector2 direction = (_touchB.InitialScreenPosition - inputEventParams.ScreenPosition).normalized;
+        EventManager.Instance.OnHoldB?.Invoke(false);
 
         if (_touchB.HasMoved){
             _pointList.Add(inputEventParams.ScreenPosition);
