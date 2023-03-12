@@ -772,7 +772,7 @@ MonoBehaviour:
   _currentSuperStateName: 
   _dashDistance: 1
   _dashTime: 10
-  _airMoveSpeed: 0
+  _airMoveSpeed: 1
   _inputTimeoutTime: 10
   _jumpHeight: 1
   _jumpTime: 24

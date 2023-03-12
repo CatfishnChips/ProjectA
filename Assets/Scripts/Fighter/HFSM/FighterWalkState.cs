@@ -56,7 +56,7 @@ public class FighterWalkState : FighterBaseState
             _ctx.Animator.SetFloat("Blend", _ctx.DeltaTarget);
         }
         else{
-            _ctx.Velocity = new Vector2(_ctx.DeltaTarget, _ctx.Velocity.y);
+            _ctx.CurrentMovement = new Vector2(_ctx.DeltaTarget * _ctx.AirMoveSpeed, _ctx.Velocity.y);
         }
 
         CheckSwitchState();

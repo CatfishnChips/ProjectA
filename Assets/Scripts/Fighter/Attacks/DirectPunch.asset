@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f8c6625b41fc84db67271d35f757d9, type: 3}
   m_Name: DirectPunch
   m_EditorClassIdentifier: 
-  name: DirectPunch
+  name: Stab
   m_tags: 545
   m_damage: 10
   m_priority: 0
