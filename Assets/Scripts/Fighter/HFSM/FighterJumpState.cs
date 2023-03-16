@@ -12,7 +12,6 @@ public class FighterJumpState : FighterBaseState
 
     public FighterJumpState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Jump";
     }
 
     public override void CheckSwitchState()
@@ -24,6 +23,7 @@ public class FighterJumpState : FighterBaseState
 
     public override void EnterState()
     {
+        _ctx.IsJumpPressed = false;
         _currentFrame = 0;
         _action = _ctx.ActionDictionary["Jump"] as ActionDefault;
         AnimationClip clip = _action.meshAnimation;
@@ -45,22 +45,19 @@ public class FighterJumpState : FighterBaseState
     public override void ExitState()
     {
         //_ctx.Gravity = Physics2D.gravity.y;
-        _ctx.IsJumpPressed = false;
     }
 
     public override void FixedUpdateState()
     {
-        CheckSwitchState();
         _currentFrame++;
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
-    {
-        
+    { 
     }
 }

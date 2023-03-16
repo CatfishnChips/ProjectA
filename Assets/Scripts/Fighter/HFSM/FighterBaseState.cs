@@ -3,7 +3,6 @@ using UnityEngine;
 public abstract class FighterBaseState
 {
     protected bool _isRootState = false;
-    protected string _stateName;
     protected FighterStateMachine _ctx;
     protected FighterStateFactory _factory;
     protected FighterBaseState _currentSubState;
@@ -70,24 +69,6 @@ public abstract class FighterBaseState
     protected void SetSubState(FighterBaseState newSubState){
         _currentSubState = newSubState;
         _currentSubState.SetSuperState(this);
-    }
-
-    public string StateName{get{return _stateName;}}
-    public string SubStateName(){
-        if(_currentSubState != null){
-            return _currentSubState.StateName;
-        }
-        else{
-            return "None";
-        }
-    }
-    public string SuperStateName(){
-        if(_currentSuperState != null){
-            return _currentSuperState.StateName;
-        }
-        else{
-            return "None";
-        }
     }
 
     public static float AdjustAnimationTime(AnimationClip clip, int frames){

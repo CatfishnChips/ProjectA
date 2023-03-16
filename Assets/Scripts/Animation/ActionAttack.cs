@@ -24,6 +24,9 @@ public class ActionAttack : ActionBase
     [SerializeField] private float m_knockup;
     [SerializeField] private float m_knockback;
 
+    [Header("Gravity Properties")]
+    [SerializeField] private bool m_gravity;
+
     [Header("SFX Properties")]
     [SerializeField] private AudioClip m_sound;
     [SerializeField] private float m_soundLevel;
@@ -57,6 +60,7 @@ public class ActionAttack : ActionBase
     public int Freeze {get => m_freeze;}
     public float Knockup {get => m_knockup;}
     public float Knockback {get => m_knockback;}
+    public bool Gravity {get => m_gravity;}
     public AudioClip Sound {get => m_sound;}
     public float SoundLevel {get => m_soundLevel;}
     public Vector3 ScreenShakeVelocity {get => m_screenShakeVelocity;}
@@ -80,6 +84,7 @@ public class ActionAttack : ActionBase
         _firstFrameStartup = true;
         _firstFrameActive = true;
         _firstFrameRecovery = true;
+        ctx.IsGravityApplied = m_gravity;
     }
 
     public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
@@ -96,7 +101,7 @@ public class ActionAttack : ActionBase
             if(_firstFrameActive){
                 ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedA);
                 ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedA);
-                //context.Animator.Play("AttackActive");
+                ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
         }
@@ -105,7 +110,7 @@ public class ActionAttack : ActionBase
             if(_firstFrameRecovery){
                 ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedR);
                 ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedR);
-                //context.Animator.Play("AttackRecover");
+                ctx.Animator.Play("AttackRecover");
                 _firstFrameRecovery = false;
             }
         }
@@ -113,7 +118,7 @@ public class ActionAttack : ActionBase
     }
 
     public virtual void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        
+        ctx.IsGravityApplied = true;
     }
 }
 

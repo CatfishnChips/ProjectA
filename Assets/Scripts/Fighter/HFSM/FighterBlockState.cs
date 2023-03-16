@@ -13,7 +13,6 @@ public class FighterBlockState : FighterBaseState
 
     public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Block";
     }
 
     public override void CheckSwitchState()
@@ -33,7 +32,6 @@ public class FighterBlockState : FighterBaseState
         _collisionData = _ctx.CollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
-        _ctx.IsInputLocked = true;
 
         if (_action.Knockback!= 0){
             _velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
@@ -61,7 +59,6 @@ public class FighterBlockState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.IsInputLocked = false;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = _ctx.CurrentMovement;
     }
@@ -74,11 +71,9 @@ public class FighterBlockState : FighterBaseState
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
     {
-
     }
 }

@@ -14,7 +14,6 @@ public class FighterStunnedState : FighterBaseState
 
     public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Stunned";
         _isRootState = true;
     }
 
@@ -43,12 +42,6 @@ public class FighterStunnedState : FighterBaseState
         _collisionData = _ctx.CollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
-        _ctx.IsInputLocked = true;
-
-        // Vector2 direction = Quaternion.Euler(0, 0, angle) * Vector2.right;
-        // Debug.Log("Knockback Direction: " + direction);
-        // Vector2 velocity = direction * knockback;
-        // _ctx.Velocity += velocity;
 
         _velocity = Vector2.zero;
 
@@ -88,7 +81,6 @@ public class FighterStunnedState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.IsInputLocked = false;
         _ctx.Gravity = Physics2D.gravity.y;
     }
 
@@ -114,9 +106,8 @@ public class FighterStunnedState : FighterBaseState
             //Debug.Log("Velocity Applied: " + _ctx.Velocity);
         }
         
-
-        CheckSwitchState();
         _currentFrame++;
+        CheckSwitchState();
 
         // If the fighter is hurt again before the stun duration expires, duration is refreshed.
         // if (_ctx.IsHurt)
@@ -128,12 +119,10 @@ public class FighterStunnedState : FighterBaseState
     }
 
     public override void InitializeSubState()
-    {
-        
+    { 
     }
 
     public override void UpdateState()
     {
-       
     }
 }

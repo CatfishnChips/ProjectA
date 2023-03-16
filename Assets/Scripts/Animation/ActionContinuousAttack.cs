@@ -16,42 +16,44 @@ public class ActionContinuousAttack : ActionAttack
     public bool ActiveCondition {get {return m_activeCondition;}}
     public bool RecoveryCondition {get {return m_recoveryCondition;}}
 
-    public override void EnterStateFunction(FighterStateMachine context, FighterAttackState state)
+    public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
-        base.EnterStateFunction(context, state);
+        base.EnterStateFunction(ctx, state);
         _pauseTime = false;
         _timePaused = false;
     }
 
-    public override void FixedUpdateFunction(FighterStateMachine context, FighterAttackState state)
+    public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
          if (state.currentFrame <= state.action.StartFrames){
             if(_firstFrameStartup){
-                context.Animator.SetFloat("SpeedVar", state.action.AnimSpeedS);
-                context.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedS);
-                context.Animator.Play("AttackStart");
-                context.ColBoxAnimator.Play("AttackStart");
+                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedS);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedS);
+                ctx.Animator.Play("AttackStart");
+                ctx.ColBoxAnimator.Play("AttackStart");
                 _firstFrameStartup = false;
             }
         }
         else if (state.currentFrame > state.action.StartFrames && state.currentFrame <= state.action.StartFrames + state.action.ActiveFrames){
             if(_firstFrameActive){
-                context.Animator.SetFloat("SpeedVar", state.action.AnimSpeedA);
-                context.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedA);
+                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedA);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedA);
+                ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
 
+            // REWORK HERE!
             if (!_timePaused){
-                _pauseTime = context.IsHoldingTouchB;
+                _pauseTime = ctx.IsHoldingTouchB;
                 _timePaused = !_pauseTime;
-                context.Animator.SetBool("LockTransition", _pauseTime);
             }
         }
         else if(state.currentFrame > state.action.StartFrames + state.action.ActiveFrames && 
         state.currentFrame <= state.action.StartFrames + state.action.ActiveFrames + state.action.RecoveryFrames){
             if(_firstFrameRecovery){
-                context.Animator.SetFloat("SpeedVar", state.action.AnimSpeedR);
-                context.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedR);
+                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedR);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedR);
+                ctx.Animator.Play("AttackRecover");
                 _firstFrameRecovery = false;
             }
         }
@@ -60,9 +62,8 @@ public class ActionContinuousAttack : ActionAttack
         state.currentFrame++;
     }
 
-    public override void ExitStateFunction(FighterStateMachine context, FighterAttackState state)
+    public override void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
-        base.ExitStateFunction(context, state);
-        context.Animator.SetBool("LockTransition", false);
+        base.ExitStateFunction(ctx, state);
     }
 }

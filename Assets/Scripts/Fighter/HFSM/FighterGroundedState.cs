@@ -4,7 +4,6 @@ public class FighterGroundedState : FighterBaseState
 {
     public FighterGroundedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Grounded";
         _isRootState = true;
     }
 
@@ -28,13 +27,12 @@ public class FighterGroundedState : FighterBaseState
     }
 
     public override void ExitState()
-    {
-        
+    {    
     }
 
     public override void FixedUpdateState()
     {
-        if (_ctx.Velocity.x != 0 && _ctx.IsDashPressed)
+        if (_ctx.Velocity.x != 0 && _ctx.CurrentSubState == FighterStates.Dash)
         _ctx.Rigidbody2D.velocity = new Vector2(_ctx.Velocity.x, _ctx.Gravity);
         CheckSwitchState();
     }
@@ -53,7 +51,6 @@ public class FighterGroundedState : FighterBaseState
     }
 
     public override void UpdateState()
-    {
-        
+    {     
     }
 }

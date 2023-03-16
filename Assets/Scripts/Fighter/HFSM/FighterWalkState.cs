@@ -4,7 +4,6 @@ public class FighterWalkState : FighterBaseState
 {
     public FighterWalkState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Walk";
     }
 
     public override void CheckSwitchState()
@@ -42,16 +41,6 @@ public class FighterWalkState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        
-    }
-
-    public override void InitializeSubState()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void UpdateState()
-    {
         if (_ctx.IsGrounded){
             _ctx.Animator.SetFloat("Blend", _ctx.DeltaTarget);
         }
@@ -60,5 +49,13 @@ public class FighterWalkState : FighterBaseState
         }
 
         CheckSwitchState();
+    }
+
+    public override void InitializeSubState()
+    {
+    }
+
+    public override void UpdateState()
+    {
     }
 }

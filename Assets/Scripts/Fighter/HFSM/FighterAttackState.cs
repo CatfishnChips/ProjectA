@@ -8,7 +8,6 @@ public class FighterAttackState : FighterBaseState
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory):
     base(currentContext, fighterStateFactory){
-        _stateName = "Attack";
     }
 
     public override void CheckSwitchState()
@@ -25,13 +24,13 @@ public class FighterAttackState : FighterBaseState
     }
 
     public override void EnterState()
-    {
+    {   
+        _ctx.AttackPerformed = false;
+        currentFrame = 0;
+
         if(!_ctx.ComboListener.isActive){
             _ctx.ComboListener.isActive = true;
         }
-
-        currentFrame = 0;
-        _ctx.IsInputLocked = true;
 
         string attackName = _ctx.AttackName;
         if (_ctx.IsGrounded){
@@ -43,11 +42,7 @@ public class FighterAttackState : FighterBaseState
 
         action = _ctx.ComboListener.AttackOverride(action);
 
-        //Debug.Log(_attackMove.name);
-
         action.EnterStateFunction(_ctx, this);
-
-        _ctx.IsGravityApplied = false; // Get this value from the attack action!
         
         _ctx.ClipOverrides["DirectPunchA"] = action.MeshAnimationA;
         _ctx.ClipOverrides["DirectPunchR"] = action.MeshAnimationR;
@@ -67,9 +62,6 @@ public class FighterAttackState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.AttackPerformed = false;
-        _ctx.IsInputLocked = false;
-        _ctx.IsGravityApplied = true;
         action.ExitStateFunction(_ctx, this);
     }
 

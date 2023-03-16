@@ -38,6 +38,8 @@ public class FighterStateMachine : MonoBehaviour
 
     private FighterStateFactory _states;
     private FighterBaseState _currentState;
+    [ReadOnly] [SerializeField] private FighterStates _currentRootState = default;
+    [ReadOnly] [SerializeField] private FighterStates _currentSubState = default;
 
     private HitResponder _hitResponder;
     private HurtResponder _hurtResponder;
@@ -47,17 +49,23 @@ public class FighterStateMachine : MonoBehaviour
     private StaminaManager _staminaManager;
 
     private Vector2 _velocity;
-    private bool _isJumpPressed;
-    private bool _isDashPressed;
-    private bool _isDodgePressed;
+
+    #region Input Booleans
+    
+    private Input<int> _isMovePressed = new Input<int>(0);
+    private Input<bool> _isJumpPressed = new Input<bool>(false);
+    private Input<bool> _isDashPressed = new Input<bool>(false);
+    private Input<bool> _isDodgePressed = new Input<bool>(false);
+    private Input<bool> _isAttackPerformed = new Input<bool>(false);
+
+    #endregion
+
+    [SerializeField] private int _inputDelay = 2; // Amount of time before registering an input. Can be moved elsewhere!
+
     private bool _isHoldingTouchA;
     private bool _isHoldingTouchB;
     private bool _isGrounded;
-    private bool _attackPerformed;
     private string _attackName;
-    [SerializeField] string _currentStateName;
-    [SerializeField] string _currentSubStateName;
-    [SerializeField] string _currentSuperStateName;
     [SerializeField] private float _dashDistance = 1f;
     [SerializeField] private int _dashTime; // in frames
     [SerializeField] private float _airMoveSpeed;
@@ -70,7 +78,6 @@ public class FighterStateMachine : MonoBehaviour
     private float _deltaTarget;
     private CollisionData _collisionData;
     private bool _isHurt;
-    private bool _isInputLocked;
     private bool _isGravityApplied;
     private Vector2 _swipeDirection;
     [SerializeField] private LayerMask _rayCastLayerMask;
@@ -79,13 +86,16 @@ public class FighterStateMachine : MonoBehaviour
     private Vector2 _currentMovement;
     [SerializeField] private float _jumpDistance = 1f;
 
-    public bool IsJumpPressed{get{return _isJumpPressed;} set{_isJumpPressed = value;}}
-    public bool IsDashPressed{get{return _isDashPressed;} set{_isDashPressed = value;}}
-    public bool IsDodgePressed{get{return _isDodgePressed;} set {_isDodgePressed = value;}}
+    public FighterStates CurrentRootState{get{return _currentRootState;} set{_currentRootState = value;}}
+    public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
+
+    public bool IsJumpPressed{get{return _isJumpPressed.Value;} set{_isJumpPressed.Value = value;}}
+    public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
+    public bool IsDodgePressed{get{return _isDodgePressed.Value;} set {_isDodgePressed.Value = value;}}
     public bool IsGrounded{get{return _isGrounded;}}
     public bool IsHoldingTouchA{get{return _isHoldingTouchA;}}
     public bool IsHoldingTouchB{get{return _isHoldingTouchB;}}
-    public bool AttackPerformed{get{return _attackPerformed;} set{_attackPerformed = value;}}
+    public bool AttackPerformed{get{return _isAttackPerformed.Value;} set{_isAttackPerformed.Value = value;}}
     public string AttackName{get{return _attackName;} set{_attackName = value;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
@@ -110,7 +120,6 @@ public class FighterStateMachine : MonoBehaviour
     public HealthManager HealthManager {get{return _healthManager;}}
     public StaminaManager StaminaManager {get{return _staminaManager;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
-    public bool IsInputLocked {get{return _isInputLocked;} set{_isInputLocked = value;}}
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
     public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
     
@@ -130,14 +139,14 @@ public class FighterStateMachine : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
-        _isJumpPressed = false;
-        _isDodgePressed = false;
-        _isDashPressed = false;
+        _isMovePressed.Value = 0;
+        _isJumpPressed.Value = false;
+        _isDodgePressed.Value = false;
+        _isDashPressed.Value = false;
         _isHoldingTouchA = false;
         _isHoldingTouchB = false;
-        _attackPerformed = false;
+        _isAttackPerformed.Value = false;
         _isHurt = false;
-        _isInputLocked = false;
         _isGravityApplied = true;
         _gravity = Physics2D.gravity.y;
         _states = new FighterStateFactory(this);
@@ -169,9 +178,6 @@ public class FighterStateMachine : MonoBehaviour
             {
                 _actionDictionary.Add(attribution.action.name, attribution.action);
             }
-
-            //Debug.Log("Action " + attribution.action.name + " has been added to the dictionary.");
-            
         }
 
         if (TryGetComponent<HitResponder>(out HitResponder hitResponder)) _hitResponder = hitResponder;
@@ -183,9 +189,9 @@ public class FighterStateMachine : MonoBehaviour
 
     void Start()
     {
-        EventManager.Instance.Walk += OnMove;
+        EventManager.Instance.Walk += ListenToMove;
         EventManager.Instance.Dash += OnDash;
-        EventManager.Instance.AttackMove += OnAttack;
+        EventManager.Instance.AttackMove += ListenToAttack;
         EventManager.Instance.OnTap += OnTap;
         EventManager.Instance.OnHoldA += OnHoldA;
         EventManager.Instance.OnHoldB += OnHoldB;
@@ -199,9 +205,9 @@ public class FighterStateMachine : MonoBehaviour
 
     private void OnDisable() 
     {
-        EventManager.Instance.Walk -= OnMove;
+        EventManager.Instance.Walk -= ListenToMove;
         EventManager.Instance.Dash -= OnDash;
-        EventManager.Instance.AttackMove -= OnAttack;
+        EventManager.Instance.AttackMove -= ListenToAttack;
         EventManager.Instance.OnTap -= OnTap;
         EventManager.Instance.OnHoldA -= OnHoldA;
         EventManager.Instance.OnHoldB -= OnHoldB;
@@ -222,51 +228,38 @@ public class FighterStateMachine : MonoBehaviour
             _comboListener.FixedUpdate();
         }
         _currentState.FixedUpdateStates();
-        _currentStateName = _currentState.StateName;
-        _currentSubStateName = _currentState.SubStateName();
-        _currentSubStateName = _currentState.SuperStateName();
     }
 
     private void Update(){
         _currentState.UpdateStates();
-
         //_velocity.x = Mathf.MoveTowards(_velocity.x, _deltaTarget, 1f * Time.deltaTime);
     }
 
     public void ListenToJump(){
-        if (_isInputLocked) return;
-        if (_isJumpPressed) return;
-        if (!_isGrounded) return;
-        //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
-        _isJumpPressed = true;
-
-        //StartCoroutine(InputTimeout(ref _isJumpPressed));
+        StartCoroutine(InputDelay(_isJumpPressed));
     }
 
     public void ListenToDash(){
-        if (_isInputLocked) return;
-        if (_isDashPressed) return;
-        _isDashPressed = true;
+        StartCoroutine(InputDelay(_isDashPressed));
     }
 
     public void ListenToDodge(){
-        if (_isInputLocked) return;
-        if (_isDodgePressed) return;
-        _isDodgePressed = true;
+        StartCoroutine(InputDelay(_isDodgePressed));
     }
 
-    public void OnMove(float delta){
-        _deltaTarget = delta;
+    public void ListenToMove(float value){
+        if (value < 0) value = -1;
+        else if (value > 0) value = 1;
+
+
+        _isMovePressed.Value = (int)value;
+        _deltaTarget = value;
     }
 
-    public void OnAttack(string attackName){
-        if (_isInputLocked) return;
-        if (_attackPerformed) return;
-        //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
+    public void ListenToAttack(string attackName){
         if (attackName == "L") return; // Temporary Bugfix
         _attackName = attackName;
-        _attackPerformed = true;
-        //StartCoroutine(InputTimeout(ref _attackPerformed));
+        StartCoroutine(InputDelay(_isAttackPerformed));
     }
 
     public void OnHit(CollisionData data){
@@ -281,7 +274,6 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     private void OnDash(Vector2 direction){
-        if (_isInputLocked) return;
         _swipeDirection = direction;
         //Debug.Log("Swipe Direction: " + direction);
 
@@ -294,10 +286,6 @@ public class FighterStateMachine : MonoBehaviour
         else if (direction.y >= 0.5f){
             ListenToDodge();
         }
-
-        //if (_currentSubStateName == "Stunned" || _currentSubStateName == "Attack") return;
-
-        //StartCoroutine(InputTimeout());
     }
 
     private void OnTap(){
@@ -310,28 +298,51 @@ public class FighterStateMachine : MonoBehaviour
 
     private void OnHoldB(bool value){
         _isHoldingTouchB = value;
-        Debug.Log(value);
+        //Debug.Log(value);
     }
 
-    // private IEnumerator InputTimeout(ref bool inputPerformed){
-    //     int currentFrame = 0;
+    private IEnumerator InputDelayContinuous(Input<bool> input){
+        for (int i = 0; i < _inputDelay; i++){
+            yield return new WaitForFixedUpdate();
+        }
+        input.Value = true;
+    }
 
-    //     while (inputPerformed) 
-    //     {
-    //         yield return new WaitForFixedUpdate();
+    private IEnumerator InputDelay(Input<bool> input){
+        for (int i = 0; i < _inputDelay; i++){
+            yield return new WaitForFixedUpdate();
+        }
+        if (input.Value) yield break;
+        StartCoroutine(InputBuffer(input));
+    }
 
-    //         if (currentFrame >= _inputTimeoutTime){
-    //             inputPerformed = false;
-    //             break;
-    //         }
-    //         currentFrame++;
-    //     }
-    //     yield return null;
-    // }
+    private IEnumerator InputBuffer(Input<bool> input){
+        int currentFrame = 0;
+        input.Value = true;
+
+        while (input.Value) 
+        {
+            currentFrame++;
+            if (currentFrame >= _inputTimeoutTime){
+                input.Value = false;
+                break;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+    }
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.blue;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
         Gizmos.DrawLine(Vector3.zero, Vector3.zero + Vector3.down * _rayCastLenght);
+    }
+}
+
+public class Input<T>
+{
+    private T type;
+    public T Value {get {return type;} set{type = value;}}
+    public Input(T reference){
+        type = reference;
     }
 }

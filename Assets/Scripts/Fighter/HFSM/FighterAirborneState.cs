@@ -6,13 +6,12 @@ public class FighterAirborneState : FighterBaseState
 
     public FighterAirborneState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Airborne";
         _isRootState = true;
     }
 
     public override void CheckSwitchState()
     {
-        if(_ctx.IsGrounded && !_ctx.IsJumpPressed){
+        if(_ctx.IsGrounded && _ctx.CurrentSubState != FighterStates.Jump){
             SwitchState(_factory.Grounded());
         }
 
@@ -24,7 +23,6 @@ public class FighterAirborneState : FighterBaseState
     public override void EnterState()
     {
         InitializeSubState();
-        
         _rb = _ctx.Rigidbody2D;
     }
 
@@ -52,7 +50,7 @@ public class FighterAirborneState : FighterBaseState
             _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x , 0);
         }
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-        Debug.Log("Velocity Applied: " + _ctx.Velocity);
+        //Debug.Log("Velocity Applied: " + _ctx.Velocity);
         CheckSwitchState();
     }
 

@@ -45,7 +45,7 @@ public class GestureController : MonoBehaviour
 
     [Header("Joystick Settings")]
     [SerializeField] private float _sensitivity; // Active area of the Joystick.
-    //[SerializeField] private float _deadzone;
+    [SerializeField] private float _deadzone; // Minimum distance needed before registering the input.
     private Vector2 _virtualJoystick; 
     private float _deltaVectorX;
 
@@ -54,8 +54,9 @@ public class GestureController : MonoBehaviour
     #region Touch B Variables
 
     [Header("Gesture Settings")]
-    [SerializeField] private float _gestureTimeout = 1f;
+    [SerializeField] private float _gestureTimeout = 1f; // Screen time before touch losing the ability to register a gesture.
     [SerializeField] private float _scoreTreshold = 0.25f; // Least amount of score required for a gesture to be recognized.
+    [SerializeField] private float _holdTime = 0.25f; // Minimum amount of time required to register a stationary touch as holding.
     [SerializeField] private float _pointAddInterval; // Currently not used. Only limit add interval if there is performance problems.
     private bool _isTouchBActive;
     private float _pointAddTimer;
@@ -130,7 +131,7 @@ public class GestureController : MonoBehaviour
         _touchA.TimeOnScreen += Time.deltaTime;
         _touchA.HoldTime += Time.deltaTime;
 
-        if(_touchA.HoldTime > 0){
+        if(_touchA.HoldTime > _holdTime){
             EventManager.Instance.OnHoldA?.Invoke(true);
         }
         else{
@@ -227,7 +228,17 @@ public class GestureController : MonoBehaviour
         _touchB.TimeOnScreen += Time.deltaTime;
         _touchB.HoldTime += Time.deltaTime;
 
-        if (_touchB.HoldTime > 0){
+        if (_touchB.HoldTime > _holdTime){
+
+            if (_touchB.TimeOnScreen <= _gestureTimeout){
+                if (!_isTouchBActive) return;
+                _isTouchBActive = false;
+                RecognizeGesture(out string Name, out float Score);
+
+                if (Score < _scoreTreshold) return; 
+
+                EventManager.Instance.AttackMove?.Invoke(Name);
+            } 
             EventManager.Instance.OnHoldB?.Invoke(true);
         }
         else{
@@ -239,15 +250,6 @@ public class GestureController : MonoBehaviour
             _pointList.Add(screenPosition);
             _pointAddTimer = _pointAddInterval;
         }
-
-        if (_touchB.TimeOnScreen >= _gestureTimeout){
-            if (!_isTouchBActive) return;
-            _isTouchBActive = false;
-            RecognizeGesture(out string Name, out float Score);
-
-            if (Score < _scoreTreshold) return; 
-            EventManager.Instance.AttackMove?.Invoke(Name);
-        } 
     }
 
     private void OnTouchBDrag(InputEventParams inputEventDragParams) 
@@ -276,10 +278,11 @@ public class GestureController : MonoBehaviour
 
     private void OnTouchBEnd(InputEventParams inputEventParams) 
     {
-        if (!_isTouchBActive) return;
         //float distance = Vector2.Distance(_touchB.InitialScreenPosition, inputEventParams.ScreenPosition);
         //Vector2 direction = (_touchB.InitialScreenPosition - inputEventParams.ScreenPosition).normalized;
         EventManager.Instance.OnHoldB?.Invoke(false);
+
+        if (!_isTouchBActive) return;
 
         if (_touchB.HasMoved){
             _pointList.Add(inputEventParams.ScreenPosition);

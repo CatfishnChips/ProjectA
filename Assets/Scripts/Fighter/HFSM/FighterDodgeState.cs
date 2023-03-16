@@ -9,7 +9,6 @@ public class FighterDodgeState : FighterBaseState
 
     public FighterDodgeState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Dodge";
     }
 
     public override void CheckSwitchState()
@@ -21,8 +20,9 @@ public class FighterDodgeState : FighterBaseState
 
     public override void EnterState()
     {
+        _ctx.IsDodgePressed = false;
         _currentFrame = 0;
-        _ctx.IsInputLocked = true;
+        
         if (_ctx.IsGrounded) 
         {
             _action = _ctx.ActionDictionary["Dodge"] as ActionDefault;
@@ -43,8 +43,6 @@ public class FighterDodgeState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.IsDodgePressed = false;
-        _ctx.IsInputLocked = false;
     }
 
     public override void FixedUpdateState()
@@ -55,11 +53,9 @@ public class FighterDodgeState : FighterBaseState
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
     {
-
     }
 }

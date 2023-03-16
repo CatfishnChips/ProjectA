@@ -4,7 +4,6 @@ public class FighterRunState : FighterBaseState
 {
     public FighterRunState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Run";
     }
 
     public override void CheckSwitchState()
@@ -34,7 +33,6 @@ public class FighterRunState : FighterBaseState
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()

@@ -902,9 +902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionAttribution: []
   _combosArray: []
-  _currentStateName: 
-  _currentSubStateName: 
-  _currentSuperStateName: 
+  _inputDelay: 2
   _dashDistance: 2
   _dashTime: 0
   _airMoveSpeed: 0
@@ -2089,8 +2087,10 @@ MonoBehaviour:
   _swipeTimeout: 0.25
   _swipeDelta: 7.5
   _sensitivity: 10
+  _deadzone: 0
   _gestureTimeout: 1
   _scoreTreshold: 0.25
+  _holdTime: 0.25
   _pointAddInterval: 0
   _nameInput: {fileID: 513905939}
   _nameText: {fileID: 617982875}
@@ -4674,7 +4674,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 138.65546
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4697,8 +4697,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.30413485, y: -0.6103836, z: 0.27370363, w: 0.67824787}
-  m_LocalPosition: {x: 214.55322, y: 216.92557, z: -11.216921}
+  m_LocalRotation: {x: 0.29889047, y: -0.63388467, z: 0.2908807, w: 0.6513395}
+  m_LocalPosition: {x: 184.04475, y: 214.04648, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5715,7 +5715,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426044326}
-  m_LocalRotation: {x: 0.30413485, y: -0.6103836, z: 0.27370363, w: 0.67824787}
+  m_LocalRotation: {x: 0.30412045, y: -0.6103909, z: 0.27369213, w: 0.6782524}
   m_LocalPosition: {x: 119.54283, y: 109.75689, z: -11.216921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8680,9 +8680,7 @@ MonoBehaviour:
   - action: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
   - action: {fileID: 11400000, guid: 2c3fb1b6d450d664cbed6d02db98fc1d, type: 2}
   _combosArray: []
-  _currentStateName: 
-  _currentSubStateName: 
-  _currentSuperStateName: 
+  _inputDelay: 2
   _dashDistance: 0
   _dashTime: 0
   _airMoveSpeed: 0
@@ -10507,7 +10505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7633349257831572, guid: a1ed723664f83034a96a64e41d30bde7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 220.167
+      value: 219.968
       objectReference: {fileID: 0}
     - target: {fileID: 7633349257831572, guid: a1ed723664f83034a96a64e41d30bde7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10540,6 +10538,11 @@ PrefabInstance:
     - target: {fileID: 7633349257831572, guid: a1ed723664f83034a96a64e41d30bde7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _inputTimeoutTime
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 815378929669242414, guid: a1ed723664f83034a96a64e41d30bde7,
         type: 3}

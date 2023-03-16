@@ -2,21 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum FighterStates
-{
-    Idle,
-    Walk,
-    Run,
-    Airborne,
-    Grounded,
-    Attack,
-    Stunned,
-    Jump,
-    Dash,
-    Dodge,
-    Block
-}
-
 public class FighterStateFactory
 {
     FighterStateMachine _context;
@@ -38,36 +23,47 @@ public class FighterStateFactory
     }
 
     public FighterBaseState Idle(){
+        _context.CurrentSubState = FighterStates.Idle;
         return _states[FighterStates.Idle];
     }
     public FighterBaseState Walk(){
+        _context.CurrentSubState = FighterStates.Walk;
         return _states[FighterStates.Walk];
     }
     public FighterBaseState Run(){
+        _context.CurrentSubState = FighterStates.Run;
         return _states[FighterStates.Run];
     }
     public FighterBaseState Airborne(){
+        _context.CurrentRootState = FighterStates.Airborne;
         return _states[FighterStates.Airborne];
     }
     public FighterBaseState Grounded(){
+        _context.CurrentRootState = FighterStates.Grounded;
         return _states[FighterStates.Grounded];
     }
     public FighterBaseState Attack(){
+        _context.CurrentSubState = FighterStates.Attack;
         return _states[FighterStates.Attack];
     }
     public FighterBaseState Stunned(){
+        _context.CurrentRootState = FighterStates.Stunned;
         return _states[FighterStates.Stunned];
     }
     public FighterBaseState Jump(){
+        _context.CurrentSubState = FighterStates.Jump;
         return _states[FighterStates.Jump];
     }
     public FighterBaseState Dash(){
+        _context.CurrentSubState = FighterStates.Dash;
         return _states[FighterStates.Dash];
     }
     public FighterBaseState Dodge(){
+        _context.CurrentSubState = FighterStates.Dodge;
         return _states[FighterStates.Dodge];
     }
     public FighterBaseState Block(){
+        _context.CurrentSubState = FighterStates.Block;
         return _states[FighterStates.Block];
     }
 }

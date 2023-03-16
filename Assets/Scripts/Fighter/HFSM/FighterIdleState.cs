@@ -8,7 +8,6 @@ public class FighterIdleState : FighterBaseState
 
     public FighterIdleState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Idle";
     }
 
     public override void CheckSwitchState()

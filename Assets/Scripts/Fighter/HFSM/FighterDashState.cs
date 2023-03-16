@@ -10,7 +10,6 @@ public class FighterDashState : FighterBaseState
 
     public FighterDashState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
-        _stateName = "Dash";
     }
 
     public override void CheckSwitchState()
@@ -22,9 +21,10 @@ public class FighterDashState : FighterBaseState
 
     public override void EnterState()
     {
+        _ctx.IsDashPressed = false;
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
-        _ctx.IsInputLocked = true;
+        //_ctx.IsInputLocked = true;
         if (_ctx.IsGrounded) 
         {
             _action = _ctx.ActionDictionary["Dash"] as ActionDefault;
@@ -57,8 +57,7 @@ public class FighterDashState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.IsDashPressed = false;
-        _ctx.IsInputLocked = false;
+        //_ctx.IsInputLocked = false;
         _ctx.IsGravityApplied = true;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = _ctx.CurrentMovement;
