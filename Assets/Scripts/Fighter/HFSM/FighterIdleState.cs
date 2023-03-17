@@ -12,7 +12,7 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.DeltaTarget >= 0.5f || _ctx.DeltaTarget <= -0.5f){            
+        if (_ctx.MovementInput != 0){            
             SwitchState(_factory.Walk());
         }
 

@@ -50,30 +50,30 @@ public class FighterStateMachine : MonoBehaviour
 
     private Vector2 _velocity;
 
-    #region Input Booleans
+    #region Input Variables
     
-    private Input<int> _isMovePressed = new Input<int>(0);
     private Input<bool> _isJumpPressed = new Input<bool>(false);
     private Input<bool> _isDashPressed = new Input<bool>(false);
     private Input<bool> _isDodgePressed = new Input<bool>(false);
     private Input<bool> _isAttackPerformed = new Input<bool>(false);
+    private ContinuousInput<float> _movementInput = new ContinuousInput<float>(0);
+    private ContinuousInput<bool> _holdTouchA = new ContinuousInput<bool>(false);
+    private ContinuousInput<bool> _holdTouchB = new ContinuousInput<bool>(false);
 
     #endregion
 
-    [SerializeField] private int _inputDelay = 2; // Amount of time before registering an input. Can be moved elsewhere!
-
-    private bool _isHoldingTouchA;
-    private bool _isHoldingTouchB;
-    private bool _isGrounded;
-    private string _attackName;
+    [SerializeField] private int _inputDelay = 2; // Amount of time before registering an input.
+    [SerializeField] private int _inputTimeout = 10; // in frames
     [SerializeField] private float _dashDistance = 1f;
     [SerializeField] private int _dashTime; // in frames
     [SerializeField] private float _airMoveSpeed;
-    [SerializeField] private int _inputTimeoutTime = 10; // in frames
     [SerializeField] private float _jumpHeight = 1f;
     [SerializeField] private int _jumpTime; // in frames
     [SerializeField] private float _fallMultiplier = 1f;
     [SerializeField] private int _dodgeTime; // in frames
+
+    private bool _isGrounded;
+    private string _attackName;
     private float _gravity;
     private float _deltaTarget;
     private CollisionData _collisionData;
@@ -93,8 +93,8 @@ public class FighterStateMachine : MonoBehaviour
     public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
     public bool IsDodgePressed{get{return _isDodgePressed.Value;} set {_isDodgePressed.Value = value;}}
     public bool IsGrounded{get{return _isGrounded;}}
-    public bool IsHoldingTouchA{get{return _isHoldingTouchA;}}
-    public bool IsHoldingTouchB{get{return _isHoldingTouchB;}}
+    public bool IsHoldingTouchA{get{return _holdTouchA.Value;}}
+    public bool IsHoldingTouchB{get{return _holdTouchB.Value;}}
     public bool AttackPerformed{get{return _isAttackPerformed.Value;} set{_isAttackPerformed.Value = value;}}
     public string AttackName{get{return _attackName;} set{_attackName = value;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
@@ -127,7 +127,7 @@ public class FighterStateMachine : MonoBehaviour
     public int JumpTime {get{return _jumpTime;}}
     public float FallMultiplier {get{return _fallMultiplier;}}
     public float Gravity {get{return _gravity;} set {_gravity = value;}}
-    public float DeltaTarget {get{return _deltaTarget;}}
+    public float MovementInput {get{return _movementInput.Value;}}
     public Vector2 SwipeDirection {get{return _swipeDirection;}}
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
     public float JumpDistance {get{return _jumpDistance;}}
@@ -139,13 +139,6 @@ public class FighterStateMachine : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
-        _isMovePressed.Value = 0;
-        _isJumpPressed.Value = false;
-        _isDodgePressed.Value = false;
-        _isDashPressed.Value = false;
-        _isHoldingTouchA = false;
-        _isHoldingTouchB = false;
-        _isAttackPerformed.Value = false;
         _isHurt = false;
         _isGravityApplied = true;
         _gravity = Physics2D.gravity.y;
@@ -189,10 +182,10 @@ public class FighterStateMachine : MonoBehaviour
 
     void Start()
     {
-        EventManager.Instance.Walk += ListenToMove;
-        EventManager.Instance.Dash += OnDash;
+        EventManager.Instance.Move += ListenToMove;
+        EventManager.Instance.Swipe += OnDash;
         EventManager.Instance.AttackMove += ListenToAttack;
-        EventManager.Instance.OnTap += OnTap;
+        EventManager.Instance.OnTap += OnTapA;
         EventManager.Instance.OnHoldA += OnHoldA;
         EventManager.Instance.OnHoldB += OnHoldB;
 
@@ -205,10 +198,10 @@ public class FighterStateMachine : MonoBehaviour
 
     private void OnDisable() 
     {
-        EventManager.Instance.Walk -= ListenToMove;
-        EventManager.Instance.Dash -= OnDash;
+        EventManager.Instance.Move -= ListenToMove;
+        EventManager.Instance.Swipe -= OnDash;
         EventManager.Instance.AttackMove -= ListenToAttack;
-        EventManager.Instance.OnTap -= OnTap;
+        EventManager.Instance.OnTap -= OnTapA;
         EventManager.Instance.OnHoldA -= OnHoldA;
         EventManager.Instance.OnHoldB -= OnHoldB;
 
@@ -251,9 +244,7 @@ public class FighterStateMachine : MonoBehaviour
         if (value < 0) value = -1;
         else if (value > 0) value = 1;
 
-
-        _isMovePressed.Value = (int)value;
-        _deltaTarget = value;
+        InputDelayContinuous(_movementInput, value);
     }
 
     public void ListenToAttack(string attackName){
@@ -288,24 +279,30 @@ public class FighterStateMachine : MonoBehaviour
         }
     }
 
-    private void OnTap(){
+    private void OnTapA(){
 
     }
 
     private void OnHoldA(bool value){
-        _isHoldingTouchA = value;
+        InputDelayContinuous(_holdTouchA, value);
     }
 
     private void OnHoldB(bool value){
-        _isHoldingTouchB = value;
-        //Debug.Log(value);
+        InputDelayContinuous(_holdTouchB, value);
     }
 
-    private IEnumerator InputDelayContinuous(Input<bool> input){
+    private void InputDelayContinuous<T>(ContinuousInput<T> input, T value){
+        if(!input.TargetValue.Equals(value)){
+            input.TargetValue = value;
+            StartCoroutine(InputDelay(input));
+        }
+    }
+
+    private IEnumerator InputDelay<T>(ContinuousInput<T> input){
         for (int i = 0; i < _inputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
-        input.Value = true;
+        input.Value = input.TargetValue;
     }
 
     private IEnumerator InputDelay(Input<bool> input){
@@ -323,7 +320,7 @@ public class FighterStateMachine : MonoBehaviour
         while (input.Value) 
         {
             currentFrame++;
-            if (currentFrame >= _inputTimeoutTime){
+            if (currentFrame >= _inputTimeout){
                 input.Value = false;
                 break;
             }
@@ -340,9 +337,21 @@ public class FighterStateMachine : MonoBehaviour
 
 public class Input<T>
 {
-    private T type;
-    public T Value {get {return type;} set{type = value;}}
-    public Input(T reference){
-        type = reference;
+    private T _value;
+    public T Value {get{return _value;} set{_value = value;}}
+    public Input(T value){
+        _value = value;
+    }
+}
+
+public class ContinuousInput<T>
+{
+    private T _value;
+    private T _targetValue;
+    public T Value {get{return _value;} set{_value = value;}}
+    public T TargetValue {get{return _targetValue;} set{_targetValue = value;}}
+    public ContinuousInput(T value){
+        _value = value;
+        _targetValue = _value;
     }
 }

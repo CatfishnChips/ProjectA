@@ -8,7 +8,7 @@ public class FighterWalkState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if(_ctx.DeltaTarget == 0){
+        if(_ctx.MovementInput == 0){
             SwitchState(_factory.Idle());
         }
 
@@ -42,10 +42,10 @@ public class FighterWalkState : FighterBaseState
     public override void FixedUpdateState()
     {
         if (_ctx.IsGrounded){
-            _ctx.Animator.SetFloat("Blend", _ctx.DeltaTarget);
+            _ctx.Animator.SetFloat("Blend", _ctx.MovementInput);
         }
         else{
-            _ctx.CurrentMovement = new Vector2(_ctx.DeltaTarget * _ctx.AirMoveSpeed, _ctx.Velocity.y);
+            _ctx.CurrentMovement = new Vector2(_ctx.MovementInput * _ctx.AirMoveSpeed, _ctx.Velocity.y);
         }
 
         CheckSwitchState();

@@ -40,7 +40,7 @@ public class FighterGroundedState : FighterBaseState
     public override void InitializeSubState()
     {
         FighterBaseState state;
-        if(_ctx.DeltaTarget == 0){
+        if(_ctx.MovementInput == 0){
             state = _factory.Idle();
         }
         else{

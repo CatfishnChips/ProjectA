@@ -32,8 +32,8 @@ public class EventManager : MonoBehaviour
     
     #region Movement Events
     // These actions are called by the Touch A, which is used primarily for movement.
-    public UnityAction<Vector2> Dash;
-    public UnityAction<float> Walk;
+    public UnityAction<Vector2> Swipe;
+    public UnityAction<float> Move;
     public UnityAction OnTap;
     public UnityAction<bool> OnHoldA;
     public UnityAction<bool> OnHoldB;

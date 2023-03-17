@@ -44,8 +44,8 @@ public class GestureController : MonoBehaviour
     // }
 
     [Header("Joystick Settings")]
-    [SerializeField] private float _sensitivity; // Active area of the Joystick.
-    [SerializeField] private float _deadzone; // Minimum distance needed before registering the input.
+    [SerializeField] private float _sensitivity = 200f; // Active area of the Joystick.
+    [SerializeField] private float _deadzone = 50f; // Minimum distance needed before registering the input.
     private Vector2 _virtualJoystick; 
     private float _deltaVectorX;
 
@@ -140,7 +140,7 @@ public class GestureController : MonoBehaviour
 
         // Swipe
         //_isSwipe = false;
-        if (!_isSwipe) EventManager.Instance.Walk?.Invoke(_deltaVectorX);
+        if (!_isSwipe) EventManager.Instance.Move?.Invoke(_deltaVectorX);
 
         //Joystick
         //if (!_isSwipe)
@@ -167,9 +167,8 @@ public class GestureController : MonoBehaviour
             float deltaDistanceX = _virtualJoystick.x / _sensitivity; // Convert the distance to be within -1 and 1. Surely this can be done more efficiently.
 
             _deltaVectorX = deltaDistanceX;
-
-            //if (_deltaVectorX <= _deadzone || _deltaVectorX >= _deadzone)
-            EventManager.Instance.Walk?.Invoke(_deltaVectorX);
+            if (Mathf.Abs(_deltaVectorX) <= _deadzone) _deltaVectorX = 0f;
+            EventManager.Instance.Move?.Invoke(_deltaVectorX);
 
             //Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);     
         }
@@ -182,7 +181,7 @@ public class GestureController : MonoBehaviour
 
         // Joystick
         _deltaVectorX = 0;
-        EventManager.Instance.Walk?.Invoke(_deltaVectorX);
+        EventManager.Instance.Move?.Invoke(_deltaVectorX);
 
         EventManager.Instance.OnHoldA?.Invoke(false);
 
@@ -193,7 +192,7 @@ public class GestureController : MonoBehaviour
         
         if (_isSwipe){
             // Swipe
-            EventManager.Instance.Dash?.Invoke(direction);
+            EventManager.Instance.Swipe?.Invoke(direction);
             //Debug.Log("Swipe! " + direction);
         }
         
