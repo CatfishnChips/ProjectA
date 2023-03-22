@@ -55,15 +55,17 @@ public class FighterStateMachine : MonoBehaviour
     private Input<bool> _isJumpPressed = new Input<bool>(false);
     private Input<bool> _isDashPressed = new Input<bool>(false);
     private Input<bool> _isDodgePressed = new Input<bool>(false);
-    private Input<bool> _isAttackPerformed = new Input<bool>(false);
+    //private Input<bool> _isAttackPerformed = new Input<bool>(false);
     private ContinuousInput<float> _movementInput = new ContinuousInput<float>(0);
     private ContinuousInput<bool> _holdTouchA = new ContinuousInput<bool>(false);
     private ContinuousInput<bool> _holdTouchB = new ContinuousInput<bool>(false);
+    private QueueInput<bool, string> _isAttackPerformed = new QueueInput<bool, string>(false);
 
     #endregion
 
+    [SerializeField] private int _comboBuffer = 15;
     [SerializeField] private int _inputDelay = 2; // Amount of time before registering an input.
-    [SerializeField] private int _inputTimeout = 10; // in frames
+    [SerializeField] private int _inputBuffer = 10; // in frames
     [SerializeField] private float _dashDistance = 1f;
     [SerializeField] private int _dashTime; // in frames
     [SerializeField] private float _airMoveSpeed;
@@ -96,7 +98,8 @@ public class FighterStateMachine : MonoBehaviour
     public bool IsHoldingTouchA{get{return _holdTouchA.Value;}}
     public bool IsHoldingTouchB{get{return _holdTouchB.Value;}}
     public bool AttackPerformed{get{return _isAttackPerformed.Value;} set{_isAttackPerformed.Value = value;}}
-    public string AttackName{get{return _attackName;} set{_attackName = value;}}
+    //public string AttackName{get{return _attackName;}}
+    public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
@@ -113,6 +116,7 @@ public class FighterStateMachine : MonoBehaviour
     public Dictionary<string, ActionBase> ActionDictionary{get{return _actionDictionary;}}
     public ComboListener ComboListener{get{return _comboListener;} set{_comboListener = value;}}
     public ComboMove[] CombosArray{get{return _combosArray;}}
+    public int ComboBuffer{get{return _comboBuffer;}}
 
     public HitResponder HitResponder {get{return _hitResponder;}}
     public HurtResponder HurtResponder {get{return _hurtResponder;}}
@@ -214,7 +218,6 @@ public class FighterStateMachine : MonoBehaviour
     void FixedUpdate()
     {
         _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastPosition, Vector2.down, _rayCastLenght, _rayCastLayerMask);
-        //_isGrounded = _rigidbody2D.IsTouchingLayers(_rayCastLayerMask);
         //Debug.Log(_isGrounded);
 
         if(_comboListener.isActive){
@@ -229,14 +232,17 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     public void ListenToJump(){
+        if (_isJumpPressed.Value) return;
         StartCoroutine(InputDelay(_isJumpPressed));
     }
 
     public void ListenToDash(){
+        if (_isDashPressed.Value) return;
         StartCoroutine(InputDelay(_isDashPressed));
     }
 
     public void ListenToDodge(){
+        if(_isDodgePressed.Value) return;
         StartCoroutine(InputDelay(_isDodgePressed));
     }
 
@@ -244,13 +250,15 @@ public class FighterStateMachine : MonoBehaviour
         if (value < 0) value = -1;
         else if (value > 0) value = 1;
 
-        InputDelayContinuous(_movementInput, value);
+        StartCoroutine(InputDelay(_movementInput, value));
     }
 
     public void ListenToAttack(string attackName){
         if (attackName == "L") return; // Temporary Bugfix
+        //if (_isAttackPerformed.Value) return;
+
         _attackName = attackName;
-        StartCoroutine(InputDelay(_isAttackPerformed));
+        StartCoroutine(InputDelay(_isAttackPerformed, _attackName));
     }
 
     public void OnHit(CollisionData data){
@@ -284,25 +292,22 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     private void OnHoldA(bool value){
-        InputDelayContinuous(_holdTouchA, value);
+        StartCoroutine(InputDelay(_holdTouchA, value));
     }
 
     private void OnHoldB(bool value){
-        InputDelayContinuous(_holdTouchB, value);
+        StartCoroutine(InputDelay(_holdTouchB, value));
     }
 
-    private void InputDelayContinuous<T>(ContinuousInput<T> input, T value){
-        if(!input.TargetValue.Equals(value)){
-            input.TargetValue = value;
-            StartCoroutine(InputDelay(input));
-        }
-    }
-
-    private IEnumerator InputDelay<T>(ContinuousInput<T> input){
+    private IEnumerator InputDelay<T>(ContinuousInput<T> input, T value){
+        if(input.TargetValue.Equals(value)) yield break;
+        input.TargetValue = value;
+        
         for (int i = 0; i < _inputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
-        input.Value = input.TargetValue;
+
+        input.Value = value;
     }
 
     private IEnumerator InputDelay(Input<bool> input){
@@ -313,19 +318,35 @@ public class FighterStateMachine : MonoBehaviour
         StartCoroutine(InputBuffer(input));
     }
 
-    private IEnumerator InputBuffer(Input<bool> input){
-        int currentFrame = 0;
-        input.Value = true;
-
-        while (input.Value) 
-        {
-            currentFrame++;
-            if (currentFrame >= _inputTimeout){
-                input.Value = false;
-                break;
-            }
+    private IEnumerator InputDelay<T>(QueueInput<bool, T> input, T queue){
+        for (int i = 0; i < _inputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
+        StartCoroutine(InputBuffer(input, queue));
+    }
+
+    private IEnumerator InputBuffer(Input<bool> input){
+        input.Value = true;
+
+        for (int i = 0; i < _inputBuffer; i++){
+            yield return new WaitForFixedUpdate();
+            if (!input.Value) break;
+        }
+
+        input.Value = false;
+    }
+
+    private IEnumerator InputBuffer<T>(QueueInput<bool, T> input , T queue){
+        input.Value = true;
+        input.Queue.Enqueue(queue);
+
+        for (int i = 0; i < _inputBuffer; i++){
+            yield return new WaitForFixedUpdate();
+            if (!input.Value) break;
+        }
+
+        if (input.Queue.Count == 1) input.Value = false;
+        input.Queue.Dequeue();
     }
 
     private void OnDrawGizmosSelected() {
@@ -337,21 +358,27 @@ public class FighterStateMachine : MonoBehaviour
 
 public class Input<T>
 {
-    private T _value;
+    protected T _value;
     public T Value {get{return _value;} set{_value = value;}}
     public Input(T value){
         _value = value;
     }
 }
 
-public class ContinuousInput<T>
+public class ContinuousInput<T> : Input<T>
 {
-    private T _value;
     private T _targetValue;
-    public T Value {get{return _value;} set{_value = value;}}
     public T TargetValue {get{return _targetValue;} set{_targetValue = value;}}
-    public ContinuousInput(T value){
-        _value = value;
+    public ContinuousInput(T value) : base(value){
         _targetValue = _value;
+    }
+}
+
+public class QueueInput<T, U> : Input<T>
+{
+    private Queue<U> _queue;
+    public Queue<U> Queue {get{return _queue;}}
+    public QueueInput(T value) : base(value){
+        _queue = new Queue<U>();
     }
 }

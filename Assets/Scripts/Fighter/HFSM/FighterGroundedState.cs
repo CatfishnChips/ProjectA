@@ -9,12 +9,12 @@ public class FighterGroundedState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (!_ctx.IsGrounded || _ctx.IsJumpPressed){
-            SwitchState(_factory.Airborne());
-        }
-
         if (_ctx.IsHurt && !_ctx.StaminaManager.CanBlock){
             SwitchState(_factory.Stunned());
+        }
+
+        if (!_ctx.IsGrounded || _ctx.IsJumpPressed){
+            SwitchState(_factory.Airborne());
         }
     }
 

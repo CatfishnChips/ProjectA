@@ -9,7 +9,7 @@ public class ComboListener
     private Dictionary<string, ComboMoveSpecs> _comboMovesDict;
     private Dictionary<string, ComboMoveSpecs> _currentSearchDict;
 
-    private int _comboFrameLimit = 1500;
+    //private int _comboFrameLimit = 1500;
     private int _currentMoveNumber;
     private string _currentAttackName;
     private string _previousAttackName;
@@ -25,7 +25,7 @@ public class ComboListener
     }
 
     public void FixedUpdate(){
-        if(_currentFrame > _comboFrameLimit){
+        if(_currentFrame > _ctx.ComboBuffer){
             ResetListener();
         }
 

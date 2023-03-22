@@ -14,25 +14,29 @@ public class FighterAttackState : FighterBaseState
     {
         if (currentFrame >= (action.StartFrames + action.ActiveFrames + action.RecoveryFrames)){
             EventManager.Instance.FighterAttackEnded?.Invoke();
-            SwitchState(_factory.Idle());
+            if (_ctx.AttackPerformed){
+                SwitchState(_factory.Attack());
+            }
+            else{
+                SwitchState(_factory.Idle());
+            }
         }
 
-        if (_ctx.IsHurt){
-            EventManager.Instance.FighterAttackInterrupted?.Invoke();
-            SwitchState(_factory.Stunned());
-        }
+        // if (_ctx.IsHurt){
+        //     EventManager.Instance.FighterAttackInterrupted?.Invoke();
+        //     SwitchState(_factory.Stunned());
+        // }
     }
 
     public override void EnterState()
     {   
+        string attackName = _ctx.AttackName;
         _ctx.AttackPerformed = false;
         currentFrame = 0;
 
         if(!_ctx.ComboListener.isActive){
             _ctx.ComboListener.isActive = true;
         }
-
-        string attackName = _ctx.AttackName;
         if (_ctx.IsGrounded){
             action = _ctx.AttackMoveDict[attackName];
         }

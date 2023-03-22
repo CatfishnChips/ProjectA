@@ -12,25 +12,22 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.MovementInput != 0){            
-            SwitchState(_factory.Walk());
+        if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
+            SwitchState(_factory.Block());
         }
 
         if (_ctx.AttackPerformed){
             SwitchState(_factory.Attack());
         }
-
-        if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
-            SwitchState(_factory.Block());
-        }
-
-        if (_ctx.IsDashPressed){
-            SwitchState(_factory.Dash());
-        }
-
-        if (_ctx.IsDodgePressed){
+        else if (_ctx.IsDodgePressed){
             SwitchState(_factory.Dodge());
         }
+        else if (_ctx.IsDashPressed){
+            SwitchState(_factory.Dash());
+        }
+        else if (_ctx.MovementInput != 0){            
+            SwitchState(_factory.Walk());
+        }  
     }
 
     public override void EnterState()

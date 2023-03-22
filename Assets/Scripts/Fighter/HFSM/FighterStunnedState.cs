@@ -19,6 +19,10 @@ public class FighterStunnedState : FighterBaseState
 
     public override void CheckSwitchState()
     {
+        if (_ctx.IsHurt){
+            SwitchState(_factory.Stunned());
+        }
+        
         if (_currentFrame >= _action.HitStun + _action.Freeze){   
             FighterBaseState state;         
 
@@ -29,10 +33,6 @@ public class FighterStunnedState : FighterBaseState
                 state = _factory.Airborne();
             }
             SwitchState(state);
-        }
-
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
         }
     }
 

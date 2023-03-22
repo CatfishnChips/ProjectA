@@ -47,8 +47,8 @@ public class FighterDodgeState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        CheckSwitchState();
         _currentFrame++;
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()

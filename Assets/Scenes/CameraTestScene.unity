@@ -902,11 +902,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionAttribution: []
   _combosArray: []
+  _currentRootState: 0
+  _currentSubState: 0
   _inputDelay: 2
+  _inputBuffer: 10
   _dashDistance: 2
   _dashTime: 0
   _airMoveSpeed: 0
-  _inputTimeoutTime: 10
   _jumpHeight: 0
   _jumpTime: 0
   _fallMultiplier: 1
@@ -2087,7 +2089,7 @@ MonoBehaviour:
   _swipeTimeout: 0.25
   _swipeDelta: 7.5
   _sensitivity: 10
-  _deadzone: 0
+  _deadzone: 2
   _gestureTimeout: 1
   _scoreTreshold: 0.25
   _holdTime: 0.25
@@ -4697,8 +4699,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.29889047, y: -0.63388467, z: 0.2908807, w: 0.6513395}
-  m_LocalPosition: {x: 184.04475, y: 214.04648, z: -5}
+  m_LocalRotation: {x: 0.29893586, y: -0.63386244, z: 0.29092264, w: 0.65132165}
+  m_LocalPosition: {x: 183.99364, y: 214.04596, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5715,7 +5717,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426044326}
-  m_LocalRotation: {x: 0.30412045, y: -0.6103909, z: 0.27369213, w: 0.6782524}
+  m_LocalRotation: {x: 0.30450183, y: -0.6101743, z: 0.27397454, w: 0.6781622}
   m_LocalPosition: {x: 119.54283, y: 109.75689, z: -11.216921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7802,7 +7804,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881216307}
-  m_LocalRotation: {x: 0.29889047, y: -0.63388467, z: 0.2908807, w: 0.6513395}
+  m_LocalRotation: {x: 0.29893586, y: -0.63386244, z: 0.29092264, w: 0.65132165}
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8680,11 +8682,13 @@ MonoBehaviour:
   - action: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
   - action: {fileID: 11400000, guid: 2c3fb1b6d450d664cbed6d02db98fc1d, type: 2}
   _combosArray: []
+  _currentRootState: 0
+  _currentSubState: 0
   _inputDelay: 2
+  _inputBuffer: 10
   _dashDistance: 0
   _dashTime: 0
   _airMoveSpeed: 0
-  _inputTimeoutTime: 10
   _jumpHeight: 0
   _jumpTime: 0
   _fallMultiplier: 1

@@ -17,12 +17,12 @@ public class FighterBlockState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= _action.HitStun){
-            SwitchState(_factory.Idle());
-        }
-
         if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
             SwitchState(_factory.Block());
+        }
+
+        if (_currentFrame >= _action.HitStun){
+            SwitchState(_factory.Idle());
         }
     }
 
@@ -65,8 +65,8 @@ public class FighterBlockState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        CheckSwitchState();
         _currentFrame++;
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()

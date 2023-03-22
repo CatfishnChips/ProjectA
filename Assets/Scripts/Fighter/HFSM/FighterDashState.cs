@@ -69,8 +69,8 @@ public class FighterDashState : FighterBaseState
         _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y);
         _ctx.Velocity = new Vector2((previousVelocityY + _ctx.CurrentMovement.x) * .5f, _ctx.CurrentMovement.y);    
 
-        CheckSwitchState();
         _currentFrame++;
+        CheckSwitchState();
     }
 
     public override void InitializeSubState()
