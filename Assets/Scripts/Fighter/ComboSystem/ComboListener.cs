@@ -10,12 +10,14 @@ public class ComboListener
     private Dictionary<string, ComboMoveSpecs> _currentSearchDict;
 
     //private int _comboFrameLimit = 1500;
-    private int _currentMoveNumber;
-    private string _currentAttackName;
-    private string _previousAttackName;
+    //private int _currentMoveNumber;
+    // private string _currentAttackName;
+    // private string _previousAttackName;
     private int _currentFrame;
     private bool _doesDictContainMove;
     public bool isActive;
+
+    private ActionAttack _attackAction = null;
 
     public ComboListener(FighterStateMachine ctx){
         _ctx = ctx;
@@ -32,9 +34,8 @@ public class ComboListener
         _currentFrame++;
     }
 
-    public ActionAttack AttackOverride(ActionAttack newAttack){
-        ActionAttack returnAttack = null;
-
+    public ActionAttack AttackOverride(ActionAttack action){
+        _attackAction = null;
         //Debug.Log("Current Mov Number: " + _currentMoveNumber);
         //Debug.Log("Current ActionAttack : " + newAttack.name);
 
@@ -45,47 +46,47 @@ public class ComboListener
         //     Debug.Log(item);
         // }
 
-        if(!_currentSearchDict.ContainsKey(newAttack.name)){
+        if(!_currentSearchDict.ContainsKey(action.name)){
             ResetListener();
-            if(_comboMovesDict.ContainsKey(newAttack.name)){
-                _currentSearchDict = _comboMovesDict[newAttack.name].possibleNextMoves;
+            if(_comboMovesDict.ContainsKey(action.name)){
+                _currentSearchDict = _comboMovesDict[action.name].possibleNextMoves;
             }
-            return newAttack;
+            return action;
         }
         else{
             _currentFrame = 0;
-            if(_currentSearchDict[newAttack.name].willOverride){
-                returnAttack = _currentSearchDict[newAttack.name].moveToOverride;
+            if(_currentSearchDict[action.name].willOverride){
+                _attackAction = _currentSearchDict[action.name].moveToOverride;
             }
             else{
-                returnAttack = newAttack;
+                _attackAction = action;
             }
-            _currentSearchDict = _currentSearchDict[newAttack.name].possibleNextMoves;
+            _currentSearchDict = _currentSearchDict[action.name].possibleNextMoves;
         }
 
-        _currentMoveNumber++;
-        return returnAttack;
+        //_currentMoveNumber++;
+        return _attackAction;
     }
 
-    public void ReactivateListener(){
-        _currentFrame = 0;
-        _currentMoveNumber = 1;
-        _currentSearchDict = _comboMovesDict[_currentAttackName].possibleNextMoves;
-        isActive = true;
-    }
+    // public void ReactivateListener(){
+    //     _currentFrame = 0;
+    //     _currentMoveNumber = 1;
+    //     _currentSearchDict = _comboMovesDict[_currentAttackName].possibleNextMoves;
+    //     isActive = true;
+    // }
 
     private void ResetListener(){
         _currentFrame = 0;
-        _currentMoveNumber = 1;
+        //_currentMoveNumber = 1;
         _currentSearchDict = null;
-        _currentAttackName = null;
+        //_currentAttackName = null;
         _doesDictContainMove = false;
         isActive = false;
     }
 
-    private void OnAttackStart(string name){
-        _currentAttackName = name;
-    }
+    // private void OnAttackStart(string name){
+    //     _currentAttackName = name;
+    // }
 
     private void ArrangeMovesList(){
         Dictionary<string, ComboMoveSpecs> tempDictWriter;

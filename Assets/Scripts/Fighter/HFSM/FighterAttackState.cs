@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 public class FighterAttackState : FighterBaseState
 {
-    public ActionAttack action; 
-    public int currentFrame = 0;
+    public ActionAttack _action; 
+    public int _currentFrame = 0;
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory):
     base(currentContext, fighterStateFactory){
@@ -12,7 +12,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (currentFrame >= (action.StartFrames + action.ActiveFrames + action.RecoveryFrames)){
+        if (_currentFrame >= (_action.StartFrames + _action.ActiveFrames + _action.RecoveryFrames)){
             EventManager.Instance.FighterAttackEnded?.Invoke();
             if (_ctx.AttackPerformed){
                 SwitchState(_factory.Attack());
@@ -32,41 +32,54 @@ public class FighterAttackState : FighterBaseState
     {   
         string attackName = _ctx.AttackName;
         _ctx.AttackPerformed = false;
-        currentFrame = 0;
+        _currentFrame = 0;
 
+        // Restart Combo Listener.
         if(!_ctx.ComboListener.isActive){
             _ctx.ComboListener.isActive = true;
         }
-        if (_ctx.IsGrounded){
-            action = _ctx.AttackMoveDict[attackName];
-        }
-        else{
-
-        }
-
-        action = _ctx.ComboListener.AttackOverride(action);
-
-        action.EnterStateFunction(_ctx, this);
         
-        _ctx.ClipOverrides["DirectPunchA"] = action.MeshAnimationA;
-        _ctx.ClipOverrides["DirectPunchR"] = action.MeshAnimationR;
-        _ctx.ClipOverrides["DirectPunchS"] = action.MeshAnimationS;
+        // Determine Attack depending on context.
+        if (_ctx.IsGrounded){
+            _action = _ctx.AttackMoveDict[attackName];
+        }
 
-        _ctx.ColBoxClipOverrides["Uppercut_Startup"] = action.BoxAnimationS;
-        _ctx.ColBoxClipOverrides["Uppercut_Active"] = action.BoxAnimationA;
-        _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = action.BoxAnimationR;
+        // if (_ctx.MovementInput == 1){
+            
+        // }
+        // else if (_ctx.MovementInput == -1){
+
+        // }
+        // else if (_ctx.IsGrounded){
+        //     _action = _ctx.AttackMoveDict[attackName];
+        // }
+        // else if (!_ctx.IsGrounded){
+
+        // }
+
+        _action = _ctx.ComboListener.AttackOverride(_action);
+
+        _action.EnterStateFunction(_ctx, this);
+        
+        _ctx.ClipOverrides["DirectPunchA"] = _action.MeshAnimationA;
+        _ctx.ClipOverrides["DirectPunchR"] = _action.MeshAnimationR;
+        _ctx.ClipOverrides["DirectPunchS"] = _action.MeshAnimationS;
+
+        _ctx.ColBoxClipOverrides["Uppercut_Startup"] = _action.BoxAnimationS;
+        _ctx.ColBoxClipOverrides["Uppercut_Active"] = _action.BoxAnimationA;
+        _ctx.ColBoxClipOverrides["Uppercut_Recovery"] = _action.BoxAnimationR;
 
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
         _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
 
-        _ctx.HitResponder.UpdateData(action);
+        _ctx.HitResponder.UpdateData(_action);
 
-        EventManager.Instance.FighterAttackStarted?.Invoke(action.name);
+        EventManager.Instance.FighterAttackStarted?.Invoke(_action.name);
     }
 
     public override void ExitState()
     {
-        action.ExitStateFunction(_ctx, this);
+        _action.ExitStateFunction(_ctx, this);
     }
 
     public override void InitializeSubState()
@@ -79,7 +92,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void FixedUpdateState(){
         
-        action.FixedUpdateFunction(_ctx, this);
+        _action.FixedUpdateFunction(_ctx, this);
         CheckSwitchState();
     }
 }

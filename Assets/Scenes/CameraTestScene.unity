@@ -904,6 +904,7 @@ MonoBehaviour:
   _combosArray: []
   _currentRootState: 0
   _currentSubState: 0
+  _comboBuffer: 15
   _inputDelay: 2
   _inputBuffer: 10
   _dashDistance: 2
@@ -4699,8 +4700,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.29893586, y: -0.63386244, z: 0.29092264, w: 0.65132165}
-  m_LocalPosition: {x: 183.99364, y: 214.04596, z: -5}
+  m_LocalRotation: {x: 0.2989232, y: -0.63386863, z: 0.29091093, w: 0.6513266}
+  m_LocalPosition: {x: 184.00792, y: 214.04611, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5717,7 +5718,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426044326}
-  m_LocalRotation: {x: 0.30450183, y: -0.6101743, z: 0.27397454, w: 0.6781622}
+  m_LocalRotation: {x: 0.3043991, y: -0.6102329, z: 0.27389866, w: 0.6781863}
   m_LocalPosition: {x: 119.54283, y: 109.75689, z: -11.216921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7804,7 +7805,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881216307}
-  m_LocalRotation: {x: 0.29893586, y: -0.63386244, z: 0.29092264, w: 0.65132165}
+  m_LocalRotation: {x: 0.2989232, y: -0.63386863, z: 0.29091093, w: 0.6513266}
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8684,6 +8685,7 @@ MonoBehaviour:
   _combosArray: []
   _currentRootState: 0
   _currentSubState: 0
+  _comboBuffer: 15
   _inputDelay: 2
   _inputBuffer: 10
   _dashDistance: 0
@@ -10545,9 +10547,62 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
         type: 3}
+      propertyPath: _comboBuffer
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
       propertyPath: _inputTimeoutTime
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].comboName
+      value: CrossCut
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].moves.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].moves.Array.data[0].theMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae,
+        type: 2}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].moves.Array.data[1].theMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e,
+        type: 2}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].moves.Array.data[0].moveNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].moves.Array.data[1].moveNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].moves.Array.data[1].willOverride
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 545400652093244275, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: _combosArray.Array.data[2].moves.Array.data[1].moveToOverride
+      value: 
+      objectReference: {fileID: 11400000, guid: aa8a835f251d1934ea68da2818fe808b,
+        type: 2}
     - target: {fileID: 815378929669242414, guid: a1ed723664f83034a96a64e41d30bde7,
         type: 3}
       propertyPath: m_Name

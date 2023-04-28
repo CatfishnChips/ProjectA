@@ -25,19 +25,19 @@ public class ActionContinuousAttack : ActionAttack
 
     public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
-         if (state.currentFrame <= state.action.StartFrames){
+         if (state._currentFrame <= state._action.StartFrames){
             if(_firstFrameStartup){
-                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedS);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedS);
+                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedS);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);
                 ctx.Animator.Play("AttackStart");
                 ctx.ColBoxAnimator.Play("AttackStart");
                 _firstFrameStartup = false;
             }
         }
-        else if (state.currentFrame > state.action.StartFrames && state.currentFrame <= state.action.StartFrames + state.action.ActiveFrames){
+        else if (state._currentFrame > state._action.StartFrames && state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames){
             if(_firstFrameActive){
-                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedA);
+                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedA);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedA);
                 ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
@@ -48,18 +48,18 @@ public class ActionContinuousAttack : ActionAttack
                 _timePaused = !_pauseTime;
             }
         }
-        else if(state.currentFrame > state.action.StartFrames + state.action.ActiveFrames && 
-        state.currentFrame <= state.action.StartFrames + state.action.ActiveFrames + state.action.RecoveryFrames){
+        else if(state._currentFrame > state._action.StartFrames + state._action.ActiveFrames && 
+        state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames + state._action.RecoveryFrames){
             if(_firstFrameRecovery){
-                ctx.Animator.SetFloat("SpeedVar", state.action.AnimSpeedR);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.action.AnimSpeedR);
+                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedR);
                 ctx.Animator.Play("AttackRecover");
                 _firstFrameRecovery = false;
             }
         }
 
         if (!_pauseTime)
-        state.currentFrame++;
+        state._currentFrame++;
     }
 
     public override void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state)
