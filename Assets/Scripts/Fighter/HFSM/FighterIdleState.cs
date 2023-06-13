@@ -36,7 +36,7 @@ public class FighterIdleState : FighterBaseState
         {
             _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;
         }
-        else 
+        else
         {
             _action = _ctx.ActionDictionary["AirborneIdle"] as ActionDefault;
         }
@@ -58,7 +58,6 @@ public class FighterIdleState : FighterBaseState
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()

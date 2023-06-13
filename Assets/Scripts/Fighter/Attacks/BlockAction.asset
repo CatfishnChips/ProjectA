@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BlockAction
   m_EditorClassIdentifier: 
   name: Block
-  frames: 0
-  meshAnimation: {fileID: 0}
+  frames: 26
+  meshAnimation: {fileID: -203655887218126122, guid: 9afb10df42062d045a21768ebe5baa81,
+    type: 3}
   boxAnimation: {fileID: 0}

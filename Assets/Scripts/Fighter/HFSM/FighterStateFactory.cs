@@ -20,6 +20,9 @@ public class FighterStateFactory
         _states[FighterStates.Dash] = new FighterDashState(_context, this);
         _states[FighterStates.Dodge] = new FighterDodgeState(_context, this);
         _states[FighterStates.Block] = new FighterBlockState(_context, this);
+        _states[FighterStates.Knockup] = new FighterKnockupState(_context, this);
+        _states[FighterStates.Knockdown] = new FighterKnockdownState(_context, this);
+        _states[FighterStates.Knockback] = new FighterKnockbackState(_context, this);
     }
 
     public FighterBaseState Idle(){
@@ -65,5 +68,17 @@ public class FighterStateFactory
     public FighterBaseState Block(){
         _context.CurrentSubState = FighterStates.Block;
         return _states[FighterStates.Block];
+    }
+    public FighterBaseState Knockup(){
+        _context.CurrentSubState = FighterStates.Knockup;
+        return _states[FighterStates.Knockup];
+    }
+    public FighterBaseState Knockdown(){
+        _context.CurrentSubState = FighterStates.Knockdown;
+        return _states[FighterStates.Knockdown];
+    }
+    public FighterBaseState Knockback(){
+        _context.CurrentSubState = FighterStates.Knockback;
+        return _states[FighterStates.Knockback];
     }
 }

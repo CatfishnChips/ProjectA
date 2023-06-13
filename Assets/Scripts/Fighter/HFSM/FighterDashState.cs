@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FighterDashState : FighterBaseState
 {
-    private ActionDefault _action;
+    private ActionConditional _action;
     private int _currentFrame = 0;
     private float _drag = 0f;
 
@@ -27,15 +27,26 @@ public class FighterDashState : FighterBaseState
         //_ctx.IsInputLocked = true;
         if (_ctx.IsGrounded) 
         {
-            _action = _ctx.ActionDictionary["Dash"] as ActionDefault;
+            _action = _ctx.ActionDictionary["Dash"] as ActionConditional;
         }
         else 
         {
-            _action = _ctx.ActionDictionary["Dash"] as ActionDefault;
+            _action = _ctx.ActionDictionary["Dash"] as ActionConditional;
         }
-        AnimationClip clip = _action.meshAnimation;
+
+        AnimationClip clip;
+        if (_ctx.SwipeDirection.x < 0)
+        {
+            clip = _action.Animations[0].meshAnimation;
+        }
+        else
+        {
+            clip = _action.Animations[1].meshAnimation;
+        }
+        
         _ctx.AnimOverrideCont["Dash"] = clip;
 
+        // For this action, DashTime variable is used instead of animation's Frame variable.
         float speedVar = AdjustAnimationTime(clip, _ctx.DashTime);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
 

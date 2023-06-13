@@ -23,7 +23,10 @@ public enum FighterStates
     Jump,
     Dash,
     Dodge,
-    Block
+    Block,
+    Knockup,
+    Knockdown,
+    Knockback
 }
 
 // Currently not being used. Can come in handy later on.

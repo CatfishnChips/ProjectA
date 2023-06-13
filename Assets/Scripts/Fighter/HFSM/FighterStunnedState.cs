@@ -45,10 +45,12 @@ public class FighterStunnedState : FighterBaseState
 
         _velocity = Vector2.zero;
 
+        // Note: Velocity calculations are handled here due to vertical and horizontal movemenents' requirement of blending together. Substates are used for adjusting animations.
+
         if (_action.Knockup != 0){
-            float _time = _ctx.JumpTime * Time.fixedDeltaTime;
-            _ctx.Gravity = (-2 * _ctx.JumpHeight) / Mathf.Pow(_time, 2);
-            _velocity.y = (2 * _ctx.JumpHeight) / _time;   
+            float _time = _action.KnockupStun * Time.fixedDeltaTime;
+            _ctx.Gravity = (-2 * _action.Knockup) / Mathf.Pow(_time, 2);
+            _velocity.y = (2 * _action.Knockup) / _time;   
         }
 
         if (_action.Knockback!= 0){
@@ -120,6 +122,21 @@ public class FighterStunnedState : FighterBaseState
 
     public override void InitializeSubState()
     { 
+        FighterBaseState state;
+        if (_action.KnockupStun > 0){
+            state = _factory.Knockup();
+        }
+        else if (_action.KnockdownStun > 0){
+            state = _factory.Knockdown();
+        }
+        else if (_action.KnockbackStun > 0){
+            state = _factory.Knockback();
+        }
+        else{
+            state = _factory.Idle();
+        }
+        SetSubState(state);
+        state.EnterState();
     }
 
     public override void UpdateState()

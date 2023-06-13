@@ -9,10 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c65530f4e8e1c0b47bb697a55d33b870, type: 3}
+  m_Script: {fileID: 11500000, guid: 8155667a1bdaf714ab3e934064e0cc63, type: 3}
   m_Name: DashAction
   m_EditorClassIdentifier: 
   name: Dash
-  frames: 0
-  meshAnimation: {fileID: 0}
-  boxAnimation: {fileID: 0}
+  Animations:
+  - frames: 30
+    meshAnimation: {fileID: -203655887218126122, guid: 4808e02943c6f29458a4eba4bed62cd9,
+      type: 3}
+    boxAnimation: {fileID: 0}
+  - frames: 30
+    meshAnimation: {fileID: -203655887218126122, guid: b1f80309bce993e4987d3ba29551ef26,
+      type: 3}
+    boxAnimation: {fileID: 0}

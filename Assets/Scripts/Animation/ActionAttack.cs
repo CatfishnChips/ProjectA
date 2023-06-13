@@ -16,9 +16,11 @@ public class ActionAttack : ActionBase
 
     [Header("Stun Properties")]
     [Tooltip("Stun inflicted upon hit (in frames).")]
-    [SerializeField] private int m_hitStun;
     [SerializeField] private int m_blockStun;
     [SerializeField] private int m_freeze;
+    [SerializeField] private int m_knockbackStun;
+    [SerializeField] private int m_knockupStun;
+    [SerializeField] private int m_knockdownStun;
 
     [Header("Knockback Properties")]
     [SerializeField] private float m_knockup;
@@ -55,9 +57,12 @@ public class ActionAttack : ActionBase
     public int Damage {get => m_damage;}
     public int Priority {get => m_priority;}
     public int Part {get => m_part;}
-    public int HitStun {get => m_hitStun;}
+    public int HitStun {get => m_knockbackStun + m_knockupStun + m_knockdownStun;}
     public int BlockStun {get => m_blockStun;}
     public int Freeze {get => m_freeze;}
+    public int KnockbackStun {get => m_knockbackStun;}
+    public int KnockupStun {get => m_knockupStun;}
+    public int KnockdownStun {get => m_knockdownStun;}
     public float Knockup {get => m_knockup;}
     public float Knockback {get => m_knockback;}
     public bool Gravity {get => m_gravity;}

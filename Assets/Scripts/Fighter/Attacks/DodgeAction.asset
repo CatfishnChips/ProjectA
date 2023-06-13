@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DodgeAction
   m_EditorClassIdentifier: 
   name: Dodge
-  frames: 0
-  meshAnimation: {fileID: 0}
+  frames: 43
+  meshAnimation: {fileID: -203655887218126122, guid: ad1e2c444f43bfd428d7c5e1d306dabc,
+    type: 3}
   boxAnimation: {fileID: 0}
