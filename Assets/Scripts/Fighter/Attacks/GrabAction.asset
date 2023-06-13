@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f8c6625b41fc84db67271d35f757d9, type: 3}
-  m_Name: DirectPunch
+  m_Script: {fileID: 11500000, guid: a6fbc81e08d60264e9c0feb9f3cc29e6, type: 3}
+  m_Name: GrabAction
   m_EditorClassIdentifier: 
-  name: Stab
-  m_tags: 545
-  m_damage: 10
+  name: 
+  m_tags: 0
+  m_damage: 0
   m_priority: 0
   m_part: 1
   m_blockStun: 0
@@ -28,16 +28,12 @@ MonoBehaviour:
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: 0, y: 0, z: 0}
-  m_cameraPosition: {x: 0, y: 0, z: 0}
-  m_cameraRotation: {x: 0, y: 0, z: 0}
-  m_cameraEaseFactor: 0
-  Events: []
-  m_startFrames: 12
-  m_activeFrames: 7
-  m_recoveryFrames: 12
-  m_meshAnimationS: {fileID: 7400000, guid: 648a004d605219c40a22f94edfd1b63a, type: 2}
-  m_meshAnimationA: {fileID: 7400000, guid: 3bd3356cc31efad40831afb3c9597c3d, type: 2}
-  m_meshAnimationR: {fileID: 7400000, guid: 83deca2134792eb46acb9e0129ba7c6f, type: 2}
+  m_startFrames: 0
+  m_activeFrames: 0
+  m_recoveryFrames: 0
+  m_meshAnimationS: {fileID: 0}
+  m_meshAnimationA: {fileID: 0}
+  m_meshAnimationR: {fileID: 0}
   m_boxAnimationS: {fileID: 0}
   m_boxAnimationA: {fileID: 0}
   m_boxAnimationR: {fileID: 0}

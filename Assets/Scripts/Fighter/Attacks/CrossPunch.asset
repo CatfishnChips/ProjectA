@@ -13,18 +13,25 @@ MonoBehaviour:
   m_Name: CrossPunch
   m_EditorClassIdentifier: 
   name: CrossPunch
-  m_damage: 10
   m_tags: 0
+  m_damage: 10
   m_priority: 0
   m_part: 1
-  m_hitStun: 10
-  m_blockStun: 0
+  m_blockStun: 5
   m_freeze: 2
+  m_knockbackStun: 0
+  m_knockupStun: 0
+  m_knockdownStun: 0
   m_knockup: 0
   m_knockback: 1
+  m_gravity: 1
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}
+  m_cameraPosition: {x: 0, y: 0, z: 0}
+  m_cameraRotation: {x: 0, y: 0, z: 0}
+  m_cameraEaseFactor: 0
+  Events: []
   m_startFrames: 18
   m_activeFrames: 5
   m_recoveryFrames: 34
@@ -37,3 +44,6 @@ MonoBehaviour:
   m_boxAnimationS: {fileID: 7400000, guid: 7cf65442d76c3ae41bccdb7efe9f5cc2, type: 2}
   m_boxAnimationA: {fileID: 7400000, guid: 530b046ddfbd15c4e979bb8c890474fd, type: 2}
   m_boxAnimationR: {fileID: 7400000, guid: cda0786305db1cb45b998acfecf2278b, type: 2}
+  _firstFrameStartup: 1
+  _firstFrameActive: 1
+  _firstFrameRecovery: 1

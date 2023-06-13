@@ -8,9 +8,6 @@ public class FighterStunnedState : FighterBaseState
     private CollisionData _collisionData;
     private ActionAttack _action;
     private float _currentFrame = 0;
-    private Vector2 _velocity;
-    private float _animationSpeed;
-    private bool _isFirstTime = true;
 
     public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -39,46 +36,14 @@ public class FighterStunnedState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
-        _collisionData = _ctx.CollisionData;
+        _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
 
-        _velocity = Vector2.zero;
-
-        // Note: Velocity calculations are handled here due to vertical and horizontal movemenents' requirement of blending together. Substates are used for adjusting animations.
-
-        if (_action.Knockup != 0){
-            float _time = _action.KnockupStun * Time.fixedDeltaTime;
-            _ctx.Gravity = (-2 * _action.Knockup) / Mathf.Pow(_time, 2);
-            _velocity.y = (2 * _action.Knockup) / _time;   
-        }
-
-        if (_action.Knockback!= 0){
-            _velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
-        }
-
-        _ctx.CurrentMovement = _velocity;
         _ctx.Velocity = _ctx.CurrentMovement;
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
 
         _ctx.HealthManager.UpdateHealth(_collisionData);
-
-        if (_action.HitStun == 0) return;
-
-        _ctx.Animator.Play("Stunned");
-        _ctx.ColBoxAnimator.Play("Idle");
-
-        ActionDefault action = _ctx.ActionDictionary["Stunned"] as ActionDefault;
-        AnimationClip clip = action.meshAnimation;
-
-        _animationSpeed = AdjustAnimationTime(clip, _action.HitStun); 
-
-        if (_action.Freeze != 0){
-            _ctx.Animator.SetFloat("SpeedVar", 0f);
-        }
-        else{
-            _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
-        }
     }
 
     public override void ExitState()
@@ -88,23 +53,8 @@ public class FighterStunnedState : FighterBaseState
 
     public override void FixedUpdateState()
     {   
-        if (_currentFrame > _action.Freeze){
-
-            if (_isFirstTime){
-                _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
-                _isFirstTime = false;
-            }
-
-            float previousVelocityY = _ctx.CurrentMovement.y;
-            if (_ctx.Velocity.y <= 0){    
-                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime);
-            }
-            else{
-                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
-            }
-            _ctx.Velocity = new Vector2(_ctx.Velocity.x, Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
+        if (_currentFrame > _action.Freeze){  
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-
             //Debug.Log("Velocity Applied: " + _ctx.Velocity);
         }
         

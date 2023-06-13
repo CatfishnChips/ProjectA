@@ -29,7 +29,7 @@ public class FighterBlockState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
-        _collisionData = _ctx.CollisionData;
+        _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
 

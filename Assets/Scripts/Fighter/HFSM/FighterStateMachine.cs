@@ -74,11 +74,13 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private float _fallMultiplier = 1f;
     [SerializeField] private int _dodgeTime; // in frames
 
-    private bool _isGrounded;
+    [SerializeField] [ReadOnly] bool _isGrounded;
     private string _attackName;
     private float _gravity;
     private float _deltaTarget;
-    private CollisionData _collisionData;
+    private CollisionData _hurtCollisionData;
+    private CollisionData _hitCollisionData;
+    private bool _isHit;
     private bool _isHurt;
     private bool _isGravityApplied;
     private Vector2 _swipeDirection;
@@ -87,6 +89,7 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private Vector2 _rayCastPosition;
     private Vector2 _currentMovement;
     [SerializeField] private float _jumpDistance = 1f;
+    [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
 
     public FighterStates CurrentRootState{get{return _currentRootState;} set{_currentRootState = value;}}
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
@@ -120,9 +123,11 @@ public class FighterStateMachine : MonoBehaviour
 
     public HitResponder HitResponder {get{return _hitResponder;}}
     public HurtResponder HurtResponder {get{return _hurtResponder;}}
-    public CollisionData CollisionData {get{return _collisionData;}}
+    public CollisionData HurtCollisionData {get{return _hurtCollisionData;}}
+    public CollisionData HitCollisionData {get{return _hitCollisionData;}}
     public HealthManager HealthManager {get{return _healthManager;}}
     public StaminaManager StaminaManager {get{return _staminaManager;}}
+    public bool IsHit {get{return _isHit;} set{_isHit = value;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
     public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
@@ -138,16 +143,19 @@ public class FighterStateMachine : MonoBehaviour
     public float DashDistance {get{return _dashDistance;}}
     public int DashTime {get{return _dashTime;}}
     public int DodgeTime {get{return _dodgeTime;}}
+    public int FaceDirection {get{return _faceDirection;}}
 
     void Awake()
     {
         _animator = GetComponent<Animator>();
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
+        _isHit = false;
         _isHurt = false;
         _isGravityApplied = true;
         _gravity = Physics2D.gravity.y;
         _states = new FighterStateFactory(this);
         _comboListener = new ComboListener(this);
+        _faceDirection = (int)Mathf.Sign(transform.forward.x);
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animOverrideCont;
@@ -218,6 +226,7 @@ public class FighterStateMachine : MonoBehaviour
     void FixedUpdate()
     {
         _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastPosition, Vector2.down, _rayCastLenght, _rayCastLayerMask);
+        _faceDirection = (int)Mathf.Sign(transform.forward.x);
         //Debug.Log(_isGrounded);
 
         if(_comboListener.isActive){
@@ -249,6 +258,7 @@ public class FighterStateMachine : MonoBehaviour
     public void ListenToMove(float value){
         if (value < 0) value = -1;
         else if (value > 0) value = 1;
+        value *= _faceDirection;
 
         StartCoroutine(InputDelay(_movementInput, value));
     }
@@ -262,18 +272,22 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     public void OnHit(CollisionData data){
+        if (_isHit) return;
+        _hitCollisionData = data;
         TimeController.Instance.SlowDown();
         CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
+        _isHit = true;
     }
 
     public void OnHurt(CollisionData data){
         if (_isHurt) return;
-        _collisionData = data;
+        _hurtCollisionData = data;
         _isHurt = true;
     }
 
     private void OnDash(Vector2 direction){
         _swipeDirection = direction;
+        _swipeDirection.x *= _faceDirection;
         //Debug.Log("Swipe Direction: " + direction);
 
         if (direction.y <= -0.5f) {

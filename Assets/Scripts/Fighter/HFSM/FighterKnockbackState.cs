@@ -7,7 +7,7 @@ public class FighterKnockbackState : FighterBaseState
     private CollisionData _collisionData;
     private ActionAttack _action;
     private float _currentFrame = 0;
-    private Vector2 _velocity;
+    private float _drag = 0f;
     private float _animationSpeed;
     private bool _isFirstTime = true;
 
@@ -21,7 +21,7 @@ public class FighterKnockbackState : FighterBaseState
             SwitchState(_factory.Stunned());
         }
 
-        if (_currentFrame >= _action.KnockbackStun){   
+        if (_currentFrame >= _action.KnockbackStun + _action.Freeze){   
             SwitchState(_factory.Idle());
         }
     }
@@ -29,30 +29,68 @@ public class FighterKnockbackState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
-        _collisionData = _ctx.CollisionData;
+        _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
+        _ctx.IsHurt = false;
+
+
+        if (_action.Knockback!= 0){
+            //_velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
+
+            float direction = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x);
+            float _time = _action.KnockbackStun * Time.fixedDeltaTime;
+
+            _drag = (-2 * _action.Knockback) / (_time * _time);
+            float _initialVelocity = (2 * _action.Knockback) / _time;
+
+            _drag = _drag * direction;
+            _initialVelocity = _initialVelocity * direction;
+
+            _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
+            _ctx.Velocity = _ctx.CurrentMovement;
+        }
 
         if (_action.KnockbackStun == 0) return;
 
-        ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
+        ActionDefault action = _ctx.ActionDictionary["Knockback"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
 
-        _ctx.AnimOverrideCont["Block"] = clip;
+        _ctx.AnimOverrideCont["Stunned"] = clip;
 
-        float speedVar = AdjustAnimationTime(clip, _action.HitStun);
-        _ctx.Animator.SetFloat("SpeedVar", speedVar);
+        _animationSpeed = AdjustAnimationTime(clip, _action.KnockbackStun); 
 
-        _ctx.Animator.Play("Block");
-        _ctx.ColBoxAnimator.Play("Block");
+        if (_action.Freeze != 0){
+            _ctx.Animator.SetFloat("SpeedVar", 0f);
+        }
+        else{
+            _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
+        }
+
+        _ctx.Animator.Play("Stunned");
+        _ctx.ColBoxAnimator.Play("Idle");
     }
 
     public override void ExitState()
     {
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = _ctx.CurrentMovement;
     }
 
     public override void FixedUpdateState()
     {
         _currentFrame++;
+
+        if (_currentFrame > _action.Freeze){
+
+            if (_isFirstTime){
+                _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
+                _isFirstTime = false;
+            }
+
+            _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y);
+            _ctx.Velocity = _ctx.CurrentMovement;    
+        }
+
         CheckSwitchState();
     }
 
