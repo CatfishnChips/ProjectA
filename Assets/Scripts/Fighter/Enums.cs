@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public enum AnimationsEnum{
-    Walking_Backwards,
-    Running_Backwards,
-    Standart_Run,
-    Standart_Walk,
-    Surprise_Uppercut,
-    Idle1,
-    DirectPunch
-}
+// public enum AnimationsEnum{
+//     Walking_Backwards,
+//     Running_Backwards,
+//     Standart_Run,
+//     Standart_Walk,
+//     Surprise_Uppercut,
+//     Idle1,
+//     DirectPunch
+// }
 
 public enum FighterStates
 {
@@ -28,6 +28,14 @@ public enum FighterStates
     Knockdown,
     Knockback,
     Grabbed
+}
+
+public enum Player
+{
+    None,
+    P1,
+    P2,
+    AI
 }
 
 // Currently not being used. Can come in handy later on.

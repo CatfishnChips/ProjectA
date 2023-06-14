@@ -20,7 +20,7 @@ public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, Animation
 
 public class FighterStateMachine : MonoBehaviour
 {
-
+    [SerializeField] private Player _player;
     [SerializeField] private ActionAttribution[] _actionAttribution;
     private Dictionary<string, ActionAttack> _attackMoveDict;
     private Dictionary<string, ActionBase> _actionDictionary;
@@ -90,6 +90,8 @@ public class FighterStateMachine : MonoBehaviour
     private Vector2 _currentMovement;
     [SerializeField] private float _jumpDistance = 1f;
     [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
+
+    public Player Player {get{return _player;}}
 
     public FighterStates CurrentRootState{get{return _currentRootState;} set{_currentRootState = value;}}
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
@@ -194,29 +196,64 @@ public class FighterStateMachine : MonoBehaviour
 
     void Start()
     {
-        EventManager.Instance.Move += ListenToMove;
-        EventManager.Instance.Swipe += OnDash;
-        EventManager.Instance.AttackMove += ListenToAttack;
-        EventManager.Instance.OnTap += OnTapA;
-        EventManager.Instance.OnHoldA += OnHoldA;
-        EventManager.Instance.OnHoldB += OnHoldB;
+        switch(_player){
+            case Player.P1:
 
+            break;
+
+            case Player.P2:
+
+            break;
+
+            case Player.AI:
+
+            break;
+
+            default:
+                EventManager.Instance.Move += ListenToMove;
+                EventManager.Instance.Swipe += OnDash;
+                EventManager.Instance.AttackMove += ListenToAttack;
+                EventManager.Instance.OnTap += OnTapA;
+                EventManager.Instance.OnHoldA += OnHoldA;
+                EventManager.Instance.OnHoldB += OnHoldB;
+            break;
+        }
+
+        // Component based events.
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
 
+        // Start default state.
         _currentState = _states.Grounded();
         _currentState.EnterState();
     }
 
     private void OnDisable() 
     {
-        EventManager.Instance.Move -= ListenToMove;
-        EventManager.Instance.Swipe -= OnDash;
-        EventManager.Instance.AttackMove -= ListenToAttack;
-        EventManager.Instance.OnTap -= OnTapA;
-        EventManager.Instance.OnHoldA -= OnHoldA;
-        EventManager.Instance.OnHoldB -= OnHoldB;
+        switch(_player){
+            case Player.P1:
 
+            break;
+
+            case Player.P2:
+
+            break;
+
+            case Player.AI:
+
+            break;
+
+            default:
+                EventManager.Instance.Move -= ListenToMove;
+                EventManager.Instance.Swipe -= OnDash;
+                EventManager.Instance.AttackMove -= ListenToAttack;
+                EventManager.Instance.OnTap -= OnTapA;
+                EventManager.Instance.OnHoldA -= OnHoldA;
+                EventManager.Instance.OnHoldB -= OnHoldB;
+            break;
+        }
+        
+        // Component based events.
         if(_hitResponder) _hitResponder.HitResponse -= OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse -= OnHurt;
 
@@ -227,7 +264,6 @@ public class FighterStateMachine : MonoBehaviour
     {
         _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastPosition, Vector2.down, _rayCastLenght, _rayCastLayerMask);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
-        //Debug.Log(_isGrounded);
 
         if(_comboListener.isActive){
             _comboListener.FixedUpdate();

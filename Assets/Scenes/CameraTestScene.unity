@@ -900,6 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: 0
   _actionAttribution: []
   _combosArray: []
   _currentRootState: 0
@@ -4727,7 +4728,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 175.79494
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4750,8 +4751,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.3050243, y: -0.6098758, z: 0.27435976, w: 0.67804015}
-  m_LocalPosition: {x: 214.08148, y: 216.91656, z: -11.216921}
+  m_LocalRotation: {x: 0.29900005, y: -0.633831, z: 0.29098207, w: 0.65129614}
+  m_LocalPosition: {x: 183.92136, y: 214.04521, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4827,6 +4828,27 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &972370721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1566946645860321951, guid: 2c9bfd0d84abc7145bc396a933c312e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 9079674693444148391}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &972370722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972370721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69210d274f44fd8499cbf95c8c3173c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fighterSlot1: {fileID: 0}
+  m_fighterSlot2: {fileID: 0}
+  m_uiManager: {fileID: 0}
 --- !u!1 &1007115208
 GameObject:
   m_ObjectHideFlags: 0
@@ -5768,7 +5790,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426044326}
-  m_LocalRotation: {x: 0.3050243, y: -0.6098758, z: 0.27435976, w: 0.67804015}
+  m_LocalRotation: {x: 0.3050243, y: -0.6098758, z: 0.27435973, w: 0.67804015}
   m_LocalPosition: {x: 119.54283, y: 109.75689, z: -11.216921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8781,6 +8803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: 0
   _actionAttribution:
   - action: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
   - action: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
