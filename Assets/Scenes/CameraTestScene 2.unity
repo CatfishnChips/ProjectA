@@ -914,12 +914,14 @@ MonoBehaviour:
   _jumpTime: 0
   _fallMultiplier: 1
   _dodgeTime: 0
+  _isGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
     m_Bits: 0
   _rayCastLenght: 0
   _rayCastPosition: {x: 0, y: 0}
   _jumpDistance: 1
+  _faceDirection: 0
 --- !u!1 &156496444
 GameObject:
   m_ObjectHideFlags: 0
@@ -4754,8 +4756,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.29884598, y: -0.6339065, z: 0.29083958, w: 0.65135705}
-  m_LocalPosition: {x: 184.09482, y: 214.04698, z: -5}
+  m_LocalRotation: {x: 0.29886776, y: -0.6338958, z: 0.29085967, w: 0.65134853}
+  m_LocalPosition: {x: 184.07031, y: 214.04674, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4882,10 +4884,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 474040055458162382, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 815378929669242414, guid: a1ed723664f83034a96a64e41d30bde7,
         type: 3}
       propertyPath: m_Name
       value: Fighter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6976153750473958081, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6976153750473958082, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7839007976745551521, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1ed723664f83034a96a64e41d30bde7, type: 3}
@@ -7605,6 +7627,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitbox: {fileID: 1842910541}
+  _grabbox: {fileID: 0}
   m_priority: 0
 --- !u!1 &1852053115
 GameObject:
@@ -7805,7 +7828,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881216307}
-  m_LocalRotation: {x: 0.29884598, y: -0.6339065, z: 0.29083958, w: 0.65135705}
+  m_LocalRotation: {x: 0.29886776, y: -0.6338958, z: 0.29085967, w: 0.65134853}
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8557,10 +8580,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 474040055458162382, guid: 4f5799123c9e34247af0eaa9207679fa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 815378929669242414, guid: 4f5799123c9e34247af0eaa9207679fa,
         type: 3}
       propertyPath: m_Name
       value: FighterAI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7839007976745551521, guid: 4f5799123c9e34247af0eaa9207679fa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f5799123c9e34247af0eaa9207679fa, type: 3}
@@ -8753,12 +8786,14 @@ MonoBehaviour:
   _jumpTime: 0
   _fallMultiplier: 1
   _dodgeTime: 0
+  _isGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
     m_Bits: 0
   _rayCastLenght: 0
   _rayCastPosition: {x: 0, y: 0}
   _jumpDistance: 1
+  _faceDirection: 0
 --- !u!1 &554279282031682718
 GameObject:
   m_ObjectHideFlags: 0
@@ -10818,6 +10853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitbox: {fileID: 1344860885}
+  _grabbox: {fileID: 0}
   m_priority: 0
 --- !u!1 &7844950535944003480
 GameObject:
