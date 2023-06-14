@@ -17,17 +17,21 @@ MonoBehaviour:
   m_damage: 10
   m_priority: 0
   m_part: 1
-  m_blockStun: 0
+  m_blockStun: 5
   m_freeze: 2
   m_knockbackStun: 0
   m_knockupStun: 0
   m_knockdownStun: 0
   m_knockup: 0
   m_knockback: 1
-  m_gravity: 0
+  m_gravity: 1
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}
+  m_cameraPosition: {x: 0, y: 0, z: 0}
+  m_cameraRotation: {x: 0, y: 0, z: 0}
+  m_cameraEaseFactor: 0
+  Events: []
   m_startFrames: 18
   m_activeFrames: 5
   m_recoveryFrames: 34

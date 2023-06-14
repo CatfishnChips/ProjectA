@@ -8,8 +8,6 @@ public class FighterKnockdownState : FighterBaseState
     private ActionAttack _action;
     private float _currentFrame = 0;
     private Vector2 _velocity;
-    private float _animationSpeed;
-    private bool _isFirstTime = true;
 
     public FighterKnockdownState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -29,25 +27,27 @@ public class FighterKnockdownState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
-        _collisionData = _ctx.CollisionData;
+        _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
 
         if (_action.KnockdownStun == 0) return;
 
-        ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
+        ActionDefault action = _ctx.ActionDictionary["Knockdown"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
 
-        _ctx.AnimOverrideCont["Block"] = clip;
+        _ctx.AnimOverrideCont["Knockdown"] = clip;
 
-        float speedVar = AdjustAnimationTime(clip, _action.HitStun);
+        float speedVar = AdjustAnimationTime(clip, _action.KnockdownStun);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
 
-        _ctx.Animator.Play("Block");
-        _ctx.ColBoxAnimator.Play("Block");
+        _ctx.Animator.Play("Knockdown");
+        _ctx.ColBoxAnimator.Play("Idle");
     }
 
     public override void ExitState()
     {
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = _ctx.CurrentMovement;
     }
 
     public override void FixedUpdateState()

@@ -45,15 +45,17 @@ public class FighterDashState : FighterBaseState
         }
         
         _ctx.AnimOverrideCont["Dash"] = clip;
+        //_ctx.ColBoxOverrideCont["Dash"]
 
         // For this action, DashTime variable is used instead of animation's Frame variable.
         float speedVar = AdjustAnimationTime(clip, _ctx.DashTime);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
 
         _ctx.Animator.Play("Dash");
-        _ctx.ColBoxAnimator.Play("Dash");
+        _ctx.ColBoxAnimator.Play("Idle");
 
-        float direction = Mathf.Sign(_ctx.SwipeDirection.x);
+        float direction = -Mathf.Sign(_ctx.SwipeDirection.x);
+        
         float _time = _ctx.DashTime * Time.fixedDeltaTime;
 
         _drag = (-2 * _ctx.DashDistance) / (_time * _time);
@@ -86,11 +88,9 @@ public class FighterDashState : FighterBaseState
 
     public override void InitializeSubState()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
     {
-
     }
 }

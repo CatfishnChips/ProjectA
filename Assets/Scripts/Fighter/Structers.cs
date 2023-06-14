@@ -29,4 +29,9 @@ public class ComboMoveSpecs{
 
 }
 
-
+[Serializable]
+public struct FrameEvent
+{
+    public int Frame;
+    public UnityEngine.Events.UnityEvent Event;
+}
