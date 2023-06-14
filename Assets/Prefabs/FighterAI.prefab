@@ -666,14 +666,15 @@ GameObject:
   - component: {fileID: 7633349257831572}
   - component: {fileID: 815378929669242412}
   - component: {fileID: 545400652093244275}
-  - component: {fileID: 6976153750473958084}
+  - component: {fileID: -1752167267074013210}
   - component: {fileID: 7839007976745551521}
   - component: {fileID: 474040055458162382}
   - component: {fileID: 6976153750473958081}
   - component: {fileID: 6976153750473958082}
+  - component: {fileID: 6976153750473958084}
   m_Layer: 0
-  m_Name: FighterA 2
-  m_TagString: Player
+  m_Name: FighterAI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -737,7 +738,7 @@ MonoBehaviour:
   - action: {fileID: 11400000, guid: a17b9ffb7ab6660489a5a3a9bd9d75c1, type: 2}
   - action: {fileID: 11400000, guid: 8ed5dd913eac9c3468e68e814f9a6c9e, type: 2}
   - action: {fileID: 11400000, guid: 920e7bf801531fe4083358fbeccf562d, type: 2}
-  - action: {fileID: 11400000, guid: 362ed136e013e434cbc9bd2f64069a44, type: 2}
+  - action: {fileID: 11400000, guid: 634da9e8c929bea42b912eb0ca4a3b28, type: 2}
   - action: {fileID: 11400000, guid: ceaa2bcdec764b04d89b11c8ca108686, type: 2}
   - action: {fileID: 11400000, guid: 121f39da6c55dbb4ea2d698e614e2615, type: 2}
   - action: {fileID: 11400000, guid: aa8a835f251d1934ea68da2818fe808b, type: 2}
@@ -766,13 +767,14 @@ MonoBehaviour:
       theMove: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
       willOverride: 1
       moveToOverride: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
-  _currentStateName: 
-  _currentSubStateName: 
-  _currentSuperStateName: 
+  _currentRootState: 0
+  _currentSubState: 0
+  _comboBuffer: 15
+  _inputDelay: 2
+  _inputBuffer: 10
   _dashDistance: 1
   _dashTime: 10
   _airMoveSpeed: 1
-  _inputTimeoutTime: 10
   _jumpHeight: 1
   _jumpTime: 24
   _fallMultiplier: 1
@@ -783,27 +785,18 @@ MonoBehaviour:
   _rayCastLenght: 0.2
   _rayCastPosition: {x: 0, y: 0}
   _jumpDistance: 5
---- !u!50 &6976153750473958084
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &-1752167267074013210
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815378929669242414}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62aac2724bb27f4fbf7a8492fc19886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7839007976745551521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,6 +850,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_health: 100
+--- !u!50 &6976153750473958084
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815378929669242414}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1175962784115012596
 GameObject:
   m_ObjectHideFlags: 0
