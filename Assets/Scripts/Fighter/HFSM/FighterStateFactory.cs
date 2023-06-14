@@ -23,6 +23,7 @@ public class FighterStateFactory
         _states[FighterStates.Knockup] = new FighterKnockupState(_context, this);
         _states[FighterStates.Knockdown] = new FighterKnockdownState(_context, this);
         _states[FighterStates.Knockback] = new FighterKnockbackState(_context, this);
+        _states[FighterStates.Grabbed] = new FighterGrabbedState(_context, this);
     }
 
     public FighterBaseState Idle(){
@@ -80,5 +81,9 @@ public class FighterStateFactory
     public FighterBaseState Knockback(){
         _context.CurrentSubState = FighterStates.Knockback;
         return _states[FighterStates.Knockback];
+    }
+    public FighterBaseState Grabbed(){
+        _context.CurrentSubState = FighterStates.Grabbed;
+        return _states[FighterStates.Grabbed];
     }
 }

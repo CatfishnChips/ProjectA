@@ -26,7 +26,8 @@ public enum FighterStates
     Block,
     Knockup,
     Knockdown,
-    Knockback
+    Knockback,
+    Grabbed
 }
 
 // Currently not being used. Can come in handy later on.

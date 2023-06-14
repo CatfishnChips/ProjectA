@@ -9,24 +9,31 @@ public class ActionAttack : ActionBase
     [SerializeField] private int m_damage;
 
     [Header("Hitbox Properties")]
-    [Tooltip("Which type of hitbox is prioritized for hit detection.")]
+    [Tooltip("Which type of hitbox is prioritized for hit detection.")] // Probably won't be used.
     [SerializeField] private int m_priority;
     [Tooltip("Dictates how many times a move can hit. Set to 1 for single hit moves.")]
     [SerializeField] private int m_part = 1;
 
     [Header("Stun Properties")]
-    [Tooltip("Stun inflicted upon hit (in frames).")]
+    [Tooltip("Stun inflicted upon hitting the target that is blocking (in frames).")]
     [SerializeField] private int m_blockStun;
+    [Tooltip("Time stop applied to the target upon hit (in frames).")]
     [SerializeField] private int m_freeze;
+    [Tooltip("Stun inflicted upon hitting the target (in frames).")]
     [SerializeField] private int m_knockbackStun;
+    [Tooltip("Duration that the target will stay in air, inflicted upon hitting the target (in frames).")]
     [SerializeField] private int m_knockupStun;
+    [Tooltip("Duration that the target will stay lying on ground, inflicted upon hitting the target (in frames).")]
     [SerializeField] private int m_knockdownStun;
 
     [Header("Knockback Properties")]
+    [Tooltip("Distance of the knockup.")]
     [SerializeField] private float m_knockup;
+    [Tooltip("Distance of the knockback.")]
     [SerializeField] private float m_knockback;
 
     [Header("Gravity Properties")]
+    [Tooltip("Is gravity applied to the performing character during the action?")]
     [SerializeField] private bool m_gravity;
 
     [Header("SFX Properties")]
@@ -35,6 +42,12 @@ public class ActionAttack : ActionBase
 
     [Header("VFX Properties")]
     [SerializeField] private Vector3 m_screenShakeVelocity;
+    [SerializeField] private Vector3 m_cameraPosition;
+    [SerializeField] private Vector3 m_cameraRotation;
+    [SerializeField] private float m_cameraEaseFactor;
+
+    [Header("Events")]
+    [SerializeField] private List<FrameEvent> m_events; 
 
     [Header("Frame Data")]
     [SerializeField] private int m_startFrames;
@@ -82,9 +95,9 @@ public class ActionAttack : ActionBase
     public AnimationClip BoxAnimationA {get => m_boxAnimationA;}
     public AnimationClip BoxAnimationR {get => m_boxAnimationR;}
 
-    public bool _firstFrameStartup = true;
-    public bool _firstFrameActive = true;
-    public bool _firstFrameRecovery = true;
+    [ReadOnly] public bool _firstFrameStartup = true;
+    [ReadOnly] public bool _firstFrameActive = true;
+    [ReadOnly] public bool _firstFrameRecovery = true;
 
     public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
         _firstFrameStartup = true;
@@ -120,6 +133,14 @@ public class ActionAttack : ActionBase
                 _firstFrameRecovery = false;
             }
         }
+
+        // Invoke events.
+        // foreach(FrameEvent e in m_events){
+        //     if (state._currentFrame == e.Frame){
+        //         e.Event?.Invoke();
+        //     }
+        // }
+
         state._currentFrame++;
     }
 

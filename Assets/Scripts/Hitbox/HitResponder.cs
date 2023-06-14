@@ -10,6 +10,7 @@ public class HitResponder : MonoBehaviour, IHitResponder
 
     [Header("Hitbox Properties")]
     [SerializeField] private Hitbox _hitbox;
+    [SerializeField] private Hitbox _grabbox;
     [SerializeField] private int m_priority;
     [Tooltip("Dictates how many times a move can hit. Set to 1 for single hit moves.")]
 
@@ -30,10 +31,15 @@ public class HitResponder : MonoBehaviour, IHitResponder
     }
 
     private void Update(){
-        if (!_hitbox.Active) return;
-        if (_part <= 0) return;
+        if (_hitbox.Active){
+            if (_part <= 0) return;
+            _hitbox.CheckHit();
+        }
 
-        _hitbox.CheckHit();
+        if (_grabbox.Active){
+            if (_part <= 0) return;
+            _grabbox.CheckHit();
+        }
     }
 
     // private IEnumerator UpdateHitbox(){
