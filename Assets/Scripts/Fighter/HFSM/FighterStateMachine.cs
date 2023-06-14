@@ -194,12 +194,24 @@ public class FighterStateMachine : MonoBehaviour
 
     void Start()
     {
-        EventManager.Instance.Move += ListenToMove;
-        EventManager.Instance.Swipe += OnDash;
-        EventManager.Instance.AttackMove += ListenToAttack;
-        EventManager.Instance.OnTap += OnTapA;
-        EventManager.Instance.OnHoldA += OnHoldA;
-        EventManager.Instance.OnHoldB += OnHoldB;
+        if (transform.GetComponent<AIBrain>() == null)
+        {
+            EventManager.Instance.Move += ListenToMove;
+            EventManager.Instance.Swipe += OnDash;
+            EventManager.Instance.AttackMove += ListenToAttack;
+            EventManager.Instance.OnTap += OnTapA;
+            EventManager.Instance.OnHoldA += OnHoldA;
+            EventManager.Instance.OnHoldB += OnHoldB;
+        }
+        else
+        {
+            EventManager.Instance.P2Move += ListenToMove;
+            EventManager.Instance.P2Swipe += OnDash;
+            EventManager.Instance.P2AttackMove += ListenToAttack;
+            EventManager.Instance.P2OnTap += OnTapA;
+            EventManager.Instance.P2OnHoldA += OnHoldA;
+            EventManager.Instance.P2OnHoldB += OnHoldB;
+        }
 
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
@@ -210,14 +222,26 @@ public class FighterStateMachine : MonoBehaviour
 
     private void OnDisable() 
     {
-        EventManager.Instance.Move -= ListenToMove;
-        EventManager.Instance.Swipe -= OnDash;
-        EventManager.Instance.AttackMove -= ListenToAttack;
-        EventManager.Instance.OnTap -= OnTapA;
-        EventManager.Instance.OnHoldA -= OnHoldA;
-        EventManager.Instance.OnHoldB -= OnHoldB;
+        if (transform.GetComponent<AIBrain>() == null)
+        {
+            EventManager.Instance.Move -= ListenToMove;
+            EventManager.Instance.Swipe -= OnDash;
+            EventManager.Instance.AttackMove -= ListenToAttack;
+            EventManager.Instance.OnTap -= OnTapA;
+            EventManager.Instance.OnHoldA -= OnHoldA;
+            EventManager.Instance.OnHoldB -= OnHoldB;
+        }
+        else
+        {
+            EventManager.Instance.P2Move -= ListenToMove;
+            EventManager.Instance.P2Swipe -= OnDash;
+            EventManager.Instance.P2AttackMove -= ListenToAttack;
+            EventManager.Instance.P2OnTap -= OnTapA;
+            EventManager.Instance.P2OnHoldA -= OnHoldA;
+            EventManager.Instance.P2OnHoldB -= OnHoldB;
+        }
 
-        if(_hitResponder) _hitResponder.HitResponse -= OnHit;
+        if (_hitResponder) _hitResponder.HitResponse -= OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse -= OnHurt;
 
         StopAllCoroutines();

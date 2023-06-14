@@ -48,4 +48,37 @@ public class EventManager : MonoBehaviour
     public UnityAction FighterAttackInterrupted;
 
     #endregion
+
+
+    #region Player2
+
+    #region Game Events
+
+    //public UnityAction<> OnCombatBegin;
+    //public UnityAction<> OnCombatEnd;
+    public UnityAction<GameObject, int> P2HealthChanged;
+    public UnityAction<GameObject, int> P2StaminaChanged;
+
+    #endregion
+
+    #region Movement Events
+    // These actions are called by the Touch A, which is used primarily for movement.
+    public UnityAction<Vector2> P2Swipe;
+    public UnityAction<float> P2Move;
+    public UnityAction P2OnTap;
+    public UnityAction<bool> P2OnHoldA;
+    public UnityAction<bool> P2OnHoldB;
+
+    #endregion
+
+    #region Attack Events
+
+    public UnityAction<string> P2AttackMove;
+    public UnityAction<string> P2FighterAttackStarted;
+    public UnityAction P2FighterAttackEnded;
+    public UnityAction P2FighterAttackInterrupted;
+
+    #endregion
+
+    #endregion
 }
