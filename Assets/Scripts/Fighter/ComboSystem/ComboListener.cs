@@ -41,10 +41,6 @@ public class ComboListener
 
         if(_currentSearchDict == null) _currentSearchDict = _comboMovesDict;
 
-        // foreach (string item in _currentSearchDict.Keys)
-        // {
-        //     Debug.Log(item);
-        // }
 
         if(!_currentSearchDict.ContainsKey(action.name)){
             ResetListener();
@@ -68,13 +64,6 @@ public class ComboListener
         return _attackAction;
     }
 
-    // public void ReactivateListener(){
-    //     _currentFrame = 0;
-    //     _currentMoveNumber = 1;
-    //     _currentSearchDict = _comboMovesDict[_currentAttackName].possibleNextMoves;
-    //     isActive = true;
-    // }
-
     private void ResetListener(){
         _currentFrame = 0;
         //_currentMoveNumber = 1;
@@ -84,9 +73,6 @@ public class ComboListener
         isActive = false;
     }
 
-    // private void OnAttackStart(string name){
-    //     _currentAttackName = name;
-    // }
 
     private void ArrangeMovesList(){
         Dictionary<string, ComboMoveSpecs> tempDictWriter;
@@ -103,14 +89,11 @@ public class ComboListener
                 tempDictWriter = tempDictWriter[comboAttackName].possibleNextMoves;  
             }
         }
-        // foreach (KeyValuePair<string, ComboMoveSpecs> item in _comboMovesDict){
-        //     //Debug.Log("Cem: " + item.Value.theMove.name);
+    }
 
-        //     //Debug.Log(item.Value.possibleNextMoves.Keys);
-        //     foreach (KeyValuePair<string, ComboMoveSpecs> kitem in item.Value.possibleNextMoves){
-        //         Debug.Log(kitem.Value.theMove.name);
-        //     }
-        // }
+    public Dictionary<string, ComboMoveSpecs> GetCurrentSearchDict()
+    {
+        return _currentSearchDict;
     }
 }
 //ş

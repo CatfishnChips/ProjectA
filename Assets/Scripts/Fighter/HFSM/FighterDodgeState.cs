@@ -32,7 +32,7 @@ public class FighterDodgeState : FighterBaseState
             _action = _ctx.ActionDictionary["Dodge"] as ActionDefault;
         }
         AnimationClip clip = _action.meshAnimation;
-        _ctx.AnimOverrideCont["Dash"] = clip;
+        _ctx.AnimOverrideCont["Dodge"] = clip;
 
         float speedVar = AdjustAnimationTime(clip, _ctx.DodgeTime);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
