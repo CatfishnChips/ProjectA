@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Difficulty", menuName = "FighterAI")]
 public class AIDifficultySettings : ScriptableObject
 {
-    public string name;
+    public new string name;
 
     [SerializeField]
     [Range(0.0f, 100.0f)]
@@ -30,7 +30,8 @@ public class AIDifficultySettings : ScriptableObject
     {
         bool result = generatedNumber < _aggression * Time.fixedDeltaTime;
         // To overcome the unwanted result of calling these funcitons on every update fixedDeltaTime is used.
-        if (result) _aggression -= (100 - _aggressionConsistency) * 0.75f;
+        if (result && _aggression > 0) _aggression -= (100 - _aggressionConsistency) * 0.75f;
+        if(_aggression < 0) _aggression = 0;
         return result;
     }
 

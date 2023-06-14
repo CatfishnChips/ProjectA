@@ -10,6 +10,8 @@ public class AIDecisionMechanism
     private FighterStateMachine _selfCtx;
     private FighterStateMachine _enemyCtx;
 
+    private List<string> fighterAttacks;
+
     private float _optimalDistance;
 
 
