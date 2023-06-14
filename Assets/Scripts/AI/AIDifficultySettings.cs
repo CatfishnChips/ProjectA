@@ -30,7 +30,7 @@ public class AIDifficultySettings : ScriptableObject
     {
         bool result = generatedNumber < _aggression * Time.fixedDeltaTime;
         // To overcome the unwanted result of calling these funcitons on every update fixedDeltaTime is used.
-        _aggression -= (100 - _aggressionConsistency) * 0.75f;
+        if (result) _aggression -= (100 - _aggressionConsistency) * 0.75f;
         return result;
     }
 
