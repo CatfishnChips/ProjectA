@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using JetBrains.Annotations;
 
 //To achive a modifiable MoveSet system through inspector.
 [Serializable]
@@ -34,4 +35,9 @@ public struct FrameEvent
 {
     public int Frame;
     public UnityEngine.Events.UnityEvent Event;
+}
+
+public struct NameAttackPair{
+    public string name;
+    public AttackMove attack;
 }
