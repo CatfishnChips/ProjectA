@@ -21,12 +21,16 @@ public class EventManager : MonoBehaviour
 
     #endregion
 
-    #region Game Events
+    public UnityAction<int> TimeChanged;
+    public UnityAction<Player, int> ScoreChanged;
+    public UnityAction<int, int> RoundChanged;
+
+    #region Match Events
 
     //public UnityAction<> OnCombatBegin;
     //public UnityAction<> OnCombatEnd;
-    public UnityAction<GameObject, int> HealthChanged;
-    public UnityAction<GameObject, int> StaminaChanged;
+    public UnityAction<float, float> HealthChanged_P1;
+    public UnityAction<float, float> StaminaChanged_P1;
 
     #endregion
     
@@ -52,12 +56,12 @@ public class EventManager : MonoBehaviour
 
     #region Player2
 
-    #region Game Events
+    #region Match Events
 
     //public UnityAction<> OnCombatBegin;
     //public UnityAction<> OnCombatEnd;
-    public UnityAction<GameObject, int> P2HealthChanged;
-    public UnityAction<GameObject, int> P2StaminaChanged;
+    public UnityAction<float, float> HealthChanged_P2;
+    public UnityAction<float, float> StaminaChanged_P2;
 
     #endregion
 

@@ -34,8 +34,7 @@ public enum Player
 {
     None,
     P1,
-    P2,
-    AI
+    P2
 }
 
 // Currently not being used. Can come in handy later on.

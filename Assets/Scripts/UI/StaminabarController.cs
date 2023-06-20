@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StaminabarController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [Header("Player 1")]
+    [SerializeField] private Slider m_staminabarF_P1;
+
+    [Header("Player 2")]
+    [SerializeField] private Slider m_staminabarF_P2;
+
+
     void Start()
     {
-        
+        m_staminabarF_P1.maxValue = 1f;
+        m_staminabarF_P2.maxValue = 1f;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void UpdateStaminabar_P1(float value){
+        m_staminabarF_P1.value = value;
+    }
+
+    public void UpdateStaminabar_P2(float value){
+        m_staminabarF_P2.value = value;
     }
 }

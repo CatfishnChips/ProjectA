@@ -198,24 +198,25 @@ public class FighterStateMachine : MonoBehaviour
     {
         switch(_player){
             case Player.P1:
-
-            break;
-
-            case Player.P2:
-
-            break;
-
-            case Player.AI:
-
-            break;
-
-            default:
                 EventManager.Instance.Move += ListenToMove;
                 EventManager.Instance.Swipe += OnDash;
                 EventManager.Instance.AttackMove += ListenToAttack;
                 EventManager.Instance.OnTap += OnTapA;
                 EventManager.Instance.OnHoldA += OnHoldA;
                 EventManager.Instance.OnHoldB += OnHoldB;
+            break;
+
+            case Player.P2:
+                EventManager.Instance.P2Move += ListenToMove;
+                EventManager.Instance.P2Swipe += OnDash;
+                EventManager.Instance.P2AttackMove += ListenToAttack;
+                EventManager.Instance.P2OnTap += OnTapA;
+                EventManager.Instance.P2OnHoldA += OnHoldA;
+                EventManager.Instance.P2OnHoldB += OnHoldB;
+            break;
+
+            default:
+                // Do no subscribe to any input events.
             break;
         }
 
@@ -232,15 +233,21 @@ public class FighterStateMachine : MonoBehaviour
     {
         switch(_player){
             case Player.P1:
-
+                EventManager.Instance.Move -= ListenToMove;
+                EventManager.Instance.Swipe -= OnDash;
+                EventManager.Instance.AttackMove -= ListenToAttack;
+                EventManager.Instance.OnTap -= OnTapA;
+                EventManager.Instance.OnHoldA -= OnHoldA;
+                EventManager.Instance.OnHoldB -= OnHoldB;
             break;
 
             case Player.P2:
-
-            break;
-
-            case Player.AI:
-
+                EventManager.Instance.P2Move -= ListenToMove;
+                EventManager.Instance.P2Swipe -= OnDash;
+                EventManager.Instance.P2AttackMove -= ListenToAttack;
+                EventManager.Instance.P2OnTap -= OnTapA;
+                EventManager.Instance.P2OnHoldA -= OnHoldA;
+                EventManager.Instance.P2OnHoldB -= OnHoldB;
             break;
 
             default:
@@ -403,6 +410,10 @@ public class FighterStateMachine : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
         Gizmos.DrawLine(Vector3.zero, Vector3.zero + Vector3.down * _rayCastLenght);
+    }
+
+    public void SetFaceDirection(int value){
+        _faceDirection = value;
     }
 }
 
