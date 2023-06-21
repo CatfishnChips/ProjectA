@@ -414,6 +414,7 @@ public class FighterStateMachine : MonoBehaviour
 
     public void SetFaceDirection(int value){
         _faceDirection = value;
+        transform.rotation = Quaternion.Euler(0f, 90f * _faceDirection, 0f);
     }
 }
 

@@ -24,6 +24,7 @@ public class EventManager : MonoBehaviour
     public UnityAction<int> TimeChanged;
     public UnityAction<Player, int> ScoreChanged;
     public UnityAction<int, int> RoundChanged;
+    public UnityAction<Player> MatchEnded;
 
     #region Match Events
 

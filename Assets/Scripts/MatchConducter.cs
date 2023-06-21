@@ -5,15 +5,26 @@ using UnityEngine;
 public class MatchConducter : MonoBehaviour
 {   
     #region Variables
-
-    [SerializeField] private int m_round;
-    [SerializeField] private int m_time;
-    [SerializeField] private int m_score;
+    [SerializeField] private MatchStates m_state;
+    [SerializeField] [Range(1, 100)] private int m_time;
+    [SerializeField] [Range(1, 3)] private int m_score;
     private int m_currentRound;
     private float m_currentTime;
     private int m_currentScore_P1;
     private int m_currentScore_P2;
-    [SerializeField] private MatchStates m_state;
+    private int m_round {get{
+        switch (m_score){
+            case 1:
+                return 1;
+            case 2:
+                return 3;
+            case 3:
+                return 5;  
+            default:
+                return 1;
+            }
+        }
+    }
 
     #endregion
 
@@ -47,6 +58,7 @@ public class MatchConducter : MonoBehaviour
         EventManager.Instance.HealthChanged_P2 += OnHealthChanged_P2;
 
         m_currentTime = m_time;
+        EventManager.Instance.TimeChanged?.Invoke(Mathf.FloorToInt(m_currentTime));
     }
 
     private void OnDisable(){
@@ -76,9 +88,10 @@ public class MatchConducter : MonoBehaviour
     }
 
     private void HandleTimer(){
+        if (m_time == 100) return; // 99 is the highest 2 decimal number, 100 indicates the timer is disabled.
         if (!m_fighterSlot1) return;
         if (!m_fighterSlot2) return;
-        
+
         m_currentTime -= Time.deltaTime;
         EventManager.Instance.TimeChanged?.Invoke(Mathf.FloorToInt(Mathf.Clamp(m_currentTime, 0f, m_time)));
         if (m_currentTime <= 0f){
@@ -98,7 +111,7 @@ public class MatchConducter : MonoBehaviour
         if (!m_fighterSlot1) return;
         if (!m_fighterSlot2) return;
         
-        float direction = (m_fighterSlot1.transform.position - m_fighterSlot2.transform.position).normalized.x;
+        float direction = (m_fighterSlot2.transform.position - m_fighterSlot1.transform.position).normalized.x;
         int value = (int)Mathf.Sign(direction);
 
         if (m_fighterSlot1.FaceDirection != value) m_fighterSlot1.SetFaceDirection(value);
@@ -129,13 +142,13 @@ public class MatchConducter : MonoBehaviour
         }
 
         if (m_currentScore_P1 >= m_score && m_currentScore_P2 >= m_score){
-            // Match Draw
+            EventManager.Instance.MatchEnded?.Invoke(Player.None);
         }
         else if (m_currentScore_P1 >= m_score){
-            // Match P1 Victory
+            EventManager.Instance.MatchEnded?.Invoke(Player.P1);
         }
         else if (m_currentScore_P2 >= m_score){
-            // Match P2 Victory
+            EventManager.Instance.MatchEnded?.Invoke(Player.P2);
         }
         else
         {
