@@ -139,7 +139,7 @@ public class FighterStateMachine : MonoBehaviour
     public float FallMultiplier {get{return _fallMultiplier;}}
     public float Gravity {get{return _gravity;} set {_gravity = value;}}
     public float MovementInput {get{return _movementInput.Value;}}
-    public Vector2 SwipeDirection {get{return _swipeDirection;}}
+    public Vector2 SwipeDirection {get{return _swipeDirection * _faceDirection;}} // SwipeDirection is affected by FaceDirection
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
     public float JumpDistance {get{return _jumpDistance;}}
     public float DashDistance {get{return _dashDistance;}}
@@ -225,7 +225,7 @@ public class FighterStateMachine : MonoBehaviour
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
 
         // Start default state.
-        _currentState = _states.Grounded();
+        _currentState = _states.Airborne();
         _currentState.EnterState();
     }
 

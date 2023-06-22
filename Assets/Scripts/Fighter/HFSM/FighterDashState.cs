@@ -80,7 +80,9 @@ public class FighterDashState : FighterBaseState
     {
         float previousVelocityY = _ctx.CurrentMovement.y;
         _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y);
-        _ctx.Velocity = new Vector2((previousVelocityY + _ctx.CurrentMovement.x) * .5f, _ctx.CurrentMovement.y);    
+        _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y);    
+
+        // _ctx.Velocity = new Vector2((previousVelocityY + _ctx.CurrentMovement.x) * .5f, _ctx.CurrentMovement.y);  // Alternative calculation which I don't know the logic behind.
 
         _currentFrame++;
         CheckSwitchState();

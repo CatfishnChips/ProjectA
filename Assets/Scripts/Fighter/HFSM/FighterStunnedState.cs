@@ -38,6 +38,9 @@ public class FighterStunnedState : FighterBaseState
         _currentFrame = 0;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
+
+        InitializeSubState();
+
         _ctx.IsHurt = false;
 
         _ctx.Velocity = _ctx.CurrentMovement;

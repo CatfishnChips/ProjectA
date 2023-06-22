@@ -29,6 +29,10 @@ public class FighterKnockupState : FighterBaseState
             if (_action.KnockdownStun > 0){
                 state = _factory.Knockdown();
             }
+            // Take another look here.
+            // if(_ctx.IsGrounded){
+            //     state = _factory.Knockdown();
+            // }
             else{
                 state = _factory.Idle();
             }
@@ -42,7 +46,6 @@ public class FighterKnockupState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
-
         _velocity = Vector2.zero;
 
         if (_action.Knockup != 0){
@@ -54,14 +57,14 @@ public class FighterKnockupState : FighterBaseState
         if (_action.Knockback!= 0){
             //_velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
 
-            float direction = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x);
+            float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
             float _time = _action.KnockbackStun * Time.fixedDeltaTime;
 
             _drag = (-2 * _action.Knockback) / (_time * _time);
             _velocity.x = (2 * _action.Knockback) / _time;
 
-            _drag = _drag * direction;
-            _velocity.x = _velocity.x * direction;
+            _drag *= direction;
+            _velocity.x *= direction;
         }
 
         _ctx.CurrentMovement = _velocity;
@@ -96,8 +99,6 @@ public class FighterKnockupState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-       _currentFrame++;
-
         if (_currentFrame > _action.Freeze){
 
             if (_isFirstTime){
@@ -107,16 +108,19 @@ public class FighterKnockupState : FighterBaseState
 
             float previousVelocityY = _ctx.CurrentMovement.y;
 
-            if (_ctx.Velocity.y <= 0){
-                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime);
-            }
-            else{
-                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
-            }
+            // if (_ctx.Velocity.y <= 0){
+            //     _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime);
+            // }
+            // else{
+            //     _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
+            // }    
+
+            _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime); // Using this calculation makes the frame timing off.
 
             _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x , Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
         }
         
+        _currentFrame++;
         CheckSwitchState();
     }
 

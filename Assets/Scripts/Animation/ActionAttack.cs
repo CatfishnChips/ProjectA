@@ -141,6 +141,7 @@ public class ActionAttack : ActionBase
         //     }
         // }
 
+        if (ctx.IsHit) ctx.IsHit = false;
         state._currentFrame++;
     }
 

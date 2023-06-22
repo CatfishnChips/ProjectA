@@ -33,7 +33,7 @@ public class FighterBlockState : FighterBaseState
         _ctx.IsHurt = false;
 
         if (_action.Knockback!= 0){
-            _velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
+            _velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.right.x) * _action.Knockback;
         }
         
         _ctx.CurrentMovement = _velocity;
@@ -53,7 +53,7 @@ public class FighterBlockState : FighterBaseState
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
 
         _ctx.Animator.Play("Block");
-        _ctx.ColBoxAnimator.Play("Block");
+        _ctx.ColBoxAnimator.Play("Idle");
     }
 
     public override void ExitState()
