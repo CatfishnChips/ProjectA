@@ -31,7 +31,8 @@ public class FighterKnockdownState : FighterBaseState
         _action = _collisionData.action;
 
         if (_action.KnockdownStun == 0) return;
-        if (_action.KnockupStun != 0) return; // If transitioned from Knockup state, do not play the animation.
+        //if (_action.KnockupStun != 0) return; // If transitioned from Knockup state, do not play the animation.
+        if (_ctx.PreviousSubState == FighterStates.Knockup) return; // If transitioned from Knockup state, do not play the animation.
 
         ActionDefault action = _ctx.ActionDictionary["Knockdown"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;

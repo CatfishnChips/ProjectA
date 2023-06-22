@@ -40,6 +40,8 @@ public class FighterStateMachine : MonoBehaviour
     private FighterBaseState _currentState;
     [ReadOnly] [SerializeField] private FighterStates _currentRootState = default;
     [ReadOnly] [SerializeField] private FighterStates _currentSubState = default;
+    [ReadOnly] [SerializeField] private FighterStates _previousRootState = default;
+    [ReadOnly] [SerializeField] private FighterStates _previousSubState = default;
 
     private HitResponder _hitResponder;
     private HurtResponder _hurtResponder;
@@ -95,6 +97,8 @@ public class FighterStateMachine : MonoBehaviour
 
     public FighterStates CurrentRootState{get{return _currentRootState;} set{_currentRootState = value;}}
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
+    public FighterStates PreviousRootState{get{return _previousRootState;} set{_previousRootState = value;}}
+    public FighterStates PreviousSubState{get{return _previousSubState;} set{_previousSubState = value;}}
 
     public bool IsJumpPressed{get{return _isJumpPressed.Value;} set{_isJumpPressed.Value = value;}}
     public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
