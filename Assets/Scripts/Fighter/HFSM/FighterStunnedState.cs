@@ -20,7 +20,7 @@ public class FighterStunnedState : FighterBaseState
             SwitchState(_factory.Stunned());
         }
         
-        if (_currentFrame >= _action.HitStun + _action.Freeze){   
+        if (_currentFrame >= _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.Freeze){   
             FighterBaseState state;         
 
             if (_ctx.IsGrounded){
@@ -76,7 +76,7 @@ public class FighterStunnedState : FighterBaseState
     public override void InitializeSubState()
     { 
         FighterBaseState state;
-        if (_action.KnockupStun > 0){
+        if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
             state = _factory.Knockup();
         }
         else if (_action.KnockdownStun > 0){

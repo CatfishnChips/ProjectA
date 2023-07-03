@@ -6,11 +6,15 @@ public class FighterKnockupState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private float _currentFrame = 0;
+    private int _currentFrame = 0;
     private Vector2 _velocity;
-    private float _drag = 0f;
     private float _animationSpeed;
     private bool _isFirstTime = true;
+    private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
+    private float _gravity1, _gravity2;
+    private float _drag1, _drag2;
+    private float _distancePerTime;
+    private Vector2 _arcDirection;
 
     public FighterKnockupState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -22,17 +26,13 @@ public class FighterKnockupState : FighterBaseState
             SwitchState(_factory.Stunned());
         }
 
-        if (_currentFrame >= _action.KnockupStun + _action.Freeze){   
+        if (_currentFrame >= _action.KnockupStun.x + _action.KnockupStun.y + _action.Freeze){   
             FighterBaseState state;         
             
             // Knockup always transitions to Knockdown state.
             if (_action.KnockdownStun > 0){
                 state = _factory.Knockdown();
             }
-            // Take another look here.
-            // if(_ctx.IsGrounded){
-            //     state = _factory.Knockdown();
-            // }
             else{
                 state = _factory.Idle();
             }
@@ -48,36 +48,41 @@ public class FighterKnockupState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
-        if (_action.Knockup != 0){
-            float _time = _action.KnockupStun * Time.fixedDeltaTime;
-            _ctx.Gravity = (-2 * _action.Knockup) / Mathf.Pow(_time, 2);
-            _velocity.y = (2 * _action.Knockup) / _time;   
-        }
+        _groundOffset = _ctx.transform.position.y;
+        float horizontalDirection = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
+        _distancePerTime = _action.Knockback / (_action.KnockupStun.x + _action.KnockupStun.y);
+        
+        // Zone 1
+        float time1 = _action.KnockupStun.x;
+        _gravity1 = (-2 * _action.Knockup) / (time1 * time1);
+        _velocity.y = (2 * _action.Knockup) / time1; // Initial vertical velocity.
 
-        if (_action.Knockback!= 0){
-            //_velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
+        _drag1 = (-2 * _distancePerTime * time1) / (time1 * time1);
+        _drag1 *= horizontalDirection;
 
-            float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
-            float _time = _action.KnockbackStun * Time.fixedDeltaTime;
+        _velocity.x = (2 * _action.Knockback) / time1; // Initial horizontal velocity;
+        _velocity.x *= horizontalDirection;
 
-            _drag = (-2 * _action.Knockback) / (_time * _time);
-            _velocity.x = (2 * _action.Knockback) / _time;
+        // Zone 2
+        float time2 = _action.KnockupStun.y;
+        _gravity2 = (-2 * _action.Knockup + _groundOffset) / (time2 * time2);
 
-            _drag *= direction;
-            _velocity.x *= direction;
-        }
+        _drag2 = (-2 * _distancePerTime * time2) / (time2 * time2);
+        _drag2 *= horizontalDirection;
+
+        _arcDirection = _velocity.normalized;
 
         _ctx.CurrentMovement = _velocity;
         _ctx.Velocity = _ctx.CurrentMovement;
 
-        if (_action.KnockupStun == 0) return;
+        if (_action.KnockupStun.x + _action.KnockupStun.y == 0) return;
 
         ActionDefault action = _ctx.ActionDictionary["Knockup"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
 
         _ctx.AnimOverrideCont["Knockup"] = clip;
 
-        _animationSpeed = AdjustAnimationTime(clip, _action.KnockupStun); 
+        _animationSpeed = AdjustAnimationTime(clip, _action.KnockupStun.x + _action.KnockupStun.y); 
 
         if (_action.Freeze != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
@@ -105,8 +110,12 @@ public class FighterKnockupState : FighterBaseState
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
             }
+            
+            _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + 
+            (_currentFrame < _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2), _ctx.CurrentMovement.y + 
+            (_currentFrame < _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2));
 
-            float previousVelocityY = _ctx.CurrentMovement.y;
+            _ctx.Velocity = _ctx.CurrentMovement;   
 
             // if (_ctx.Velocity.y <= 0){
             //     _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime);
@@ -114,10 +123,7 @@ public class FighterKnockupState : FighterBaseState
             // else{
             //     _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
             // }    
-
-            _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime); // Using this calculation makes the frame timing off.
-
-            _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x , Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
+            //_ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime); // Using this calculation makes the frame timing off due to _ctx.FallMultiplier.
         }
         
         _currentFrame++;

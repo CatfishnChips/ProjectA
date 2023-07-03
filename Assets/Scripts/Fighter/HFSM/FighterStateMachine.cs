@@ -88,7 +88,7 @@ public class FighterStateMachine : MonoBehaviour
     private Vector2 _swipeDirection;
     [SerializeField] private LayerMask _rayCastLayerMask;
     [SerializeField] private float _rayCastLenght = 1f;
-    [SerializeField] private Vector2 _rayCastPosition;
+    [SerializeField] private Vector2 _rayCastOffset;
     private Vector2 _currentMovement;
     [SerializeField] private float _jumpDistance = 1f;
     [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
@@ -273,7 +273,7 @@ public class FighterStateMachine : MonoBehaviour
 
     void FixedUpdate()
     {
-        _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastPosition, Vector2.down, _rayCastLenght, _rayCastLayerMask);
+        _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastOffset, Vector2.down, _rayCastLenght, _rayCastLayerMask);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
 
         if(_comboListener.isActive){

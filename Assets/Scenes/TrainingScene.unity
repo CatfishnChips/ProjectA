@@ -2383,7 +2383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_stamina: 0
-  m_recoveryTime: 1200
+  m_recoveryTime: 120
   m_currentStamina: 0
 --- !u!114 &1136449786
 MonoBehaviour:
@@ -2486,6 +2486,8 @@ MonoBehaviour:
       moveToOverride: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
   _currentRootState: 0
   _currentSubState: 0
+  _previousRootState: 0
+  _previousSubState: 0
   _comboBuffer: 15
   _inputDelay: 2
   _inputBuffer: 10
@@ -2501,7 +2503,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   _rayCastLenght: 0.2
-  _rayCastPosition: {x: 0, y: 0}
+  _rayCastOffset: {x: 0, y: 0}
   _jumpDistance: 5
   _faceDirection: 0
 --- !u!95 &1136449790
@@ -6749,6 +6751,8 @@ MonoBehaviour:
       moveToOverride: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
   _currentRootState: 0
   _currentSubState: 0
+  _previousRootState: 0
+  _previousSubState: 0
   _comboBuffer: 15
   _inputDelay: 2
   _inputBuffer: 10
@@ -6764,7 +6768,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   _rayCastLenght: 0.2
-  _rayCastPosition: {x: 0, y: 0}
+  _rayCastOffset: {x: 0, y: 0}
   _jumpDistance: 5
   _faceDirection: 0
 --- !u!1 &5888525083644794654

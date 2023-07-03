@@ -35,10 +35,8 @@ public class FighterKnockbackState : FighterBaseState
 
 
         if (_action.Knockback!= 0){
-            //_velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
-
             float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
-            float _time = _action.KnockbackStun * Time.fixedDeltaTime;
+            float _time = _action.KnockbackStun;
 
             _drag = (-2 * _action.Knockback) / (_time * _time);
             float _initialVelocity = (2 * _action.Knockback) / _time;
@@ -52,7 +50,7 @@ public class FighterKnockbackState : FighterBaseState
 
         if (_action.KnockbackStun == 0) return;
 
-        ActionDefault action = _ctx.ActionDictionary["Knockback"] as ActionDefault;
+        ActionDefault action = _ctx.ActionDictionary["Stunned"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
 
         _ctx.AnimOverrideCont["Stunned"] = clip;
