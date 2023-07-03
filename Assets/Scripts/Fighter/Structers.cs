@@ -37,7 +37,7 @@ public struct FrameEvent
     public UnityEngine.Events.UnityEvent Event;
 }
 
-public struct NameAttackPair{
+public struct AttackNamePair{
     public string name;
     public AttackMove attack;
 }

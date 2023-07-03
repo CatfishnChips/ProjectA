@@ -25,6 +25,8 @@ public class FighterStateMachine : MonoBehaviour
     private Dictionary<string, ActionAttack> _attackMoveDict;
     private Dictionary<string, ActionBase> _actionDictionary;
 
+    private Dictionary<string, Dictionary<string, ActionAttack>> _attackRanges;
+
     [SerializeField] private ComboMove[] _combosArray;
     private ComboListener _comboListener;
 
@@ -171,6 +173,7 @@ public class FighterStateMachine : MonoBehaviour
 
         _attackMoveDict = new Dictionary<string, ActionAttack>();
         _actionDictionary = new Dictionary<string, ActionBase>();
+        _attackRanges = new Dictionary<string, Dictionary<string, ActionAttack>>();
 
         foreach (ActionAttribution attribution in _actionAttribution)
         {
@@ -178,11 +181,29 @@ public class FighterStateMachine : MonoBehaviour
             {
                 ActionAttack action = Instantiate(attribution.action) as ActionAttack;
                 _attackMoveDict.Add(action.name, action);
+
+                string attackRangeName = action.Tags.ToString();
+
+                if (_attackRanges.ContainsKey(action.Tags.ToString()))
+                {
+                    _attackRanges[attackRangeName].Add(attackRangeName, action);
+                }
+                else
+                {
+                    _attackRanges.Add(attackRangeName, new Dictionary<string, ActionAttack>());
+                    _attackRanges[attackRangeName].Add(attackRangeName, action);
+                }
+
             }
             else 
             {
                 _actionDictionary.Add(attribution.action.name, attribution.action);
             }
+        }
+
+        foreach(KeyValuePair<string, Dictionary<string, ActionAttack>> attack in _attackRanges)
+        {
+            Debug.Log(attack.ToString());
         }
 
         if (TryGetComponent<HitResponder>(out HitResponder hitResponder)) _hitResponder = hitResponder;

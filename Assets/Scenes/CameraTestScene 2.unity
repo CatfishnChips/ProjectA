@@ -914,12 +914,14 @@ MonoBehaviour:
   _jumpTime: 0
   _fallMultiplier: 1
   _dodgeTime: 0
+  _isGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
     m_Bits: 0
   _rayCastLenght: 0
   _rayCastPosition: {x: 0, y: 0}
   _jumpDistance: 1
+  _faceDirection: 0
 --- !u!1 &156496444
 GameObject:
   m_ObjectHideFlags: 0
@@ -4754,8 +4756,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.29884598, y: -0.6339065, z: 0.29083958, w: 0.65135705}
-  m_LocalPosition: {x: 184.09482, y: 214.04698, z: -5}
+  m_LocalRotation: {x: 0.29886526, y: -0.633897, z: 0.29085734, w: 0.6513495}
+  m_LocalPosition: {x: 184.07317, y: 214.04677, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7605,6 +7607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitbox: {fileID: 1842910541}
+  _grabbox: {fileID: 0}
   m_priority: 0
 --- !u!1 &1852053115
 GameObject:
@@ -7805,7 +7808,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881216307}
-  m_LocalRotation: {x: 0.29884598, y: -0.6339065, z: 0.29083958, w: 0.65135705}
+  m_LocalRotation: {x: 0.29886526, y: -0.633897, z: 0.29085734, w: 0.6513495}
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8562,6 +8565,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FighterAI
       objectReference: {fileID: 0}
+    - target: {fileID: 815378929669242414, guid: 4f5799123c9e34247af0eaa9207679fa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f5799123c9e34247af0eaa9207679fa, type: 3}
 --- !u!1 &2141591114
@@ -8753,12 +8761,14 @@ MonoBehaviour:
   _jumpTime: 0
   _fallMultiplier: 1
   _dodgeTime: 0
+  _isGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
     m_Bits: 0
   _rayCastLenght: 0
   _rayCastPosition: {x: 0, y: 0}
   _jumpDistance: 1
+  _faceDirection: 0
 --- !u!1 &554279282031682718
 GameObject:
   m_ObjectHideFlags: 0
@@ -10818,6 +10828,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitbox: {fileID: 1344860885}
+  _grabbox: {fileID: 0}
   m_priority: 0
 --- !u!1 &7844950535944003480
 GameObject:

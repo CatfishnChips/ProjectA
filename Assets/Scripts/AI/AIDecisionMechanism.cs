@@ -22,12 +22,16 @@ public class AIDecisionMechanism
         _enemyCtx = enemyStateMachine;
     }
 
-    public string PerformAggresiveAciton()
+    public string AttemptAggresiveAciton(string callMethod)
     {
+        bool callMethodArguement = true;
+
+        if (callMethod == "Update") callMethodArguement = true;
+        else callMethodArguement = false;
 
         float attackProbabilty = Random.Range(0.0f, 100.0f);
 
-        if (_aiDifficulty.AggressionResult(attackProbabilty)) // If decided to perform an attack.
+        if (_aiDifficulty.AggressionResult(attackProbabilty, callMethodArguement)) // If decided to perform an attack.
         {
             if (!_selfCtx.ComboListener.isActive) // If not inside a combo phase
             {
@@ -40,15 +44,18 @@ public class AIDecisionMechanism
             {
                 float comboProbability = Random.Range(0.0f, 100.0f);
 
+                List<string> comboMovesList = _selfCtx.ComboListener.GetCurrentSearchDict().Keys.ToList();
+
                 if (_aiDifficulty.ComboResult(comboProbability)) // If proficient enough to know which move to do to keep the combo active.
                 {
-                    List<string> comboMovesList = _selfCtx.ComboListener.GetCurrentSearchDict().Keys.ToList();
 
                     return comboMovesList[Random.Range(0, comboMovesList.Count())];
                 }
                 else
                 {
                     List<string> attackMovesList = _selfCtx.AttackMoveDict.Keys.ToList();
+
+                    attackMovesList = attackMovesList.Except(comboMovesList).ToList();
 
                     return attackMovesList[Random.Range(0, attackMovesList.Count())];
                 }

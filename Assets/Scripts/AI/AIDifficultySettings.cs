@@ -26,10 +26,10 @@ public class AIDifficultySettings : ScriptableObject
     private float _defensiveAccuracy;
 
 
-    public bool AggressionResult(float generatedNumber) 
+    public bool AggressionResult(float generatedNumber, bool callsPerFrame) 
     {
-        bool result = generatedNumber < _aggression * Time.fixedDeltaTime;
-        // To overcome the unwanted result of calling these funcitons on every update fixedDeltaTime is used.
+        bool result = callsPerFrame ? generatedNumber < _aggression * Time.fixedDeltaTime : generatedNumber < _aggression;
+        // callsPerFrame determines, wheter this funciton is meant to be called each frame or needed for just one call on a specific event.
         if (result && _aggression > 0) _aggression -= (100 - _aggressionConsistency) * 0.75f;
         if(_aggression < 0) _aggression = 0;
         return result;
@@ -37,12 +37,12 @@ public class AIDifficultySettings : ScriptableObject
 
     public bool ComboResult(float generatedNumber)
     {
-        return generatedNumber < (_characterProficiency * Time.fixedDeltaTime);
+        return generatedNumber < (_characterProficiency * Time.fixedDeltaTime); // Calls per frame to this method
     }
 
     public bool DefensiveActionResult(float generatedNumber)
     {
-        return generatedNumber < (_defensiveAccuracy * Time.fixedDeltaTime);
+        return generatedNumber < _defensiveAccuracy; // One time call to this method.
     }
 
 }

@@ -17,8 +17,19 @@ public class AIBrain : MonoBehaviour
     private System.Type _currentState;
     private System.Type _previousState;
     private bool _stateChange;
+    private bool _attackMoveEnded; // When an attack Move is finished, this bool gets set to true by an event to let the script know, that next desicion for attack move can be made.
 
     // Move Event'i -1 ile 1 arasında bir float bekliyor.
+
+    void OnEnable()
+    {
+        EventManager.Instance.P2FighterAttackEnded += AttackMoveEnded;
+    }
+
+    void OnDisable()
+    {
+        EventManager.Instance.P2FighterAttackEnded -= AttackMoveEnded;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -31,24 +42,33 @@ public class AIBrain : MonoBehaviour
 
         decisionMechanism = new AIDecisionMechanism(difficultySettings, _ctxSelf, _ctxEnemy);
 
+        EventManager.Instance.P2FighterAttackEnded += AttackMoveEnded;
+
         _stateChange = false;
+        _attackMoveEnded = true;
 
     }
+
 
     void FixedUpdate()
     {
 
-        _currentState = _ctxSelf.CurrentState.GetType();
+        //_currentState = _ctxSelf.CurrentState.GetType();
 
-        if(_currentState != _previousState) _stateChange = true;
+        //_stateChange = (_currentState != _previousState);
 
-        _previousState = _currentState;
+        //_previousState = _currentState;
         
         switch(_ctxSelf.CurrentState)
         {
             case FighterGroundedState:
                 NonAttackingStateDesicion();
                 break;
+            case FighterAttackState:
+                if (_attackMoveEnded) AttackingStateDesicion();
+                _attackMoveEnded = false;
+                break;
+
         }
 
     }
@@ -60,10 +80,24 @@ public class AIBrain : MonoBehaviour
 
     private void NonAttackingStateDesicion()
     {
-        string attackMove = decisionMechanism.PerformAggresiveAciton();
+        string attackMove = decisionMechanism.AttemptAggresiveAciton("Update");
         if(attackMove != "Fail") 
         {
             EventManager.Instance.P2AttackMove?.Invoke(attackMove);
         }
+    }
+
+    private void AttackingStateDesicion()
+    {
+        string attackMove = decisionMechanism.AttemptAggresiveAciton("Fixed");
+        if (attackMove != "Fail")
+        {
+            EventManager.Instance.P2AttackMove?.Invoke(attackMove);
+        }
+    }
+
+    private void AttackMoveEnded()
+    {
+        _attackMoveEnded = true;
     }
 }
