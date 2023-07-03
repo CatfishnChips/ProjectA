@@ -19,12 +19,7 @@ public class AIBrain : MonoBehaviour
     private bool _stateChange;
     private bool _attackMoveEnded; // When an attack Move is finished, this bool gets set to true by an event to let the script know, that next desicion for attack move can be made.
 
-    // Move Event'i -1 ile 1 arasında bir float bekliyor.
-
-    void OnEnable()
-    {
-        EventManager.Instance.P2FighterAttackEnded += AttackMoveEnded;
-    }
+    // Move Event'i -1 ile 1 arasında bir float bekliyor.    
 
     void OnDisable()
     {
@@ -34,6 +29,8 @@ public class AIBrain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        EventManager.Instance.P2FighterAttackEnded += AttackMoveEnded;
+
         _ctxSelf = transform.GetComponent<FighterStateMachine>();
 
         GameObject enemyGO = GameObject.FindWithTag("Player");
@@ -96,7 +93,7 @@ public class AIBrain : MonoBehaviour
         }
     }
 
-    private void AttackMoveEnded()
+    public void AttackMoveEnded()
     {
         _attackMoveEnded = true;
     }

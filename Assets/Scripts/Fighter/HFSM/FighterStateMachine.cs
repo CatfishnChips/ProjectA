@@ -192,12 +192,12 @@ public class FighterStateMachine : MonoBehaviour
 
                 if (_attackRanges.ContainsKey(action.Tags.ToString()))
                 {
-                    _attackRanges[attackRangeName].Add(attackRangeName, action);
+                    _attackRanges[attackRangeName].Add(action.name, action);
                 }
                 else
                 {
                     _attackRanges.Add(attackRangeName, new Dictionary<string, ActionAttack>());
-                    _attackRanges[attackRangeName].Add(attackRangeName, action);
+                    _attackRanges[attackRangeName].Add(action.name, action);
                 }
 
             }
