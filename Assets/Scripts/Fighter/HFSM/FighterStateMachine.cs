@@ -20,7 +20,7 @@ public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, Animation
 
 public class FighterStateMachine : MonoBehaviour
 {
-
+    [SerializeField] private Player _player;
     [SerializeField] private ActionAttribution[] _actionAttribution;
     private Dictionary<string, ActionAttack> _attackMoveDict;
     private Dictionary<string, ActionBase> _actionDictionary;
@@ -42,6 +42,8 @@ public class FighterStateMachine : MonoBehaviour
     private FighterBaseState _currentState;
     [ReadOnly] [SerializeField] private FighterStates _currentRootState = default;
     [ReadOnly] [SerializeField] private FighterStates _currentSubState = default;
+    [ReadOnly] [SerializeField] private FighterStates _previousRootState = default;
+    [ReadOnly] [SerializeField] private FighterStates _previousSubState = default;
 
     private HitResponder _hitResponder;
     private HurtResponder _hurtResponder;
@@ -93,8 +95,12 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private float _jumpDistance = 1f;
     [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
 
+    public Player Player {get{return _player;}}
+
     public FighterStates CurrentRootState{get{return _currentRootState;} set{_currentRootState = value;}}
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
+    public FighterStates PreviousRootState{get{return _previousRootState;} set{_previousRootState = value;}}
+    public FighterStates PreviousSubState{get{return _previousSubState;} set{_previousSubState = value;}}
 
     public bool IsJumpPressed{get{return _isJumpPressed.Value;} set{_isJumpPressed.Value = value;}}
     public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
@@ -139,7 +145,7 @@ public class FighterStateMachine : MonoBehaviour
     public float FallMultiplier {get{return _fallMultiplier;}}
     public float Gravity {get{return _gravity;} set {_gravity = value;}}
     public float MovementInput {get{return _movementInput.Value;}}
-    public Vector2 SwipeDirection {get{return _swipeDirection;}}
+    public Vector2 SwipeDirection {get{return _swipeDirection * _faceDirection;}} // SwipeDirection is affected by FaceDirection
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
     public float JumpDistance {get{return _jumpDistance;}}
     public float DashDistance {get{return _dashDistance;}}
@@ -215,54 +221,72 @@ public class FighterStateMachine : MonoBehaviour
 
     void Start()
     {
-        if (transform.GetComponent<AIBrain>() == null)
-        {
-            EventManager.Instance.Move += ListenToMove;
-            EventManager.Instance.Swipe += OnDash;
-            EventManager.Instance.AttackMove += ListenToAttack;
-            EventManager.Instance.OnTap += OnTapA;
-            EventManager.Instance.OnHoldA += OnHoldA;
-            EventManager.Instance.OnHoldB += OnHoldB;
-        }
-        else
-        {
-            EventManager.Instance.P2Move += ListenToMove;
-            EventManager.Instance.P2Swipe += OnDash;
-            EventManager.Instance.P2AttackMove += ListenToAttack;
-            EventManager.Instance.P2OnTap += OnTapA;
-            EventManager.Instance.P2OnHoldA += OnHoldA;
-            EventManager.Instance.P2OnHoldB += OnHoldB;
+        switch(_player){
+            case Player.P1:
+                EventManager.Instance.Move += ListenToMove;
+                EventManager.Instance.Swipe += OnDash;
+                EventManager.Instance.AttackMove += ListenToAttack;
+                EventManager.Instance.OnTap += OnTapA;
+                EventManager.Instance.OnHoldA += OnHoldA;
+                EventManager.Instance.OnHoldB += OnHoldB;
+            break;
+
+            case Player.P2:
+                EventManager.Instance.P2Move += ListenToMove;
+                EventManager.Instance.P2Swipe += OnDash;
+                EventManager.Instance.P2AttackMove += ListenToAttack;
+                EventManager.Instance.P2OnTap += OnTapA;
+                EventManager.Instance.P2OnHoldA += OnHoldA;
+                EventManager.Instance.P2OnHoldB += OnHoldB;
+            break;
+
+            default:
+                // Do no subscribe to any input events.
+            break;
         }
 
+        // Component based events.
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
 
-        _currentState = _states.Grounded();
+        // Start default state.
+        _currentState = _states.Airborne();
         _currentState.EnterState();
     }
 
     private void OnDisable() 
     {
-        if (transform.GetComponent<AIBrain>() == null)
-        {
-            EventManager.Instance.Move -= ListenToMove;
-            EventManager.Instance.Swipe -= OnDash;
-            EventManager.Instance.AttackMove -= ListenToAttack;
-            EventManager.Instance.OnTap -= OnTapA;
-            EventManager.Instance.OnHoldA -= OnHoldA;
-            EventManager.Instance.OnHoldB -= OnHoldB;
-        }
-        else
-        {
-            EventManager.Instance.P2Move -= ListenToMove;
-            EventManager.Instance.P2Swipe -= OnDash;
-            EventManager.Instance.P2AttackMove -= ListenToAttack;
-            EventManager.Instance.P2OnTap -= OnTapA;
-            EventManager.Instance.P2OnHoldA -= OnHoldA;
-            EventManager.Instance.P2OnHoldB -= OnHoldB;
-        }
+        switch(_player){
+            case Player.P1:
+                EventManager.Instance.Move -= ListenToMove;
+                EventManager.Instance.Swipe -= OnDash;
+                EventManager.Instance.AttackMove -= ListenToAttack;
+                EventManager.Instance.OnTap -= OnTapA;
+                EventManager.Instance.OnHoldA -= OnHoldA;
+                EventManager.Instance.OnHoldB -= OnHoldB;
+            break;
 
-        if (_hitResponder) _hitResponder.HitResponse -= OnHit;
+            case Player.P2:
+                EventManager.Instance.P2Move -= ListenToMove;
+                EventManager.Instance.P2Swipe -= OnDash;
+                EventManager.Instance.P2AttackMove -= ListenToAttack;
+                EventManager.Instance.P2OnTap -= OnTapA;
+                EventManager.Instance.P2OnHoldA -= OnHoldA;
+                EventManager.Instance.P2OnHoldB -= OnHoldB;
+            break;
+
+            default:
+                EventManager.Instance.Move -= ListenToMove;
+                EventManager.Instance.Swipe -= OnDash;
+                EventManager.Instance.AttackMove -= ListenToAttack;
+                EventManager.Instance.OnTap -= OnTapA;
+                EventManager.Instance.OnHoldA -= OnHoldA;
+                EventManager.Instance.OnHoldB -= OnHoldB;
+            break;
+        }
+        
+        // Component based events.
+        if(_hitResponder) _hitResponder.HitResponse -= OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse -= OnHurt;
 
         StopAllCoroutines();
@@ -272,7 +296,6 @@ public class FighterStateMachine : MonoBehaviour
     {
         _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastPosition, Vector2.down, _rayCastLenght, _rayCastLayerMask);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
-        //Debug.Log(_isGrounded);
 
         if(_comboListener.isActive){
             _comboListener.FixedUpdate();
@@ -412,6 +435,11 @@ public class FighterStateMachine : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.localScale);
         Gizmos.DrawLine(Vector3.zero, Vector3.zero + Vector3.down * _rayCastLenght);
+    }
+
+    public void SetFaceDirection(int value){
+        _faceDirection = value;
+        transform.rotation = Quaternion.Euler(0f, 90f * _faceDirection, 0f);
     }
 }
 

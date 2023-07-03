@@ -5,9 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Grab Action", menuName = "ScriptableObject/Action/Grab")]
 public class ActionGrab : ActionAttack
 {   
-    public AnimationClip AlternativeMeshAnimation;
-    public AnimationClip AlternativeColliderAnimation;
-    public int Frame;
+    [Header("Custom Variables")]
+    [SerializeField] private AnimationClip m_alternativeMeshAnimation;
+    [SerializeField] private AnimationClip m_alternativeColliderAnimation;
+    [SerializeField] private int m_frame;
 
     public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
@@ -40,12 +41,12 @@ public class ActionGrab : ActionAttack
                 if (ctx.IsHit){
                     GameObject target = ctx.HitCollisionData.hurtbox.Owner;
                     ctx.IsHit = false;
-                    // Do the further logic here.
+                    // Do the further grab logic here.
 
-                    ctx.AnimOverrideCont["DirectPunchR"] = AlternativeMeshAnimation;
-                    ctx.ColBoxOverrideCont["Uppercut_Recovery"] = AlternativeColliderAnimation;
-                    ctx.Animator.SetFloat("SpeedVar", Frame);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", Frame);
+                    ctx.AnimOverrideCont["DirectPunchR"] = m_alternativeMeshAnimation;
+                    ctx.ColBoxOverrideCont["Uppercut_Recovery"] = m_alternativeColliderAnimation;
+                    ctx.Animator.SetFloat("SpeedVar", m_frame);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", m_frame);
                 }
                 else{
                     ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);

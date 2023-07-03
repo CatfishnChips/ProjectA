@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeController : MonoBehaviour
@@ -16,8 +15,6 @@ public class TimeController : MonoBehaviour
             return;
         }
         Instance = this;
-
-        SetVariables();
     }
 
     #endregion
@@ -30,15 +27,16 @@ public class TimeController : MonoBehaviour
     [SerializeField] private int _timeOfRecovery = 100; // in frames 
     private bool _inEffect;
 
-    [SerializeField] private float timeScale;
-    [SerializeField] private float fixedDeltaTime;
+    // Unity Settings
+    [SerializeField] [ReadOnly] private float timeScale;
+    [SerializeField] [ReadOnly] private float fixedDeltaTime;
 
     private void Update(){
         timeScale = Time.timeScale;
         fixedDeltaTime = Time.fixedDeltaTime;
     }
 
-    private void SetVariables(){
+    private void Start(){
         _timeScale = Time.timeScale;
         _fixedDeltaTime = Time.fixedDeltaTime;
     }

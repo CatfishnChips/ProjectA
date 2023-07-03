@@ -22,7 +22,7 @@ public class Hitbox : MonoBehaviour, IHitDetector
     public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
 
     public void CheckHit(){
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(m_offset.x, m_offset.y, 0), m_size, 0, m_layerMask);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(m_offset.x * Mathf.Sign(transform.right.x), m_offset.y, 0), m_size, 0, m_layerMask);
 
         CollisionData _collisionData = null;
         IHurtbox _hurtbox = null;

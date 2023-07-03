@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Continuous Attack Action", menuName = "ScriptableObject/Action/ContinuousAttack")]
 public class ActionContinuousAttack : ActionAttack
 {  
+    [Header("Custom Variables")]
     [SerializeField] private bool m_startCondition;
     [SerializeField] private bool m_activeCondition;
     [SerializeField] private bool m_recoveryCondition;
@@ -12,9 +13,9 @@ public class ActionContinuousAttack : ActionAttack
     private bool _pauseTime = false;
     private bool _timePaused = false;
 
-    public bool StartCondition {get {return m_startCondition;}}
-    public bool ActiveCondition {get {return m_activeCondition;}}
-    public bool RecoveryCondition {get {return m_recoveryCondition;}}
+    public bool StartCondition { get{return m_startCondition;} }
+    public bool ActiveCondition { get{return m_activeCondition;} }
+    public bool RecoveryCondition { get{return m_recoveryCondition;} }
 
     public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
@@ -25,7 +26,7 @@ public class ActionContinuousAttack : ActionAttack
 
     public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
-         if (state._currentFrame <= state._action.StartFrames){
+        if (state._currentFrame <= state._action.StartFrames){
             if(_firstFrameStartup){
                 ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedS);
                 ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);

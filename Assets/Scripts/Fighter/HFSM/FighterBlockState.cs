@@ -9,7 +9,6 @@ public class FighterBlockState : FighterBaseState
     private float _currentFrame = 0;
     private Vector2 _velocity;
     private float _animationSpeed;
-    private bool _isFirstTime = true;
 
     public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -34,7 +33,7 @@ public class FighterBlockState : FighterBaseState
         _ctx.IsHurt = false;
 
         if (_action.Knockback!= 0){
-            _velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
+            _velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.right.x) * _action.Knockback;
         }
         
         _ctx.CurrentMovement = _velocity;
@@ -54,7 +53,7 @@ public class FighterBlockState : FighterBaseState
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
 
         _ctx.Animator.Play("Block");
-        _ctx.ColBoxAnimator.Play("Block");
+        _ctx.ColBoxAnimator.Play("Idle");
     }
 
     public override void ExitState()

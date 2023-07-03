@@ -95,9 +95,9 @@ public class ActionAttack : ActionBase
     public AnimationClip BoxAnimationA {get => m_boxAnimationA;}
     public AnimationClip BoxAnimationR {get => m_boxAnimationR;}
 
-    [ReadOnly] public bool _firstFrameStartup = true;
-    [ReadOnly] public bool _firstFrameActive = true;
-    [ReadOnly] public bool _firstFrameRecovery = true;
+    [HideInInspector] public bool _firstFrameStartup = true;
+    [HideInInspector] public bool _firstFrameActive = true;
+    [HideInInspector] public bool _firstFrameRecovery = true;
 
     public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
         _firstFrameStartup = true;
@@ -141,6 +141,7 @@ public class ActionAttack : ActionBase
         //     }
         // }
 
+        if (ctx.IsHit) ctx.IsHit = false;
         state._currentFrame++;
     }
 

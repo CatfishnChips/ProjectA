@@ -4756,8 +4756,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.29886526, y: -0.633897, z: 0.29085734, w: 0.6513495}
-  m_LocalPosition: {x: 184.07317, y: 214.04677, z: -5}
+  m_LocalRotation: {x: 0.29886776, y: -0.6338958, z: 0.29085967, w: 0.65134853}
+  m_LocalPosition: {x: 184.07031, y: 214.04674, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4884,10 +4884,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 474040055458162382, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 815378929669242414, guid: a1ed723664f83034a96a64e41d30bde7,
         type: 3}
       propertyPath: m_Name
       value: Fighter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6976153750473958081, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6976153750473958082, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7839007976745551521, guid: a1ed723664f83034a96a64e41d30bde7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1ed723664f83034a96a64e41d30bde7, type: 3}
@@ -7808,7 +7828,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1881216307}
-  m_LocalRotation: {x: 0.29886526, y: -0.633897, z: 0.29085734, w: 0.6513495}
+  m_LocalRotation: {x: 0.29886776, y: -0.6338958, z: 0.29085967, w: 0.65134853}
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8560,15 +8580,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 474040055458162382, guid: 4f5799123c9e34247af0eaa9207679fa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 815378929669242414, guid: 4f5799123c9e34247af0eaa9207679fa,
         type: 3}
       propertyPath: m_Name
       value: FighterAI
       objectReference: {fileID: 0}
-    - target: {fileID: 815378929669242414, guid: 4f5799123c9e34247af0eaa9207679fa,
+    - target: {fileID: 7839007976745551521, guid: 4f5799123c9e34247af0eaa9207679fa,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f5799123c9e34247af0eaa9207679fa, type: 3}

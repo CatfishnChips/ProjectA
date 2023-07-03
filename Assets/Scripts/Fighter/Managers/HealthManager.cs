@@ -1,18 +1,42 @@
 using UnityEngine;
 
+[RequireComponent(typeof(FighterStateMachine))]
 public class HealthManager : MonoBehaviour
 {
+    [Tooltip("Value that dictates how much damage the character can take before fainting.")]
     [SerializeField] private int m_health;
-    private int _health;
-    public int Health {get => _health;}
+    [SerializeField] [ReadOnly] private int m_currentHealth;
+    public int Health {get => m_currentHealth;}
+
+    private Player m_player;
 
     private void Start(){
-        _health = m_health;
+        m_player = GetComponent<FighterStateMachine>().Player;
+        m_currentHealth = m_health;
+
+        switch(m_player){
+            case Player.P1:
+                EventManager.Instance.HealthChanged_P1?.Invoke(m_currentHealth, m_health);
+            break;
+
+            case Player.P2:
+                EventManager.Instance.HealthChanged_P2?.Invoke(m_currentHealth, m_health);
+            break;
+        }
     }
 
     public void UpdateHealth(CollisionData data){
-        _health -= data.action.Damage;
-        _health = Mathf.Clamp(_health, 0, m_health);
-        EventManager.Instance.HealthChanged?.Invoke(gameObject, _health);
+        m_currentHealth -= data.action.Damage;
+        m_currentHealth = Mathf.Clamp(m_currentHealth, 0, m_health);
+
+        switch(m_player){
+            case Player.P1:
+                EventManager.Instance.HealthChanged_P1?.Invoke(m_currentHealth, m_health);
+            break;
+
+            case Player.P2:
+                EventManager.Instance.HealthChanged_P2?.Invoke(m_currentHealth, m_health);
+            break;
+        }
     }
 }

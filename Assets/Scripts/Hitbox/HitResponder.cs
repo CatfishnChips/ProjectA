@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,13 +7,10 @@ public class HitResponder : MonoBehaviour, IHitResponder
     public UnityAction<CollisionData> HitResponse;
     private ActionAttack _action;
 
-    [Header("Hitbox Properties")]
-    [SerializeField] private Hitbox _hitbox;
-    [SerializeField] private Hitbox _grabbox;
-    [SerializeField] private int m_priority;
-    [Tooltip("Dictates how many times a move can hit. Set to 1 for single hit moves.")]
+    [SerializeField] private List<Hitbox> _hitboxes;
 
-    private int _part; 
+    [Tooltip("Dictates how many times a move can hit. Set to 1 for single hit moves.")]
+    [SerializeField] [ReadOnly] int _part; 
 
     ActionAttack IHitResponder.Action { get => _action; }
 
@@ -25,20 +21,18 @@ public class HitResponder : MonoBehaviour, IHitResponder
     }
 
     private void Start(){
-        _hitbox.HitResponder = this;
+        foreach (Hitbox hitbox in _hitboxes){
+            hitbox.HitResponder = this;
+        }
+
         //StartCoroutine(UpdateHitbox());
         _part = 1; // Temporary
     }
 
     private void Update(){
-        if (_hitbox.Active){
+        foreach (Hitbox hitbox in _hitboxes){
             if (_part <= 0) return;
-            _hitbox.CheckHit();
-        }
-
-        if (_grabbox.Active){
-            if (_part <= 0) return;
-            _grabbox.CheckHit();
+            hitbox.CheckHit();
         }
     }
 

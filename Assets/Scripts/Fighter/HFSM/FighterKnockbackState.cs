@@ -37,14 +37,14 @@ public class FighterKnockbackState : FighterBaseState
         if (_action.Knockback!= 0){
             //_velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x) * _action.Knockback;
 
-            float direction = Mathf.Sign(_collisionData.hurtbox.Transform.forward.x);
+            float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
             float _time = _action.KnockbackStun * Time.fixedDeltaTime;
 
             _drag = (-2 * _action.Knockback) / (_time * _time);
             float _initialVelocity = (2 * _action.Knockback) / _time;
 
-            _drag = _drag * direction;
-            _initialVelocity = _initialVelocity * direction;
+            _drag *= direction;
+            _initialVelocity *= direction;
 
             _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
             _ctx.Velocity = _ctx.CurrentMovement;
