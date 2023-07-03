@@ -20,7 +20,8 @@ public class FighterStunnedState : FighterBaseState
             SwitchState(_factory.Stunned());
         }
         
-        if (_currentFrame >= _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.Freeze){   
+        // ">" is used instead of ">=" due to Root States' Fixed Update running before the Sub States' Fixed Update.
+        if (_currentFrame > _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.Freeze){   
             FighterBaseState state;         
 
             if (_ctx.IsGrounded){
@@ -56,13 +57,13 @@ public class FighterStunnedState : FighterBaseState
 
     public override void FixedUpdateState()
     {   
-        if (_currentFrame > _action.Freeze){  
+        if (_currentFrame >= _action.Freeze){  
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-            //Debug.Log("Velocity Applied: " + _ctx.Velocity);
+            //Debug.Log("Frame: " + _currentFrame + " Velocity Applied: " + _ctx.Velocity);
         }
         
-        _currentFrame++;
         CheckSwitchState();
+        _currentFrame++;
 
         // If the fighter is hurt again before the stun duration expires, duration is refreshed.
         // if (_ctx.IsHurt)

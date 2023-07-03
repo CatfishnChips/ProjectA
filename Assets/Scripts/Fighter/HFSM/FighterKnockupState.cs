@@ -22,11 +22,11 @@ public class FighterKnockupState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt){
+         if (_ctx.IsHurt){
             SwitchState(_factory.Stunned());
         }
 
-        if (_currentFrame >= _action.KnockupStun.x + _action.KnockupStun.y + _action.Freeze){   
+        if (_currentFrame > _action.KnockupStun.x + _action.KnockupStun.y + _action.Freeze){   
             FighterBaseState state;         
             
             // Knockup always transitions to Knockdown state.
@@ -48,26 +48,27 @@ public class FighterKnockupState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
-        _groundOffset = _ctx.transform.position.y;
+        _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
+        Debug.Log(_groundOffset);
         float horizontalDirection = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
         _distancePerTime = _action.Knockback / (_action.KnockupStun.x + _action.KnockupStun.y);
         
         // Zone 1
-        float time1 = _action.KnockupStun.x;
-        _gravity1 = (-2 * _action.Knockup) / (time1 * time1);
-        _velocity.y = (2 * _action.Knockup) / time1; // Initial vertical velocity.
+        float time1 = _action.KnockupStun.x * Time.fixedDeltaTime;
+        _gravity1 = (-_action.Knockup) / (time1 * time1);
+        _velocity.y = (_action.Knockup) / time1; // Initial vertical velocity.
 
-        _drag1 = (-2 * _distancePerTime * time1) / (time1 * time1);
+        _drag1 = (-_distancePerTime * time1) / (time1 * time1);
         _drag1 *= horizontalDirection;
 
-        _velocity.x = (2 * _action.Knockback) / time1; // Initial horizontal velocity;
+        _velocity.x = (_action.Knockback) / time1; // Initial horizontal velocity;
         _velocity.x *= horizontalDirection;
 
         // Zone 2
-        float time2 = _action.KnockupStun.y;
-        _gravity2 = (-2 * _action.Knockup + _groundOffset) / (time2 * time2);
+        float time2 = _action.KnockupStun.y * Time.fixedDeltaTime; 
+        _gravity2 = -2 * (_action.Knockup + _groundOffset) / (time2 * time2);
 
-        _drag2 = (-2 * _distancePerTime * time2) / (time2 * time2);
+        _drag2 = (-_distancePerTime * time2) / (time2 * time2);
         _drag2 *= horizontalDirection;
 
         _arcDirection = _velocity.normalized;
@@ -104,30 +105,20 @@ public class FighterKnockupState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        if (_currentFrame > _action.Freeze){
+        if (_currentFrame >= _action.Freeze){
 
             if (_isFirstTime){
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
             }
             
-            _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + 
-            (_currentFrame < _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2), _ctx.CurrentMovement.y + 
-            (_currentFrame < _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2));
-
-            _ctx.Velocity = _ctx.CurrentMovement;   
-
-            // if (_ctx.Velocity.y <= 0){
-            //     _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime);
-            // }
-            // else{
-            //     _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
-            // }    
-            //_ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime); // Using this calculation makes the frame timing off due to _ctx.FallMultiplier.
+            _ctx.CurrentMovement += new Vector2((_currentFrame <= _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2), (_currentFrame <= _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2)) * Time.fixedDeltaTime;
+            _ctx.Velocity = _ctx.CurrentMovement;  
+            //Debug.Log("Frame: " + _currentFrame + " Velocity: " + _ctx.CurrentMovement); 
         }
         
-        _currentFrame++;
         CheckSwitchState();
+        _currentFrame++;
     }
 
     public override void InitializeSubState()

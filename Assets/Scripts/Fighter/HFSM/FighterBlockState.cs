@@ -34,10 +34,12 @@ public class FighterBlockState : FighterBaseState
         _ctx.IsHurt = false;
 
         if (_action.Knockback!= 0){
-            float direction = Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
-            _drag = (-2 * _action.Knockback) / (_action.BlockStun * _action.BlockStun);
+            float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
+            float time = _action.BlockStun * Time.fixedDeltaTime;
+            _drag = _action.Knockback / (time * time);
             _drag *= direction;
-            _velocity.x = (2 * _action.Knockback) / _action.BlockStun; // Initial horizontal velocity;
+
+            _velocity.x = _action.Knockback / time; // Initial horizontal velocity;
             _velocity.x *= direction;
         }
         
@@ -68,10 +70,11 @@ public class FighterBlockState : FighterBaseState
 
     public override void FixedUpdateState()
     {   
-        _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag, _ctx.CurrentMovement.y + _ctx.Gravity);
+        _ctx.CurrentMovement += new Vector2(_drag, _ctx.Gravity) * Time.fixedDeltaTime;
         _ctx.Velocity = _ctx.CurrentMovement;
-        _currentFrame++;
+
         CheckSwitchState();
+        _currentFrame++;
     }
 
     public override void InitializeSubState()
