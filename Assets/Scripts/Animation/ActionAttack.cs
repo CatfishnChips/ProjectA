@@ -115,6 +115,7 @@ public class ActionAttack : ActionBase
                 ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);
                 ctx.Animator.Play("AttackStart");
                 ctx.ColBoxAnimator.Play("AttackStart");
+                ctx.AnimState = AnimationStates.Start;
                 _firstFrameStartup = false;
             }
         }
@@ -123,6 +124,7 @@ public class ActionAttack : ActionBase
                 ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedA);
                 ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedA);
                 ctx.Animator.Play("AttackActive");
+                ctx.AnimState = AnimationStates.Active;
                 _firstFrameActive = false;
             }
         }
@@ -132,6 +134,7 @@ public class ActionAttack : ActionBase
                 ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);
                 ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedR);
                 ctx.Animator.Play("AttackRecover");
+                ctx.AnimState = AnimationStates.Recovery;
                 _firstFrameRecovery = false;
             }
         }

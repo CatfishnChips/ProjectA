@@ -56,14 +56,18 @@ public class AIBrain : MonoBehaviour
 
         //_previousState = _currentState;
         
-        switch(_ctxSelf.CurrentState)
+        switch(_ctxSelf.CurrentSubState)
         {
-            case FighterGroundedState:
+            case FighterStates.Idle:
                 NonAttackingStateDesicion();
                 break;
-            case FighterAttackState:
-                if (_attackMoveEnded) AttackingStateDesicion();
-                _attackMoveEnded = false;
+            case FighterStates.Attack:
+                if (_attackMoveEnded && _ctxSelf.ValidAttackInputInterval)
+                {
+                    AttackingStateDesicion();
+                    _attackMoveEnded = false;
+                }
+                
                 break;
 
         }
@@ -87,6 +91,7 @@ public class AIBrain : MonoBehaviour
     private void AttackingStateDesicion()
     {
         string attackMove = decisionMechanism.AttemptAggresiveAciton("Fixed");
+        // Debug.Log(attackMove);
         if (attackMove != "Fail")
         {
             EventManager.Instance.P2AttackMove?.Invoke(attackMove);
@@ -95,6 +100,7 @@ public class AIBrain : MonoBehaviour
 
     public void AttackMoveEnded()
     {
+        // Debug.Log(_ctxEnemy.Player.ToString() + "Attack Move Ended!");
         _attackMoveEnded = true;
     }
 }

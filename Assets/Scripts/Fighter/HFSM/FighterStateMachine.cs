@@ -45,6 +45,8 @@ public class FighterStateMachine : MonoBehaviour
     [ReadOnly] [SerializeField] private FighterStates _previousRootState = default;
     [ReadOnly] [SerializeField] private FighterStates _previousSubState = default;
 
+    [ReadOnly] [SerializeField] private AnimationStates _animState = default;
+
     private HitResponder _hitResponder;
     private HurtResponder _hurtResponder;
     private Rigidbody2D _rigidbody2D;
@@ -78,6 +80,9 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private float _fallMultiplier = 1f;
     [SerializeField] private int _dodgeTime; // in frames
 
+    private bool _validAttackInputInterval;
+    public bool ValidAttackInputInterval { get { return _validAttackInputInterval; } set { _validAttackInputInterval = value; } }
+
     [SerializeField] [ReadOnly] bool _isGrounded;
     private string _attackName;
     private float _gravity;
@@ -101,6 +106,7 @@ public class FighterStateMachine : MonoBehaviour
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
     public FighterStates PreviousRootState{get{return _previousRootState;} set{_previousRootState = value;}}
     public FighterStates PreviousSubState{get{return _previousSubState;} set{_previousSubState = value;}}
+    public AnimationStates AnimState { get { return _animState; } set { _animState = value; } }
 
     public bool IsJumpPressed{get{return _isJumpPressed.Value;} set{_isJumpPressed.Value = value;}}
     public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
@@ -114,6 +120,8 @@ public class FighterStateMachine : MonoBehaviour
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
+
+    public int GetInputBuffer{get{return _inputBuffer;}}
 
     public Animator Animator{get{return _animator;}}
     public AnimatorOverrideController AnimOverrideCont{get{return _animOverrideCont;} set{_animOverrideCont = value;}}
@@ -164,6 +172,8 @@ public class FighterStateMachine : MonoBehaviour
         _states = new FighterStateFactory(this);
         _comboListener = new ComboListener(this);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
+
+        _validAttackInputInterval = false;
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animOverrideCont;

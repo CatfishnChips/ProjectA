@@ -37,13 +37,12 @@ public enum Player
     P2
 }
 
-// Currently not being used. Can come in handy later on.
 
-// public enum AnimationStates
-// {
-//     None,
-//     Start,
-//     Active,
-//     Recovery,
-//     Complete
-// }
+public enum AnimationStates
+{
+    None,
+    Start,
+    Active,
+    Recovery,
+    Complete
+}

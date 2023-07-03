@@ -24,7 +24,7 @@ public class AIDecisionMechanism
 
     public string AttemptAggresiveAciton(string callMethod)
     {
-        bool callMethodArguement = true;
+        bool callMethodArguement;
 
         if (callMethod == "Update") callMethodArguement = true;
         else callMethodArguement = false;
