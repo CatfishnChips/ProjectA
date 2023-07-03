@@ -9,6 +9,7 @@ public class FighterBlockState : FighterBaseState
     private float _currentFrame = 0;
     private Vector2 _velocity;
     private float _animationSpeed;
+    private float _drag;
 
     public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -20,7 +21,7 @@ public class FighterBlockState : FighterBaseState
             SwitchState(_factory.Block());
         }
 
-        if (_currentFrame >= _action.HitStun){
+        if (_currentFrame >= _action.BlockStun){
             SwitchState(_factory.Idle());
         }
     }
@@ -33,23 +34,28 @@ public class FighterBlockState : FighterBaseState
         _ctx.IsHurt = false;
 
         if (_action.Knockback!= 0){
-            _velocity.x = Mathf.Sign(_collisionData.hurtbox.Transform.right.x) * _action.Knockback;
+            float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
+            float time = _action.BlockStun * Time.fixedDeltaTime;
+            _drag = _action.Knockback / (time * time);
+            _drag *= direction;
+
+            _velocity.x = _action.Knockback / time; // Initial horizontal velocity;
+            _velocity.x *= direction;
         }
         
         _ctx.CurrentMovement = _velocity;
         _ctx.Velocity = _ctx.CurrentMovement;
-        _ctx.Rigidbody2D.velocity = _ctx.Velocity;
 
         _ctx.StaminaManager.UpdateStamina();
 
-        if (_action.HitStun == 0) return;
+        if (_action.BlockStun == 0) return;
 
         ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
 
         _ctx.AnimOverrideCont["Block"] = clip;
 
-        float speedVar = AdjustAnimationTime(clip, _action.HitStun);
+        float speedVar = AdjustAnimationTime(clip, _action.BlockStun);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
 
         _ctx.Animator.Play("Block");
@@ -63,9 +69,12 @@ public class FighterBlockState : FighterBaseState
     }
 
     public override void FixedUpdateState()
-    {
-        _currentFrame++;
+    {   
+        _ctx.CurrentMovement += new Vector2(_drag, _ctx.Gravity) * Time.fixedDeltaTime;
+        _ctx.Velocity = _ctx.CurrentMovement;
+
         CheckSwitchState();
+        _currentFrame++;
     }
 
     public override void InitializeSubState()

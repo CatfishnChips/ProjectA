@@ -19,12 +19,15 @@ public class ActionAttack : ActionBase
     [SerializeField] private int m_blockStun;
     [Tooltip("Time stop applied to the target upon hit (in frames).")]
     [SerializeField] private int m_freeze;
+
     [Tooltip("Stun inflicted upon hitting the target (in frames).")]
     [SerializeField] private int m_knockbackStun;
-    [Tooltip("Duration that the target will stay in air, inflicted upon hitting the target (in frames).")]
-    [SerializeField] private int m_knockupStun;
+
     [Tooltip("Duration that the target will stay lying on ground, inflicted upon hitting the target (in frames).")]
     [SerializeField] private int m_knockdownStun;
+
+    [Tooltip("Time it takes to complete the arc. x: Rise Time, y: Fall Time (in frames)")]
+    [SerializeField] private Vector2Int m_knockupStun;
 
     [Header("Knockback Properties")]
     [Tooltip("Distance of the knockup.")]
@@ -70,11 +73,10 @@ public class ActionAttack : ActionBase
     public int Damage {get => m_damage;}
     public int Priority {get => m_priority;}
     public int Part {get => m_part;}
-    public int HitStun {get => m_knockbackStun + m_knockupStun + m_knockdownStun;}
     public int BlockStun {get => m_blockStun;}
     public int Freeze {get => m_freeze;}
     public int KnockbackStun {get => m_knockbackStun;}
-    public int KnockupStun {get => m_knockupStun;}
+    public Vector2Int KnockupStun {get => m_knockupStun;}
     public int KnockdownStun {get => m_knockdownStun;}
     public float Knockup {get => m_knockup;}
     public float Knockback {get => m_knockback;}

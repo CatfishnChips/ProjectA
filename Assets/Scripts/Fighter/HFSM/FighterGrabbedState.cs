@@ -5,6 +5,9 @@ using UnityEngine;
 public class FighterGrabbedState : FighterBaseState
 {
     private ActionDefault _action;
+    private CollisionData _collisionData;
+    private ActionAttack _attackAction;
+    private int _currentFrame = 0;
 
     public FighterGrabbedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -29,6 +32,14 @@ public class FighterGrabbedState : FighterBaseState
 
     public override void EnterState()
     { 
+        // Take the animation info from the Action as a paramater. 
+        // Then let the animation handle all the work (movement).
+        // The animation should move the character to the desired location while applying damage at certain times.
+        _currentFrame = 0;
+        _collisionData = _ctx.HurtCollisionData;
+        _attackAction = _collisionData.action;
+        _ctx.IsHurt = false;
+        
         if (_ctx.IsGrounded) 
         {
             _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;

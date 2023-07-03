@@ -17,13 +17,13 @@ MonoBehaviour:
   m_damage: 30
   m_priority: 0
   m_part: 1
-  m_blockStun: 5
+  m_blockStun: 30
   m_freeze: 10
-  m_knockbackStun: 45
-  m_knockupStun: 45
-  m_knockdownStun: 0
-  m_knockup: 7.5
-  m_knockback: 10
+  m_knockbackStun: 0
+  m_knockdownStun: 3
+  m_knockupStun: {x: 0, y: 0}
+  m_knockup: 3
+  m_knockback: 2
   m_gravity: 1
   m_sound: {fileID: 0}
   m_soundLevel: 0

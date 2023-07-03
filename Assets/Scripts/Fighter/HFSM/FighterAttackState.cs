@@ -43,6 +43,7 @@ public class FighterAttackState : FighterBaseState
         if (_ctx.IsGrounded){
             _action = _ctx.AttackMoveDict[attackName];
         }
+        else  _action = _ctx.AttackMoveDict[attackName];
 
         // if (_ctx.MovementInput == 1){
             
