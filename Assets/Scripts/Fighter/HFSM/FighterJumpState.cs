@@ -9,6 +9,8 @@ public class FighterJumpState : FighterBaseState
     private float _initialJumpVelocity;
     private float _timeToApex;
     private int _currentFrame = 0;
+    private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
+    private Vector2 _velocity;
 
     public FighterJumpState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -27,30 +29,35 @@ public class FighterJumpState : FighterBaseState
         _currentFrame = 0;
         _action = _ctx.ActionDictionary["Jump"] as ActionDefault;
         AnimationClip clip = _action.meshAnimation;
+        _groundOffset = _ctx.transform.position.y;
 
-        float _time = _ctx.JumpTime * Time.fixedDeltaTime;
+        float direction = _ctx.SwipeDirection.x == 0 ? 0f : -Mathf.Sign(_ctx.SwipeDirection.x);
 
-        _ctx.Gravity = (-2 * _ctx.JumpHeight) / (_time * _time);
-        _initialJumpVelocity = (2 * _ctx.JumpHeight) / _time;
+        float time = _ctx.JumpTime * Time.fixedDeltaTime;
+
+        _ctx.Gravity = -_ctx.JumpHeight / (time * time);
+        _velocity.x = _ctx.JumpDistance / ((_ctx.JumpTime + _ctx.FallTime) * Time.fixedDeltaTime); // Initial horizontal velocity;
+        _velocity.y = _ctx.JumpHeight / time; // Initial vertical velocity;
 
         float speedVar = AdjustAnimationTime(clip, _ctx.JumpTime);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
         _ctx.Animator.Play("Jump");
 
-        _ctx.CurrentMovement = new Vector2(-_ctx.SwipeDirection.x * _ctx.JumpDistance, _initialJumpVelocity);
-        _ctx.Velocity = new Vector2(-_ctx.SwipeDirection.x * _ctx.JumpDistance, _initialJumpVelocity);
+        _ctx.CurrentMovement = new Vector2(direction * _velocity.x, _velocity.y);
+        _ctx.Velocity = _ctx.CurrentMovement;
         //Debug.Log("Jump Velocity: " + _ctx.Velocity);
     }
 
     public override void ExitState()
     {
-        //_ctx.Gravity = Physics2D.gravity.y;
+        float time = _ctx.FallTime * Time.fixedDeltaTime;
+        _ctx.Gravity = -2 * (_ctx.JumpHeight + _groundOffset) / (time * time);
     }
 
     public override void FixedUpdateState()
     {
-        _currentFrame++;
         CheckSwitchState();
+        _currentFrame++;
     }
 
     public override void InitializeSubState()

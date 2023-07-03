@@ -24,7 +24,7 @@ public class FighterDashState : FighterBaseState
         _ctx.IsDashPressed = false;
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
-        //_ctx.IsInputLocked = true;
+
         if (_ctx.IsGrounded) 
         {
             _action = _ctx.ActionDictionary["Dash"] as ActionConditional;
@@ -84,8 +84,8 @@ public class FighterDashState : FighterBaseState
 
         // _ctx.Velocity = new Vector2((previousVelocityY + _ctx.CurrentMovement.x) * .5f, _ctx.CurrentMovement.y);  // Alternative calculation which I don't know the logic behind.
 
-        _currentFrame++;
         CheckSwitchState();
+        _currentFrame++;
     }
 
     public override void InitializeSubState()

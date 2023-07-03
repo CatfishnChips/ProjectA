@@ -70,15 +70,27 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private int _inputBuffer = 10; // in frames
     [SerializeField] private float _dashDistance = 1f;
     [SerializeField] private int _dashTime; // in frames
-    [SerializeField] private float _airMoveSpeed;
-    [SerializeField] private float _jumpHeight = 1f;
-    [SerializeField] private int _jumpTime; // in frames
-    [SerializeField] private float _fallMultiplier = 1f;
     [SerializeField] private int _dodgeTime; // in frames
 
+    [Header("Airborne State")]
+    [SerializeField] private float _airMoveSpeed;
+    [SerializeField] private float _jumpHeight = 1f;
+    [SerializeField] private float _jumpDistance = 1f;
+    [SerializeField] private int _jumpTime; // in frames
+    [SerializeField] private int _fallTime; // in frames
+
+    [Header("Raycast")]
     [SerializeField] [ReadOnly] bool _isGrounded;
+    [SerializeField] private LayerMask _rayCastLayerMask;
+    [SerializeField] private float _rayCastLenght = 1f;
+    [SerializeField] private Vector2 _rayCastOffset;
+
+    [Space]
+    [SerializeField] [ReadOnly] private Vector2 _currentMovement;
+    [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
+    [SerializeField] [ReadOnly] private float _gravity;
+
     private string _attackName;
-    private float _gravity;
     private float _deltaTarget;
     private CollisionData _hurtCollisionData;
     private CollisionData _hitCollisionData;
@@ -86,12 +98,6 @@ public class FighterStateMachine : MonoBehaviour
     private bool _isHurt;
     private bool _isGravityApplied;
     private Vector2 _swipeDirection;
-    [SerializeField] private LayerMask _rayCastLayerMask;
-    [SerializeField] private float _rayCastLenght = 1f;
-    [SerializeField] private Vector2 _rayCastOffset;
-    private Vector2 _currentMovement;
-    [SerializeField] private float _jumpDistance = 1f;
-    [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
 
     public Player Player {get{return _player;}}
 
@@ -140,8 +146,8 @@ public class FighterStateMachine : MonoBehaviour
     
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
-    public float FallMultiplier {get{return _fallMultiplier;}}
-    public float Gravity {get{return _gravity;} set {_gravity = value;}}
+    public int FallTime {get{return _fallTime;}}
+    public float Gravity {get{return _gravity;} set{_gravity = value;}}
     public float MovementInput {get{return _movementInput.Value;}}
     public Vector2 SwipeDirection {get{return _swipeDirection * _faceDirection;}} // SwipeDirection is affected by FaceDirection
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
@@ -321,8 +327,10 @@ public class FighterStateMachine : MonoBehaviour
     public void OnHit(CollisionData data){
         if (_isHit) return;
         _hitCollisionData = data;
+
         TimeController.Instance.SlowDown();
         CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
+
         _isHit = true;
     }
 
@@ -338,6 +346,7 @@ public class FighterStateMachine : MonoBehaviour
         //Debug.Log("Swipe Direction: " + direction);
 
         if (direction.y <= -0.5f) {
+            if (direction.y <= -0.9f) _swipeDirection.x = 0f;
             ListenToJump();
         }
         else if (direction.y < 0.5f && direction.y > -0.5f){

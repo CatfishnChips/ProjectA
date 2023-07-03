@@ -35,20 +35,9 @@ public class FighterAirborneState : FighterBaseState
 
     public override void FixedUpdateState()
     {  
-        if (_ctx.IsGravityApplied){
-            float previousVelocityY = _ctx.CurrentMovement.y;
-            if (_ctx.Velocity.y <= 0){
-                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + _ctx.Gravity * _ctx.FallMultiplier * Time.fixedDeltaTime);
-            }
-            else{
-                _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y + _ctx.Gravity * Time.fixedDeltaTime);
-            }
-            _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x , Mathf.Max((previousVelocityY + _ctx.CurrentMovement.y) * .5f, -20f));    
-        }
-        else 
-        {
-            _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x , 0);
-        }
+        //_ctx.CurrentMovement += new Vector2(_ctx.CurrentSubState == FighterStates.Walk ? 0f : _ctx.Drag, _ctx.IsGravityApplied ? _ctx.Gravity : 0f) * Time.fixedDeltaTime;
+        _ctx.CurrentMovement += new Vector2(0f, _ctx.IsGravityApplied ? _ctx.Gravity : 0f) * Time.fixedDeltaTime;
+        _ctx.Velocity = _ctx.IsGravityApplied ? _ctx.CurrentMovement : Vector2.zero; 
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
         //Debug.Log("Velocity Applied: " + _ctx.Velocity);
         CheckSwitchState();

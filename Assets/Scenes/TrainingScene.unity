@@ -2447,7 +2447,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d564d9968469e499851f21d07c7622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitboxes: []
+  _hitboxes:
+  - {fileID: 878521480}
   _part: 0
 --- !u!50 &1136449788
 Rigidbody2D:
@@ -2531,19 +2532,21 @@ MonoBehaviour:
   _inputBuffer: 10
   _dashDistance: 1
   _dashTime: 10
+  _dodgeTime: 5
   _airMoveSpeed: 1
   _jumpHeight: 1
+  _jumpDistance: 5
   _jumpTime: 24
-  _fallMultiplier: 5
-  _dodgeTime: 5
+  _fallTime: 0
   _isGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
     m_Bits: 1024
   _rayCastLenght: 0.2
   _rayCastOffset: {x: 0, y: 0}
-  _jumpDistance: 5
+  _currentMovement: {x: 0, y: 0}
   _faceDirection: 0
+  _gravity: 0
 --- !u!95 &1136449790
 Animator:
   serializedVersion: 5
@@ -6797,20 +6800,22 @@ MonoBehaviour:
   _inputDelay: 2
   _inputBuffer: 10
   _dashDistance: 2
-  _dashTime: 10
+  _dashTime: 15
+  _dodgeTime: 20
   _airMoveSpeed: 1
   _jumpHeight: 3
+  _jumpDistance: 5
   _jumpTime: 24
-  _fallMultiplier: 5
-  _dodgeTime: 5
+  _fallTime: 18
   _isGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
     m_Bits: 1024
   _rayCastLenght: 0.2
   _rayCastOffset: {x: 0, y: 0}
-  _jumpDistance: 5
+  _currentMovement: {x: 0, y: 0}
   _faceDirection: 0
+  _gravity: 0
 --- !u!1 &5888525083644794654
 GameObject:
   m_ObjectHideFlags: 0
