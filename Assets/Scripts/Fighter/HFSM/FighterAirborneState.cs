@@ -37,7 +37,8 @@ public class FighterAirborneState : FighterBaseState
     {  
         //_ctx.CurrentMovement += new Vector2(_ctx.CurrentSubState == FighterStates.Walk ? 0f : _ctx.Drag, _ctx.IsGravityApplied ? _ctx.Gravity : 0f) * Time.fixedDeltaTime;
         _ctx.CurrentMovement += new Vector2(0f, _ctx.IsGravityApplied ? _ctx.Gravity : 0f) * Time.fixedDeltaTime;
-        _ctx.Velocity = _ctx.IsGravityApplied ? _ctx.CurrentMovement : Vector2.zero; 
+        //_ctx.Velocity = _ctx.IsGravityApplied ? _ctx.CurrentMovement : Vector2.zero; 
+        _ctx.Velocity = _ctx.CurrentMovement;
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
         //Debug.Log("Velocity Applied: " + _ctx.Velocity);
         CheckSwitchState();
