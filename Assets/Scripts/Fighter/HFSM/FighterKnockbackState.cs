@@ -7,7 +7,6 @@ public class FighterKnockbackState : FighterBaseState
     private CollisionData _collisionData;
     private ActionAttack _action;
     private float _currentFrame = 0;
-    private float _drag = 0f;
     private float _animationSpeed;
     private bool _isFirstTime = true;
 
@@ -38,14 +37,12 @@ public class FighterKnockbackState : FighterBaseState
             float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
             float time = _action.KnockbackStun * Time.fixedDeltaTime;
 
-            _drag = (_action.Knockback) / (time * time);
+            _ctx.Drag = (_action.Knockback) / (time * time) * direction;
             float _initialVelocity = _action.Knockback / time;
 
-            _drag *= direction;
             _initialVelocity *= direction;
 
             _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
-            _ctx.Velocity = _ctx.CurrentMovement;
         }
 
         if (_action.KnockbackStun == 0) return;
@@ -70,8 +67,8 @@ public class FighterKnockbackState : FighterBaseState
 
     public override void ExitState()
     {
+        _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = _ctx.CurrentMovement;
     }
 
     public override void FixedUpdateState()
@@ -82,9 +79,6 @@ public class FighterKnockbackState : FighterBaseState
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
             }
-
-            _ctx.CurrentMovement += new Vector2(_drag, 0f) * Time.fixedDeltaTime;
-            _ctx.Velocity = _ctx.CurrentMovement;    
         }
 
         CheckSwitchState();

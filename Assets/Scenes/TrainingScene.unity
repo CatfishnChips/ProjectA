@@ -615,17 +615,17 @@ PrefabInstance:
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.0048401044
+      value: -0.0048400844
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.014523718
+      value: 0.014523683
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00007030455
+      value: 0.000070304086
       objectReference: {fileID: 0}
     - target: {fileID: 6664263211162163464, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -2420,7 +2420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8a6a2c42a950940bc27f4a5fcd5565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stamina: 3
+  m_stamina: 0
   m_recoveryTime: 120
   m_currentStamina: 0
 --- !u!114 &1136449786
@@ -2547,6 +2547,7 @@ MonoBehaviour:
   _currentMovement: {x: 0, y: 0}
   _faceDirection: 0
   _gravity: 0
+  _drag: 0
 --- !u!95 &1136449790
 Animator:
   serializedVersion: 5
@@ -5234,6 +5235,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 498493677559230922, guid: 18cc6210a1f452e4fb4753b59ae15cb8,
+        type: 3}
+      propertyPath: _config.InputDelay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 498493677559230922, guid: 18cc6210a1f452e4fb4753b59ae15cb8,
+        type: 3}
+      propertyPath: _config.InputBuffer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 498493677559230923, guid: 18cc6210a1f452e4fb4753b59ae15cb8,
         type: 3}
       propertyPath: m_Name
@@ -6799,12 +6810,12 @@ MonoBehaviour:
   _comboBuffer: 15
   _inputDelay: 2
   _inputBuffer: 10
-  _dashDistance: 2
+  _dashDistance: 3
   _dashTime: 15
-  _dodgeTime: 20
+  _dodgeTime: 45
   _airMoveSpeed: 1
   _jumpHeight: 3
-  _jumpDistance: 5
+  _jumpDistance: 3
   _jumpTime: 24
   _fallTime: 18
   _isGrounded: 0
@@ -6816,6 +6827,7 @@ MonoBehaviour:
   _currentMovement: {x: 0, y: 0}
   _faceDirection: 0
   _gravity: 0
+  _drag: 0
 --- !u!1 &5888525083644794654
 GameObject:
   m_ObjectHideFlags: 0

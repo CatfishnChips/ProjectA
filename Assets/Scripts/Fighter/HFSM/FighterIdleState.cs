@@ -12,17 +12,17 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
+        if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
             SwitchState(_factory.Block());
         }
 
         if (_ctx.AttackPerformed){
             SwitchState(_factory.Attack());
         }
-        else if (_ctx.IsDodgePressed){
+        else if (_ctx.IsDodgePressed && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
             SwitchState(_factory.Dodge());
         }
-        else if (_ctx.IsDashPressed){
+        else if (_ctx.IsDashPressed && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
             SwitchState(_factory.Dash());
         }
         else if (_ctx.MovementInput != 0){            
@@ -32,11 +32,11 @@ public class FighterIdleState : FighterBaseState
 
     public override void EnterState()
     {
-        if (_ctx.IsGrounded) 
+        if (_ctx.CurrentRootState == FighterStates.Grounded) 
         {
             _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;
         }
-        else
+        else if (_ctx.CurrentRootState == FighterStates.Airborne)
         {
             _action = _ctx.ActionDictionary["AirborneIdle"] as ActionDefault;
         }

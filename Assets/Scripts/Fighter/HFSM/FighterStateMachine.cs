@@ -87,6 +87,7 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] [ReadOnly] private Vector2 _currentMovement;
     [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
     [SerializeField] [ReadOnly] private float _gravity;
+    [SerializeField] [ReadOnly] private float _drag;
 
     private CollisionData _hurtCollisionData;
     private CollisionData _hitCollisionData;
@@ -143,6 +144,7 @@ public class FighterStateMachine : MonoBehaviour
     public int JumpTime {get{return _jumpTime;}}
     public int FallTime {get{return _fallTime;}}
     public float Gravity {get{return _gravity;} set{_gravity = value;}}
+    public float Drag {get{return _drag;} set{_drag = value;}}
     public float MovementInput {get{return _movementInput.Value;}}
     public Vector2 SwipeDirection {get{return _swipeDirection * _faceDirection;}} // SwipeDirection is affected by FaceDirection
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
@@ -160,6 +162,7 @@ public class FighterStateMachine : MonoBehaviour
         _isHurt = false;
         _isGravityApplied = true;
         _gravity = Physics2D.gravity.y;
+        _drag = 0f;
         _states = new FighterStateFactory(this);
         _comboListener = new ComboListener(this);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
@@ -353,11 +356,15 @@ public class FighterStateMachine : MonoBehaviour
         _isHurt = true;
     }
 
+    #region Input Coroutines
+    // These coroutines cannot be located in a static class due to Input Delay coroutine calling Input Buffer coroutine
+    // which can only be done in a MonoBehaviour.
+
     private IEnumerator InputDelay<T>(ContinuousInput<T> input, T value){
         if(input.TargetValue.Equals(value)) yield break;
         input.TargetValue = value;
         
-        for (int i = 0; i < _inputDelay; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
 
@@ -365,15 +372,15 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     private IEnumerator InputDelay(Input<bool> input){
-        for (int i = 0; i < _inputDelay; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
-        if (input.Value) input.Frame = _inputBuffer; // Refresh the frame timer if Input Buffer coroutine is already running.
+        if (input.Value) input.Frame = GameManager.Instance.Config.InputBuffer; // Refresh the frame timer if Input Buffer coroutine is already running.
         else StartCoroutine(InputBuffer(input));
     }
 
     private IEnumerator InputDelay<T>(QueueInput<bool, T> input, T queue){
-        for (int i = 0; i < _inputDelay; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
         StartCoroutine(InputBuffer(input, queue));
@@ -381,7 +388,7 @@ public class FighterStateMachine : MonoBehaviour
 
     private IEnumerator InputBuffer(Input<bool> input){
         input.Value = true;
-        input.Frame = _inputBuffer;
+        input.Frame = GameManager.Instance.Config.InputBuffer;
         
         while (input.Frame >= 0){
             input.Frame--;
@@ -396,7 +403,7 @@ public class FighterStateMachine : MonoBehaviour
         input.Value = true;
         input.Queue.Enqueue(queue);
 
-        for (int i = 0; i < _inputBuffer; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputBuffer; i++){
             yield return new WaitForFixedUpdate();
             if (!input.Value) break;
         }
@@ -404,6 +411,8 @@ public class FighterStateMachine : MonoBehaviour
         if (input.Queue.Count == 1) input.Value = false;
         input.Queue.Dequeue();
     }
+
+    #endregion
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.blue;
@@ -414,35 +423,5 @@ public class FighterStateMachine : MonoBehaviour
     public void SetFaceDirection(int value){
         _faceDirection = value;
         transform.rotation = Quaternion.Euler(0f, 90f * _faceDirection, 0f);
-    }
-}
-
-public class Input<T>
-{
-    protected T _value;
-    private int _frame;
-    public T Value {get{return _value;} set{_value = value;}}
-    public int Frame {get{return _frame;} set{_frame = value;}}
-    public Input(T value){
-        _value = value;
-        _frame = 0;
-    }
-}
-
-public class ContinuousInput<T> : Input<T>
-{
-    private T _targetValue;
-    public T TargetValue {get{return _targetValue;} set{_targetValue = value;}}
-    public ContinuousInput(T value) : base(value){
-        _targetValue = _value;
-    }
-}
-
-public class QueueInput<T, U> : Input<T>
-{
-    private Queue<U> _queue;
-    public Queue<U> Queue {get{return _queue;}}
-    public QueueInput(T value) : base(value){
-        _queue = new Queue<U>();
     }
 }

@@ -48,8 +48,6 @@ public class FighterKnockdownState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = _ctx.CurrentMovement;
     }
 
     public override void FixedUpdateState()

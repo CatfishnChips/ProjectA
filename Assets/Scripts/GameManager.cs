@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private Config _config;
+
+    public Config Config {get{return _config;} set{_config = value;}}
+
     #region Singleton
 
     public static GameManager Instance;

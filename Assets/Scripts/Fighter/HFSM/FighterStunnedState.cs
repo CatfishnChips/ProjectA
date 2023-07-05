@@ -52,12 +52,18 @@ public class FighterStunnedState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = Physics2D.gravity.y;
+        _ctx.Gravity = 0f;
+        _ctx.Drag = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = Vector2.zero;
+        _ctx.Rigidbody2D.velocity = Vector2.zero;
     }
 
     public override void FixedUpdateState()
     {   
         if (_currentFrame >= _action.Freeze){  
+            _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
+            _ctx.Velocity = _ctx.CurrentMovement;
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
             //Debug.Log("Frame: " + _currentFrame + " Velocity Applied: " + _ctx.Velocity);
         }

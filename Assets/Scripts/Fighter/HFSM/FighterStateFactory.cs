@@ -36,11 +36,11 @@ public class FighterStateFactory
         _context.CurrentSubState = FighterStates.Walk;
         return _states[FighterStates.Walk];
     }
-    public FighterBaseState Run(){
-        _context.PreviousSubState = _context.CurrentSubState;
-        _context.CurrentSubState = FighterStates.Run;
-        return _states[FighterStates.Run];
-    }
+    // public FighterBaseState Run(){
+    //     _context.PreviousSubState = _context.CurrentSubState;
+    //     _context.CurrentSubState = FighterStates.Run;
+    //     return _states[FighterStates.Run];
+    // }
     public FighterBaseState Airborne(){
         _context.PreviousRootState = _context.CurrentRootState;
         _context.CurrentRootState = FighterStates.Airborne;
@@ -61,11 +61,11 @@ public class FighterStateFactory
         _context.CurrentRootState = FighterStates.Stunned;
         return _states[FighterStates.Stunned];
     }
-    public FighterBaseState Jump(){
-        _context.PreviousSubState = _context.CurrentSubState;
-        _context.CurrentSubState = FighterStates.Jump;
-        return _states[FighterStates.Jump];
-    }
+    // public FighterBaseState Jump(){
+    //     _context.PreviousSubState = _context.CurrentSubState;
+    //     _context.CurrentSubState = FighterStates.Jump;
+    //     return _states[FighterStates.Jump];
+    // }
     public FighterBaseState Dash(){
         _context.PreviousSubState = _context.CurrentSubState;
         _context.CurrentSubState = FighterStates.Dash;

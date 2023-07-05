@@ -23,7 +23,9 @@ public class FighterWalkState : FighterBaseState
     }
 
     public override void EnterState()
-    {
+    {   
+        _ctx.Drag = 0f;
+        
         if (_ctx.IsGrounded)
         {
             _ctx.Animator.Play("MoveBT");

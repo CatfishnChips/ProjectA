@@ -7,7 +7,6 @@ public class FighterJumpState : FighterBaseState
     private ActionDefault _action;
     private Rigidbody2D _rb;
     private float _initialJumpVelocity;
-    private float _timeToApex;
     private int _currentFrame = 0;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private Vector2 _velocity;
@@ -36,15 +35,16 @@ public class FighterJumpState : FighterBaseState
         float time = _ctx.JumpTime * Time.fixedDeltaTime;
 
         _ctx.Gravity = -_ctx.JumpHeight / (time * time);
+        _ctx.Drag = (-_ctx.JumpDistance / (time * time)) * direction;
         _velocity.x = _ctx.JumpDistance / ((_ctx.JumpTime + _ctx.FallTime) * Time.fixedDeltaTime); // Initial horizontal velocity;
         _velocity.y = _ctx.JumpHeight / time; // Initial vertical velocity;
+        _velocity.x *= direction;
 
         float speedVar = AdjustAnimationTime(clip, _ctx.JumpTime);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
         _ctx.Animator.Play("Jump");
 
-        _ctx.CurrentMovement = new Vector2(direction * _velocity.x, _velocity.y);
-        _ctx.Velocity = _ctx.CurrentMovement;
+        _ctx.CurrentMovement = _velocity;
         //Debug.Log("Jump Velocity: " + _ctx.Velocity);
     }
 
