@@ -6,7 +6,10 @@ using UnityEngine;
 public class ActionAttack : ActionBase
 {   
     [SerializeField] private Tags m_tags;
+    [Tooltip("Damage dealt upon a successful uncontested hit to the target.")]
     [SerializeField] private int m_damage;
+    [Tooltip("Damage dealt upon a successful hit to a blocking target.")]
+    [SerializeField] private int m_chipDamage;
 
     [Header("Hitbox Properties")]
     [Tooltip("Which type of hitbox is prioritized for hit detection.")] // Probably won't be used.
@@ -15,6 +18,8 @@ public class ActionAttack : ActionBase
     [SerializeField] private int m_part = 1;
 
     [Header("Stun Properties")]
+    [Tooltip("Does attack ignore target's Block state?")]
+    [SerializeField] private bool m_ignoreBlock;
     [Tooltip("Stun inflicted upon hitting the target that is blocking (in frames).")]
     [SerializeField] private int m_blockStun;
     [Tooltip("Time stop applied to the target upon hit (in frames).")]
@@ -38,6 +43,10 @@ public class ActionAttack : ActionBase
     [Header("Gravity Properties")]
     [Tooltip("Is gravity applied to the performing character during the action?")]
     [SerializeField] private bool m_gravity;
+
+    [Header("Stamina Properties")]
+    [Tooltip("How much Stamina is recovered after a successful hit.")]
+    [SerializeField] private float m_staminaRecovery;
 
     [Header("SFX Properties")]
     [SerializeField] private AudioClip m_sound;
@@ -71,8 +80,10 @@ public class ActionAttack : ActionBase
 
     public Tags Tags {get => m_tags;}
     public int Damage {get => m_damage;}
+    public int ChipDamage {get => m_chipDamage;}
     public int Priority {get => m_priority;}
     public int Part {get => m_part;}
+    public bool IgnoreBlock {get => m_ignoreBlock;}
     public int BlockStun {get => m_blockStun;}
     public int Freeze {get => m_freeze;}
     public int KnockbackStun {get => m_knockbackStun;}
@@ -81,6 +92,7 @@ public class ActionAttack : ActionBase
     public float Knockup {get => m_knockup;}
     public float Knockback {get => m_knockback;}
     public bool Gravity {get => m_gravity;}
+    public float StaminaRecovery {get => m_staminaRecovery;}
     public AudioClip Sound {get => m_sound;}
     public float SoundLevel {get => m_soundLevel;}
     public Vector3 ScreenShakeVelocity {get => m_screenShakeVelocity;}
@@ -108,34 +120,51 @@ public class ActionAttack : ActionBase
         ctx.IsGravityApplied = m_gravity;
     }
 
-    public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+    public virtual void SwitchActionStateFunction(FighterStateMachine ctx, FighterAttackState state){
         if (state._currentFrame <= state._action.StartFrames){
-            if(_firstFrameStartup){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedS);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);
-                ctx.Animator.Play("AttackStart");
-                ctx.ColBoxAnimator.Play("AttackStart");
-                _firstFrameStartup = false;
-            }
+            state._actionState = ActionStates.Start;
         }
         else if (state._currentFrame > state._action.StartFrames && state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames){
-            if(_firstFrameActive){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedA);
-                ctx.Animator.Play("AttackActive");
-                _firstFrameActive = false;
-            }
+            state._actionState = ActionStates.Active;
         }
-        else if(state._currentFrame > state._action.StartFrames + state._action.ActiveFrames && 
+        else if (state._currentFrame > state._action.StartFrames + state._action.ActiveFrames && 
         state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames + state._action.RecoveryFrames){
-            if(_firstFrameRecovery){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedR);
-                ctx.Animator.Play("AttackRecover");
-                _firstFrameRecovery = false;
-            }
+            state._actionState = ActionStates.Recovery;
         }
+    }
 
+    public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+        switch(state._actionState)
+        {
+            case ActionStates.Start:
+                if(_firstFrameStartup){
+                    ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedS);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);
+                    ctx.Animator.Play("AttackStart");
+                    ctx.ColBoxAnimator.Play("AttackStart");
+                    _firstFrameStartup = false;
+                }
+            break;
+
+            case ActionStates.Active:
+                if(_firstFrameActive){
+                    ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedA);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedA);
+                    ctx.Animator.Play("AttackActive");
+                    _firstFrameActive = false;
+                }
+            break;
+
+            case ActionStates.Recovery:
+                if(_firstFrameRecovery){
+                    ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedR);
+                    ctx.Animator.Play("AttackRecover");
+                    _firstFrameRecovery = false;
+                }
+            break;
+        }
+       
         // Invoke events.
         // foreach(FrameEvent e in m_events){
         //     if (state._currentFrame == e.Frame){
@@ -148,7 +177,6 @@ public class ActionAttack : ActionBase
     }
 
     public virtual void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        ctx.IsGravityApplied = true;
     }
 }
 

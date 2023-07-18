@@ -39,7 +39,7 @@ public class ActionGrab : ActionAttack
             if(_firstFrameRecovery){
                 // If attack successfuly connects, change the animation.
                 if (ctx.IsHit){
-                    GameObject target = ctx.HitCollisionData.hurtbox.Owner;
+                    FighterStateMachine target = ctx.HitCollisionData.hurtbox.Owner;
                     ctx.IsHit = false;
                     // Do the further grab logic here.
 

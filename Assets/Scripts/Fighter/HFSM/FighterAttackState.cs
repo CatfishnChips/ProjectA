@@ -5,6 +5,7 @@ public class FighterAttackState : FighterBaseState
 {
     public ActionAttack _action; 
     public int _currentFrame = 0;
+    public ActionStates _actionState = default;
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory):
     base(currentContext, fighterStateFactory){
@@ -80,6 +81,8 @@ public class FighterAttackState : FighterBaseState
 
     public override void ExitState()
     {
+        _ctx.IsGravityApplied = true;
+        _ctx.ActionState = default;
         _action.ExitStateFunction(_ctx, this);
     }
 
@@ -92,7 +95,9 @@ public class FighterAttackState : FighterBaseState
     }
 
     public override void FixedUpdateState(){
-        
+        _action.SwitchActionStateFunction(_ctx, this);
+        _ctx.ActionState = _actionState;
+
         _action.FixedUpdateFunction(_ctx, this);
         CheckSwitchState();
     }

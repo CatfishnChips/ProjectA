@@ -12,7 +12,12 @@ public class HealthManager : MonoBehaviour
 
     private void Start(){
         m_player = GetComponent<FighterStateMachine>().Player;
-        m_currentHealth = m_health;
+        Reset();
+    }
+
+    public void UpdateHealth(int value){
+        m_currentHealth -= value;
+        m_currentHealth = Mathf.Clamp(m_currentHealth, 0, m_health);
 
         switch(m_player){
             case Player.P1:
@@ -25,9 +30,8 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    public void UpdateHealth(CollisionData data){
-        m_currentHealth -= data.action.Damage;
-        m_currentHealth = Mathf.Clamp(m_currentHealth, 0, m_health);
+    public void Reset(){
+        m_currentHealth = m_health;
 
         switch(m_player){
             case Player.P1:

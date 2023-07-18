@@ -40,14 +40,13 @@ public class FighterStunnedState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
 
+        _ctx.HealthManager.UpdateHealth(_ctx.CanBlock ? _collisionData.action.ChipDamage : _collisionData.action.Damage);
         InitializeSubState();
 
         _ctx.IsHurt = false;
 
         _ctx.Velocity = _ctx.CurrentMovement;
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-
-        _ctx.HealthManager.UpdateHealth(_collisionData);
     }
 
     public override void ExitState()
@@ -83,7 +82,11 @@ public class FighterStunnedState : FighterBaseState
     public override void InitializeSubState()
     { 
         FighterBaseState state;
-        if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
+        Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
+        if(!_action.IgnoreBlock && _ctx.CanBlock){
+            state = _factory.Block();
+        }
+        else if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
             state = _factory.Knockup();
         }
         else if (_action.KnockdownStun > 0){

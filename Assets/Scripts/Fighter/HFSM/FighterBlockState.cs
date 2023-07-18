@@ -16,9 +16,9 @@ public class FighterBlockState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
-            SwitchState(_factory.Block());
-        }
+        // if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
+        //     SwitchState(_factory.Block());
+        // }
 
         if (_currentFrame >= _action.BlockStun){
             SwitchState(_factory.Idle());
@@ -43,7 +43,7 @@ public class FighterBlockState : FighterBaseState
         
         _ctx.CurrentMovement = _velocity;
 
-        _ctx.StaminaManager.UpdateStamina();
+        _ctx.StaminaManager.UpdateBlock(-1);
 
         if (_action.BlockStun == 0) return;
 

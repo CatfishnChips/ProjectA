@@ -29,6 +29,8 @@ public class MatchConducter : MonoBehaviour
     #endregion
 
     #region References
+    [SerializeField] private Transform m_spawnPoint1;
+    [SerializeField] private Transform m_spawnPoint2;
 
     [SerializeField] [ReadOnly] private FighterStateMachine m_fighterSlot1;
     [SerializeField] [ReadOnly] private FighterStateMachine m_fighterSlot2;
@@ -153,7 +155,21 @@ public class MatchConducter : MonoBehaviour
         else
         {
             EventManager.Instance?.RoundChanged(m_currentRound, m_round);
+            HandleRoundStart();
+
         }
+    }
+
+    private void HandleRoundStart(){
+        m_fighterSlot1.Reset();
+        m_fighterSlot2.Reset();
+        m_fighterSlot1.transform.position = m_spawnPoint1.position;
+        m_fighterSlot2.transform.position = m_spawnPoint2.position;
+
+        m_currentTime = m_time;
+        EventManager.Instance.TimeChanged?.Invoke(Mathf.FloorToInt(Mathf.Clamp(m_currentTime, 0f, m_time)));
+
+        m_state = MatchStates.InRound;
     }
 }
 

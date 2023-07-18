@@ -15,8 +15,10 @@ MonoBehaviour:
   name: CrossPunch
   m_tags: 0
   m_damage: 30
+  m_chipDamage: 5
   m_priority: 0
   m_part: 1
+  m_ignoreBlock: 0
   m_blockStun: 30
   m_freeze: 10
   m_knockbackStun: 0
@@ -25,6 +27,7 @@ MonoBehaviour:
   m_knockup: 3
   m_knockback: 2
   m_gravity: 1
+  m_staminaRecovery: 0
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}

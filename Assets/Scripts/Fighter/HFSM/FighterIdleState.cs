@@ -12,10 +12,11 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
-            SwitchState(_factory.Block());
-        }
-
+        // if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
+        //     //if (_ctx.HitCollisionData.action.IgnoreBlock) 
+        //     SwitchState(_factory.Block());
+        // }
+        
         if (_ctx.AttackPerformed){
             SwitchState(_factory.Attack());
         }
@@ -42,6 +43,7 @@ public class FighterIdleState : FighterBaseState
         }
 
         _ctx.AnimOverrideCont["Idle 1"] = _action.meshAnimation;
+        _ctx.ColBoxOverrideCont["Idle"] = _action.boxAnimation;
 
         _ctx.Animator.Play("Idle");
         _ctx.ColBoxAnimator.Play("Idle");
