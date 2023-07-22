@@ -66,6 +66,11 @@ public class ActionAttack : ActionBase
     [SerializeField] private int m_activeFrames;
     [SerializeField] private int m_recoveryFrames;
 
+    [Header("AI Properties")]
+    [ReadOnly] [SerializeField] private int m_hitboxFrame;
+    [ReadOnly] [SerializeField] private Vector2 m_hitboxLocation;
+    [ReadOnly] [SerializeField] private Vector2 m_hitboxSize;
+
     [Header("Animation Clips")]
     [SerializeField] private AnimationClip m_meshAnimationS;
     [SerializeField] private AnimationClip m_meshAnimationA;
@@ -101,6 +106,10 @@ public class ActionAttack : ActionBase
     public int ActiveFrames {get => m_activeFrames;}
     public int RecoveryFrames {get => m_recoveryFrames;}
     public int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
+
+    public int HitboxFrame {get => m_hitboxFrame; set {m_hitboxFrame = value;}}
+    public Vector2 HitboxLocation {get => m_hitboxLocation; set {m_hitboxLocation = value;}} 
+    public Vector2 HitboxSize {get => m_hitboxSize; set {m_hitboxSize = value;}}
 
     public AnimationClip MeshAnimationS {get => m_meshAnimationS;}
     public AnimationClip MeshAnimationA {get => m_meshAnimationA;}
