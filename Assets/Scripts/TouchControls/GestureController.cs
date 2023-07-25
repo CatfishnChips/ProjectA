@@ -219,8 +219,7 @@ public class GestureController : MonoBehaviour
 
         _pointList.Clear();
         _pointAddTimer = _pointAddInterval;
-        //_pointList.Add(_touchB.InitialScreenPosition);
-        _pointList.Add(worldPosition);
+        _pointList.Add(_touchB.InitialScreenPosition);
     }
 
     private void OnTouchBStationary(Vector2 screenPosition, Vector3 worldPosition)
@@ -247,8 +246,7 @@ public class GestureController : MonoBehaviour
 
         if (_pointAddTimer <= 0) 
         {
-            //_pointList.Add(screenPosition);
-            _pointList.Add(worldPosition);
+            _pointList.Add(screenPosition);
             _pointAddTimer = _pointAddInterval;
         }
     }
@@ -263,8 +261,7 @@ public class GestureController : MonoBehaviour
 
         if (_pointAddTimer <= 0) 
         {
-            //_pointList.Add(inputEventDragParams.ScreenPosition);
-            _pointList.Add(inputEventDragParams.WorldPosition);
+            _pointList.Add(inputEventDragParams.ScreenPosition);
             _pointAddTimer = _pointAddInterval;
         }
 
@@ -287,8 +284,7 @@ public class GestureController : MonoBehaviour
         if (!_isTouchBActive) return;
 
         if (_touchB.HasMoved){
-            //_pointList.Add(inputEventParams.ScreenPosition);
-            _pointList.Add(inputEventParams.WorldPosition);
+            _pointList.Add(inputEventParams.ScreenPosition);
 
             RecognizeGesture(out string Name, out float Score);
 
