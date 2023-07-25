@@ -51,11 +51,12 @@ public class TouchIndicatorController : MonoBehaviour
 
     private void EnableIndicator1(Vector2 screenPosition, Vector3 worldPosition) 
     {   
+        Vector3 position = new Vector3(worldPosition.x, worldPosition.y, -9f);
         _touchIndicator1.gameObject.SetActive(true);
-        _touchIndicator1.transform.position = screenPosition;
+        _touchIndicator1.transform.position = position;
         _touchText1.SetText("Began");
         _touchAHoldTime = 0;
-        _trailObject1.position = screenPosition;
+        _trailObject1.position = position;
         _trail1.emitting = true;
     }
 
@@ -67,28 +68,31 @@ public class TouchIndicatorController : MonoBehaviour
     }
 
     private void MoveIndicator1(InputEventParams inputEventParams) 
-    {
-        _touchIndicator1.transform.position = inputEventParams.ScreenPosition;;
+    {   
+        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        _touchIndicator1.transform.position = position;
         _touchText1.SetText("Dragging");
         _touchAHoldTime = 0;
-        _trailObject1.position = inputEventParams.ScreenPosition;
+        _trailObject1.position = position;
     }
 
     private void UpdateIndicator1(Vector2 screenPosition, Vector3 worldPosition) 
     {
+        Vector3 position = new Vector3(worldPosition.x, worldPosition.y, -9f);
         _touchAHoldTime += Time.deltaTime;
         _touchText1.SetText("Hold - " + (int)_touchAHoldTime);
-        _trailObject1.position = screenPosition;
+        _trailObject1.position = position;
     }
 
     private void EnableIndicator2(Vector2 screenPosition, Vector3 worldPosition) 
     {
+        Vector3 position = new Vector3(worldPosition.x, worldPosition.y, -9f);
         _touchIndicator2.gameObject.SetActive(true);
-        _touchIndicator2.transform.position = screenPosition;
+        _touchIndicator2.transform.position = position;
         _touchText2.SetText("Began");
         _touchBHoldTime = 0;
-        _trailObject2.position = screenPosition;
-        _trail1.emitting = true;
+        _trailObject2.position = position;
+        _trail2.emitting = true;
     }
 
     private void DisableIndicator2(InputEventParams inputEventParams) 
@@ -100,16 +104,18 @@ public class TouchIndicatorController : MonoBehaviour
 
     private void MoveIndicator2(InputEventParams inputEventParams) 
     {
-        _touchIndicator2.transform.position = inputEventParams.ScreenPosition;
+        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        _touchIndicator2.transform.position = position;
         _touchText2.SetText("Dragging");
         _touchBHoldTime = 0;
-        _trailObject2.position = inputEventParams.ScreenPosition;
+        _trailObject2.position = position;
     }
 
     private void UpdateIndicator2(Vector2 screenPosition, Vector3 worldPosition) 
     {
+        Vector3 position = new Vector3(worldPosition.x, worldPosition.y, -9f);
         _touchBHoldTime += Time.deltaTime;
         _touchText2.SetText("Hold - " + (int)_touchBHoldTime);
-        _trailObject2.position = screenPosition;
+        _trailObject2.position = position;
     }
 }

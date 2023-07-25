@@ -42,7 +42,7 @@ public class FighterAirborneState : FighterBaseState
             _ctx.IsJumpPressed = false;
         
            _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
-            Debug.Log(_groundOffset);
+            //Debug.Log(_groundOffset);
             float direction = _ctx.SwipeDirection.x == 0 ? 0f : -Mathf.Sign(_ctx.SwipeDirection.x);
             _distancePerTime = _ctx.JumpDistance / (_ctx.JumpTime + _ctx.FallTime);
             

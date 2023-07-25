@@ -82,7 +82,7 @@ public class FighterStunnedState : FighterBaseState
     public override void InitializeSubState()
     { 
         FighterBaseState state;
-        Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
+        //Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
         if(!_action.IgnoreBlock && _ctx.CanBlock){
             state = _factory.Block();
         }

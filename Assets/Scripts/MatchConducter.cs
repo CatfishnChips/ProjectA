@@ -5,9 +5,12 @@ using UnityEngine;
 public class MatchConducter : MonoBehaviour
 {   
     #region Variables
-    [SerializeField] private MatchStates m_state;
+
+    [Header("Settings")]
+    [SerializeField] [ReadOnly] private MatchStates m_state;
     [SerializeField] [Range(1, 100)] private int m_time;
     [SerializeField] [Range(1, 3)] private int m_score;
+    [SerializeField] private bool m_isTraining;
     private int m_currentRound;
     private float m_currentTime;
     private int m_currentScore_P1;
@@ -29,6 +32,8 @@ public class MatchConducter : MonoBehaviour
     #endregion
 
     #region References
+
+    [Header("References")]
     [SerializeField] private Transform m_spawnPoint1;
     [SerializeField] private Transform m_spawnPoint2;
 
@@ -121,42 +126,61 @@ public class MatchConducter : MonoBehaviour
     }
 
     private void HandleRoundEnd(Player player){
-        m_state = MatchStates.Standby;
-        m_currentTime = m_time;
-        switch(player)
-        {
-            case Player.P1:
-                m_currentScore_P1++;
-                EventManager.Instance?.ScoreChanged(Player.P1, m_currentScore_P1);
-            break;
+        if (m_isTraining) {
+            switch(player)
+            {
+                case Player.P1:
+                    m_fighterSlot2.HealthManager.Reset();
+                break;
 
-            case Player.P2:
-                m_currentScore_P2++;
-                EventManager.Instance?.ScoreChanged(Player.P2, m_currentScore_P2);
-            break;
+                case Player.P2:
+                    m_fighterSlot1.HealthManager.Reset();
+                break;
 
-            case Player.None:
-                m_currentScore_P1++;
-                m_currentScore_P2++;
-                EventManager.Instance?.ScoreChanged(Player.P1, m_currentScore_P1);
-                EventManager.Instance?.ScoreChanged(Player.P2, m_currentScore_P2);
-            break;
+                case Player.None:
+                    m_fighterSlot1.HealthManager.Reset();
+                    m_fighterSlot2.HealthManager.Reset();
+                break;
+            }
         }
+        else{
+            m_state = MatchStates.Standby;
+            m_currentTime = m_time;
+            switch(player)
+            {
+                case Player.P1:
+                    m_currentScore_P1++;
+                    EventManager.Instance?.ScoreChanged(Player.P1, m_currentScore_P1);
+                break;
 
-        if (m_currentScore_P1 >= m_score && m_currentScore_P2 >= m_score){
-            EventManager.Instance.MatchEnded?.Invoke(Player.None);
-        }
-        else if (m_currentScore_P1 >= m_score){
-            EventManager.Instance.MatchEnded?.Invoke(Player.P1);
-        }
-        else if (m_currentScore_P2 >= m_score){
-            EventManager.Instance.MatchEnded?.Invoke(Player.P2);
-        }
-        else
-        {
-            EventManager.Instance?.RoundChanged(m_currentRound, m_round);
-            HandleRoundStart();
+                case Player.P2:
+                    m_currentScore_P2++;
+                    EventManager.Instance?.ScoreChanged(Player.P2, m_currentScore_P2);
+                break;
 
+                case Player.None:
+                    m_currentScore_P1++;
+                    m_currentScore_P2++;
+                    EventManager.Instance?.ScoreChanged(Player.P1, m_currentScore_P1);
+                    EventManager.Instance?.ScoreChanged(Player.P2, m_currentScore_P2);
+                break;
+            }
+
+            if (m_currentScore_P1 >= m_score && m_currentScore_P2 >= m_score){
+                EventManager.Instance.MatchEnded?.Invoke(Player.None);
+            }
+            else if (m_currentScore_P1 >= m_score){
+                EventManager.Instance.MatchEnded?.Invoke(Player.P1);
+            }
+            else if (m_currentScore_P2 >= m_score){
+                EventManager.Instance.MatchEnded?.Invoke(Player.P2);
+            }
+            else
+            {
+                EventManager.Instance?.RoundChanged(m_currentRound, m_round);
+                HandleRoundStart();
+
+            }
         }
     }
 

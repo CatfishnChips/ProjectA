@@ -162,7 +162,7 @@ public class InputManager : MonoBehaviour
                         break;
                     }
                     //Debug.Log("ID: " + touch.fingerId + " Phase: " + touch.phase + " RawPos: " + touch.rawPosition + " Pos: " + touch.position 
-                    //+ " Speed: " + touchMoveSpeed + " Dir: " + touchMoveDirection + " TapCount: " + touch.tapCount);
+                    //+ " Speed: " + touchMoveSpeed  + " TapCount: " + touch.tapCount);
                 }
             }   
         }

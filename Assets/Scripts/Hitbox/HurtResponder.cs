@@ -24,7 +24,7 @@ public class HurtResponder : MonoBehaviour, IHurtResponder
 
     void IHurtResponder.Response(CollisionData data)
     {
-        Debug.Log("Hurt Response");
+        //Debug.Log("Hurt Response");
         HurtResponse?.Invoke(data);
     }
 }

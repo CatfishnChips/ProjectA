@@ -352,7 +352,7 @@ public class FighterStateMachine : MonoBehaviour
         FighterStateMachine target = data.hurtbox.Owner;
 
         //if (target.StaminaManager.CanBlock && target.StaminaManager) return; // If hit opponent blocked the attack.
-        Debug.Log("Script: FighterStateMachine" + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + target.CanBlock);
+        //Debug.Log("Script: FighterStateMachine" + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + target.CanBlock);
         if (target.CanBlock) return; // If hit opponent blocked/can block the attack.
 
         if (target.CurrentSubState == FighterStates.Block){
@@ -528,5 +528,8 @@ public class FighterStateMachine : MonoBehaviour
 
         _staminaManager.Reset();
         _healthManager.Reset();
+
+        _currentState = _states.Airborne();
+        _currentState.EnterState();
     }
 }

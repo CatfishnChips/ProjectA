@@ -32,6 +32,7 @@ public class HitResponder : MonoBehaviour, IHitResponder
     private void Update(){
         foreach (Hitbox hitbox in _hitboxes){
             if (_part <= 0) return;
+            if (!hitbox.Active)return;
             hitbox.CheckHit();
         }
     }

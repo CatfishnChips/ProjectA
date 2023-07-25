@@ -303,6 +303,13 @@ public class GestureController : MonoBehaviour
     {   
         string name = _nameInput.text;
         _recognizer.SavePattern(name, _pointList);
+
+        // DEBUG
+        string debugLog = $"{name} has been recorded as;";
+        for(int i = 0; i < _pointList.Count; i++){
+            debugLog += $"\n Point {i}: "  + _pointList[i].ToString();
+        }
+        Debug.Log(debugLog);
     }
 
     public void WriteGesture() 
@@ -312,6 +319,13 @@ public class GestureController : MonoBehaviour
         string gestureName = _nameInput.text;
         string fileName = string.Format("{0}/{1}-{2}.xml", Application.persistentDataPath, gestureName, DateTime.Now.ToFileTime());
         GestureIO.WriteGesture(unistroke, gestureName, fileName);
+
+        // DEBUG
+        string debugLog = $"{gestureName} has been written as;";
+        for(int i = 0; i < unistroke.Points.Length; i++){
+            debugLog += $"\n Point {i}: "  + unistroke.Points[i].ToString();
+        }
+        Debug.Log(debugLog);
     }
 
     private void ReadGesture() 
@@ -344,6 +358,13 @@ public class GestureController : MonoBehaviour
             Name = "";
             Score = 0;
         }
+
+        // DEBUG
+        string debugLog = $"Following points have been used to recognize the gesture {Name}";
+        for(int i = 0; i < _pointList.Count; i++){
+            debugLog += $"\n Point {i}: "  + _pointList[i].ToString();
+        }
+        Debug.Log(debugLog);
     }
 }
 
