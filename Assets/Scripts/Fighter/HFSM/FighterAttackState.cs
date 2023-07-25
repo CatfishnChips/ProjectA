@@ -18,7 +18,7 @@ public class FighterAttackState : FighterBaseState
             if(_ctx.Player == Player.P1) EventManager.Instance.FighterAttackEnded?.Invoke();
             else if(_ctx.Player == Player.P2) EventManager.Instance.P2FighterAttackEnded?.Invoke();
 
-            _ctx.AnimState = default;
+            _ctx.ActionState = default;
             _ctx.ValidAttackInputInterval = false;
 
             if (_ctx.AttackPerformed){

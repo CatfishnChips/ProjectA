@@ -96,6 +96,7 @@ public class FighterStateMachine : MonoBehaviour
     private bool _isHurt;
     private bool _isGravityApplied;
     private Vector2 _swipeDirection;
+    private bool _validAttackInputInterval;
 
     public Player Player {get{return _player;}}
 
@@ -143,6 +144,7 @@ public class FighterStateMachine : MonoBehaviour
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
     public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
     
+    public int GetInputBuffer { get { return _inputBuffer; } }
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
     public int FallTime {get{return _fallTime;}}
@@ -156,6 +158,7 @@ public class FighterStateMachine : MonoBehaviour
     public int DashTime {get{return _dashTime;}}
     public int DodgeTime {get{return _dodgeTime;}}
     public int FaceDirection {get{return _faceDirection;}}
+    public bool ValidAttackInputInterval { get { return _validAttackInputInterval; } set { _validAttackInputInterval = value; } }
 
     void Awake()
     {

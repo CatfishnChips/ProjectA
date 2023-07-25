@@ -2380,6 +2380,7 @@ GameObject:
   - component: {fileID: 1136449786}
   - component: {fileID: 1136449785}
   - component: {fileID: 1136449784}
+  - component: {fileID: 1136449792}
   m_Layer: 0
   m_Name: Fighter_Enemy
   m_TagString: Player
@@ -2414,8 +2415,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_stamina: 100
-  m_block: 1
-  m_staminaRegen: 0.08
+  m_block: 0
+  m_staminaRegen: 0
   m_currentStamina: 0
   m_currentBlock: 0
 --- !u!114 &1136449786
@@ -2583,6 +2584,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &1136449792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136449783}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62aac2724bb27f4fbf7a8492fc19886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficultySettings: {fileID: 11400000, guid: 704af98938792dc4ebd89f93052155ab, type: 2}
 --- !u!1001 &1138426587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3572,6 +3586,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: MatchConducter
       objectReference: {fileID: 0}
+    - target: {fileID: 7698971339024854684, guid: 2c9bfd0d84abc7145bc396a933c312e8,
+        type: 3}
+      propertyPath: m_spawnPoint1
+      value: 
+      objectReference: {fileID: 2006245521}
+    - target: {fileID: 7698971339024854684, guid: 2c9bfd0d84abc7145bc396a933c312e8,
+        type: 3}
+      propertyPath: m_spawnPoint2
+      value: 
+      objectReference: {fileID: 1634668435}
     - target: {fileID: 8197724909048191848, guid: 2c9bfd0d84abc7145bc396a933c312e8,
         type: 3}
       propertyPath: m_RootOrder
@@ -3629,6 +3653,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c9bfd0d84abc7145bc396a933c312e8, type: 3}
+--- !u!4 &1634668435 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4779921278209216638, guid: 7a9fa71b53d1c2b42a6a57dc653f4b2d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4669318727307632000}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1639283529
 GameObject:
   m_ObjectHideFlags: 0
@@ -4628,6 +4658,12 @@ Transform:
   m_Father: {fileID: 1573403594}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50.147633, y: 0.000008154738, z: 0.000018124352}
+--- !u!4 &2006245521 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8694825104148589285, guid: 7a9fa71b53d1c2b42a6a57dc653f4b2d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4669318727307632000}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2008919783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6272,8 +6308,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_stamina: 100
-  m_block: 3
-  m_staminaRegen: 0.0008
+  m_block: 0
+  m_staminaRegen: 0
   m_currentStamina: 0
   m_currentBlock: 0
 --- !u!114 &3952272144434690138
@@ -6957,7 +6993,7 @@ MonoBehaviour:
   _jumpHeight: 3
   _jumpDistance: 3
   _jumpTime: 24
-  _fallTime: 18
+  _fallTime: 0
   _isGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
