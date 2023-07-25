@@ -162,7 +162,7 @@ public class DollarRecognizer
 	}
 
 
-	protected const int _kNormalizedPoints = 64;
+	protected const int _kNormalizedPoints = 16;
 	protected const float _kNormalizedSize = 256.0f;
 	protected const float _kAngleRange = 45.0f * Mathf.Deg2Rad;
 	protected const float _kAnglePrecision = 2.0f * Mathf.Deg2Rad;
