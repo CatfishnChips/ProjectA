@@ -12,11 +12,14 @@ public class AnimationPreview : MonoBehaviour
     private AnimationWindow _animationWindow;
 
     [SerializeField] private List<AnimationObject> m_animationObjects;
+    
+    public int Frame {get => m_frame;}
+    public List<AnimationObject> AnimationObjects {get => m_animationObjects;}
 
     private void OnEnable(){
         if (EditorApplication.isPlaying) return;
         if (!m_preview) return;
-
+        if (m_manual) return;
         _animationWindow = EditorWindow.GetWindow<AnimationWindow>();
     }
 

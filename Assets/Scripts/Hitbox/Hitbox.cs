@@ -19,6 +19,9 @@ public class Hitbox : MonoBehaviour, IHitDetector
     private IHitResponder m_hitResponder;
 
     public IHitResponder HitResponder { get => m_hitResponder; set => m_hitResponder = value; }
+
+    public Vector2 Offset {get => m_offset;}
+    public Vector2 Size {get => m_size;}
     public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
 
     public void CheckHit(){

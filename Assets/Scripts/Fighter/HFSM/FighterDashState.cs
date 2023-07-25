@@ -6,7 +6,6 @@ public class FighterDashState : FighterBaseState
 {
     private ActionConditional _action;
     private int _currentFrame = 0;
-    private float _drag = 0f;
 
     public FighterDashState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -24,7 +23,8 @@ public class FighterDashState : FighterBaseState
         _ctx.IsDashPressed = false;
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
-        //_ctx.IsInputLocked = true;
+        _ctx.Drag = 0f;
+
         if (_ctx.IsGrounded) 
         {
             _action = _ctx.ActionDictionary["Dash"] as ActionConditional;
@@ -58,34 +58,25 @@ public class FighterDashState : FighterBaseState
         
         float _time = _ctx.DashTime * Time.fixedDeltaTime;
 
-        _drag = (-2 * _ctx.DashDistance) / (_time * _time);
+        _ctx.Drag = (-2 * _ctx.DashDistance) / (_time * _time) * direction;
         float _initialDashVelocity = (2 * _ctx.DashDistance) / _time;
 
-        _drag = _drag * direction;
         _initialDashVelocity = _initialDashVelocity * direction;
 
         _ctx.CurrentMovement = new Vector2(_initialDashVelocity, _ctx.CurrentMovement.y);
-        _ctx.Velocity = _ctx.CurrentMovement;
     }
 
     public override void ExitState()
     {
-        //_ctx.IsInputLocked = false;
         _ctx.IsGravityApplied = true;
+        _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = _ctx.CurrentMovement;
     }
 
     public override void FixedUpdateState()
     {
-        float previousVelocityY = _ctx.CurrentMovement.y;
-        _ctx.CurrentMovement = new Vector2(_ctx.CurrentMovement.x + _drag * Time.fixedDeltaTime, _ctx.CurrentMovement.y);
-        _ctx.Velocity = new Vector2(_ctx.CurrentMovement.x, _ctx.CurrentMovement.y);    
-
-        // _ctx.Velocity = new Vector2((previousVelocityY + _ctx.CurrentMovement.x) * .5f, _ctx.CurrentMovement.y);  // Alternative calculation which I don't know the logic behind.
-
-        _currentFrame++;
         CheckSwitchState();
+        _currentFrame++;
     }
 
     public override void InitializeSubState()

@@ -9,11 +9,11 @@ public class FighterGroundedState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt && !_ctx.StaminaManager.CanBlock){
+        if (_ctx.IsHurt){
             SwitchState(_factory.Stunned());
         }
 
-        if (!_ctx.IsGrounded || _ctx.IsJumpPressed){
+        if (!_ctx.IsGrounded || (_ctx.IsJumpPressed && (_ctx.CurrentSubState == FighterStates.Idle || _ctx.CurrentSubState == FighterStates.Walk))){
             SwitchState(_factory.Airborne());
         }
     }
@@ -21,18 +21,23 @@ public class FighterGroundedState : FighterBaseState
     public override void EnterState()
     {
         InitializeSubState();
-
-        _ctx.Gravity = Physics2D.gravity.y;
-        _ctx.Rigidbody2D.velocity = new Vector2(_ctx.Rigidbody2D.velocity.x, _ctx.Gravity);
     }
 
     public override void ExitState()
     {    
+        _ctx.Gravity = 0f;
+        _ctx.Drag = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = Vector2.zero;
+        _ctx.Rigidbody2D.velocity = Vector2.zero;
     }
 
     public override void FixedUpdateState()
     {
-        if (_ctx.Velocity.x != 0)
+        _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
+        _ctx.Velocity = _ctx.CurrentMovement;
+
+        if(_ctx.Velocity != Vector2.zero)
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
         CheckSwitchState();
     }

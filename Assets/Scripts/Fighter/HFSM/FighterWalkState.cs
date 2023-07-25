@@ -23,7 +23,9 @@ public class FighterWalkState : FighterBaseState
     }
 
     public override void EnterState()
-    {
+    {   
+        _ctx.Drag = 0f;
+        
         if (_ctx.IsGrounded)
         {
             _ctx.Animator.Play("MoveBT");
@@ -38,11 +40,12 @@ public class FighterWalkState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        if (_ctx.IsGrounded){
+        if (_ctx.CurrentRootState == FighterStates.Grounded){
             _ctx.Animator.SetFloat("Blend", _ctx.MovementInput);
         }
-        else{
-            _ctx.CurrentMovement = new Vector2(_ctx.MovementInput * _ctx.AirMoveSpeed, _ctx.Velocity.y);
+        else if (_ctx.CurrentRootState == FighterStates.Airborne)
+        {
+            _ctx.CurrentMovement = new Vector2(_ctx.MovementInput * _ctx.AirMoveSpeed, _ctx.CurrentMovement.y);
         }
 
         CheckSwitchState();

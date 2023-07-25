@@ -24,7 +24,7 @@ MonoBehaviour:
   m_knockupStun: {x: 0, y: 0}
   m_knockup: 0
   m_knockback: 0
-  m_gravity: 1
+  m_gravity: 0
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: 0, y: 0, z: 0}

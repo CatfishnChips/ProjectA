@@ -16,4 +16,4 @@ MonoBehaviour:
   frames: 0
   meshAnimation: {fileID: -203655887218126122, guid: f2315face54806449a6b060dff44cab5,
     type: 3}
-  boxAnimation: {fileID: 0}
+  boxAnimation: {fileID: 7400000, guid: 06d607f54577d444ba80914468b39a14, type: 2}

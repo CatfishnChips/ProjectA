@@ -49,7 +49,7 @@ public class FighterKnockupState : FighterBaseState
         _velocity = Vector2.zero;
 
         _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
-        Debug.Log(_groundOffset);
+        //Debug.Log(_groundOffset);
         float horizontalDirection = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
         _distancePerTime = _action.Knockback / (_action.KnockupStun.x + _action.KnockupStun.y);
         
@@ -74,7 +74,6 @@ public class FighterKnockupState : FighterBaseState
         _arcDirection = _velocity.normalized;
 
         _ctx.CurrentMovement = _velocity;
-        _ctx.Velocity = _ctx.CurrentMovement;
 
         if (_action.KnockupStun.x + _action.KnockupStun.y == 0) return;
 
@@ -98,9 +97,9 @@ public class FighterKnockupState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = Physics2D.gravity.y;
+        _ctx.Gravity = 0f;
+        _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = _ctx.CurrentMovement;
     }
 
     public override void FixedUpdateState()
@@ -111,10 +110,8 @@ public class FighterKnockupState : FighterBaseState
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
             }
-            
-            _ctx.CurrentMovement += new Vector2((_currentFrame <= _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2), (_currentFrame <= _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2)) * Time.fixedDeltaTime;
-            _ctx.Velocity = _ctx.CurrentMovement;  
-            //Debug.Log("Frame: " + _currentFrame + " Velocity: " + _ctx.CurrentMovement); 
+            _ctx.Drag = _currentFrame <= _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2;
+            _ctx.Gravity = _currentFrame <= _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2;
         }
         
         CheckSwitchState();

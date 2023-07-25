@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using JetBrains.Annotations;
 
 //To achive a modifiable MoveSet system through inspector.
 [Serializable]
@@ -37,7 +36,62 @@ public struct FrameEvent
     public UnityEngine.Events.UnityEvent Event;
 }
 
-public struct AttackNamePair{
-    public string name;
-    public AttackMove attack;
+[Serializable]
+public struct Config
+{
+    public int InputDelay;
+    public int InputBuffer;
 }
+
+#region Input Classes
+
+public class Input<T>
+{
+    protected T _value;
+    private int _frame;
+    public T Value {get{return _value;} set{_value = value;}}
+    public int Frame {get{return _frame;} set{_frame = value;}}
+    protected T _defaultValue;
+    public Input(T value){
+        _value = value;
+        _frame = 0;
+        _defaultValue = value;
+    }
+
+    public virtual void Reset(){
+        _value = _defaultValue;
+        _frame = 0;
+    }
+}
+
+public class ContinuousInput<T> : Input<T>
+{
+    private T _targetValue;
+    public T TargetValue {get{return _targetValue;} set{_targetValue = value;}}
+    public ContinuousInput(T value) : base(value){
+        _targetValue = _value;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        _targetValue = _defaultValue;
+    }
+}
+
+public class QueueInput<T, U> : Input<T>
+{
+    private Queue<U> _queue;
+    public Queue<U> Queue {get{return _queue;}}
+    public QueueInput(T value) : base(value){
+        _queue = new Queue<U>();
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        Queue.Clear();
+    }
+}
+
+#endregion

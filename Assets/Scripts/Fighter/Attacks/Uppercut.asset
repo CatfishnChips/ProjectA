@@ -15,16 +15,19 @@ MonoBehaviour:
   name: Uppercut
   m_tags: 0
   m_damage: 50
+  m_chipDamage: 0
   m_priority: 0
   m_part: 1
+  m_ignoreBlock: 0
   m_blockStun: 5
   m_freeze: 10
   m_knockbackStun: 80
-  m_knockupStun: 80
   m_knockdownStun: 20
+  m_knockupStun: {x: 0, y: 0}
   m_knockup: 25
   m_knockback: 1
   m_gravity: 0
+  m_staminaRecovery: 0
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: 0, y: 0, z: 0}
@@ -35,6 +38,9 @@ MonoBehaviour:
   m_startFrames: 45
   m_activeFrames: 7
   m_recoveryFrames: 12
+  m_hitboxFrame: -1
+  m_hitboxLocation: {x: 1.913789, y: 1.05}
+  m_hitboxSize: {x: 0.89, y: 2.8}
   m_meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
   m_meshAnimationA: {fileID: -2584105986153280350, guid: d489b905b20129841a1f1398b3665cff,

@@ -25,8 +25,6 @@ public class FighterStateMachine : MonoBehaviour
     private Dictionary<string, ActionAttack> _attackMoveDict;
     private Dictionary<string, ActionBase> _actionDictionary;
 
-    private Dictionary<string, Dictionary<string, ActionAttack>> _attackRanges;
-
     [SerializeField] private ComboMove[] _combosArray;
     private ComboListener _comboListener;
 
@@ -44,8 +42,7 @@ public class FighterStateMachine : MonoBehaviour
     [ReadOnly] [SerializeField] private FighterStates _currentSubState = default;
     [ReadOnly] [SerializeField] private FighterStates _previousRootState = default;
     [ReadOnly] [SerializeField] private FighterStates _previousSubState = default;
-
-    [ReadOnly] [SerializeField] private AnimationStates _animState = default;
+    [ReadOnly] [SerializeField] private ActionStates _actionState = default;
 
     private HitResponder _hitResponder;
     private HurtResponder _hurtResponder;
@@ -53,7 +50,6 @@ public class FighterStateMachine : MonoBehaviour
 
     private HealthManager _healthManager;
     private StaminaManager _staminaManager;
-
     private Vector2 _velocity;
 
     #region Input Variables
@@ -61,7 +57,6 @@ public class FighterStateMachine : MonoBehaviour
     private Input<bool> _isJumpPressed = new Input<bool>(false);
     private Input<bool> _isDashPressed = new Input<bool>(false);
     private Input<bool> _isDodgePressed = new Input<bool>(false);
-    //private Input<bool> _isAttackPerformed = new Input<bool>(false);
     private ContinuousInput<float> _movementInput = new ContinuousInput<float>(0);
     private ContinuousInput<bool> _holdTouchA = new ContinuousInput<bool>(false);
     private ContinuousInput<bool> _holdTouchB = new ContinuousInput<bool>(false);
@@ -74,31 +69,33 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private int _inputBuffer = 10; // in frames
     [SerializeField] private float _dashDistance = 1f;
     [SerializeField] private int _dashTime; // in frames
-    [SerializeField] private float _airMoveSpeed;
-    [SerializeField] private float _jumpHeight = 1f;
-    [SerializeField] private int _jumpTime; // in frames
-    [SerializeField] private float _fallMultiplier = 1f;
     [SerializeField] private int _dodgeTime; // in frames
 
-    private bool _validAttackInputInterval;
-    public bool ValidAttackInputInterval { get { return _validAttackInputInterval; } set { _validAttackInputInterval = value; } }
+    [Header("Airborne State")]
+    [SerializeField] private float _airMoveSpeed;
+    [SerializeField] private float _jumpHeight = 1f;
+    [SerializeField] private float _jumpDistance = 1f;
+    [SerializeField] private int _jumpTime; // in frames
+    [SerializeField] private int _fallTime; // in frames
 
+    [Header("Raycast")]
     [SerializeField] [ReadOnly] bool _isGrounded;
-    private string _attackName;
-    private float _gravity;
-    private float _deltaTarget;
+    [SerializeField] private LayerMask _rayCastLayerMask;
+    [SerializeField] private float _rayCastLenght = 1f;
+    [SerializeField] private Vector2 _rayCastOffset;
+
+    [Space]
+    [SerializeField] [ReadOnly] private Vector2 _currentMovement;
+    [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
+    [SerializeField] [ReadOnly] private float _gravity;
+    [SerializeField] [ReadOnly] private float _drag;
+
     private CollisionData _hurtCollisionData;
     private CollisionData _hitCollisionData;
     private bool _isHit;
     private bool _isHurt;
     private bool _isGravityApplied;
     private Vector2 _swipeDirection;
-    [SerializeField] private LayerMask _rayCastLayerMask;
-    [SerializeField] private float _rayCastLenght = 1f;
-    [SerializeField] private Vector2 _rayCastOffset;
-    private Vector2 _currentMovement;
-    [SerializeField] private float _jumpDistance = 1f;
-    [SerializeField] [ReadOnly] private int _faceDirection; // -1 Left, +1 Right
 
     public Player Player {get{return _player;}}
 
@@ -106,7 +103,7 @@ public class FighterStateMachine : MonoBehaviour
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
     public FighterStates PreviousRootState{get{return _previousRootState;} set{_previousRootState = value;}}
     public FighterStates PreviousSubState{get{return _previousSubState;} set{_previousSubState = value;}}
-    public AnimationStates AnimState { get { return _animState; } set { _animState = value; } }
+    public ActionStates ActionState{get{return _actionState;} set{_actionState = value;}}
 
     public bool IsJumpPressed{get{return _isJumpPressed.Value;} set{_isJumpPressed.Value = value;}}
     public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
@@ -115,13 +112,10 @@ public class FighterStateMachine : MonoBehaviour
     public bool IsHoldingTouchA{get{return _holdTouchA.Value;}}
     public bool IsHoldingTouchB{get{return _holdTouchB.Value;}}
     public bool AttackPerformed{get{return _isAttackPerformed.Value;} set{_isAttackPerformed.Value = value;}}
-    //public string AttackName{get{return _attackName;}}
     public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
-
-    public int GetInputBuffer{get{return _inputBuffer;}}
 
     public Animator Animator{get{return _animator;}}
     public AnimatorOverrideController AnimOverrideCont{get{return _animOverrideCont;} set{_animOverrideCont = value;}}
@@ -145,13 +139,15 @@ public class FighterStateMachine : MonoBehaviour
     public StaminaManager StaminaManager {get{return _staminaManager;}}
     public bool IsHit {get{return _isHit;} set{_isHit = value;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
+    public bool CanBlock {get{return _staminaManager.CanBlock && ( (_currentRootState == FighterStates.Grounded || _previousRootState == FighterStates.Grounded) && (_currentSubState == FighterStates.Idle || _currentSubState == FighterStates.Walk));}}
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
     public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
     
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
-    public float FallMultiplier {get{return _fallMultiplier;}}
-    public float Gravity {get{return _gravity;} set {_gravity = value;}}
+    public int FallTime {get{return _fallTime;}}
+    public float Gravity {get{return _gravity;} set{_gravity = value;}}
+    public float Drag {get{return _drag;} set{_drag = value;}}
     public float MovementInput {get{return _movementInput.Value;}}
     public Vector2 SwipeDirection {get{return _swipeDirection * _faceDirection;}} // SwipeDirection is affected by FaceDirection
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
@@ -165,15 +161,10 @@ public class FighterStateMachine : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
-        _isHit = false;
-        _isHurt = false;
-        _isGravityApplied = true;
-        _gravity = Physics2D.gravity.y;
+        
         _states = new FighterStateFactory(this);
         _comboListener = new ComboListener(this);
-        _faceDirection = (int)Mathf.Sign(transform.forward.x);
-
-        _validAttackInputInterval = false;
+        //_faceDirection = (int)Mathf.Sign(transform.forward.x);
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animOverrideCont;
@@ -189,7 +180,6 @@ public class FighterStateMachine : MonoBehaviour
 
         _attackMoveDict = new Dictionary<string, ActionAttack>();
         _actionDictionary = new Dictionary<string, ActionBase>();
-        _attackRanges = new Dictionary<string, Dictionary<string, ActionAttack>>();
 
         foreach (ActionAttribution attribution in _actionAttribution)
         {
@@ -197,19 +187,6 @@ public class FighterStateMachine : MonoBehaviour
             {
                 ActionAttack action = Instantiate(attribution.action) as ActionAttack;
                 _attackMoveDict.Add(action.name, action);
-
-                string attackRangeName = action.Tags.ToString();
-
-                if (_attackRanges.ContainsKey(action.Tags.ToString()))
-                {
-                    _attackRanges[attackRangeName].Add(action.name, action);
-                }
-                else
-                {
-                    _attackRanges.Add(attackRangeName, new Dictionary<string, ActionAttack>());
-                    _attackRanges[attackRangeName].Add(action.name, action);
-                }
-
             }
             else 
             {
@@ -217,34 +194,32 @@ public class FighterStateMachine : MonoBehaviour
             }
         }
 
-        foreach(KeyValuePair<string, Dictionary<string, ActionAttack>> attack in _attackRanges)
-        {
-            Debug.Log(attack.ToString());
-        }
-
         if (TryGetComponent<HitResponder>(out HitResponder hitResponder)) _hitResponder = hitResponder;
         if (TryGetComponent<HurtResponder>(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
         if (TryGetComponent<Rigidbody2D>(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
         if (TryGetComponent<HealthManager>(out HealthManager healthManager)) _healthManager = healthManager;
         if (TryGetComponent<StaminaManager>(out StaminaManager staminaManager)) _staminaManager = staminaManager;
+
+        Reset();
     }
 
     void Start()
     {
+        // Subscribe to Event Manager base events.
         switch(_player){
             case Player.P1:
-                EventManager.Instance.Move += ListenToMove;
+                EventManager.Instance.Move += OnMoveA;
                 EventManager.Instance.Swipe += OnDash;
-                EventManager.Instance.AttackMove += ListenToAttack;
+                EventManager.Instance.AttackMove += OnGestureB;
                 EventManager.Instance.OnTap += OnTapA;
                 EventManager.Instance.OnHoldA += OnHoldA;
                 EventManager.Instance.OnHoldB += OnHoldB;
             break;
 
             case Player.P2:
-                EventManager.Instance.P2Move += ListenToMove;
+                EventManager.Instance.P2Move += OnMoveA;
                 EventManager.Instance.P2Swipe += OnDash;
-                EventManager.Instance.P2AttackMove += ListenToAttack;
+                EventManager.Instance.P2AttackMove += OnGestureB;
                 EventManager.Instance.P2OnTap += OnTapA;
                 EventManager.Instance.P2OnHoldA += OnHoldA;
                 EventManager.Instance.P2OnHoldB += OnHoldB;
@@ -255,7 +230,7 @@ public class FighterStateMachine : MonoBehaviour
             break;
         }
 
-        // Component based events.
+        // Subscribe to component based events.
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
 
@@ -268,27 +243,27 @@ public class FighterStateMachine : MonoBehaviour
     {
         switch(_player){
             case Player.P1:
-                EventManager.Instance.Move -= ListenToMove;
+                EventManager.Instance.Move -= OnMoveA;
                 EventManager.Instance.Swipe -= OnDash;
-                EventManager.Instance.AttackMove -= ListenToAttack;
+                EventManager.Instance.AttackMove -= OnGestureB;
                 EventManager.Instance.OnTap -= OnTapA;
                 EventManager.Instance.OnHoldA -= OnHoldA;
                 EventManager.Instance.OnHoldB -= OnHoldB;
             break;
 
             case Player.P2:
-                EventManager.Instance.P2Move -= ListenToMove;
+                EventManager.Instance.P2Move -= OnMoveA;
                 EventManager.Instance.P2Swipe -= OnDash;
-                EventManager.Instance.P2AttackMove -= ListenToAttack;
+                EventManager.Instance.P2AttackMove -= OnGestureB;
                 EventManager.Instance.P2OnTap -= OnTapA;
                 EventManager.Instance.P2OnHoldA -= OnHoldA;
                 EventManager.Instance.P2OnHoldB -= OnHoldB;
             break;
 
             default:
-                EventManager.Instance.Move -= ListenToMove;
+                EventManager.Instance.Move -= OnMoveA;
                 EventManager.Instance.Swipe -= OnDash;
-                EventManager.Instance.AttackMove -= ListenToAttack;
+                EventManager.Instance.AttackMove -= OnGestureB;
                 EventManager.Instance.OnTap -= OnTapA;
                 EventManager.Instance.OnHoldA -= OnHoldA;
                 EventManager.Instance.OnHoldB -= OnHoldB;
@@ -314,54 +289,10 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     private void Update(){
-        _currentState.UpdateStates();
-        //_velocity.x = Mathf.MoveTowards(_velocity.x, _deltaTarget, 1f * Time.deltaTime);
+        //_currentState.UpdateStates();
     }
 
-    public void ListenToJump(){
-        if (_isJumpPressed.Value) return;
-        StartCoroutine(InputDelay(_isJumpPressed));
-    }
-
-    public void ListenToDash(){
-        if (_isDashPressed.Value) return;
-        StartCoroutine(InputDelay(_isDashPressed));
-    }
-
-    public void ListenToDodge(){
-        if(_isDodgePressed.Value) return;
-        StartCoroutine(InputDelay(_isDodgePressed));
-    }
-
-    public void ListenToMove(float value){
-        if (value < 0) value = -1;
-        else if (value > 0) value = 1;
-        value *= _faceDirection;
-
-        StartCoroutine(InputDelay(_movementInput, value));
-    }
-
-    public void ListenToAttack(string attackName){
-        if (attackName == "L") return; // Temporary Bugfix
-        //if (_isAttackPerformed.Value) return;
-
-        _attackName = attackName;
-        StartCoroutine(InputDelay(_isAttackPerformed, _attackName));
-    }
-
-    public void OnHit(CollisionData data){
-        if (_isHit) return;
-        _hitCollisionData = data;
-        TimeController.Instance.SlowDown();
-        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
-        _isHit = true;
-    }
-
-    public void OnHurt(CollisionData data){
-        if (_isHurt) return;
-        _hurtCollisionData = data;
-        _isHurt = true;
-    }
+    #region Input Functions
 
     private void OnDash(Vector2 direction){
         _swipeDirection = direction;
@@ -369,18 +300,21 @@ public class FighterStateMachine : MonoBehaviour
         //Debug.Log("Swipe Direction: " + direction);
 
         if (direction.y <= -0.5f) {
-            ListenToJump();
+            if (direction.y <= -0.9f) _swipeDirection.x = 0f;
+            //if (_isJumpPressed.Value) return;
+            StartCoroutine(InputDelay(_isJumpPressed));
         }
         else if (direction.y < 0.5f && direction.y > -0.5f){
-            ListenToDash();
+            //if (_isDashPressed.Value) return;
+            StartCoroutine(InputDelay(_isDashPressed));
         }
         else if (direction.y >= 0.5f){
-            ListenToDodge();
+            //if(_isDodgePressed.Value) return;
+            StartCoroutine(InputDelay(_isDodgePressed));
         }
     }
 
     private void OnTapA(){
-
     }
 
     private void OnHoldA(bool value){
@@ -391,11 +325,116 @@ public class FighterStateMachine : MonoBehaviour
         StartCoroutine(InputDelay(_holdTouchB, value));
     }
 
+    public void OnMoveA(float value){
+        value = value == 0 ? 0 : Mathf.Sign(value);
+        value *= _faceDirection;
+
+        StartCoroutine(InputDelay(_movementInput, value));
+    }
+
+    public void OnGestureB(string attackName){
+        if (attackName == "L") return; // Temporary Bugfix
+        //if (_isAttackPerformed.Value) return;
+
+        StartCoroutine(InputDelay(_isAttackPerformed, attackName));
+    }
+
+    #endregion
+
+    public void OnHit(CollisionData data){
+        if (_isHit) return;
+        _hitCollisionData = data;
+        _isHit = true;
+
+        FighterStateMachine target = data.hurtbox.Owner;
+
+        //if (target.StaminaManager.CanBlock && target.StaminaManager) return; // If hit opponent blocked the attack.
+        Debug.Log("Script: FighterStateMachine" + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + target.CanBlock);
+        if (target.CanBlock) return; // If hit opponent blocked/can block the attack.
+
+        if (target.CurrentSubState == FighterStates.Block){
+            // Break
+            switch (_player){
+                    case Player.P1:
+                        EventManager.Instance.Interaction_P1(Interactions.Break);
+                    break;
+
+                    case Player.P2:
+                        EventManager.Instance.Interaction_P2(Interactions.Break);
+                    break;
+                }
+        }
+
+        switch(target.ActionState){
+            case ActionStates.Start:
+            // Counter
+                TimeController.Instance.SlowDown();
+
+                switch (_player){
+                    case Player.P1:
+                        EventManager.Instance.Interaction_P1(Interactions.Counter);
+                    break;
+
+                    case Player.P2:
+                        EventManager.Instance.Interaction_P2(Interactions.Counter);
+                    break;
+                }
+            break;
+
+            case ActionStates.Active:
+            //Whiff Punish
+                TimeController.Instance.SlowDown();
+
+                switch (_player){
+                    case Player.P1:
+                        EventManager.Instance.Interaction_P1(Interactions.Punish);
+                    break;
+
+                    case Player.P2:
+                        EventManager.Instance.Interaction_P2(Interactions.Punish);
+                    break;
+                }
+            break;
+
+            case ActionStates.Recovery:
+            // Whiff Punish
+                TimeController.Instance.SlowDown();
+
+                switch (_player){
+                    case Player.P1:
+                        EventManager.Instance.Interaction_P1(Interactions.Punish);
+                    break;
+
+                    case Player.P2:
+                        EventManager.Instance.Interaction_P2(Interactions.Punish);
+                    break;
+                }
+            break;
+        }
+
+        // Screen Shake upon a successful hit.
+        if (data.action.ScreenShakeVelocity != Vector3.zero)
+        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
+        
+        // Stmaina Recovery upon a successful hit.
+        _staminaManager.UpdateStamina(data.action.StaminaRecovery);
+    }
+
+    public void OnHurt(CollisionData data){
+        if (_isHurt) return;
+        _hurtCollisionData = data;
+        _isHurt = true;
+    }
+
+    #region Input Coroutines
+    // These coroutines cannot be located in a static class due to Input Delay coroutine calling Input Buffer coroutine
+    // which can only be done in a MonoBehaviour.
+
     private IEnumerator InputDelay<T>(ContinuousInput<T> input, T value){
         if(input.TargetValue.Equals(value)) yield break;
         input.TargetValue = value;
         
-        for (int i = 0; i < _inputDelay; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
 
@@ -403,15 +442,15 @@ public class FighterStateMachine : MonoBehaviour
     }
 
     private IEnumerator InputDelay(Input<bool> input){
-        for (int i = 0; i < _inputDelay; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
-        if (input.Value) yield break;
-        StartCoroutine(InputBuffer(input));
+        if (input.Value) input.Frame = GameManager.Instance.Config.InputBuffer; // Refresh the frame timer if Input Buffer coroutine is already running.
+        else StartCoroutine(InputBuffer(input));
     }
 
     private IEnumerator InputDelay<T>(QueueInput<bool, T> input, T queue){
-        for (int i = 0; i < _inputDelay; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputDelay; i++){
             yield return new WaitForFixedUpdate();
         }
         StartCoroutine(InputBuffer(input, queue));
@@ -419,10 +458,12 @@ public class FighterStateMachine : MonoBehaviour
 
     private IEnumerator InputBuffer(Input<bool> input){
         input.Value = true;
-
-        for (int i = 0; i < _inputBuffer; i++){
+        input.Frame = GameManager.Instance.Config.InputBuffer;
+        
+        while (input.Frame >= 0){
+            input.Frame--;
             yield return new WaitForFixedUpdate();
-            if (!input.Value) break;
+            if (!input.Value) break; // Exit coroutine if the input had been consumed by another source.
         }
 
         input.Value = false;
@@ -432,7 +473,7 @@ public class FighterStateMachine : MonoBehaviour
         input.Value = true;
         input.Queue.Enqueue(queue);
 
-        for (int i = 0; i < _inputBuffer; i++){
+        for (int i = 0; i < GameManager.Instance.Config.InputBuffer; i++){
             yield return new WaitForFixedUpdate();
             if (!input.Value) break;
         }
@@ -440,6 +481,8 @@ public class FighterStateMachine : MonoBehaviour
         if (input.Queue.Count == 1) input.Value = false;
         input.Queue.Dequeue();
     }
+
+    #endregion
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.blue;
@@ -451,31 +494,36 @@ public class FighterStateMachine : MonoBehaviour
         _faceDirection = value;
         transform.rotation = Quaternion.Euler(0f, 90f * _faceDirection, 0f);
     }
-}
 
-public class Input<T>
-{
-    protected T _value;
-    public T Value {get{return _value;} set{_value = value;}}
-    public Input(T value){
-        _value = value;
-    }
-}
+    public void Reset(){
+        StopAllCoroutines();
 
-public class ContinuousInput<T> : Input<T>
-{
-    private T _targetValue;
-    public T TargetValue {get{return _targetValue;} set{_targetValue = value;}}
-    public ContinuousInput(T value) : base(value){
-        _targetValue = _value;
-    }
-}
+        switch(_player)
+        {
+            case Player.P1:
+                SetFaceDirection(-1);
+            break;
 
-public class QueueInput<T, U> : Input<T>
-{
-    private Queue<U> _queue;
-    public Queue<U> Queue {get{return _queue;}}
-    public QueueInput(T value) : base(value){
-        _queue = new Queue<U>();
+            case Player.P2:
+                SetFaceDirection(1);
+            break;
+        }
+
+        _isHit = false;
+        _isHurt = false;
+        _isGravityApplied = true;
+        _gravity = Physics2D.gravity.y;
+        _drag = 0f;
+        
+        _isJumpPressed.Reset();
+        _isAttackPerformed.Reset();
+        _movementInput.Reset();
+        _holdTouchA.Reset();
+        _holdTouchB.Reset();
+        _isDashPressed.Reset();
+        _isDodgePressed.Reset();
+
+        _staminaManager.Reset();
+        _healthManager.Reset();
     }
 }

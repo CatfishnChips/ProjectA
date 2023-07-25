@@ -57,7 +57,7 @@ public interface IHurtResponder
 public interface IHurtbox
 {
     public bool Active { get; }
-    public GameObject Owner { get; }
+    public FighterStateMachine Owner { get; }
     public Transform Transform { get; }
     public HurtboxType Type { get; }
     public IHurtResponder HurtResponder { get; set; }

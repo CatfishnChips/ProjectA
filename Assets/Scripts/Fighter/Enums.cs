@@ -37,12 +37,26 @@ public enum Player
     P2
 }
 
-
-public enum AnimationStates
+public enum ActionStates
 {
     None,
     Start,
     Active,
     Recovery,
-    Complete
+}
+
+public enum Interactions
+{
+    None, 
+    Counter,
+    Punish,
+    Break
+}
+
+public enum Fighters
+{
+    Char0,
+    Char1,
+    Char2,
+    Char3
 }
