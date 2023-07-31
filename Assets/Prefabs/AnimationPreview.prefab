@@ -47,8 +47,15 @@ MonoBehaviour:
   m_frame: 0
   m_manual: 0
   m_preview: 0
+  m_lockZ: 1
+  m_positionOffset: {x: 0, y: 0.5, z: 0}
+  m_rotationOffset: {x: 0, y: 90, z: 0}
   m_animationObjects:
   - Object: {fileID: 0}
     Clip: {fileID: -203655887218126122, guid: 55bb3cc2706c40c47a6c99d9dffc7ec0, type: 3}
+    ApplyPositionOffset: 1
+    ApplyRotationOffset: 1
   - Object: {fileID: 0}
     Clip: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}
+    ApplyPositionOffset: 0
+    ApplyRotationOffset: 1
