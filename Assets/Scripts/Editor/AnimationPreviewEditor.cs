@@ -38,7 +38,7 @@ public class AnimationPreviewEditor : Editor
                 }
                 m_location = (m_characterPosition + m_hitbox.Offset) - m_origin;
                 
-                m_attack.HitboxLocation = m_location;
+                m_attack.HitboxOffset = m_location;
                 m_attack.HitboxSize = m_hitbox.Size;
                 m_attack.HitboxFrame = m_script.Frame;
                 Debug.Log(m_attack.name + "'s AI properties were set to Frame: " + "(" + m_script.Frame + ")" + " Position: " + m_location + " Size: " + m_hitbox.Size);

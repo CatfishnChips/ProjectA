@@ -17,25 +17,25 @@ public class ActionGrab : ActionAttack
 
     public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
-        if (state._currentFrame <= state._action.StartFrames){
+        if (state._currentFrame <= state.Action.StartFrames){
             if(_firstFrameStartup){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedS);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);
+                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
                 ctx.Animator.Play("AttackStart");
                 ctx.ColBoxAnimator.Play("AttackStart");
                 _firstFrameStartup = false;
             }
         }
-        else if (state._currentFrame > state._action.StartFrames && state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames){
+        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
             if(_firstFrameActive){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedA);
+                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
                 ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
         }
-        else if(state._currentFrame > state._action.StartFrames + state._action.ActiveFrames && 
-        state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames + state._action.RecoveryFrames){
+        else if(state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
+        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
             if(_firstFrameRecovery){
                 // If attack successfuly connects, change the animation.
                 if (ctx.IsHit){
@@ -49,8 +49,8 @@ public class ActionGrab : ActionAttack
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", m_frame);
                 }
                 else{
-                    ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedR);
+                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
                 }
 
                 ctx.Animator.Play("AttackRecover");

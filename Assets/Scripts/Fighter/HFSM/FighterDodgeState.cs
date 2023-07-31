@@ -32,13 +32,17 @@ public class FighterDodgeState : FighterBaseState
             _action = _ctx.ActionDictionary["Dodge"] as ActionDefault;
         }
         AnimationClip clip = _action.meshAnimation;
+        AnimationClip boxClip = _action.boxAnimation;
         _ctx.AnimOverrideCont["Dodge"] = clip;
+        _ctx.ColBoxOverrideCont["Dodge"] = boxClip;
 
         float speedVar = AdjustAnimationTime(clip, _ctx.DodgeTime);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
+        float boxSpeedVar = AdjustAnimationTime(boxClip, _ctx.DodgeTime);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", boxSpeedVar);
 
         _ctx.Animator.Play("Dodge");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.ColBoxAnimator.Play("Dodge");
     }
 
     public override void ExitState()

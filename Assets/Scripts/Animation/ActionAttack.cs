@@ -68,7 +68,7 @@ public class ActionAttack : ActionBase
 
     [Header("AI Properties")]
     [ReadOnly] [SerializeField] private int m_hitboxFrame;
-    [ReadOnly] [SerializeField] private Vector2 m_hitboxLocation;
+    [ReadOnly] [SerializeField] private Vector2 m_hitboxOffset;
     [ReadOnly] [SerializeField] private Vector2 m_hitboxSize;
 
     [Header("Animation Clips")]
@@ -108,7 +108,7 @@ public class ActionAttack : ActionBase
     public int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
 
     public int HitboxFrame {get => m_hitboxFrame; set {m_hitboxFrame = value;}}
-    public Vector2 HitboxLocation {get => m_hitboxLocation; set {m_hitboxLocation = value;}} 
+    public Vector2 HitboxOffset {get => m_hitboxOffset; set {m_hitboxOffset = value;}} 
     public Vector2 HitboxSize {get => m_hitboxSize; set {m_hitboxSize = value;}}
 
     public AnimationClip MeshAnimationS {get => m_meshAnimationS;}
@@ -130,14 +130,14 @@ public class ActionAttack : ActionBase
     }
 
     public virtual void SwitchActionStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        if (state._currentFrame <= state._action.StartFrames){
+        if (state._currentFrame <= state.Action.StartFrames){
             state._actionState = ActionStates.Start;
         }
-        else if (state._currentFrame > state._action.StartFrames && state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames){
+        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
             state._actionState = ActionStates.Active;
         }
-        else if (state._currentFrame > state._action.StartFrames + state._action.ActiveFrames && 
-        state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames + state._action.RecoveryFrames){
+        else if (state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
+        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
             state._actionState = ActionStates.Recovery;
         }
     }
@@ -147,8 +147,8 @@ public class ActionAttack : ActionBase
         {
             case ActionStates.Start:
                 if(_firstFrameStartup){
-                    ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedS);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);
+                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
                     ctx.Animator.Play("AttackStart");
                     ctx.ColBoxAnimator.Play("AttackStart");
                     _firstFrameStartup = false;
@@ -157,8 +157,8 @@ public class ActionAttack : ActionBase
 
             case ActionStates.Active:
                 if(_firstFrameActive){
-                    ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedA);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedA);
+                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
                     ctx.Animator.Play("AttackActive");
                     _firstFrameActive = false;
                 }
@@ -166,8 +166,8 @@ public class ActionAttack : ActionBase
 
             case ActionStates.Recovery:
                 if(_firstFrameRecovery){
-                    ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedR);
+                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
                     ctx.Animator.Play("AttackRecover");
                     _firstFrameRecovery = false;
                 }

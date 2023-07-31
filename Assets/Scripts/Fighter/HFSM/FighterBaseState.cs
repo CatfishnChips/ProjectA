@@ -8,6 +8,8 @@ public abstract class FighterBaseState
     protected FighterBaseState _currentSubState;
     protected FighterBaseState _currentSuperState;
 
+    public FighterBaseState GetCurrentSubState { get { return _currentSubState; } }
+
     protected FighterBaseState(FighterStateMachine currentState, FighterStateFactory fighterStateFactory)
     =>(_ctx, _factory) = (currentState, fighterStateFactory);
 

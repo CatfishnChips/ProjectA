@@ -3,9 +3,11 @@ using UnityEngine.Events;
 
 public class FighterAttackState : FighterBaseState
 {
-    public ActionAttack _action; 
+    private ActionAttack _action;
     public int _currentFrame = 0;
     public ActionStates _actionState = default;
+
+    public ActionAttack Action { get => _action; }
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory):
     base(currentContext, fighterStateFactory){

@@ -14,6 +14,7 @@ public class ComboListener
     // private string _currentAttackName;
     // private string _previousAttackName;
     private int _currentFrame;
+    private ActionAttack _receivedAttack;
     private bool _doesDictContainMove;
     public bool isActive;
 
@@ -24,10 +25,14 @@ public class ComboListener
         _comboMovesDict = new Dictionary<string, ComboMoveSpecs>();
         ResetListener();
         ArrangeMovesList();
+        _receivedAttack = null;
     }
 
     public void FixedUpdate(){
-        if(_currentFrame > _ctx.ComboBuffer){
+        int receivedAttackFrames = 0;
+        if (_receivedAttack is not null) receivedAttackFrames = _receivedAttack.FrameLenght; 
+
+        if(_currentFrame > receivedAttackFrames + _ctx.ComboBuffer){ // Break the combo listener after the attack ends and a window definedand (ComboBuffer) is passed.
             ResetListener();
         }
 
@@ -35,6 +40,7 @@ public class ComboListener
     }
 
     public ActionAttack AttackOverride(ActionAttack action){
+        _receivedAttack = action;
         _attackAction = null;
         //Debug.Log("Current Mov Number: " + _currentMoveNumber);
         //Debug.Log("Current ActionAttack : " + newAttack.name);
@@ -44,7 +50,8 @@ public class ComboListener
 
         if(!_currentSearchDict.ContainsKey(action.name)){
             ResetListener();
-            if(_comboMovesDict.ContainsKey(action.name)){
+            // Altough the player might've broken the combo the move performed might be the starter of another combo.
+            if(_comboMovesDict.ContainsKey(action.name)){ 
                 _currentSearchDict = _comboMovesDict[action.name].possibleNextMoves;
             }
             return action;
@@ -71,6 +78,7 @@ public class ComboListener
         //_currentAttackName = null;
         _doesDictContainMove = false;
         isActive = false;
+        _receivedAttack = null;
     }
 
 

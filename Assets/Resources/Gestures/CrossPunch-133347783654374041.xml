@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "CrossPunch">
+		<Point X = "-0.06368281" Y = "-9.313226E-10" T = "0" Pressure = "0" />
+		<Point X = "-0.05533975" Y = "0.0002507875" T = "0" Pressure = "0" />
+		<Point X = "-0.04683089" Y = "0.0003999593" T = "0" Pressure = "0" />
+		<Point X = "-0.03821694" Y = "0.0004662648" T = "0" Pressure = "0" />
+		<Point X = "-0.029603" Y = "0.0005325694" T = "0" Pressure = "0" />
+		<Point X = "-0.02098906" Y = "0.0005988749" T = "0" Pressure = "0" />
+		<Point X = "-0.01237512" Y = "0.0006651795" T = "0" Pressure = "0" />
+		<Point X = "-0.00376118" Y = "0.000731484" T = "0" Pressure = "0" />
+		<Point X = "0.004698835" Y = "0.0005963361" T = "0" Pressure = "0" />
+		<Point X = "0.01303525" Y = "0.0002994332" T = "0" Pressure = "0" />
+		<Point X = "0.02137167" Y = "2.530403E-06" T = "0" Pressure = "0" />
+		<Point X = "0.02970809" Y = "-0.0002943706" T = "0" Pressure = "0" />
+		<Point X = "0.03802875" Y = "-0.0005989755" T = "0" Pressure = "0" />
+		<Point X = "0.04633927" Y = "-0.0009085285" T = "0" Pressure = "0" />
+		<Point X = "0.05464981" Y = "-0.001218083" T = "0" Pressure = "0" />
+		<Point X = "0.0629671" Y = "-0.001523468" T = "0" Pressure = "0" />
+</Gesture>

@@ -64,7 +64,7 @@ public class FighterStateMachine : MonoBehaviour
 
     #endregion
 
-    [SerializeField] private int _comboBuffer = 15;
+    [SerializeField] private int _comboBuffer = 5;
     [SerializeField] private int _inputDelay = 2; // Amount of time before registering an input.
     [SerializeField] private int _inputBuffer = 10; // in frames
     [SerializeField] private float _dashDistance = 1f;

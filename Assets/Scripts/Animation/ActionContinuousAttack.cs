@@ -26,19 +26,19 @@ public class ActionContinuousAttack : ActionAttack
 
     public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
-        if (state._currentFrame <= state._action.StartFrames){
+        if (state._currentFrame <= state.Action.StartFrames){
             if(_firstFrameStartup){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedS);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedS);
+                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
                 ctx.Animator.Play("AttackStart");
                 ctx.ColBoxAnimator.Play("AttackStart");
                 _firstFrameStartup = false;
             }
         }
-        else if (state._currentFrame > state._action.StartFrames && state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames){
+        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
             if(_firstFrameActive){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedA);
+                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
                 ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
@@ -49,11 +49,11 @@ public class ActionContinuousAttack : ActionAttack
                 _timePaused = !_pauseTime;
             }
         }
-        else if(state._currentFrame > state._action.StartFrames + state._action.ActiveFrames && 
-        state._currentFrame <= state._action.StartFrames + state._action.ActiveFrames + state._action.RecoveryFrames){
+        else if(state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
+        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
             if(_firstFrameRecovery){
-                ctx.Animator.SetFloat("SpeedVar", state._action.AnimSpeedR);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state._action.AnimSpeedR);
+                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
                 ctx.Animator.Play("AttackRecover");
                 _firstFrameRecovery = false;
             }
