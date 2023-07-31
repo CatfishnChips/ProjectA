@@ -23,6 +23,7 @@ public class AnimationPreviewEditor : Editor
         EditorGUILayout.LabelField("Animation Extras", EditorStyles.boldLabel);
         m_attack = (ActionAttack)EditorGUILayout.ObjectField(m_attack, typeof(ActionAttack), allowSceneObjects: false);
         m_axis3D = EditorGUILayout.Toggle("3D Axis? ", m_axis3D);
+        EditorGUILayout.LabelField("3D Axis - Z is forward axis.    2D Axis - X is forward axis.", EditorStyles.miniLabel);
         if (GUILayout.Button("Override Property")){
             if (m_attack != null){
                 

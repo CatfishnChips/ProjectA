@@ -48,6 +48,7 @@ MonoBehaviour:
   m_state: 1
   m_time: 100
   m_score: 3
+  m_isTraining: 1
   m_spawnPoint1: {fileID: 4064210564280432277}
   m_spawnPoint2: {fileID: 187305890393754638}
   m_fighterSlot1: {fileID: 0}
