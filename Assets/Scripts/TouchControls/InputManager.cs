@@ -29,13 +29,13 @@ public class InputManager : MonoBehaviour
 
     #region Events
 
-    public UnityAction<Vector2, Vector3> OnTouchABegin;
-    public UnityAction<Vector2, Vector3> OnTouchAStationary;
+    public UnityAction<InputEventParams> OnTouchABegin;
+    public UnityAction<InputEventParams> OnTouchAStationary;
     public UnityAction<InputEventParams> OnTouchADrag;
     public UnityAction<InputEventParams> OnTouchAEnd;
 
-    public UnityAction<Vector2, Vector3> OnTouchBBegin;
-    public UnityAction<Vector2, Vector3> OnTouchBStationary;
+    public UnityAction<InputEventParams> OnTouchBBegin;
+    public UnityAction<InputEventParams> OnTouchBStationary;
     public UnityAction<InputEventParams> OnTouchBDrag;
     public UnityAction<InputEventParams> OnTouchBEnd;
 
@@ -103,12 +103,12 @@ public class InputManager : MonoBehaviour
                         if (touch.fingerId == _touchAID) 
                         {
                             // Touch A
-                            OnTouchABegin?.Invoke(touch.position, touchWorldPosition);
+                            OnTouchABegin?.Invoke(new InputEventParams(touch.position, touchWorldPosition, 0f, Vector2.zero));
                         }
                         else if (touch.fingerId == _touchBID) 
                         {
                             // Touch B
-                            OnTouchBBegin?.Invoke(touch.position, touchWorldPosition);
+                            OnTouchBBegin?.Invoke(new InputEventParams(touch.position, touchWorldPosition, 0f, Vector2.zero));
                         }
                         break;
 
@@ -116,12 +116,12 @@ public class InputManager : MonoBehaviour
                         if (touch.fingerId == _touchAID) 
                         {
                             // Touch A
-                            OnTouchAStationary?.Invoke(touch.position, touchWorldPosition);
+                            OnTouchAStationary?.Invoke(new InputEventParams(touch.position, touchWorldPosition, 0f, Vector2.zero));
                         }
                         else if (touch.fingerId == _touchBID) 
                         {
                             // Touch B
-                            OnTouchBStationary?.Invoke(touch.position, touchWorldPosition);
+                            OnTouchBStationary?.Invoke(new InputEventParams(touch.position, touchWorldPosition, 0f, Vector2.zero));
                         }
                         break;
 
@@ -183,6 +183,7 @@ public class InputManager : MonoBehaviour
 public struct InputEventParams 
 {
     public Vector2 ScreenPosition;
+    public Vector2 NormalizedScreenPosition {get{return new Vector2(ScreenPosition.x / Screen.width, ScreenPosition.y / Screen.height);}}
     public Vector3 WorldPosition;
     public float DeltaSpeed;
     public Vector2 Delta;

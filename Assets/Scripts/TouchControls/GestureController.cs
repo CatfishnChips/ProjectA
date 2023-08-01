@@ -110,11 +110,11 @@ public class GestureController : MonoBehaviour
 
     #region Touch A
 
-    private void OnTouchABegin(Vector2 screenPosition, Vector3 worldPosition) 
+    private void OnTouchABegin(InputEventParams inputEventParams) 
     {
         _touchA = new TouchData();
-        _touchA.InitialScreenPosition = screenPosition;
-        _touchA.InitialWorldPosition = worldPosition;
+        _touchA.InitialScreenPosition = inputEventParams.NormalizedScreenPosition;
+        _touchA.InitialWorldPosition = inputEventParams.WorldPosition;
 
         _touchA.HasMoved = false;
         _touchA.HoldTime = 0f;
@@ -126,7 +126,7 @@ public class GestureController : MonoBehaviour
         _virtualJoystick = Vector2.zero;
     }
 
-    private void OnTouchAStationary(Vector2 screenPosition, Vector3 worldPosition)
+    private void OnTouchAStationary(InputEventParams inputEventParams)
     {
         _touchA.TimeOnScreen += Time.deltaTime;
         _touchA.HoldTime += Time.deltaTime;
@@ -206,7 +206,7 @@ public class GestureController : MonoBehaviour
 
     #region Touch B
 
-    private void OnTouchBBegin(Vector2 screenPosition, Vector3 worldPosition) 
+    private void OnTouchBBegin(InputEventParams inputEventParams) 
     {
         _touchB = new TouchData();
 
@@ -214,15 +214,15 @@ public class GestureController : MonoBehaviour
         _isTouchBActive = true;
         _touchB.HoldTime = 0f;
 
-        _touchB.InitialScreenPosition = screenPosition;
-        _touchB.InitialWorldPosition = worldPosition;
+        _touchB.InitialScreenPosition = inputEventParams.NormalizedScreenPosition;
+        _touchB.InitialWorldPosition = inputEventParams.WorldPosition;
 
         _pointList.Clear();
         _pointAddTimer = _pointAddInterval;
         _pointList.Add(_touchB.InitialScreenPosition);
     }
 
-    private void OnTouchBStationary(Vector2 screenPosition, Vector3 worldPosition)
+    private void OnTouchBStationary(InputEventParams inputEventParams)
     {
         _touchB.TimeOnScreen += Time.deltaTime;
         _touchB.HoldTime += Time.deltaTime;
@@ -246,7 +246,7 @@ public class GestureController : MonoBehaviour
 
         if (_pointAddTimer <= 0) 
         {
-            _pointList.Add(screenPosition);
+            _pointList.Add(inputEventParams.NormalizedScreenPosition);
             _pointAddTimer = _pointAddInterval;
         }
     }
@@ -261,7 +261,7 @@ public class GestureController : MonoBehaviour
 
         if (_pointAddTimer <= 0) 
         {
-            _pointList.Add(inputEventDragParams.ScreenPosition);
+            _pointList.Add(inputEventDragParams.NormalizedScreenPosition);
             _pointAddTimer = _pointAddInterval;
         }
 
@@ -284,7 +284,7 @@ public class GestureController : MonoBehaviour
         if (!_isTouchBActive) return;
 
         if (_touchB.HasMoved){
-            _pointList.Add(inputEventParams.ScreenPosition);
+            _pointList.Add(inputEventParams.NormalizedScreenPosition);
 
             RecognizeGesture(out string Name, out float Score);
 
@@ -364,7 +364,7 @@ public class GestureController : MonoBehaviour
         for(int i = 0; i < _pointList.Count; i++){
             debugLog += $"\n Point {i}: "  + _pointList[i].ToString();
         }
-        //Debug.Log(debugLog);
+        Debug.Log(debugLog);
     }
 }
 

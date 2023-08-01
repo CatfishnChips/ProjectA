@@ -60,13 +60,12 @@ public class FighterStunnedState : FighterBaseState
 
     public override void FixedUpdateState()
     {   
-        if (_currentFrame >= _action.Freeze){  
+        if (_currentFrame > _action.Freeze){  
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-            //Debug.Log("Frame: " + _currentFrame + " Velocity Applied: " + _ctx.Velocity);
+            //Debug.Log("Fighter Stunned State - Frame: " + _currentFrame + " Velocity Applied: " + _ctx.Velocity);
         }
-        
         CheckSwitchState();
         _currentFrame++;
 

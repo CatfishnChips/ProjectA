@@ -38,6 +38,9 @@ MonoBehaviour:
   m_startFrames: 18
   m_activeFrames: 5
   m_recoveryFrames: 34
+  m_hitboxFrame: 0
+  m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxSize: {x: 0, y: 0}
   m_meshAnimationS: {fileID: 3164648343453379813, guid: 5c36eced4a381ef44b0389cc7b8c164e,
     type: 3}
   m_meshAnimationA: {fileID: -524552742357794111, guid: 5c36eced4a381ef44b0389cc7b8c164e,
