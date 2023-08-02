@@ -10,6 +10,7 @@ public class AIBrain : MonoBehaviour
     [SerializeField] private AIDifficultySettings _difficultySettings;
     [Tooltip("Enlarges the hitboxes to allow AI to take action while the hitbox is not precisely hitting the opponent.")]
     [SerializeField] private float _attackBoxFlexibilityMargin;
+    [SerializeField] private AIPositionMethod _opitamlDistancemethod;
 
     private AIDecisionMechanism _decisionMechanism;
 
@@ -79,6 +80,7 @@ public class AIBrain : MonoBehaviour
         Debug.Log(_ctxSelf.CurrentSubState.ToString());
 
         if (_drivenByContext) { 
+
             switch (_ctxSelf.CurrentSubState)
             {
                 case FighterStates.Idle:
@@ -106,6 +108,11 @@ public class AIBrain : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void IdleStateMovement()
+    {
+
     }
 
     private void NonAttackingStateDesicion()
@@ -202,7 +209,24 @@ public class AIBrain : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
         }
-        Debug.Log("NOW!");
         actionEvent?.Invoke(direction);
+    }
+
+    private float CalcOptimalXDistance(AIPositionMethod method)
+    {
+        Vector2 optimalDistance = new Vector2();
+
+        switch (method)
+        {
+            case AIPositionMethod.ArithmeticMean:
+                float xTotal = 0.0f;
+                foreach (KeyValuePair<string, ActionAttack> attack in _ctxSelf.GroundedAttackMoveDict)
+                {
+                    xTotal += attack.Value.HitboxOffset.x;
+                }
+                return xTotal / _ctxSelf.GroundedAttackMoveDict.Count;
+            default:
+                return 10.0f; // Place Holder
+        }
     }
 }

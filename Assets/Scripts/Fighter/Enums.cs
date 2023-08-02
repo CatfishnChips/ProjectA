@@ -60,3 +60,11 @@ public enum Fighters
     Char2,
     Char3
 }
+
+public enum AIPositionMethod
+{
+    StraightRandom,
+    ArithmeticMean,
+    GeometricMean,
+    Mod
+}
