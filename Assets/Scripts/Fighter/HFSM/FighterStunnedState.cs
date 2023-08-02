@@ -64,7 +64,7 @@ public class FighterStunnedState : FighterBaseState
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-            //Debug.Log("Fighter Stunned State - Frame: " + _currentFrame + " Velocity Applied: " + _ctx.Velocity);
+            Debug.Log("Fighter Stunned State - Frame: " + _currentFrame + " Velocity Applied: " + _ctx.Velocity);
         }
         CheckSwitchState();
         _currentFrame++;

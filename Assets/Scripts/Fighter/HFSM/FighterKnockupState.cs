@@ -23,7 +23,7 @@ public class FighterKnockupState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-         if (_ctx.IsHurt){
+        if (_ctx.IsHurt){
             SwitchState(_factory.Stunned());
         }
 
@@ -49,7 +49,7 @@ public class FighterKnockupState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
-        _groundOffset = _ctx.transform.position.y; // y = 0.5f is the centre position of the character.
+        _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
         //Debug.Log(_groundOffset);
         float horizontalDirection = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
         _distancePerTime = _action.Knockback / (_action.KnockupStun.x + _action.KnockupStun.y);
@@ -67,7 +67,7 @@ public class FighterKnockupState : FighterBaseState
 
         // Zone 2
         float time2 = _action.KnockupStun.y * Time.fixedDeltaTime; 
-        _gravity2 = -2 * (_action.Knockup) / (time2 * time2);
+        _gravity2 = -2 * (_action.Knockup + _groundOffset) / (time2 * time2);
 
         _drag2 = (-_distancePerTime * time2) / (time2 * time2);
         _drag2 *= horizontalDirection;
@@ -106,7 +106,7 @@ public class FighterKnockupState : FighterBaseState
         _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
-        //Debug.Log("Fighter Knockup State - Exit State");
+        Debug.Log("Fighter Knockup State - Exit State");
     }
 
     public override void FixedUpdateState()
@@ -120,7 +120,7 @@ public class FighterKnockupState : FighterBaseState
             }
             _ctx.Drag = _currentFrame < _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2;
             _ctx.Gravity = _currentFrame < _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2;
-            //Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
+            Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
         }
         
         CheckSwitchState();

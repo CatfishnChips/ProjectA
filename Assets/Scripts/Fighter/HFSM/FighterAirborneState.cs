@@ -37,7 +37,8 @@ public class FighterAirborneState : FighterBaseState
         _ctx.Rigidbody2D.velocity = Vector2.zero;
 
         _currentFrame = 0;
-
+        
+        // Jump Action
         if (_ctx.IsJumpPressed && _ctx.IsGrounded && _ctx.PreviousRootState == FighterStates.Grounded){
             _ctx.IsJumpPressed = false;
         
