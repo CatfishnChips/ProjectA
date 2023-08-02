@@ -202,5 +202,7 @@ public enum Tags
     Projectile = 1 << 6,
     SlowAnimation = 1 << 7,
     MidAnimation = 1 << 8,
-    FastAnimation = 1 << 9
+    FastAnimation = 1 << 9,
+    Grounded = 1 << 10,
+    Aerial = 1 << 11
 }

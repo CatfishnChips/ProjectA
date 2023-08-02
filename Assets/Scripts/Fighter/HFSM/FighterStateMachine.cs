@@ -23,6 +23,8 @@ public class FighterStateMachine : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private ActionAttribution[] _actionAttribution;
     private Dictionary<string, ActionAttack> _attackMoveDict;
+    private Dictionary<string, ActionAttack> _groundedAttackMoveDict;
+    private Dictionary<string, ActionAttack> _aerialAttackMoveDict;
     private Dictionary<string, ActionBase> _actionDictionary;
 
     [SerializeField] private ComboMove[] _combosArray;
@@ -127,6 +129,8 @@ public class FighterStateMachine : MonoBehaviour
     public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
 
     public Dictionary<string, ActionAttack> AttackMoveDict{get{return _attackMoveDict;}}
+    public Dictionary<string, ActionAttack> GroundedAttackMoveDict { get { return _groundedAttackMoveDict; } }
+    public Dictionary<string, ActionAttack> AerialAttackMoveDict { get { return _aerialAttackMoveDict; } }
     public Dictionary<string, ActionBase> ActionDictionary{get{return _actionDictionary;}}
     public ComboListener ComboListener{get{return _comboListener;} set{_comboListener = value;}}
     public ComboMove[] CombosArray{get{return _combosArray;}}
@@ -189,7 +193,9 @@ public class FighterStateMachine : MonoBehaviour
             if (attribution.action.GetType() == typeof(ActionAttack) || attribution.action.GetType() == typeof(ActionContinuousAttack))
             {
                 ActionAttack action = Instantiate(attribution.action) as ActionAttack;
-                _attackMoveDict.Add(action.name, action);
+                _attackMoveDict.Add(action.name, action); // All Attack Actions
+                if(action.Tags.HasFlag(Tags.Grounded)) _groundedAttackMoveDict.Add(action.name, action); // Grounded attack Actions
+                else if(action.Tags.HasFlag(Tags.Aerial)) _aerialAttackMoveDict.Add(action.name, action); // Aerial Attack Actions
             }
             else 
             {
