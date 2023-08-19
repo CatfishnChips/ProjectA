@@ -15,12 +15,8 @@ public class FighterKnockdownState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
-        }
-
         if (_currentFrame >= _action.KnockdownStun){   
-            SwitchState(_factory.Idle());
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 

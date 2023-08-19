@@ -635,7 +635,7 @@ PrefabInstance:
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.04499617
+      value: 0.044996146
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -645,7 +645,7 @@ PrefabInstance:
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00065358833
+      value: -0.0006535879
       objectReference: {fileID: 0}
     - target: {fileID: 6664263211162163464, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -2479,7 +2479,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1136449783}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
+  m_Script: {fileID: 11500000, guid: d8de37acad9bb9547802ab35361adef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _player: 2
@@ -2532,7 +2532,7 @@ MonoBehaviour:
   _inputBuffer: 10
   _dashDistance: 1
   _dashTime: 15
-  _dodgeTime: 45
+  _dodgeTime: {x: 0, y: 0}
   _airMoveSpeed: 1
   _jumpHeight: 3
   _jumpDistance: 3
@@ -2548,6 +2548,8 @@ MonoBehaviour:
   _faceDirection: 0
   _gravity: 0
   _drag: 0
+  m_focusTime: 0
+  m_focusTimer: 0
 --- !u!95 &1136449790
 Animator:
   serializedVersion: 5
@@ -2577,7 +2579,7 @@ Transform:
   m_GameObject: {fileID: 1136449783}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 1.5, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 780836041}
@@ -2602,6 +2604,7 @@ MonoBehaviour:
   _difficultySettings: {fileID: 11400000, guid: 704af98938792dc4ebd89f93052155ab,
     type: 2}
   _attackBoxFlexibilityMargin: 10
+  _opitamlDistancemethod: 0
 --- !u!1001 &1138426587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3381,9 +3384,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1531866185}
-  m_LocalRotation: {x: 0, y: 0.70710677, z: -0, w: -0.7071069}
+  m_LocalRotation: {x: 0, y: -0.70710677, z: 0, w: -0.7071069}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1211449758}
@@ -4983,6 +4986,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868271677519824132, guid: 905e85a56ffbd194f804de99124b4f5b,
+        type: 3}
+      propertyPath: m_backbarInterpolation
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868271677519824132, guid: 905e85a56ffbd194f804de99124b4f5b,
+        type: 3}
+      propertyPath: m_frontbarInterpolation
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2868271677659284009, guid: 905e85a56ffbd194f804de99124b4f5b,
         type: 3}
@@ -6840,7 +6853,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6726621501232309430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d94336eef96b448b5da23af0f8270a, type: 3}
+  m_Script: {fileID: 11500000, guid: d8de37acad9bb9547802ab35361adef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _player: 1
@@ -6893,7 +6906,7 @@ MonoBehaviour:
   _inputBuffer: 10
   _dashDistance: 3
   _dashTime: 15
-  _dodgeTime: 45
+  _dodgeTime: {x: 0, y: 0}
   _airMoveSpeed: 1
   _jumpHeight: 3
   _jumpDistance: 3
@@ -6909,6 +6922,8 @@ MonoBehaviour:
   _faceDirection: 0
   _gravity: 0
   _drag: 0
+  m_focusTime: 0
+  m_focusTimer: 0
 --- !u!1 &5888525083644794654
 GameObject:
   m_ObjectHideFlags: 0

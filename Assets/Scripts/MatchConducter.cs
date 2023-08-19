@@ -185,8 +185,8 @@ public class MatchConducter : MonoBehaviour
     }
 
     private void HandleRoundStart(){
-        m_fighterSlot1.Reset();
-        m_fighterSlot2.Reset();
+        m_fighterSlot1.ResetVariables();
+        m_fighterSlot2.ResetVariables();
         m_fighterSlot1.transform.position = m_spawnPoint1.position;
         m_fighterSlot2.transform.position = m_spawnPoint2.position;
 

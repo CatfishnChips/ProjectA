@@ -10,10 +10,10 @@ public class FighterRunState : FighterBaseState
     {
         if (!(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f)){ // if fighter is not running
             if (_ctx.Velocity.x >= -0.5f && _ctx.Velocity.x <= 0.5f){ // if we just slowed sown
-                SwitchState(_factory.Walk());
+                SwitchState(_factory.GetSubState(FighterSubStates.Walk));
             }
             else{ // if we directly stopped
-                SwitchState(_factory.Idle());
+                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
             }
         }
     }

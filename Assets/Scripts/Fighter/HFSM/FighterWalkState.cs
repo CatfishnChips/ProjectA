@@ -9,16 +9,16 @@ public class FighterWalkState : FighterBaseState
     public override void CheckSwitchState()
     {
         if (_ctx.AttackPerformed){
-            SwitchState(_factory.Attack());
+            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
         else if (_ctx.IsDodgePressed){
-            SwitchState(_factory.Dodge());
+            SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
         }
         else if (_ctx.IsDashPressed){
-            SwitchState(_factory.Dash());
+            SwitchState(_factory.GetSubState(FighterSubStates.Dash));
         }
         else if(_ctx.MovementInput == 0){
-            SwitchState(_factory.Idle());
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 

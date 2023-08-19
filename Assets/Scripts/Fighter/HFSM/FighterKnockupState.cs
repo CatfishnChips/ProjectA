@@ -23,19 +23,15 @@ public class FighterKnockupState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
-        }
-
         if (_currentFrame >= _action.KnockupStun.x + _action.KnockupStun.y + _action.Freeze){   
             FighterBaseState state;         
             
             // Knockup always transitions to Knockdown state.
             if (_action.KnockdownStun > 0){
-                state = _factory.Knockdown();
+                state = _factory.GetSubState(FighterSubStates.Knockdown);
             }
             else{
-                state = _factory.Idle();
+                state = _factory.GetSubState(FighterSubStates.Idle);
             }
             SwitchState(state);
         }
@@ -44,13 +40,13 @@ public class FighterKnockupState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
+        _isFirstTime = true;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
         _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
-        //Debug.Log(_groundOffset);
         float horizontalDirection = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
         _distancePerTime = _action.Knockback / (_action.KnockupStun.x + _action.KnockupStun.y);
         
@@ -106,7 +102,7 @@ public class FighterKnockupState : FighterBaseState
         _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
-        Debug.Log("Fighter Knockup State - Exit State");
+        //Debug.Log("Fighter Knockup State - Exit State");
     }
 
     public override void FixedUpdateState()
@@ -120,7 +116,7 @@ public class FighterKnockupState : FighterBaseState
             }
             _ctx.Drag = _currentFrame < _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2;
             _ctx.Gravity = _currentFrame < _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2;
-            Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
+            //Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
         }
         
         CheckSwitchState();

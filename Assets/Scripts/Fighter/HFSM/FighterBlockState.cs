@@ -21,7 +21,7 @@ public class FighterBlockState : FighterBaseState
         // }
 
         if (_currentFrame >= _action.BlockStun){
-            SwitchState(_factory.Idle());
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 

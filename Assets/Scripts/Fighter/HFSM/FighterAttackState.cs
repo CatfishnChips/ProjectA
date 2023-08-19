@@ -24,10 +24,10 @@ public class FighterAttackState : FighterBaseState
             _ctx.ValidAttackInputInterval = false;
 
             if (_ctx.AttackPerformed){
-                SwitchState(_factory.Attack());
+                SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
             else{
-                SwitchState(_factory.Idle());
+                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
             }
         }
 
