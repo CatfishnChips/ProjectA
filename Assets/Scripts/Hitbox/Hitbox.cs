@@ -12,13 +12,14 @@ public class Hitbox : MonoBehaviour, IHitDetector
     [NotKeyable] [SerializeField] private LayerMask m_layerMask; // Determines which type of colliders this collider can interact with.
     [DiscreteEvaluation] [SerializeField] private ColliderState m_state;
     [NotKeyable] [SerializeField] private Color m_openColor, m_collidingColor;
-    private BoxCollider2D[] _colliders = new BoxCollider2D[10];
+    //private BoxCollider2D[] _colliders = new BoxCollider2D[10];
+    
     private Color _color {get { return m_state == ColliderState.Open ? m_openColor : m_collidingColor; }}
 
     [SerializeField] private HurtboxMask m_hurtboxMask = HurtboxMask.Enemy;
     private IHitResponder m_hitResponder;
 
-    public IHitResponder HitResponder { get => m_hitResponder; set => m_hitResponder = value; }
+    public IHitResponder HitResponder { get => m_hitResponder; set => m_hitResponder = value; } 
 
     public Vector2 Offset {get => m_offset;}
     public Vector2 Size {get => m_size;}

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, AnimationClip>>
 {
@@ -208,7 +209,7 @@ public abstract class FighterStateMachine : MonoBehaviour
 
         foreach (ActionAttribution attribution in _actionAttribution)
         {
-            if (attribution.action.GetType() == typeof(ActionAttack) || attribution.action.GetType() == typeof(ActionContinuousAttack))
+            if (IsSameOrSubclass(typeof(ActionAttack), attribution.action.GetType()))
             {
                 ActionAttack action = Instantiate(attribution.action) as ActionAttack;
                 _attackMoveDict.Add(action.name, action); // All Attack Actions
@@ -228,6 +229,12 @@ public abstract class FighterStateMachine : MonoBehaviour
         if (TryGetComponent(out StaminaManager staminaManager)) _staminaManager = staminaManager;
 
         ResetVariables();
+    }
+
+    private bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
+    {
+        return potentialDescendant.IsSubclassOf(potentialBase)
+           || potentialDescendant == potentialBase;
     }
 
     protected virtual void StartFunction(){

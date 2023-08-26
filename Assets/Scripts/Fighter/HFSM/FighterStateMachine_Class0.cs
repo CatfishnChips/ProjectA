@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 
 public class FighterStateMachine_Class0 : FighterStateMachine
 {
-    private bool m_focus = false;
+    [Header("Focus")]
+    [SerializeField] [ReadOnly] private bool m_focus = false;
     [SerializeField] private int m_focusTime; // In Frames
     [SerializeField] [ReadOnly] private int m_focusTimer;
 
@@ -62,6 +63,24 @@ public class FighterStateMachine_Class0 : FighterStateMachine
         ResetVariables();
     }
 
+    protected override void FixedUpdateFunction(){
+        base.FixedUpdateFunction();
+        AdvanceFocusTimer();
+    }
+
+    protected override void OnHurt(CollisionData data){
+        if (_isHurt) return;
+        _hurtCollisionData = data;
+        _isHurt = true;
+
+        if (_isInvulnerable) return;
+
+        // This part alternatively be in a modifed Stunned state.
+        if(!CanBlock) {
+            SetFocus(false);
+        }
+    }
+
     public override void ResetVariables()
     {
         base.ResetVariables();
@@ -69,18 +88,29 @@ public class FighterStateMachine_Class0 : FighterStateMachine
         m_focusTimer = 0;
     }
 
-    public void ActivateFocus(){
-        m_focus = true;
+    public void SetFocus(bool value){
+        m_focus = value;
         m_focusTimer = m_focusTime;
+        switch(_player){
+            case Player.P1:
+                EventManager.Instance.Focus_P1?.Invoke(value);
+            break;
+
+            case Player.P2:
+                EventManager.Instance.Focus_P2?.Invoke(value);
+            break;
+        }
+        
     }
 
-    private IEnumerator FocusCoroutine(){
-        while (m_focus){
-            yield return new WaitForFixedUpdate();
+    private void AdvanceFocusTimer(){
+        if (!m_focus) return;
+
+        if (_currentSubState != FighterStates.Attack){
             m_focusTimer --;
 
             if(m_focusTimer <= 0){
-                m_focus = false;
+                SetFocus(false);
             }
         }
     }

@@ -8,7 +8,6 @@ public class FighterBlockState : FighterBaseState
     private ActionAttack _action;
     private float _currentFrame = 0;
     private Vector2 _velocity;
-    private float _animationSpeed;
 
     public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){

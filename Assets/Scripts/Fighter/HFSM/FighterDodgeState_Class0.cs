@@ -20,7 +20,7 @@ public class FighterDodgeState_Class0 : FighterDodgeState
 
             if (_ctx.IsHurt){
                 Debug.Log("Script: FighterDodgeState_Class0 - FixedUpdateState : Attack Dodged");
-                ((FighterStateMachine_Class0)_ctx).ActivateFocus();
+                ((FighterStateMachine_Class0)_ctx).SetFocus(true);
                 _ctx.IsHurt = false;
             }
         }

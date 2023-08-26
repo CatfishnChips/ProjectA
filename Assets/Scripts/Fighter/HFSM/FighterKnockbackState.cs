@@ -24,6 +24,7 @@ public class FighterKnockbackState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
+        _isFirstTime = true;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;

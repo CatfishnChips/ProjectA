@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class FighterAirborneState : FighterBaseState
 {   
-    private ActionDefault _action;
-    private Rigidbody2D _rb;
-    private float _initialJumpVelocity;
+    // private ActionDefault _action;
+    // private Rigidbody2D _rb;
+    // private float _initialJumpVelocity;
     private int _currentFrame = 0;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private Vector2 _velocity;

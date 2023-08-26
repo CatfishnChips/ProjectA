@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b01fecb9bacafc443852f342eb39af54, type: 3}
+  m_Name: CrossPunch_Class0
+  m_EditorClassIdentifier: 
+  name: CrossPunch
+  m_tags: 0
+  m_damage: 30
+  m_chipDamage: 5
+  m_priority: 0
+  m_part: 1
+  m_ignoreBlock: 0
+  m_blockStun: 30
+  m_freeze: 10
+  m_knockbackStun: 0
+  m_knockdownStun: 15
+  m_knockupStun: {x: 20, y: 15}
+  m_knockup: 3
+  m_knockback: 2
+  m_gravity: 1
+  m_staminaRecovery: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}
+  m_cameraPosition: {x: 0, y: 0, z: 0}
+  m_cameraRotation: {x: 0, y: 0, z: 0}
+  m_cameraEaseFactor: 0
+  m_events: []
+  m_startFrames: 18
+  m_activeFrames: 5
+  m_recoveryFrames: 34
+  m_hitboxFrame: 0
+  m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxSize: {x: 0, y: 0}
+  m_meshAnimationS: {fileID: 3164648343453379813, guid: 5c36eced4a381ef44b0389cc7b8c164e,
+    type: 3}
+  m_meshAnimationA: {fileID: -524552742357794111, guid: 5c36eced4a381ef44b0389cc7b8c164e,
+    type: 3}
+  m_meshAnimationR: {fileID: -4344376562244093455, guid: 5c36eced4a381ef44b0389cc7b8c164e,
+    type: 3}
+  m_boxAnimationS: {fileID: 7400000, guid: 7cf65442d76c3ae41bccdb7efe9f5cc2, type: 2}
+  m_boxAnimationA: {fileID: 7400000, guid: 530b046ddfbd15c4e979bb8c890474fd, type: 2}
+  m_boxAnimationR: {fileID: 7400000, guid: cda0786305db1cb45b998acfecf2278b, type: 2}
+  _firstFrameStartup: 1
+  _firstFrameActive: 1
+  _firstFrameRecovery: 1
+  m_focusDamage: 50
+  m_focusChipDamage: 15
+  m_focusIgnoreBlock: 0
+  m_focusBlockStun: 40
+  m_focusFreeze: 15
+  m_focusKnockbackStun: 0
+  m_focusKnockdownStun: 20
+  m_focusKnockupStun: {x: 30, y: 20}
+  m_focusKnockup: 4
+  m_focusKnockback: 3
+  m_focus: 0

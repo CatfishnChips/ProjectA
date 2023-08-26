@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using UnityEngine.Events;
 
 //To achive a modifiable MoveSet system through inspector.
 [Serializable]
@@ -29,11 +30,18 @@ public class ComboMoveSpecs{
 
 }
 
-[Serializable]
+public delegate void FrameEventFunction(FighterStateMachine ctx, FighterAttackState state);
+
 public struct FrameEvent
-{
-    public int Frame;
-    public UnityEngine.Events.UnityEvent Event;
+{   
+    private int m_frame;
+    private FrameEventFunction m_event;
+    public int Frame {get => m_frame;}
+    public FrameEvent(int frame, FrameEventFunction func){
+        m_frame = frame;
+        m_event = func;
+    }
+    public void Event(FighterStateMachine ctx, FighterAttackState state) { m_event(ctx, state); }
 }
 
 [Serializable]

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
@@ -72,7 +73,7 @@ public class InputManager : MonoBehaviour
                     switch (touch.phase) 
                     {
                         case TouchPhase.Began:
-
+                        if (IsPointerOverUIElement(touch, out PointerEventData data, out List<RaycastResult> raycastResults)) return;
                         // Screen Touch Side    // Better implementation maybe?
                         // If first touch occupied either Touch A or Touch B, then instead of looking at the initial touch location
                         // assign next touch to the other touch (Touch A or Touch B).
@@ -177,6 +178,16 @@ public class InputManager : MonoBehaviour
         Vector3 touchScreenPosition = position;
         touchScreenPosition.z = Camera.main.nearClipPlane;
         return Camera.main.ScreenToWorldPoint(position);        
+    }
+
+    // PointerEventData and List<RaycastResult> can be pre-initilazed for a non-alloc version.
+    public bool IsPointerOverUIElement(Touch touch, out PointerEventData eventData, out List<RaycastResult> raycastResults)
+    {
+        eventData = new PointerEventData(EventSystem.current);
+        eventData.position = touch.position;
+        raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData,raycastResults);
+        return raycastResults.Count > 0;
     }
 }
 
