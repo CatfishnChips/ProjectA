@@ -10,7 +10,8 @@ public class AIBrain : MonoBehaviour
     [SerializeField] private AIDifficultySettings _difficultySettings;
     [Tooltip("Enlarges the hitboxes to allow AI to take action while the hitbox is not precisely hitting the opponent.")]
     [SerializeField] private float _attackBoxFlexibilityMargin;
-    [SerializeField] private AIPositionMethod _opitamlDistancemethod;
+    [SerializeField] private float _distanceMargin;
+    [SerializeField] private AIPositionMethod _optimalDistanceMethod;
 
     private AIDecisionMechanism _decisionMechanism;
 
@@ -26,10 +27,9 @@ public class AIBrain : MonoBehaviour
     private System.Type _previousState;
     private bool _stateChange;
     private bool _attackMoveEnded; // When an attack Move is finished, this bool gets set to true by an event to let the script know, that next desicion for attack move can be made.
-    private bool _drivenByContext; // This boolean may need to be changed to an enum later on.
+    private bool _drivenByContext; // This boolean may need to be changed to an enum later on. It indicates whether the fixed update method of the AI is driven by it's ctx FighterState or not.
 
-    private Vector2 _distanceToOpponent; 
-    private Vector2 _desiredPosition;
+    private Vector2 _distanceToOpponent;
     private float _optimalDistance;
 
     public Dictionary<string, ActionAttack> HittingAttacks { get => _hittingAttacks; set => _hittingAttacks = value; }
@@ -56,6 +56,9 @@ public class AIBrain : MonoBehaviour
 
         EventManager.Instance.P2FighterAttackEnded += AttackMoveEnded;
 
+        _optimalDistance = CalcOptimalXDistance(_optimalDistanceMethod);
+        Debug.Log("Optimal Distance is: " + _optimalDistance);
+
         _drivenByContext = true;
         _stateChange = false;
         _attackMoveEnded = true;
@@ -74,6 +77,7 @@ public class AIBrain : MonoBehaviour
 
         _distanceToOpponent.x = Math.Abs(_tfEnemy.position.x - _ctxSelf.transform.position.x);
         _distanceToOpponent.y = Math.Abs(_tfEnemy.position.y - _ctxSelf.transform.position.y);
+        Debug.Log("X distance is: " + _distanceToOpponent.x);
 
         _hittingAttacks = CalcHittingAttacks(); // At each fixed update calcualte which attack are going to hit the oppenent when performed.
 
@@ -84,6 +88,8 @@ public class AIBrain : MonoBehaviour
             switch (_ctxSelf.CurrentSubState)
             {
                 case FighterStates.Idle:
+                case FighterStates.Walk:
+                    NonAttackingStateMovement();
                     NonAttackingStateDesicion();
                     break;
                 case FighterStates.Attack:
@@ -108,11 +114,6 @@ public class AIBrain : MonoBehaviour
     void Update()
     {
         
-    }
-
-    private void IdleStateMovement()
-    {
-
     }
 
     private void NonAttackingStateDesicion()
@@ -151,6 +152,28 @@ public class AIBrain : MonoBehaviour
 
                 break;
         }   
+    }
+
+    private void NonAttackingStateMovement()
+    {
+        
+        if (_distanceToOpponent.x <  _optimalDistance - _distanceMargin)
+        {
+            Debug.Log("So close");
+            EventManager.Instance.P2Move(-1.0f * _ctxSelf.FaceDirection);
+        }
+        else if (_distanceToOpponent.x > _optimalDistance + _distanceMargin)
+        {
+            Debug.Log("So far");
+            EventManager.Instance.P2Move(_ctxSelf.FaceDirection);
+        }
+        else
+        {
+            Debug.Log("At Optimal Range");
+            EventManager.Instance.P2Move(0.0f);
+        }
+        
+        
     }
 
     private void AttackingStateDesicion()
@@ -214,14 +237,15 @@ public class AIBrain : MonoBehaviour
 
     private float CalcOptimalXDistance(AIPositionMethod method)
     {
-        Vector2 optimalDistance = new Vector2();
 
         switch (method)
         {
             case AIPositionMethod.ArithmeticMean:
                 float xTotal = 0.0f;
+                Debug.Log("HELLO");
                 foreach (KeyValuePair<string, ActionAttack> attack in _ctxSelf.GroundedAttackMoveDict)
                 {
+                    Debug.Log("Attack Name: " + attack.Key + ", Attack Distance: " + attack.Value.HitboxOffset.x);
                     xTotal += attack.Value.HitboxOffset.x;
                 }
                 return xTotal / _ctxSelf.GroundedAttackMoveDict.Count;

@@ -13,21 +13,34 @@ MonoBehaviour:
   m_Name: SpinContinuousAttackAction
   m_EditorClassIdentifier: 
   name: Spin
-  m_tags: 0
+  m_tags: 1024
   m_damage: 10
+  m_chipDamage: 0
   m_priority: 0
   m_part: 1
-  m_hitStun: 10
+  m_ignoreBlock: 0
   m_blockStun: 0
   m_freeze: 0
+  m_knockbackStun: 0
+  m_knockdownStun: 0
+  m_knockupStun: {x: 0, y: 0}
   m_knockup: 0
   m_knockback: 0
+  m_gravity: 0
+  m_staminaRecovery: 0
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: 0, y: 0, z: 0}
+  m_cameraPosition: {x: 0, y: 0, z: 0}
+  m_cameraRotation: {x: 0, y: 0, z: 0}
+  m_cameraEaseFactor: 0
+  m_events: []
   m_startFrames: 15
   m_activeFrames: 26
   m_recoveryFrames: 80
+  m_hitboxFrame: 0
+  m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxSize: {x: 0, y: 0}
   m_meshAnimationS: {fileID: 5173490537559972325, guid: 13944f2126251324ca41f7b20f06276f,
     type: 3}
   m_meshAnimationA: {fileID: 394684705857075140, guid: 13944f2126251324ca41f7b20f06276f,
@@ -37,6 +50,9 @@ MonoBehaviour:
   m_boxAnimationS: {fileID: 0}
   m_boxAnimationA: {fileID: 0}
   m_boxAnimationR: {fileID: 0}
+  _firstFrameStartup: 1
+  _firstFrameActive: 1
+  _firstFrameRecovery: 1
   m_startCondition: 0
   m_activeCondition: 0
   m_recoveryCondition: 0

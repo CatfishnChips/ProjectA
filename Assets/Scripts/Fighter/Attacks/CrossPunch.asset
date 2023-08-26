@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CrossPunch
   m_EditorClassIdentifier: 
   name: CrossPunch
-  m_tags: 0
+  m_tags: 1024
   m_damage: 30
   m_chipDamage: 5
   m_priority: 0
