@@ -18,7 +18,7 @@ public class FighterJumpState : FighterBaseState
     public override void CheckSwitchState()
     {   
         if(_currentFrame >= _ctx.JumpTime){
-            SwitchState(_factory.Idle());
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 

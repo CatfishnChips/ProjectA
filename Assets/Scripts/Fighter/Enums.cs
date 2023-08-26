@@ -30,6 +30,29 @@ public enum FighterStates
     Grabbed
 }
 
+public enum FighterRootStates
+{
+    None = FighterStates.None,
+    Airborne = FighterStates.Airborne,
+    Grounded = FighterStates.Grounded,
+    Stunned = FighterStates.Stunned
+}
+
+public enum FighterSubStates
+{
+    None = FighterStates.None,
+    Idle = FighterStates.Idle,
+    Walk = FighterStates.Walk,
+    Attack = FighterStates.Attack,
+    Dash = FighterStates.Dash,
+    Dodge = FighterStates.Dodge,
+    Block = FighterStates.Block,
+    Knockup = FighterStates.Knockup,
+    Knockdown = FighterStates.Knockdown,
+    Knockback = FighterStates.Knockback,
+    Grabbed = FighterStates.Grabbed
+}
+
 public enum Player
 {
     None,

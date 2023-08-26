@@ -16,19 +16,21 @@ public class FighterStunnedState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
+        if (_ctx.IsHurt && !_ctx.IsInvulnerable){
+            SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
         }
         
         // ">" is used instead of ">=" due to Root States' Fixed Update running before the Sub States' Fixed Update.
+        // Ex. Calculations in the Sub State's 49th frame are applied to Root State in the 50th frame.
+        // This only applies to situations which the fighter's velocity is controled.
         if (_currentFrame > _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.Freeze){   
             FighterBaseState state;         
 
             if (_ctx.IsGrounded){
-                state = _factory.Grounded();
+                state = _factory.GetRootState(FighterRootStates.Grounded);
             }
             else{
-                state = _factory.Airborne();
+                state = _factory.GetRootState(FighterRootStates.Airborne);
             }
             SwitchState(state);
         }
@@ -83,19 +85,19 @@ public class FighterStunnedState : FighterBaseState
         FighterBaseState state;
         //Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
         if(!_action.IgnoreBlock && _ctx.CanBlock){
-            state = _factory.Block();
+            state = _factory.GetSubState(FighterSubStates.Block);
         }
         else if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
-            state = _factory.Knockup();
+            state = _factory.GetSubState(FighterSubStates.Knockup);
         }
         else if (_action.KnockdownStun > 0){
-            state = _factory.Knockdown();
+            state = _factory.GetSubState(FighterSubStates.Knockdown);
         }
         else if (_action.KnockbackStun > 0){
-            state = _factory.Knockback();
+            state = _factory.GetSubState(FighterSubStates.Knockback);
         }
         else{
-            state = _factory.Idle();
+            state = _factory.GetSubState(FighterSubStates.Idle);
         }
         SetSubState(state);
         state.EnterState();

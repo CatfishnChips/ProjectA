@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class FighterDodgeState : FighterBaseState
 {
-    private ActionDefault _action;
-    private int _currentFrame = 0;
+    protected ActionDefault _action;
+    protected int _currentFrame = 0;
+    protected bool _isFirstTime = true;
 
     public FighterDodgeState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -13,13 +14,14 @@ public class FighterDodgeState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= _ctx.DodgeTime){
-            SwitchState(_factory.Idle());
+        if (_currentFrame >= _ctx.DodgeTime.x + _ctx.DodgeTime.y){
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 
     public override void EnterState()
     {
+        _isFirstTime = true;
         _ctx.IsDodgePressed = false;
         _currentFrame = 0;
         
@@ -36,21 +38,37 @@ public class FighterDodgeState : FighterBaseState
         _ctx.AnimOverrideCont["Dodge"] = clip;
         _ctx.ColBoxOverrideCont["Dodge"] = boxClip;
 
-        float speedVar = AdjustAnimationTime(clip, _ctx.DodgeTime);
+        float speedVar = AdjustAnimationTime(clip, _ctx.DodgeTime.x + _ctx.DodgeTime.y);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
-        float boxSpeedVar = AdjustAnimationTime(boxClip, _ctx.DodgeTime);
+        float boxSpeedVar = AdjustAnimationTime(boxClip, _ctx.DodgeTime.x + _ctx.DodgeTime.y);
         _ctx.ColBoxAnimator.SetFloat("SpeedVar", boxSpeedVar);
 
         _ctx.Animator.Play("Dodge");
-        _ctx.ColBoxAnimator.Play("Dodge");
+        _ctx.ColBoxAnimator.Play("Idle");
     }
 
     public override void ExitState()
     {
+        _ctx.IsInvulnerable = false;
     }
 
     public override void FixedUpdateState()
     {
+        if (_currentFrame > _ctx.DodgeTime.x){
+
+            if (_isFirstTime){
+                _ctx.IsInvulnerable = true;
+                _isFirstTime = false;
+            }
+
+            if (_ctx.IsHurt){
+                Debug.Log("Script: FighterDodgeState - FixedUpdateState : Attack Dodged");
+                //_ctx.Focus = true;
+                //_ctx.ResetFocusTimer();
+                _ctx.IsHurt = false;
+            }
+        }
+        
         _currentFrame++;
         CheckSwitchState();
     }

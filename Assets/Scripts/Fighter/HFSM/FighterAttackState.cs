@@ -15,7 +15,8 @@ public class FighterAttackState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= (_action.StartFrames + _action.ActiveFrames + _action.RecoveryFrames)){
+        //if (_currentFrame >= (_action.StartFrames + _action.ActiveFrames + _action.RecoveryFrames)){
+        if (_actionState == ActionStates.None){
 
             if(_ctx.Player == Player.P1) EventManager.Instance.FighterAttackEnded?.Invoke();
             else if(_ctx.Player == Player.P2) EventManager.Instance.P2FighterAttackEnded?.Invoke();
@@ -24,10 +25,10 @@ public class FighterAttackState : FighterBaseState
             _ctx.ValidAttackInputInterval = false;
 
             if (_ctx.AttackPerformed){
-                SwitchState(_factory.Attack());
+                SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
             else{
-                SwitchState(_factory.Idle());
+                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
             }
         }
 
@@ -104,12 +105,13 @@ public class FighterAttackState : FighterBaseState
     }
 
     public override void FixedUpdateState(){
-        _action.SwitchActionStateFunction(_ctx, this);
-        _ctx.ActionState = _actionState;
-
         _action.FixedUpdateFunction(_ctx, this);
         // Debug.Log("Frame L: " + _action.FrameLenght + " Current F: " + _currentFrame + " Buffer: " + _ctx.GetInputBuffer + " Bool: " + _ctx.ValidAttackInputInterval);
         _ctx.ValidAttackInputInterval = _action.FrameLenght - _currentFrame < _ctx.GetInputBuffer;
+
+        _action.SwitchActionStateFunction(_ctx, this);
+        _ctx.ActionState = _actionState;
+
         CheckSwitchState();
     }
 }

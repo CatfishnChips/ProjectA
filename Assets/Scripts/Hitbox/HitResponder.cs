@@ -14,7 +14,6 @@ public class HitResponder : MonoBehaviour, IHitResponder
 
     ActionAttack IHitResponder.Action { get => _action; }
 
-
     public void UpdateData(ActionAttack action){
         _action = action;
         _part = _action.Part;

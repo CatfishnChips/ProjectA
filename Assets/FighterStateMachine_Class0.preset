@@ -1,0 +1,312 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FighterStateMachine_Class0
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: d8de37acad9bb9547802ab35361adef2,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _player
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.size
+    value: 14
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[0].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[1].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[2].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[3].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 2c3fb1b6d450d664cbed6d02db98fc1d, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[4].action
+    value: 
+    objectReference: {fileID: 11400000, guid: a17b9ffb7ab6660489a5a3a9bd9d75c1, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[5].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 8ed5dd913eac9c3468e68e814f9a6c9e, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[6].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 920e7bf801531fe4083358fbeccf562d, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[7].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 634da9e8c929bea42b912eb0ca4a3b28, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[8].action
+    value: 
+    objectReference: {fileID: 11400000, guid: ceaa2bcdec764b04d89b11c8ca108686, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[9].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 121f39da6c55dbb4ea2d698e614e2615, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[10].action
+    value: 
+    objectReference: {fileID: 11400000, guid: aa8a835f251d1934ea68da2818fe808b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[11].action
+    value: 
+    objectReference: {fileID: 11400000, guid: e11e664f6208f094f925b53fb80f3a0c, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[12].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 0a3d54a19a4844749860b19188af7d78, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _actionAttribution.Array.data[13].action
+    value: 
+    objectReference: {fileID: 11400000, guid: 5a54b5d3cb1607c469374ca392942911, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.size
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].comboName
+    value: SwiftStrike
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[0].moveNumber
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[0].theMove
+    value: 
+    objectReference: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[0].willOverride
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[0].moveToOverride
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[1].moveNumber
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[1].theMove
+    value: 
+    objectReference: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[1].willOverride
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[1].moveToOverride
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[2].moveNumber
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[2].theMove
+    value: 
+    objectReference: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[2].willOverride
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[0].moves.Array.data[2].moveToOverride
+    value: 
+    objectReference: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].comboName
+    value: SuckerPunch
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.size
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[0].moveNumber
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[0].theMove
+    value: 
+    objectReference: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[0].willOverride
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[0].moveToOverride
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[1].moveNumber
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[1].theMove
+    value: 
+    objectReference: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[1].willOverride
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _combosArray.Array.data[1].moves.Array.data[1].moveToOverride
+    value: 
+    objectReference: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _currentRootState
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _currentSubState
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _previousRootState
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _previousSubState
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _actionState
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _comboBuffer
+    value: 15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _inputDelay
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _inputBuffer
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _dashDistance
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _dashTime
+    value: 15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _dodgeTime.x
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _dodgeTime.y
+    value: 15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _airMoveSpeed
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _jumpHeight
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _jumpDistance
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _jumpTime
+    value: 24
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _fallTime
+    value: 24
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _isGrounded
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _rayCastLayerMask.m_Bits
+    value: 1024
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _rayCastLenght
+    value: 0.2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _rayCastOffset.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _rayCastOffset.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _currentMovement.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _currentMovement.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _faceDirection
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _gravity
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _drag
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_focus
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_focusTime
+    value: 500
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_focusTimer
+    value: 0
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

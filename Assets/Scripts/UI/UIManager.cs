@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
     private ScoreIndicatorController m_scoreController;
     private RoundIndicatorController m_roundController;
     private InteractionIndicatorController m_interactionController;
+    private FocusIndicatorController m_focusController;
+    private ComboIndicatorController m_comboController;
 
     private void Awake(){
         m_healthbarController = FindObjectOfType<HealthbarController>();
@@ -16,6 +18,8 @@ public class UIManager : MonoBehaviour
         m_scoreController = FindObjectOfType<ScoreIndicatorController>();
         m_roundController = FindObjectOfType<RoundIndicatorController>();
         m_interactionController = FindObjectOfType<InteractionIndicatorController>();
+        m_focusController = FindObjectOfType<FocusIndicatorController>();
+        m_comboController = FindObjectOfType<ComboIndicatorController>();
     }
 
     private void Start(){
@@ -30,6 +34,8 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.TimeChanged += OnTimeChanged;
         EventManager.Instance.ScoreChanged += OnScoreChanged;
         EventManager.Instance.RoundChanged += OnRoundChanged;
+        EventManager.Instance.Focus_P1 += OnFocus_P1;
+        EventManager.Instance.Focus_P2 += OnFocus_P2;
     }
 
     private void OnDisable(){
@@ -44,6 +50,8 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.TimeChanged -= OnTimeChanged;
         EventManager.Instance.ScoreChanged -= OnScoreChanged;
         EventManager.Instance.RoundChanged -= OnRoundChanged;
+        EventManager.Instance.Focus_P1 -= OnFocus_P1;
+        EventManager.Instance.Focus_P2 -= OnFocus_P2;
     }
 
     #region Healthbar Controller
@@ -113,5 +121,15 @@ public class UIManager : MonoBehaviour
     private void OnInteraction_P2(Interactions value){
         if (!m_interactionController) return;
         m_interactionController.UpdateText_P2(value);
+    }
+
+    private void OnFocus_P1(bool value){
+        if(!m_focusController) return;
+        m_focusController.SetFocus_P1(value);
+    }
+
+    private void OnFocus_P2(bool value){
+        if(!m_focusController) return;
+        m_focusController.SetFocus_P2(value);
     }
 }

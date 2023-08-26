@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac326d90abfb0f40b14d89fa937f6df, type: 3}
+  m_Name: Parry_Class0
+  m_EditorClassIdentifier: 
+  name: Parry
+  m_tags: 0
+  m_damage: 0
+  m_chipDamage: 0
+  m_priority: 0
+  m_part: 1
+  m_ignoreBlock: 0
+  m_blockStun: 0
+  m_freeze: 0
+  m_knockbackStun: 0
+  m_knockdownStun: 0
+  m_knockupStun: {x: 0, y: 0}
+  m_knockup: 0
+  m_knockback: 0
+  m_gravity: 1
+  m_staminaRecovery: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}
+  m_cameraPosition: {x: 0, y: 0, z: 0}
+  m_cameraRotation: {x: 0, y: 0, z: 0}
+  m_cameraEaseFactor: 0
+  m_events: []
+  m_startFrames: 15
+  m_activeFrames: 28
+  m_recoveryFrames: 25
+  m_hitboxFrame: 0
+  m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxSize: {x: 0, y: 0}
+  m_meshAnimationS: {fileID: 7508037556878761843, guid: ad1e2c444f43bfd428d7c5e1d306dabc,
+    type: 3}
+  m_meshAnimationA: {fileID: -6360196362197343657, guid: ad1e2c444f43bfd428d7c5e1d306dabc,
+    type: 3}
+  m_meshAnimationR: {fileID: -203655887218126122, guid: fc263f8b4fb01eb4db7d162a54a2b453,
+    type: 3}
+  m_boxAnimationS: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}
+  m_boxAnimationA: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}
+  m_boxAnimationR: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}
+  _firstFrameStartup: 1
+  _firstFrameActive: 1
+  _firstFrameRecovery: 1
+  m_focusDamage: 0
+  m_focusChipDamage: 0
+  m_focusIgnoreBlock: 0
+  m_focusBlockStun: 0
+  m_focusFreeze: 0
+  m_focusKnockbackStun: 0
+  m_focusKnockdownStun: 0
+  m_focusKnockupStun: {x: 0, y: 0}
+  m_focusKnockup: 0
+  m_focusKnockback: 0
+  m_focus: 0

@@ -9,12 +9,12 @@ public class FighterGroundedState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
+        if (_ctx.IsHurt && !_ctx.IsInvulnerable){
+            SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
         }
 
         if (!_ctx.IsGrounded || (_ctx.IsJumpPressed && (_ctx.CurrentSubState == FighterStates.Idle || _ctx.CurrentSubState == FighterStates.Walk))){
-            SwitchState(_factory.Airborne());
+            SwitchState(_factory.GetRootState(FighterRootStates.Airborne));
         }
     }
 
@@ -46,10 +46,10 @@ public class FighterGroundedState : FighterBaseState
     {
         FighterBaseState state;
         if(_ctx.MovementInput == 0){
-            state = _factory.Idle();
+            state = _factory.GetSubState(FighterSubStates.Idle);
         }
         else{
-            state = _factory.Walk();
+            state = _factory.GetSubState(FighterSubStates.Walk);
         }
         SetSubState(state);
         state.EnterState();

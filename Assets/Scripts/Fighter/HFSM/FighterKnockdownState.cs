@@ -7,7 +7,6 @@ public class FighterKnockdownState : FighterBaseState
     private CollisionData _collisionData;
     private ActionAttack _action;
     private float _currentFrame = 0;
-    private Vector2 _velocity;
 
     public FighterKnockdownState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -15,12 +14,8 @@ public class FighterKnockdownState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
-        }
-
         if (_currentFrame >= _action.KnockdownStun){   
-            SwitchState(_factory.Idle());
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 

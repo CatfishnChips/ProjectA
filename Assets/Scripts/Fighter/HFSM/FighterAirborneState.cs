@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class FighterAirborneState : FighterBaseState
 {   
-    private ActionDefault _action;
-    private Rigidbody2D _rb;
-    private float _initialJumpVelocity;
+    // private ActionDefault _action;
+    // private Rigidbody2D _rb;
+    // private float _initialJumpVelocity;
     private int _currentFrame = 0;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private Vector2 _velocity;
@@ -19,12 +19,12 @@ public class FighterAirborneState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.IsHurt){
-            SwitchState(_factory.Stunned());
+        if (_ctx.IsHurt && !_ctx.IsInvulnerable){
+            SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
         }
         
         if(_ctx.IsGrounded && _currentFrame >= _ctx.JumpTime + _ctx.FallTime){
-            SwitchState(_factory.Grounded());
+            SwitchState(_factory.GetRootState(FighterRootStates.Grounded));
         }
     }
 
@@ -37,7 +37,8 @@ public class FighterAirborneState : FighterBaseState
         _ctx.Rigidbody2D.velocity = Vector2.zero;
 
         _currentFrame = 0;
-
+        
+        // Jump Action
         if (_ctx.IsJumpPressed && _ctx.IsGrounded && _ctx.PreviousRootState == FighterStates.Grounded){
             _ctx.IsJumpPressed = false;
         
@@ -106,7 +107,7 @@ public class FighterAirborneState : FighterBaseState
         // else{
         //     state = _factory.Idle();
         // }
-        state = _factory.Idle();
+        state = _factory.GetSubState(FighterSubStates.Idle);
 
         SetSubState(state);
         state.EnterState();

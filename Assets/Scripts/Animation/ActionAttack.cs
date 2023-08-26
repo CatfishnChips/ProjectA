@@ -5,122 +5,121 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Attack Action", menuName = "ScriptableObject/Action/Attack")]
 public class ActionAttack : ActionBase
 {   
-    [SerializeField] private Tags m_tags;
+    [SerializeField] protected Tags m_tags;
     [Tooltip("Damage dealt upon a successful uncontested hit to the target.")]
-    [SerializeField] private int m_damage;
+    [SerializeField] protected int m_damage;
     [Tooltip("Damage dealt upon a successful hit to a blocking target.")]
-    [SerializeField] private int m_chipDamage;
+    [SerializeField] protected int m_chipDamage;
 
     [Header("Hitbox Properties")]
     [Tooltip("Which type of hitbox is prioritized for hit detection.")] // Probably won't be used.
-    [SerializeField] private int m_priority;
+    [SerializeField] protected int m_priority;
     [Tooltip("Dictates how many times a move can hit. Set to 1 for single hit moves.")]
-    [SerializeField] private int m_part = 1;
+    [SerializeField] protected int m_part = 1;
 
     [Header("Stun Properties")]
     [Tooltip("Does attack ignore target's Block state?")]
-    [SerializeField] private bool m_ignoreBlock;
+    [SerializeField] protected bool m_ignoreBlock;
     [Tooltip("Stun inflicted upon hitting the target that is blocking (in frames).")]
-    [SerializeField] private int m_blockStun;
+    [SerializeField] protected int m_blockStun;
     [Tooltip("Time stop applied to the target upon hit (in frames).")]
-    [SerializeField] private int m_freeze;
+    [SerializeField] protected int m_freeze;
 
     [Tooltip("Stun inflicted upon hitting the target (in frames).")]
-    [SerializeField] private int m_knockbackStun;
+    [SerializeField] protected int m_knockbackStun;
 
     [Tooltip("Duration that the target will stay lying on ground, inflicted upon hitting the target (in frames).")]
-    [SerializeField] private int m_knockdownStun;
+    [SerializeField] protected int m_knockdownStun;
 
     [Tooltip("Time it takes to complete the arc. x: Rise Time, y: Fall Time (in frames)")]
-    [SerializeField] private Vector2Int m_knockupStun;
+    [SerializeField] protected Vector2Int m_knockupStun;
 
     [Header("Knockback Properties")]
     [Tooltip("Distance of the knockup.")]
-    [SerializeField] private float m_knockup;
+    [SerializeField] protected float m_knockup;
     [Tooltip("Distance of the knockback.")]
-    [SerializeField] private float m_knockback;
+    [SerializeField] protected float m_knockback;
 
     [Header("Gravity Properties")]
     [Tooltip("Is gravity applied to the performing character during the action?")]
-    [SerializeField] private bool m_gravity;
+    [SerializeField] protected bool m_gravity = true;
 
     [Header("Stamina Properties")]
     [Tooltip("How much Stamina is recovered after a successful hit.")]
-    [SerializeField] private float m_staminaRecovery;
+    [SerializeField] protected float m_staminaRecovery;
 
     [Header("SFX Properties")]
-    [SerializeField] private AudioClip m_sound;
-    [SerializeField] private float m_soundLevel;
+    [SerializeField] protected AudioClip m_sound;
+    [SerializeField] protected float m_soundLevel;
 
     [Header("VFX Properties")]
-    [SerializeField] private Vector3 m_screenShakeVelocity;
-    [SerializeField] private Vector3 m_cameraPosition;
-    [SerializeField] private Vector3 m_cameraRotation;
-    [SerializeField] private float m_cameraEaseFactor;
-
-    [Header("Events")]
-    [SerializeField] private List<FrameEvent> m_events; 
+    [SerializeField] protected Vector3 m_screenShakeVelocity;
+    [SerializeField] protected Vector3 m_cameraPosition;
+    [SerializeField] protected Vector3 m_cameraRotation;
+    [SerializeField] protected float m_cameraEaseFactor; 
 
     [Header("Frame Data")]
-    [SerializeField] private int m_startFrames;
-    [SerializeField] private int m_activeFrames;
-    [SerializeField] private int m_recoveryFrames;
+    [SerializeField] protected int m_startFrames;
+    [SerializeField] protected int m_activeFrames;
+    [SerializeField] protected int m_recoveryFrames;
 
     [Header("AI Properties")]
-    [ReadOnly] [SerializeField] private int m_hitboxFrame;
-    [ReadOnly] [SerializeField] private Vector2 m_hitboxOffset;
-    [ReadOnly] [SerializeField] private Vector2 m_hitboxSize;
+    [ReadOnly] [SerializeField] protected int m_hitboxFrame;
+    [ReadOnly] [SerializeField] protected Vector2 m_hitboxOffset;
+    [ReadOnly] [SerializeField] protected Vector2 m_hitboxSize;
 
     [Header("Animation Clips")]
-    [SerializeField] private AnimationClip m_meshAnimationS;
-    [SerializeField] private AnimationClip m_meshAnimationA;
-    [SerializeField] private AnimationClip m_meshAnimationR;
-    [SerializeField] private AnimationClip m_boxAnimationS;
-    [SerializeField] private AnimationClip m_boxAnimationA;
-    [SerializeField] private AnimationClip m_boxAnimationR;
+    [SerializeField] protected AnimationClip m_meshAnimationS;
+    [SerializeField] protected AnimationClip m_meshAnimationA;
+    [SerializeField] protected AnimationClip m_meshAnimationR;
+    [SerializeField] protected AnimationClip m_boxAnimationS;
+    [SerializeField] protected AnimationClip m_boxAnimationA;
+    [SerializeField] protected AnimationClip m_boxAnimationR;
 
     public float AnimSpeedS {get{return AdjustAnimationTime(m_meshAnimationS, m_startFrames);}}
     public float AnimSpeedA {get{return AdjustAnimationTime(m_meshAnimationA, m_activeFrames);}}
     public float AnimSpeedR {get{return AdjustAnimationTime(m_meshAnimationR, m_recoveryFrames);}}
 
-    public Tags Tags {get => m_tags;}
-    public int Damage {get => m_damage;}
-    public int ChipDamage {get => m_chipDamage;}
-    public int Priority {get => m_priority;}
-    public int Part {get => m_part;}
-    public bool IgnoreBlock {get => m_ignoreBlock;}
-    public int BlockStun {get => m_blockStun;}
-    public int Freeze {get => m_freeze;}
-    public int KnockbackStun {get => m_knockbackStun;}
-    public Vector2Int KnockupStun {get => m_knockupStun;}
-    public int KnockdownStun {get => m_knockdownStun;}
-    public float Knockup {get => m_knockup;}
-    public float Knockback {get => m_knockback;}
-    public bool Gravity {get => m_gravity;}
-    public float StaminaRecovery {get => m_staminaRecovery;}
-    public AudioClip Sound {get => m_sound;}
-    public float SoundLevel {get => m_soundLevel;}
-    public Vector3 ScreenShakeVelocity {get => m_screenShakeVelocity;}
+    public virtual Tags Tags {get => m_tags;}
+    public virtual int Damage {get => m_damage;}
+    public virtual int ChipDamage {get => m_chipDamage;}
+    public virtual int Priority {get => m_priority;}
+    public virtual int Part {get => m_part;}
+    public virtual bool IgnoreBlock {get => m_ignoreBlock;}
+    public virtual int BlockStun {get => m_blockStun;}
+    public virtual int Freeze {get => m_freeze;}
+    public virtual int KnockbackStun {get => m_knockbackStun;}
+    public virtual Vector2Int KnockupStun {get => m_knockupStun;}
+    public virtual int KnockdownStun {get => m_knockdownStun;}
+    public virtual float Knockup {get => m_knockup;}
+    public virtual float Knockback {get => m_knockback;}
+    public virtual bool Gravity {get => m_gravity;}
+    public virtual float StaminaRecovery {get => m_staminaRecovery;}
+    public virtual AudioClip Sound {get => m_sound;}
+    public virtual float SoundLevel {get => m_soundLevel;}
+    public virtual Vector3 ScreenShakeVelocity {get => m_screenShakeVelocity;}
 
-    public int StartFrames {get => m_startFrames;}
-    public int ActiveFrames {get => m_activeFrames;}
-    public int RecoveryFrames {get => m_recoveryFrames;}
-    public int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
+    public virtual int StartFrames {get => m_startFrames;}
+    public virtual int ActiveFrames {get => m_activeFrames;}
+    public virtual int RecoveryFrames {get => m_recoveryFrames;}
+    public virtual int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
 
     public int HitboxFrame {get => m_hitboxFrame; set {m_hitboxFrame = value;}}
     public Vector2 HitboxOffset {get => m_hitboxOffset; set {m_hitboxOffset = value;}} 
     public Vector2 HitboxSize {get => m_hitboxSize; set {m_hitboxSize = value;}}
 
-    public AnimationClip MeshAnimationS {get => m_meshAnimationS;}
-    public AnimationClip MeshAnimationA {get => m_meshAnimationA;}
-    public AnimationClip MeshAnimationR {get => m_meshAnimationR;}
-    public AnimationClip BoxAnimationS {get => m_boxAnimationS;}
-    public AnimationClip BoxAnimationA {get => m_boxAnimationA;}
-    public AnimationClip BoxAnimationR {get => m_boxAnimationR;}
+    public virtual AnimationClip MeshAnimationS {get => m_meshAnimationS;}
+    public virtual AnimationClip MeshAnimationA {get => m_meshAnimationA;}
+    public virtual AnimationClip MeshAnimationR {get => m_meshAnimationR;}
+    public virtual AnimationClip BoxAnimationS {get => m_boxAnimationS;}
+    public virtual AnimationClip BoxAnimationA {get => m_boxAnimationA;}
+    public virtual AnimationClip BoxAnimationR {get => m_boxAnimationR;}
 
-    [HideInInspector] public bool _firstFrameStartup = true;
-    [HideInInspector] public bool _firstFrameActive = true;
-    [HideInInspector] public bool _firstFrameRecovery = true;
+    protected bool _firstFrameStartup = true;
+    protected bool _firstFrameActive = true;
+    protected bool _firstFrameRecovery = true;
+    
+    protected virtual List<FrameEvent> Events {get {return new List<FrameEvent>();}}
 
     public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
         _firstFrameStartup = true;
@@ -140,6 +139,7 @@ public class ActionAttack : ActionBase
         state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
             state._actionState = ActionStates.Recovery;
         }
+        else state._actionState = ActionStates.None;
     }
 
     public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
@@ -175,11 +175,11 @@ public class ActionAttack : ActionBase
         }
        
         // Invoke events.
-        // foreach(FrameEvent e in m_events){
-        //     if (state._currentFrame == e.Frame){
-        //         e.Event?.Invoke();
-        //     }
-        // }
+        foreach(FrameEvent e in Events){
+            if (state._currentFrame == e.Frame){
+                e.Event(ctx, state);
+            }
+        }
 
         if (ctx.IsHit) ctx.IsHit = false;
         state._currentFrame++;

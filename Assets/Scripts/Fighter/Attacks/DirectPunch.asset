@@ -34,7 +34,6 @@ MonoBehaviour:
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_events: []
   m_startFrames: 12
   m_activeFrames: 7
   m_recoveryFrames: 12
@@ -50,6 +49,3 @@ MonoBehaviour:
     type: 3}
   m_boxAnimationR: {fileID: -2061910772549006292, guid: 21d3cfdee44fdeb48a20aaf85687d33a,
     type: 3}
-  _firstFrameStartup: 1
-  _firstFrameActive: 1
-  _firstFrameRecovery: 1

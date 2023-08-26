@@ -15,6 +15,7 @@ public class ActionGrab : ActionAttack
         base.EnterStateFunction(ctx, state);
     }
 
+    // REWORK HERE, HAS THE OLD LOGIC
     public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
         if (state._currentFrame <= state.Action.StartFrames){

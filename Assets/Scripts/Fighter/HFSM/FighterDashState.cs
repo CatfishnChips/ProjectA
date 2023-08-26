@@ -13,8 +13,8 @@ public class FighterDashState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= (_ctx.DashTime)){
-            SwitchState(_factory.Idle());
+        if (_currentFrame >= _ctx.DashTime){
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 
