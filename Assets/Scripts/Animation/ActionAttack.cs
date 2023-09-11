@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,10 +21,12 @@ public class ActionAttack : ActionBase
     [Header("Stun Properties")]
     [Tooltip("Does attack ignore target's Block state?")]
     [SerializeField] protected bool m_ignoreBlock;
+
     [Tooltip("Stun inflicted upon hitting the target that is blocking (in frames).")]
     [SerializeField] protected int m_blockStun;
-    [Tooltip("Time stop applied to the target upon hit (in frames).")]
-    [SerializeField] protected int m_freeze;
+
+    [Tooltip("Time stop applied to the target and self upon hit (in frames).")]
+    [SerializeField] protected int m_hitStop;
 
     [Tooltip("Stun inflicted upon hitting the target (in frames).")]
     [SerializeField] protected int m_knockbackStun;
@@ -79,6 +82,7 @@ public class ActionAttack : ActionBase
     public float AnimSpeedS {get{return AdjustAnimationTime(m_meshAnimationS, m_startFrames);}}
     public float AnimSpeedA {get{return AdjustAnimationTime(m_meshAnimationA, m_activeFrames);}}
     public float AnimSpeedR {get{return AdjustAnimationTime(m_meshAnimationR, m_recoveryFrames);}}
+    public float AnimSpeedAExtended {get{return AdjustAnimationTime(m_meshAnimationA, m_activeFrames + m_hitStop);}}
 
     public virtual Tags Tags {get => m_tags;}
     public virtual int Damage {get => m_damage;}
@@ -87,7 +91,7 @@ public class ActionAttack : ActionBase
     public virtual int Part {get => m_part;}
     public virtual bool IgnoreBlock {get => m_ignoreBlock;}
     public virtual int BlockStun {get => m_blockStun;}
-    public virtual int Freeze {get => m_freeze;}
+    public virtual int HitStop {get => m_hitStop;}
     public virtual int KnockbackStun {get => m_knockbackStun;}
     public virtual Vector2Int KnockupStun {get => m_knockupStun;}
     public virtual int KnockdownStun {get => m_knockdownStun;}
@@ -118,6 +122,9 @@ public class ActionAttack : ActionBase
     protected bool _firstFrameStartup = true;
     protected bool _firstFrameActive = true;
     protected bool _firstFrameRecovery = true;
+    protected bool _firstTimePause = true;
+    protected bool _pause = false;
+    protected int _pauseFrames = 0;
     
     protected virtual List<FrameEvent> Events {get {return new List<FrameEvent>();}}
 
@@ -125,6 +132,9 @@ public class ActionAttack : ActionBase
         _firstFrameStartup = true;
         _firstFrameActive = true;
         _firstFrameRecovery = true;
+        _firstTimePause = true;
+        _pause = false;
+        _pauseFrames = 0;
         ctx.IsGravityApplied = m_gravity;
     }
 
@@ -181,7 +191,29 @@ public class ActionAttack : ActionBase
             }
         }
 
-        if (ctx.IsHit) ctx.IsHit = false;
+        if (ctx.IsHit) {
+            ctx.IsHit = false;
+
+            if (_firstTimePause){
+                _firstTimePause = false;
+                _pause = true;
+                _pauseFrames = m_hitStop;
+                
+                ctx.Animator.SetFloat("SpeedVar", 0);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", 0);
+            }
+        } 
+
+
+        if (_pause){
+            if (_pauseFrames <= 0){
+                _pause = false;
+                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
+            }
+            _pauseFrames--;
+        } 
+        else
         state._currentFrame++;
     }
 

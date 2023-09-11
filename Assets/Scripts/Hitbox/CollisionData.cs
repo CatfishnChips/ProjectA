@@ -7,6 +7,7 @@ public class CollisionData
     public ActionAttack action;
     public IHurtbox hurtbox;
     public IHitDetector hitDetector;
+    public Vector2 collisionPoint;
 
     public bool Validate(){
 
@@ -17,6 +18,13 @@ public class CollisionData
                         return true;
         return false;
     }
+}
+
+public enum HurtboxPart
+{
+    High,
+    Mid,
+    Low
 }
 
 public enum HurtboxType
@@ -60,6 +68,7 @@ public interface IHurtbox
     public FighterStateMachine Owner { get; }
     public Transform Transform { get; }
     public HurtboxType Type { get; }
+    public HurtboxPart Part { get; }
     public IHurtResponder HurtResponder { get; set; }
     public bool CheckHit(CollisionData data);
 }

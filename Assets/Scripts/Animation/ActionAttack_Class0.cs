@@ -10,7 +10,7 @@ public class ActionAttack_Class0 : ActionAttack
     [SerializeField] protected int m_focusChipDamage;
     [SerializeField] protected bool m_focusIgnoreBlock;
     [SerializeField] protected int m_focusBlockStun;
-    [SerializeField] protected int m_focusFreeze;
+    [SerializeField] protected int m_focusHitStop;
     [SerializeField] protected int m_focusKnockbackStun;
     [SerializeField] protected int m_focusKnockdownStun;
     [SerializeField] protected Vector2Int m_focusKnockupStun;
@@ -23,7 +23,7 @@ public class ActionAttack_Class0 : ActionAttack
     public override int ChipDamage {get => m_focus ? m_focusChipDamage : m_chipDamage;}
     public override bool IgnoreBlock {get => m_focus ? m_focusIgnoreBlock : m_ignoreBlock;}
     public override int BlockStun {get => m_focus ? m_focusBlockStun : m_blockStun;}
-    public override int Freeze {get => m_focus ? m_focusFreeze : m_freeze;}
+    public override int HitStop {get => m_focus ? m_focusHitStop : m_hitStop;}
     public override int KnockbackStun {get => m_focus ? m_focusKnockbackStun : m_knockbackStun;}
     public override Vector2Int KnockupStun {get => m_focus ? m_focusKnockupStun : m_knockupStun;}
     public override int KnockdownStun {get => m_focus ? m_focusKnockdownStun : m_knockdownStun;}

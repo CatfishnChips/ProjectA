@@ -59,6 +59,7 @@ public class FighterStateMachine_Class0 : FighterStateMachine
         if (TryGetComponent(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
         if (TryGetComponent(out HealthManager healthManager)) _healthManager = healthManager;
         if (TryGetComponent(out StaminaManager staminaManager)) _staminaManager = staminaManager;
+        if (TryGetComponent(out ParticleEffectManager particleEffectManager)) _particleEffectManager = particleEffectManager;
 
         ResetVariables();
     }

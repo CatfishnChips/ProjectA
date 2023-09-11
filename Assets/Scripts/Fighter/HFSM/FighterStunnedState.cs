@@ -23,7 +23,7 @@ public class FighterStunnedState : FighterBaseState
         // ">" is used instead of ">=" due to Root States' Fixed Update running before the Sub States' Fixed Update.
         // Ex. Calculations in the Sub State's 49th frame are applied to Root State in the 50th frame.
         // This only applies to situations which the fighter's velocity is controled.
-        if (_currentFrame > _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.Freeze){   
+        if (_currentFrame > _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.HitStop){   
             FighterBaseState state;         
 
             if (_ctx.IsGrounded){
@@ -62,7 +62,7 @@ public class FighterStunnedState : FighterBaseState
 
     public override void FixedUpdateState()
     {   
-        if (_currentFrame > _action.Freeze){  
+        if (_currentFrame > _action.HitStop){  
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;

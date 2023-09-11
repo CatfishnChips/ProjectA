@@ -330,6 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1664023560}
   m_hurtboxType: 1
+  m_hurtboxPart: 1
   m_state: 1
   m_collider: {fileID: 47895606}
   m_offset: {x: 0.01, y: 0.96}
@@ -877,17 +878,17 @@ PrefabInstance:
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.04499617
+      value: 0.044996146
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.014509176
+      value: 0.014509141
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00065358833
+      value: -0.0006535864
       objectReference: {fileID: 0}
     - target: {fileID: 6664263211162163464, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -1273,6 +1274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1136449789}
   m_hurtboxType: 2
+  m_hurtboxPart: 1
   m_state: 1
   m_collider: {fileID: 366048959}
   m_offset: {x: 0.09, y: 0.89}
@@ -2750,6 +2752,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TimeController
       objectReference: {fileID: 0}
+    - target: {fileID: 366507543957076979, guid: cae9519b694f8f144adc25d319b1082d,
+        type: 3}
+      propertyPath: _timeScaleRate
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cae9519b694f8f144adc25d319b1082d, type: 3}
 --- !u!1 &797680601
@@ -3362,6 +3369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1664023560}
   m_hurtboxType: 1
+  m_hurtboxPart: 1
   m_state: 0
   m_collider: {fileID: 864417260}
   m_offset: {x: 0, y: 0}
@@ -3887,6 +3895,7 @@ GameObject:
   - component: {fileID: 1136449785}
   - component: {fileID: 1136449784}
   - component: {fileID: 1136449792}
+  - component: {fileID: 1136449793}
   m_Layer: 0
   m_Name: Fighter_Enemy
   m_TagString: Bot
@@ -4091,7 +4100,7 @@ Transform:
   - {fileID: 545377468}
   - {fileID: 1531866186}
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &1136449792
 MonoBehaviour:
@@ -4109,6 +4118,22 @@ MonoBehaviour:
     type: 2}
   _attackBoxFlexibilityMargin: 10
   _opitamlDistancemethod: 0
+--- !u!114 &1136449793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136449783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c107d16db1737c40a474197097deb2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_poolableObjects:
+  - m_prefab: {fileID: 331855352510624843, guid: d4309b72986712b47b1b809c90d808c1,
+      type: 3}
+    m_amount: 2
 --- !u!1001 &1138426587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4627,6 +4652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1136449789}
   m_hurtboxType: 2
+  m_hurtboxPart: 0
   m_state: 1
   m_collider: {fileID: 1211449759}
   m_offset: {x: 0.12, y: 1.56}
@@ -5064,6 +5090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1136449789}
   m_hurtboxType: 2
+  m_hurtboxPart: 2
   m_state: 1
   m_collider: {fileID: 1397926362}
   m_offset: {x: 0.06, y: 0.21}
@@ -5474,6 +5501,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1664023560}
   m_hurtboxType: 1
+  m_hurtboxPart: 0
   m_state: 1
   m_collider: {fileID: 1510158024}
   m_offset: {x: 0.09, y: 1.57}
@@ -5913,13 +5941,14 @@ GameObject:
   - component: {fileID: 1664023561}
   - component: {fileID: 1664023560}
   - component: {fileID: 1664023569}
+  - component: {fileID: 1664023570}
   m_Layer: 0
-  m_Name: Fighter (1)
+  m_Name: Fighter_ProjectileTest
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1664023560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6081,7 +6110,7 @@ Transform:
   - {fileID: 797680602}
   - {fileID: 1177922250}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &1664023569
 MonoBehaviour:
@@ -6100,6 +6129,22 @@ MonoBehaviour:
       type: 3}
     m_amount: 3
   m_spawnLocation: {fileID: 1962141726}
+--- !u!114 &1664023570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664023559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c107d16db1737c40a474197097deb2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_poolableObjects:
+  - m_prefab: {fileID: 331855352510624843, guid: d4309b72986712b47b1b809c90d808c1,
+      type: 3}
+    m_amount: 5
 --- !u!1001 &1685065766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7153,6 +7198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1664023560}
   m_hurtboxType: 1
+  m_hurtboxPart: 2
   m_state: 1
   m_collider: {fileID: 1902779784}
   m_offset: {x: 0.03, y: 0.24}
@@ -7628,6 +7674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 1136449789}
   m_hurtboxType: 2
+  m_hurtboxPart: 1
   m_state: 1
   m_collider: {fileID: 1988934816}
   m_offset: {x: 0, y: 0}
@@ -9468,7 +9515,7 @@ PrefabInstance:
     - target: {fileID: 3594287407498517868, guid: 2bc594ee995a4ae4fbd99882bb1872ac,
         type: 3}
       propertyPath: m_RootOrder
-      value: 22
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 3594287407498517868, guid: 2bc594ee995a4ae4fbd99882bb1872ac,
         type: 3}
@@ -10443,6 +10490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 5879637657972759019}
   m_hurtboxType: 1
+  m_hurtboxPart: 1
   m_state: 1
   m_collider: {fileID: 6199499884961182810}
   m_offset: {x: 0.01, y: 0.96}
@@ -10461,6 +10509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 5879637657972759019}
   m_hurtboxType: 1
+  m_hurtboxPart: 1
   m_state: 0
   m_collider: {fileID: 6199499885111591823}
   m_offset: {x: 0, y: 0}
@@ -10646,6 +10695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 5879637657972759019}
   m_hurtboxType: 1
+  m_hurtboxPart: 0
   m_state: 1
   m_collider: {fileID: 6199499885450700004}
   m_offset: {x: 0.09, y: 1.57}
@@ -10874,6 +10924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_owner: {fileID: 5879637657972759019}
   m_hurtboxType: 1
+  m_hurtboxPart: 2
   m_state: 1
   m_collider: {fileID: 6199499886188770238}
   m_offset: {x: 0.03, y: 0.24}
@@ -10895,7 +10946,7 @@ Transform:
   - {fileID: 1892146251471445656}
   - {fileID: 6199499885850399352}
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &6300550943552996269
 Transform:
@@ -10994,13 +11045,30 @@ GameObject:
   - component: {fileID: 5808848192327056470}
   - component: {fileID: 3952272144434690137}
   - component: {fileID: 3952272144434690138}
+  - component: {fileID: 6726621501232309431}
   m_Layer: 0
   m_Name: Fighter
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
+--- !u!114 &6726621501232309431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6726621501232309430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c107d16db1737c40a474197097deb2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_poolableObjects:
+  - m_prefab: {fileID: 331855352510624843, guid: d4309b72986712b47b1b809c90d808c1,
+      type: 3}
+    m_amount: 3
 --- !u!4 &6755868880226942329
 Transform:
   m_ObjectHideFlags: 0

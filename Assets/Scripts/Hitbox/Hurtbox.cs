@@ -8,6 +8,7 @@ public class Hurtbox : MonoBehaviour, IHurtbox
 {
     [NotKeyable] [SerializeField] private FighterStateMachine m_owner = null;
     [NotKeyable] [SerializeField] private HurtboxType m_hurtboxType = HurtboxType.Enemy;
+    [NotKeyable] [SerializeField] private HurtboxPart m_hurtboxPart = HurtboxPart.High;
     private IHurtResponder m_hurtResponder;
 
     [DiscreteEvaluation] [SerializeField] private ColliderState m_state = ColliderState.Open;
@@ -19,6 +20,7 @@ public class Hurtbox : MonoBehaviour, IHurtbox
     public FighterStateMachine Owner { get => m_owner; }
     public Transform Transform { get => transform; }
     public HurtboxType Type { get => m_hurtboxType; }
+    public HurtboxPart Part { get => m_hurtboxPart; }
     public IHurtResponder HurtResponder { get => m_hurtResponder; set => m_hurtResponder = value; }
 
     private void Awake(){

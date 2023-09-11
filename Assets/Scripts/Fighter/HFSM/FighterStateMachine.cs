@@ -53,6 +53,7 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     protected HealthManager _healthManager;
     protected StaminaManager _staminaManager;
+    protected ParticleEffectManager _particleEffectManager;
     protected Vector2 _velocity;
 
     #region Input Variables
@@ -144,6 +145,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     public CollisionData HitCollisionData {get{return _hitCollisionData;}}
     public HealthManager HealthManager {get{return _healthManager;}}
     public StaminaManager StaminaManager {get{return _staminaManager;}}
+    public ParticleEffectManager ParticleEffectManager {get{return _particleEffectManager;}}
     public bool IsHit {get{return _isHit;} set{_isHit = value;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
     public bool CanBlock {get{return _staminaManager.CanBlock && (_currentRootState == FighterStates.Grounded || _previousRootState == FighterStates.Grounded) && (_currentSubState == FighterStates.Idle || _currentSubState == FighterStates.Walk);}}
@@ -227,6 +229,7 @@ public abstract class FighterStateMachine : MonoBehaviour
         if (TryGetComponent(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
         if (TryGetComponent(out HealthManager healthManager)) _healthManager = healthManager;
         if (TryGetComponent(out StaminaManager staminaManager)) _staminaManager = staminaManager;
+        if (TryGetComponent(out ParticleEffectManager particleEffectManager)) _particleEffectManager = particleEffectManager;
 
         ResetVariables();
     }
@@ -453,6 +456,13 @@ public abstract class FighterStateMachine : MonoBehaviour
         
         // Stamina Recovery upon a successful hit.
         _staminaManager.UpdateStamina(data.action.StaminaRecovery);
+
+        // Hit VFX
+        if (_particleEffectManager != null){
+            var obj = _particleEffectManager.DequeueObject(_particleEffectManager.PoolableObjects[0].Prefab, _particleEffectManager.PoolableObjects[0].QueueReference);
+            obj.transform.position = data.collisionPoint;
+            ParticleSystem particle = obj.GetComponent<ParticleSystem>();
+        }
     }
 
     protected virtual void OnHurt(CollisionData data){

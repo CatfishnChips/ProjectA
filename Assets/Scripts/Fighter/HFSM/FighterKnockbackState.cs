@@ -16,7 +16,7 @@ public class FighterKnockbackState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= _action.KnockbackStun + _action.Freeze){   
+        if (_currentFrame >= _action.KnockbackStun + _action.HitStop){   
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
@@ -51,7 +51,7 @@ public class FighterKnockbackState : FighterBaseState
 
         _animationSpeed = AdjustAnimationTime(clip, _action.KnockbackStun); 
 
-        if (_action.Freeze != 0){
+        if (_action.HitStop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
         }
         else{
@@ -70,7 +70,7 @@ public class FighterKnockbackState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        if (_currentFrame >= _action.Freeze){
+        if (_currentFrame >= _action.HitStop){
 
             if (_isFirstTime){
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);

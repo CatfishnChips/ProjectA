@@ -23,7 +23,7 @@ public class FighterKnockupState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_currentFrame >= _action.KnockupStun.x + _action.KnockupStun.y + _action.Freeze){   
+        if (_currentFrame >= _action.KnockupStun.x + _action.KnockupStun.y + _action.HitStop){   
             FighterBaseState state;         
             
             // Knockup always transitions to Knockdown state.
@@ -84,7 +84,7 @@ public class FighterKnockupState : FighterBaseState
         _animationSpeed = AdjustAnimationTime(clip, _action.KnockupStun.x + _action.KnockupStun.y); 
         _colliderAnimationSpeed = AdjustAnimationTime(colClip, _action.KnockupStun.x + _action.KnockupStun.y); 
 
-        if (_action.Freeze != 0){
+        if (_action.HitStop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
             _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0f);
         }
@@ -107,15 +107,15 @@ public class FighterKnockupState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        if (_currentFrame >= _action.Freeze){
+        if (_currentFrame >= _action.HitStop){
 
             if (_isFirstTime){
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", _colliderAnimationSpeed);
                 _isFirstTime = false;
             }
-            _ctx.Drag = _currentFrame < _action.KnockupStun.x + _action.Freeze ? _drag1 : _drag2;
-            _ctx.Gravity = _currentFrame < _action.KnockupStun.x + _action.Freeze ? _gravity1 : _gravity2;
+            _ctx.Drag = _currentFrame < _action.KnockupStun.x + _action.HitStop ? _drag1 : _drag2;
+            _ctx.Gravity = _currentFrame < _action.KnockupStun.x + _action.HitStop ? _gravity1 : _gravity2;
             //Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
         }
         
