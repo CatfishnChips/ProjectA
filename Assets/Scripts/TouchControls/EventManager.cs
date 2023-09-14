@@ -34,6 +34,7 @@ public class EventManager : MonoBehaviour
     public UnityAction<float, float> StaminaChanged_P1;
     public UnityAction<float, float> BlockChanged_P1;
     public UnityAction<Interactions> Interaction_P1;
+    public UnityAction<float, float> SpiritChanged_P1;
     public UnityAction<bool> Focus_P1;
 
     #endregion
@@ -68,6 +69,7 @@ public class EventManager : MonoBehaviour
     public UnityAction<float, float> StaminaChanged_P2;
     public UnityAction<float, float> BlockChanged_P2;
     public UnityAction<Interactions> Interaction_P2;
+    public UnityAction<float, float> SpiritChanged_P2;
     public UnityAction<bool> Focus_P2;
 
     #endregion

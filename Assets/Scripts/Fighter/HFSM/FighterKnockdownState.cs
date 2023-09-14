@@ -6,7 +6,7 @@ public class FighterKnockdownState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private float _currentFrame = 0;
+    private int _currentFrame = 0;
 
     public FighterKnockdownState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -22,12 +22,13 @@ public class FighterKnockdownState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
+        _ctx.CurrentFrame = _currentFrame;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
 
         if (_action.KnockdownStun == 0) return;
 
-        if (_ctx.PreviousSubState == FighterStates.Knockup){
+        if (_ctx.PreviousSubState == FighterStates.Knockup || _ctx.PreviousSubState == FighterStates.SlamDunk){
             CameraController.Instance.ScreenShake(new Vector3(0f, -0.1f, 0f));
             return; // If transitioned from Knockup state, do not play the animation.
         } 
@@ -46,12 +47,14 @@ public class FighterKnockdownState : FighterBaseState
 
     public override void ExitState()
     {
+        _ctx.CurrentFrame = 0;
     }
 
     public override void FixedUpdateState()
     {
         CheckSwitchState();
         _currentFrame++;
+        _ctx.CurrentFrame =_currentFrame;
     }
 
     public override void InitializeSubState()

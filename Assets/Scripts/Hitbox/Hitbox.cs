@@ -24,6 +24,7 @@ public class Hitbox : MonoBehaviour, IHitDetector
     public Vector2 Offset {get => m_offset;}
     public Vector2 Size {get => m_size;}
     public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
+    public Transform Transform { get => transform; }
 
     private CollisionData m_collisionData;
     private IHurtbox m_hurtbox;
@@ -52,14 +53,14 @@ public class Hitbox : MonoBehaviour, IHitDetector
                         {
                             action = m_hitResponder == null ? null : m_hitResponder.Action,
                             hurtbox = m_hurtbox,
-                            hitDetector = this,
+                            hitbox = this,
                             collisionPoint = m_collisionPoint
                         };
 
                         // Validate & Response
                         if (m_collisionData.Validate()) 
                         {
-                            m_collisionData.hitDetector.HitResponder?.Response(m_collisionData);
+                            m_collisionData.hitbox.HitResponder?.Response(m_collisionData);
                             m_collisionData.hurtbox.HurtResponder?.Response(m_collisionData);
 
                             return;       

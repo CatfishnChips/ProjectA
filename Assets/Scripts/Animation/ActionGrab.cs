@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Grab Action", menuName = "ScriptableObject/Action/Grab")]
-public class ActionGrab : ActionAttack
+public class ActionGrab : ActionFighterAttack
 {   
     [Header("Custom Variables")]
     [SerializeField] private AnimationClip m_alternativeMeshAnimation;

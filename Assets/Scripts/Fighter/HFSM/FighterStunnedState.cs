@@ -8,6 +8,7 @@ public class FighterStunnedState : FighterBaseState
     private CollisionData _collisionData;
     private ActionAttack _action;
     private float _currentFrame = 0;
+    private bool _isFirstTime = true;
 
     public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -23,16 +24,34 @@ public class FighterStunnedState : FighterBaseState
         // ">" is used instead of ">=" due to Root States' Fixed Update running before the Sub States' Fixed Update.
         // Ex. Calculations in the Sub State's 49th frame are applied to Root State in the 50th frame.
         // This only applies to situations which the fighter's velocity is controled.
-        if (_currentFrame > _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.HitStop){   
-            FighterBaseState state;         
 
-            if (_ctx.IsGrounded){
-                state = _factory.GetRootState(FighterRootStates.Grounded);
-            }
+        // if (_currentFrame > _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.HitStop){   
+        //     FighterBaseState state;         
+
+        //     if (_ctx.IsGrounded){
+        //         state = _factory.GetRootState(FighterRootStates.Grounded);
+        //     }
+        //     else{
+        //         state = _factory.GetRootState(FighterRootStates.Airborne);
+        //     }
+        //     SwitchState(state);
+        // }
+
+        if (_ctx.CurrentSubState == FighterStates.Idle){   
+            FighterBaseState state;   
+
+            if (_isFirstTime) {
+                _isFirstTime = false;
+            }      
             else{
-                state = _factory.GetRootState(FighterRootStates.Airborne);
+                if (_ctx.IsGrounded){
+                    state = _factory.GetRootState(FighterRootStates.Grounded);
+                }
+                else{
+                    state = _factory.GetRootState(FighterRootStates.Airborne);
+                }
+                SwitchState(state);
             }
-            SwitchState(state);
         }
     }
 
@@ -41,8 +60,9 @@ public class FighterStunnedState : FighterBaseState
         _currentFrame = 0;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
+        _isFirstTime = true;
 
-        _ctx.HealthManager.UpdateHealth(_ctx.CanBlock ? _collisionData.action.ChipDamage : _collisionData.action.Damage);
+        _ctx.HealthManager.UpdateHealth(_ctx.CanBlock ? -_collisionData.action.ChipDamage : -_collisionData.action.Damage);
         InitializeSubState();
 
         _ctx.IsHurt = false;
@@ -55,6 +75,7 @@ public class FighterStunnedState : FighterBaseState
     {
         _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
+        _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
         _ctx.Rigidbody2D.velocity = Vector2.zero;
@@ -70,14 +91,6 @@ public class FighterStunnedState : FighterBaseState
         }
         CheckSwitchState();
         _currentFrame++;
-
-        // If the fighter is hurt again before the stun duration expires, duration is refreshed.
-        // if (_ctx.IsHurt)
-        // {
-        //     _ctx.IsHurt = false;
-        //     _collisionData = _ctx.CollisionData;
-        //     _currentFrame = 0;
-        // }
     }
 
     public override void InitializeSubState()
@@ -88,7 +101,10 @@ public class FighterStunnedState : FighterBaseState
             state = _factory.GetSubState(FighterSubStates.Block);
         }
         else if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
+            if (Mathf.Sign(_action.Knockup) > 0) 
             state = _factory.GetSubState(FighterSubStates.Knockup);
+            else
+            state = _factory.GetSubState(FighterSubStates.SlamDunk);
         }
         else if (_action.KnockdownStun > 0){
             state = _factory.GetSubState(FighterSubStates.Knockdown);

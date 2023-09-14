@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Attack Action", menuName = "ScriptableObject/Action/Attack")]
-public class ActionAttack : ActionBase
+public abstract class ActionAttack : ActionBase
 {   
     [SerializeField] protected Tags m_tags;
     [Tooltip("Damage dealt upon a successful uncontested hit to the target.")]
@@ -47,9 +46,11 @@ public class ActionAttack : ActionBase
     [Tooltip("Is gravity applied to the performing character during the action?")]
     [SerializeField] protected bool m_gravity = true;
 
-    [Header("Stamina Properties")]
+    [Header("Recovery Properties")]
     [Tooltip("How much Stamina is recovered after a successful hit.")]
     [SerializeField] protected float m_staminaRecovery;
+    [Tooltip("How much Spirit is recovered after a successful hit.")]
+    [SerializeField] protected float m_spiritRecovery;
 
     [Header("SFX Properties")]
     [SerializeField] protected AudioClip m_sound;
@@ -67,9 +68,10 @@ public class ActionAttack : ActionBase
     [SerializeField] protected int m_recoveryFrames;
 
     [Header("AI Properties")]
-    [ReadOnly] [SerializeField] protected int m_hitboxFrame;
-    [ReadOnly] [SerializeField] protected Vector2 m_hitboxOffset;
-    [ReadOnly] [SerializeField] protected Vector2 m_hitboxSize;
+    [SerializeField] protected int m_hitboxFrame;
+    [SerializeField] protected Vector2 m_hitboxOffset;
+    [SerializeField] protected Vector2 m_hitboxLocation;
+    [SerializeField] protected Vector2 m_hitboxSize;
 
     [Header("Animation Clips")]
     [SerializeField] protected AnimationClip m_meshAnimationS;
@@ -99,6 +101,7 @@ public class ActionAttack : ActionBase
     public virtual float Knockback {get => m_knockback;}
     public virtual bool Gravity {get => m_gravity;}
     public virtual float StaminaRecovery {get => m_staminaRecovery;}
+    public virtual float SpiritRecovery {get => m_spiritRecovery;}
     public virtual AudioClip Sound {get => m_sound;}
     public virtual float SoundLevel {get => m_soundLevel;}
     public virtual Vector3 ScreenShakeVelocity {get => m_screenShakeVelocity;}
@@ -109,7 +112,8 @@ public class ActionAttack : ActionBase
     public virtual int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
 
     public int HitboxFrame {get => m_hitboxFrame; set {m_hitboxFrame = value;}}
-    public Vector2 HitboxOffset {get => m_hitboxOffset; set {m_hitboxOffset = value;}} 
+    public Vector2 HitboxOffset {get => m_hitboxOffset; set {m_hitboxOffset = value;}}
+    public Vector2 HitboxLocation {get => m_hitboxLocation; set {m_hitboxLocation = value;}} 
     public Vector2 HitboxSize {get => m_hitboxSize; set {m_hitboxSize = value;}}
 
     public virtual AnimationClip MeshAnimationS {get => m_meshAnimationS;}
@@ -125,100 +129,6 @@ public class ActionAttack : ActionBase
     protected bool _firstTimePause = true;
     protected bool _pause = false;
     protected int _pauseFrames = 0;
-    
-    protected virtual List<FrameEvent> Events {get {return new List<FrameEvent>();}}
-
-    public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        _firstFrameStartup = true;
-        _firstFrameActive = true;
-        _firstFrameRecovery = true;
-        _firstTimePause = true;
-        _pause = false;
-        _pauseFrames = 0;
-        ctx.IsGravityApplied = m_gravity;
-    }
-
-    public virtual void SwitchActionStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        if (state._currentFrame <= state.Action.StartFrames){
-            state._actionState = ActionStates.Start;
-        }
-        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
-            state._actionState = ActionStates.Active;
-        }
-        else if (state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
-        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
-            state._actionState = ActionStates.Recovery;
-        }
-        else state._actionState = ActionStates.None;
-    }
-
-    public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
-        switch(state._actionState)
-        {
-            case ActionStates.Start:
-                if(_firstFrameStartup){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.Animator.Play("AttackStart");
-                    ctx.ColBoxAnimator.Play("AttackStart");
-                    _firstFrameStartup = false;
-                }
-            break;
-
-            case ActionStates.Active:
-                if(_firstFrameActive){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.Animator.Play("AttackActive");
-                    _firstFrameActive = false;
-                }
-            break;
-
-            case ActionStates.Recovery:
-                if(_firstFrameRecovery){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.Animator.Play("AttackRecover");
-                    _firstFrameRecovery = false;
-                }
-            break;
-        }
-       
-        // Invoke events.
-        foreach(FrameEvent e in Events){
-            if (state._currentFrame == e.Frame){
-                e.Event(ctx, state);
-            }
-        }
-
-        if (ctx.IsHit) {
-            ctx.IsHit = false;
-
-            if (_firstTimePause){
-                _firstTimePause = false;
-                _pause = true;
-                _pauseFrames = m_hitStop;
-                
-                ctx.Animator.SetFloat("SpeedVar", 0);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", 0);
-            }
-        } 
-
-
-        if (_pause){
-            if (_pauseFrames <= 0){
-                _pause = false;
-                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-            }
-            _pauseFrames--;
-        } 
-        else
-        state._currentFrame++;
-    }
-
-    public virtual void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){
-    }
 }
 
 [System.Flags]

@@ -46,6 +46,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     [ReadOnly] [SerializeField] protected FighterStates _previousRootState = default;
     [ReadOnly] [SerializeField] protected FighterStates _previousSubState = default;
     [ReadOnly] [SerializeField] protected ActionStates _actionState = default;
+    [ReadOnly] [SerializeField] protected int _currentFrame = 0;
 
     protected HitResponder _hitResponder;
     protected HurtResponder _hurtResponder;
@@ -54,6 +55,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected HealthManager _healthManager;
     protected StaminaManager _staminaManager;
     protected ParticleEffectManager _particleEffectManager;
+    protected SpiritManager _spiritManager;
     protected Vector2 _velocity;
 
     #region Input Variables
@@ -64,7 +66,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected ContinuousInput<float> _movementInput = new ContinuousInput<float>(0);
     protected ContinuousInput<bool> _holdTouchA = new ContinuousInput<bool>(false);
     protected ContinuousInput<bool> _holdTouchB = new ContinuousInput<bool>(false);
-    protected QueueInput<bool, string> _isAttackPerformed = new QueueInput<bool, string>(false);
+    protected QueueInput<bool, ActionFighterAttack> _isAttackPerformed = new QueueInput<bool, ActionFighterAttack>(false);
 
     #endregion
 
@@ -110,6 +112,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     public FighterStates PreviousRootState{get{return _previousRootState;} set{_previousRootState = value;}}
     public FighterStates PreviousSubState{get{return _previousSubState;} set{_previousSubState = value;}}
     public ActionStates ActionState{get{return _actionState;} set{_actionState = value;}}
+    public int CurrentFrame{get{return _currentFrame;} set{_currentFrame = value;}}
 
     public bool IsJumpPressed{get{return _isJumpPressed.Value;} set{_isJumpPressed.Value = value;}}
     public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
@@ -118,7 +121,8 @@ public abstract class FighterStateMachine : MonoBehaviour
     public bool IsHoldingTouchA{get{return _holdTouchA.Value;}}
     public bool IsHoldingTouchB{get{return _holdTouchB.Value;}}
     public bool AttackPerformed{get{return _isAttackPerformed.Value;} set{_isAttackPerformed.Value = value;}}
-    public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
+    //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
+    public ActionFighterAttack AttackAction{get{return _isAttackPerformed.Queue.Peek();}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
@@ -223,15 +227,18 @@ public abstract class FighterStateMachine : MonoBehaviour
                 _actionDictionary.Add(attribution.action.name, attribution.action);
             }
         }
+        GetComponents();
+        ResetVariables();
+    }
 
+    protected virtual void GetComponents(){
         if (TryGetComponent(out HitResponder hitResponder)) _hitResponder = hitResponder;
         if (TryGetComponent(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
         if (TryGetComponent(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
         if (TryGetComponent(out HealthManager healthManager)) _healthManager = healthManager;
         if (TryGetComponent(out StaminaManager staminaManager)) _staminaManager = staminaManager;
         if (TryGetComponent(out ParticleEffectManager particleEffectManager)) _particleEffectManager = particleEffectManager;
-
-        ResetVariables();
+        if (TryGetComponent(out SpiritManager spiritManager)) _spiritManager = spiritManager;
     }
 
     private bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
@@ -370,9 +377,17 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     protected virtual void OnGestureB(string attackName){
         if (attackName == "L") return; // Temporary Bugfix
-        //if (_isAttackPerformed.Value) return;
 
-        StartCoroutine(InputDelay(_isAttackPerformed, attackName));
+        ActionAttack action = _attackMoveDict[attackName];
+
+        if (IsSameOrSubclass(typeof(ActionFighterAttack), action.GetType())){
+            // if (_isGrounded) action = _groundedAttackMoveDict[attackName];
+            // else action = _aerialAttackMoveDict[attackName];
+            StartCoroutine(InputDelay(_isAttackPerformed, action as ActionFighterAttack));
+        }
+        else if (IsSameOrSubclass(typeof(ActionSpiritAttack), action.GetType())){
+            _spiritManager?.SpawnSpirit(action as ActionSpiritAttack);
+        }
     }
 
     #endregion
@@ -452,7 +467,7 @@ public abstract class FighterStateMachine : MonoBehaviour
 
         // Screen Shake upon a successful hit.
         if (data.action.ScreenShakeVelocity != Vector3.zero)
-        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
+        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity * Mathf.Sign(data.hitbox.Transform.right.x));
         
         // Stamina Recovery upon a successful hit.
         _staminaManager.UpdateStamina(data.action.StaminaRecovery);
@@ -462,6 +477,13 @@ public abstract class FighterStateMachine : MonoBehaviour
             var obj = _particleEffectManager.DequeueObject(_particleEffectManager.PoolableObjects[0].Prefab, _particleEffectManager.PoolableObjects[0].QueueReference);
             obj.transform.position = data.collisionPoint;
             ParticleSystem particle = obj.GetComponent<ParticleSystem>();
+        }
+
+        // SpiritManager Functions
+        if (_spiritManager != null){
+            _spiritManager.Setup(this, data);
+            _spiritManager.DrawPath(); // DEBUG
+            _spiritManager.UpdateSpirit(data.action.SpiritRecovery);
         }
     }
 
@@ -512,8 +534,9 @@ public abstract class FighterStateMachine : MonoBehaviour
         _isDashPressed.Reset();
         _isDodgePressed.Reset();
 
-        _staminaManager.Reset();
-        _healthManager.Reset();
+        _staminaManager?.Reset();
+        _healthManager?.Reset();
+        _spiritManager?.Reset();
 
         _currentState = _states.GetRootState(FighterRootStates.Airborne);
         _currentState.EnterState();

@@ -6,7 +6,7 @@ public class CollisionData
 {
     public ActionAttack action;
     public IHurtbox hurtbox;
-    public IHitDetector hitDetector;
+    public IHitDetector hitbox;
     public Vector2 collisionPoint;
 
     public bool Validate(){
@@ -14,7 +14,7 @@ public class CollisionData
         if (hurtbox != null) 
             if (hurtbox.CheckHit(this)) 
                 if (hurtbox.HurtResponder == null || hurtbox.HurtResponder.CheckHit(this)) 
-                    if (hitDetector.HitResponder == null || hitDetector.HitResponder.CheckHit(this)) 
+                    if (hitbox.HitResponder == null || hitbox.HitResponder.CheckHit(this)) 
                         return true;
         return false;
     }
@@ -52,6 +52,7 @@ public interface IHitResponder
 public interface IHitDetector 
 {
     public bool Active { get; }
+    public Transform Transform { get; }
     public IHitResponder HitResponder { get; set; }
     public void CheckHit();
 }

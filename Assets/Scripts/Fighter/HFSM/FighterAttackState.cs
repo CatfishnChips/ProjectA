@@ -3,11 +3,11 @@ using UnityEngine.Events;
 
 public class FighterAttackState : FighterBaseState
 {
-    private ActionAttack _action;
+    private ActionFighterAttack _action;
     public int _currentFrame = 0;
     public ActionStates _actionState = default;
 
-    public ActionAttack Action { get => _action; }
+    public ActionFighterAttack Action { get => _action; }
 
     public FighterAttackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory):
     base(currentContext, fighterStateFactory){
@@ -40,9 +40,11 @@ public class FighterAttackState : FighterBaseState
 
     public override void EnterState()
     {   
-        string attackName = _ctx.AttackName;
+        //string attackName = _ctx.AttackName;
+        _action = _ctx.AttackAction;
         _ctx.AttackPerformed = false;
         _currentFrame = 0;
+        _ctx.CurrentFrame =_currentFrame;
 
         // Restart Combo Listener.
         if(!_ctx.ComboListener.isActive){
@@ -50,10 +52,12 @@ public class FighterAttackState : FighterBaseState
         }
         
         // Determine Attack depending on context.
-        if (_ctx.IsGrounded){
-            _action = _ctx.AttackMoveDict[attackName];
-        }
-        else  _action = _ctx.AttackMoveDict[attackName];
+        // if (_ctx.IsGrounded){
+        //     _action = _ctx.AttackMoveDict[attackName] as ActionFighterAttack;
+        // }
+        // else  _action = _ctx.AttackMoveDict[attackName] as ActionFighterAttack;
+
+        
 
         // if (_ctx.MovementInput == 1){
             
@@ -91,6 +95,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void ExitState()
     {
+        _ctx.CurrentFrame = 0;
         _ctx.IsGravityApplied = true;
         _ctx.ActionState = default;
         _action.ExitStateFunction(_ctx, this);
@@ -112,6 +117,7 @@ public class FighterAttackState : FighterBaseState
         _action.SwitchActionStateFunction(_ctx, this);
         _ctx.ActionState = _actionState;
 
+        _ctx.CurrentFrame =_currentFrame;
         CheckSwitchState();
     }
 }

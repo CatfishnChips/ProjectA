@@ -364,7 +364,7 @@ public class GestureController : MonoBehaviour
         for(int i = 0; i < _pointList.Count; i++){
             debugLog += $"\n Point {i}: "  + _pointList[i].ToString();
         }
-        Debug.Log(debugLog);
+        //Debug.Log(debugLog);
     }
 }
 

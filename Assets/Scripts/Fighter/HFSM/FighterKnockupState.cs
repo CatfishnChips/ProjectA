@@ -14,8 +14,13 @@ public class FighterKnockupState : FighterBaseState
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private float _gravity1, _gravity2;
     private float _drag1, _drag2;
+    private float _time1, _time2;
     private float _distancePerTime;
-    private Vector2 _arcDirection;
+    private float _direction;
+
+    private float _drag;
+    private float _time;
+   
 
     public FighterKnockupState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -40,6 +45,7 @@ public class FighterKnockupState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
+        _ctx.CurrentFrame =_currentFrame;
         _isFirstTime = true;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
@@ -47,28 +53,33 @@ public class FighterKnockupState : FighterBaseState
         _velocity = Vector2.zero;
 
         _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
-        float horizontalDirection = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
-        _distancePerTime = _action.Knockback / (_action.KnockupStun.x + _action.KnockupStun.y);
+        _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
+        //_distancePerTime = _action.Knockback / (_action.KnockupStun.x + _action.KnockupStun.y);
+
+        _time = (_action.KnockupStun.x + _action.KnockupStun.y) * Time.fixedDeltaTime;
+        _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
+        _drag *= _direction;
+
+        _velocity.x = 2 * _action.Knockback / _time; // Initial horizontal velocity;
+        _velocity.x *= _direction;
         
         // Zone 1
         float time1 = _action.KnockupStun.x * Time.fixedDeltaTime;
-        _gravity1 = -2 * (_action.Knockup) / (time1 * time1);
-        _velocity.y = 2 * (_action.Knockup) / time1; // Initial vertical velocity.
+        _gravity1 = - 2 * _action.Knockup / Mathf.Pow(time1, 2); // g = 2h/t^2
+        _velocity.y = 2 * _action.Knockup / time1; // Initial vertical velocity. V0y = 2h/t
+        
+        // _drag1 = (-_distancePerTime * time1) / Mathf.Pow(time1, 2);
+        // _drag1 *= _direction;
 
-        _drag1 = (-_distancePerTime * time1) / (time1 * time1);
-        _drag1 *= horizontalDirection;
-
-        _velocity.x = (_action.Knockback) / time1; // Initial horizontal velocity;
-        _velocity.x *= horizontalDirection;
+        // _velocity.x = (_action.Knockback) / time1; // Initial horizontal velocity;
+        // _velocity.x *= _direction;
 
         // Zone 2
         float time2 = _action.KnockupStun.y * Time.fixedDeltaTime; 
-        _gravity2 = -2 * (_action.Knockup + _groundOffset) / (time2 * time2);
+        _gravity2 = -2 * (_action.Knockup + _groundOffset) / (time2 * time2); // Free Fall h = (1/2)gt^2
 
-        _drag2 = (-_distancePerTime * time2) / (time2 * time2);
-        _drag2 *= horizontalDirection;
-
-        _arcDirection = _velocity.normalized;
+        // _drag2 = -_distancePerTime * time2 / (time2 * time2);
+        // _drag2 *= _direction;
 
         _ctx.CurrentMovement = _velocity;
 
@@ -101,6 +112,7 @@ public class FighterKnockupState : FighterBaseState
     {
         _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
+        _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;
         //Debug.Log("Fighter Knockup State - Exit State");
     }
@@ -114,13 +126,15 @@ public class FighterKnockupState : FighterBaseState
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", _colliderAnimationSpeed);
                 _isFirstTime = false;
             }
-            _ctx.Drag = _currentFrame < _action.KnockupStun.x + _action.HitStop ? _drag1 : _drag2;
+            //_ctx.Drag = _currentFrame < _action.KnockupStun.x + _action.HitStop ? _drag1 : _drag2;
+            _ctx.Drag = _drag;
             _ctx.Gravity = _currentFrame < _action.KnockupStun.x + _action.HitStop ? _gravity1 : _gravity2;
             //Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
         }
         
         CheckSwitchState();
         _currentFrame++;
+        _ctx.CurrentFrame =_currentFrame;
         //Debug.Log("Fighter Knockup State - FixedUpdate Complete");
     }
 

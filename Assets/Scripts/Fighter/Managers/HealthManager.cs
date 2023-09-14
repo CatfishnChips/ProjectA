@@ -16,7 +16,7 @@ public class HealthManager : MonoBehaviour
     }
 
     public void UpdateHealth(int value){
-        m_currentHealth -= value;
+        m_currentHealth += value;
         m_currentHealth = Mathf.Clamp(m_currentHealth, 0, m_health);
 
         switch(m_player){

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f8c6625b41fc84db67271d35f757d9, type: 3}
+  m_Script: {fileID: 11500000, guid: d1f64798f3180f248af4c14b875a0a25, type: 3}
   m_Name: CrossPunch
   m_EditorClassIdentifier: 
   name: CrossPunch
@@ -28,6 +28,7 @@ MonoBehaviour:
   m_knockback: 2
   m_gravity: 1
   m_staminaRecovery: 0
+  m_spiritRecovery: 0.05
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}

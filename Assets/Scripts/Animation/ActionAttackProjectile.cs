@@ -7,7 +7,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Projectile Attack Action", menuName = "ScriptableObject/Action/Projectile")]
-public class ActionAttackProjectile : ActionAttack
+public class ActionAttackProjectile : ActionFighterAttack
 {   
     public ActionAttackProjectile(){
         m_frameEvents.Add(new FrameEvent(35, (FighterStateMachine ctx, FighterAttackState state) => PoolProjectile(ctx, state)));

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Attack Action", menuName = "ScriptableObject/Action/Class0/Attack")]
-public class ActionAttack_Class0 : ActionAttack
+public class ActionAttack_Class0 : ActionFighterAttack
 {
     [Header("Focus Properties")]
     [SerializeField] protected int m_focusDamage;

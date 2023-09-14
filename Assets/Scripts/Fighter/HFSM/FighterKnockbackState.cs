@@ -6,9 +6,13 @@ public class FighterKnockbackState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private float _currentFrame = 0;
+    private int _currentFrame = 0;
     private float _animationSpeed;
     private bool _isFirstTime = true;
+    private float _drag;
+    private float _initialVelocity;
+    private float _direction;
+    private float _time;
 
     public FighterKnockbackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -24,6 +28,7 @@ public class FighterKnockbackState : FighterBaseState
     public override void EnterState()
     {
         _currentFrame = 0;
+        _ctx.CurrentFrame =_currentFrame;
         _isFirstTime = true;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
@@ -31,14 +36,16 @@ public class FighterKnockbackState : FighterBaseState
 
 
         if (_action.Knockback!= 0){
-            float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
-            float time = _action.KnockbackStun * Time.fixedDeltaTime;
+            _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
+            _time = _action.KnockbackStun * Time.fixedDeltaTime;
 
-            _ctx.Drag = (_action.Knockback) / (time * time) * direction;
-            float _initialVelocity = _action.Knockback / time;
+            _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
+            _drag *= _direction;
 
-            _initialVelocity *= direction;
+            _initialVelocity = 2 * _action.Knockback / _time; // Initial horizontal velocity;
+            _initialVelocity *= _direction;
 
+            _ctx.Drag = _drag;
             _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
         }
 
@@ -65,6 +72,7 @@ public class FighterKnockbackState : FighterBaseState
     public override void ExitState()
     {
         _ctx.Drag = 0f;
+        _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;
     }
 
@@ -80,6 +88,7 @@ public class FighterKnockbackState : FighterBaseState
 
         CheckSwitchState();
         _currentFrame++;
+        _ctx.CurrentFrame =_currentFrame;
     }
 
     public override void InitializeSubState()

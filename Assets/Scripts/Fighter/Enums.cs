@@ -27,7 +27,8 @@ public enum FighterStates
     Knockup,
     Knockdown,
     Knockback,
-    Grabbed
+    Grabbed,
+    SlamDunk
 }
 
 public enum FighterRootStates
@@ -50,7 +51,8 @@ public enum FighterSubStates
     Knockup = FighterStates.Knockup,
     Knockdown = FighterStates.Knockdown,
     Knockback = FighterStates.Knockback,
-    Grabbed = FighterStates.Grabbed
+    Grabbed = FighterStates.Grabbed,
+    SlamDunk = FighterStates.SlamDunk
 }
 
 public enum Player
@@ -90,4 +92,11 @@ public enum AIPositionMethod
     ArithmeticMean,
     GeometricMean,
     Mod
+}
+
+public enum SpiritState
+{
+    Idle,
+    Knockup,
+    Knockback
 }

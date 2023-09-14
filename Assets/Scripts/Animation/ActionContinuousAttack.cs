@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Continuous Attack Action", menuName = "ScriptableObject/Action/ContinuousAttack")]
-public class ActionContinuousAttack : ActionAttack
+public class ActionContinuousAttack : ActionFighterAttack
 {  
     [Header("Custom Variables")]
     [SerializeField] private bool m_startCondition;

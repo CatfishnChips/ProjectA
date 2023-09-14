@@ -171,10 +171,10 @@ public class AIBrain : MonoBehaviour
         {
             
             // This calculation takes hitbox's size into account and achieves the result by calculating if the player's transform position is within the hitbox.
-            if ((_distanceToOpponent.x + attack.Value.HitboxSize.x + _attackBoxFlexibilityMargin) > attack.Value.HitboxOffset.x && 
-               (_distanceToOpponent.x - attack.Value.HitboxSize.x - _attackBoxFlexibilityMargin) < attack.Value.HitboxOffset.x &&
-               (_distanceToOpponent.y + attack.Value.HitboxSize.y + _attackBoxFlexibilityMargin) > attack.Value.HitboxOffset.y &&
-               (_distanceToOpponent.y - attack.Value.HitboxSize.y - _attackBoxFlexibilityMargin) < attack.Value.HitboxOffset.y)
+            if ((_distanceToOpponent.x + attack.Value.HitboxSize.x + _attackBoxFlexibilityMargin) > attack.Value.HitboxLocation.x && 
+               (_distanceToOpponent.x - attack.Value.HitboxSize.x - _attackBoxFlexibilityMargin) < attack.Value.HitboxLocation.x &&
+               (_distanceToOpponent.y + attack.Value.HitboxSize.y + _attackBoxFlexibilityMargin) > attack.Value.HitboxLocation.y &&
+               (_distanceToOpponent.y - attack.Value.HitboxSize.y - _attackBoxFlexibilityMargin) < attack.Value.HitboxLocation.y)
             {
                 //Debug.Log("Name: " + attack.Value.name);
                 //Debug.Log("Offset X: " + attack.Value.HitboxOffset.x);
@@ -222,7 +222,7 @@ public class AIBrain : MonoBehaviour
                 float xTotal = 0.0f;
                 foreach (KeyValuePair<string, ActionAttack> attack in _ctxSelf.GroundedAttackMoveDict)
                 {
-                    xTotal += attack.Value.HitboxOffset.x;
+                    xTotal += attack.Value.HitboxLocation.x;
                 }
                 return xTotal / _ctxSelf.GroundedAttackMoveDict.Count;
             default:
