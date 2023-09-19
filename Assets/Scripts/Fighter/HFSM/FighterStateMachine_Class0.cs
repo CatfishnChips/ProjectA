@@ -37,6 +37,8 @@ public class FighterStateMachine_Class0 : FighterStateMachine
         _colBoxOverrideCont.GetOverrides(_colBoxClipOverrides);
 
         _attackMoveDict = new Dictionary<string, ActionAttack>();
+        _groundedAttackMoveDict = new Dictionary<string, ActionAttack>();
+        _aerialAttackMoveDict = new Dictionary<string, ActionAttack>();
         _actionDictionary = new Dictionary<string, ActionBase>();
 
         foreach (ActionAttribution attribution in _actionAttribution)

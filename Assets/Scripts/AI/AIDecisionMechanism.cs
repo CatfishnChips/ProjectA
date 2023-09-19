@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using BehaviourTree;
+using Tree = BehaviourTree.Tree;
 
 public class AIDecisionMechanism
 {
-    private AIBrain _brain;
+    private FighterBT _tree;
     private AIDifficultySettings _aiDifficulty;
 
     private FighterStateMachine _selfCtx;
@@ -17,9 +19,9 @@ public class AIDecisionMechanism
     private float _optimalDistance;
 
 
-    public AIDecisionMechanism(AIBrain brain, AIDifficultySettings difficulty, FighterStateMachine selfStateMachine, FighterStateMachine enemyStateMachine)
+    public AIDecisionMechanism(FighterBT tree, AIDifficultySettings difficulty, FighterStateMachine selfStateMachine, FighterStateMachine enemyStateMachine)
     {
-        _brain = brain;
+        _tree = tree;
         _aiDifficulty = difficulty;
         _selfCtx = selfStateMachine;
         _enemyCtx = enemyStateMachine;
@@ -43,7 +45,7 @@ public class AIDecisionMechanism
                 {
                     float attackAccuracyScore = Random.Range(0.0f, 100.0f); // Decide if the AI is going to perform an accurate or inaccurate attack.
 
-                    List<string> hittingAttackNames = _brain.HittingAttacks.Keys.ToList(); // Get the list of all attacks that has a great possibility to make a hit on the opponent and get their name on a string list
+                    List<string> hittingAttackNames = _tree.HittingAttacks.Keys.ToList(); // Get the list of all attacks that has a great possibility to make a hit on the opponent and get their name on a string list
                     List<string> attackNames = _enemyCtx.AttackMoveDict.Keys.ToList(); // Get the list of all attacks and get their name on a string list
 
                     if (_aiDifficulty.AttackAccuracy(attackAccuracyScore))
@@ -62,7 +64,7 @@ public class AIDecisionMechanism
                     float comboProbability = Random.Range(0.0f, 100.0f);
 
                     List<string> comboMovesList = _selfCtx.ComboListener.GetCurrentSearchDict().Keys.ToList();
-                    List<string> hittingAttackNames = _brain.HittingAttacks.Keys.ToList();
+                    List<string> hittingAttackNames = _tree.HittingAttacks.Keys.ToList();
 
                     List<string> hittingComboAttacks = hittingAttackNames.Intersect(comboMovesList).ToList();
 
@@ -108,8 +110,8 @@ public class AIDecisionMechanism
             if (successfulDefensiveAction) // AI Descided to take a Defensive Action (Options are; Dodge or Counter).
             {
                 string actionType;
-                Debug.Log("There are total of " + _brain.HittingAttacks.Count() + " attacks that will hit.");
-                if (_brain.HittingAttacks.Count() == 0) // If AI doesn't have any attack that will hit the opponent then it has to dodge
+                Debug.Log("There are total of " + _tree.HittingAttacks.Count() + " attacks that will hit.");
+                if (_tree.HittingAttacks.Count() == 0) // If AI doesn't have any attack that will hit the opponent then it has to dodge
                 {
                     actionType = "Dodge";
                 }
@@ -133,7 +135,7 @@ public class AIDecisionMechanism
                     {
                         List<string> viableAttackOptions = new List<string>();
 
-                        foreach (KeyValuePair<string, ActionAttack> attack in _brain.HittingAttacks) // Get attacks that can counter the opponent.
+                        foreach (KeyValuePair<string, ActionAttack> attack in _tree.HittingAttacks) // Get attacks that can counter the opponent.
                         {
                             if (attack.Value.StartFrames < enemyAttack.StartFrames - 2)
                             {
