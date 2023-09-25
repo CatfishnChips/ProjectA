@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TheKiwiCoder;
 
-public class Breakpoint : ActionNode
+public class TrialNode : ActionNode
 {
     protected override void OnStart() {
-        Debug.Log("Trigging Breakpoint");
-        Debug.Break();
     }
 
     protected override void OnStop() {

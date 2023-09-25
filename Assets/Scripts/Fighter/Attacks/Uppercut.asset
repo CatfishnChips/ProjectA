@@ -34,12 +34,11 @@ MonoBehaviour:
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_events: []
   m_startFrames: 45
   m_activeFrames: 7
   m_recoveryFrames: 12
   m_hitboxFrame: -1
-  m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxOffset: {x: 2, y: 2}
   m_hitboxSize: {x: 0.89, y: 2.8}
   m_meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}
@@ -50,6 +49,3 @@ MonoBehaviour:
   m_boxAnimationS: {fileID: 0}
   m_boxAnimationA: {fileID: 0}
   m_boxAnimationR: {fileID: 0}
-  _firstFrameStartup: 1
-  _firstFrameActive: 1
-  _firstFrameRecovery: 1

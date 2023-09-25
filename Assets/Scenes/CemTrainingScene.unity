@@ -817,42 +817,42 @@ PrefabInstance:
     - target: {fileID: 6664263210252897054, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: orthographic size
-      value: 5
+      value: 1.562083
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.4594306
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.1531434
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9988816
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.044996146
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.014509141
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.0006535864
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -4100,24 +4100,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1136449783}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 735be42e95dc1fa44903badeb894393d, type: 3}
+  m_Script: {fileID: 11500000, guid: 58c6f9b140a52a14881ec09eaebb66eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _difficultySettings: {fileID: 11400000, guid: 704af98938792dc4ebd89f93052155ab,
-    type: 2}
-  _attackBoxFlexibilityMargin: 2
-  _distanceMargin: 0.1
+  tree: {fileID: 11400000, guid: d13da0fbb163d9b4ea96cfbce501fab2, type: 2}
+  difficultySettings: {fileID: 11400000, guid: 704af98938792dc4ebd89f93052155ab, type: 2}
+  _attackBoxFlexibilityMargin: 0.5
+  _distanceMargin: 0.2
   _optimalDistanceMethod: 1
-  _contextSelf: {fileID: 0}
-  _contextEnemy: {fileID: 0}
-  _tfEnemy: {fileID: 0}
-  _previousEnemyAttack: {fileID: 0}
-  _currentEnemyAttack: {fileID: 0}
-  _stateChange: 0
-  _attackMoveEnded: 0
-  _drivenByContext: 0
-  _distanceToOpponent: {x: 0, y: 0}
-  _optimalDistance: 0
 --- !u!1001 &1138426587
 PrefabInstance:
   m_ObjectHideFlags: 0

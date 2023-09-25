@@ -10,5 +10,8 @@ namespace TheKiwiCoder {
     [System.Serializable]
     public class Blackboard {
         public Vector3 moveToPosition;
+        public string choosenAgressiveAction;
+        public string choosenDefensiveAction;
+        public int dodgeFrame; // In frames. If Attempt defensive action decided to dodge it also tells how much to wait for the dogdge to work.
     }
 }

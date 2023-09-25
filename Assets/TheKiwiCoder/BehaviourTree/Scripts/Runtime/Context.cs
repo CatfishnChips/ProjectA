@@ -10,33 +10,31 @@ namespace TheKiwiCoder {
     // It will be somewhat specfic to your game exactly what to add here.
     // Feel free to extend this class 
     public class Context {
-        public GameObject gameObject;
-        public Transform transform;
-        public Animator animator;
-        public Rigidbody physics;
-        public NavMeshAgent agent;
-        public SphereCollider sphereCollider;
-        public BoxCollider boxCollider;
-        public CapsuleCollider capsuleCollider;
-        public CharacterController characterController;
+        public AIDifficultySettings difficultySettings;
+        public FighterStateMachine selfFSM;
+        public FighterStateMachine enemyFSM;
+
+        public Dictionary<string, ActionAttack> hittingAttacks = new Dictionary<string, ActionAttack>();
+
+        public Vector2 distanceToOpponent = new Vector2();
+        public AIPositionMethod optimalDistanceMethod;
+        public float distanceMargin;
+        public float optimalDistance;
+
+        public float attackBoxFlexibilityMargin;
         // Add other game specific systems here
 
-        public static Context CreateFromGameObject(GameObject gameObject) {
+        public Context (GameObject gameObject) {
             // Fetch all commonly used components
-            Context context = new Context();
-            context.gameObject = gameObject;
-            context.transform = gameObject.transform;
-            context.animator = gameObject.GetComponent<Animator>();
-            context.physics = gameObject.GetComponent<Rigidbody>();
-            context.agent = gameObject.GetComponent<NavMeshAgent>();
-            context.sphereCollider = gameObject.GetComponent<SphereCollider>();
-            context.boxCollider = gameObject.GetComponent<BoxCollider>();
-            context.capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
-            context.characterController = gameObject.GetComponent<CharacterController>();
-            
-            // Add whatever else you need here...
+            BehaviourTreeRunner btr = gameObject.GetComponent<BehaviourTreeRunner>();
+            difficultySettings = btr.DifficultySettings;
+            selfFSM = gameObject.GetComponent<FighterStateMachine>();
+            enemyFSM = GameObject.FindWithTag("Player").GetComponent<FighterStateMachine>();
 
-            return context;
+            attackBoxFlexibilityMargin = btr.AttackBoxFlexibilityMargin;
+            distanceMargin = btr.DistanceMargin;
+            optimalDistanceMethod = btr.OptimalDistanceMethod;
+            // Add whatever else you need here...
         }
     }
 }

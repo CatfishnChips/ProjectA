@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace TheKiwiCoder {
 
     public class RootNode : Node {

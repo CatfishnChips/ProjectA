@@ -18,6 +18,7 @@ MonoBehaviour:
   position: {x: -22, y: 4}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAttack: 
   description: 
   drawGizmos: 0
   child: {fileID: -5660333016957678146}
@@ -41,11 +42,12 @@ MonoBehaviour:
   position: {x: -22, y: 118}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAttack: 
   description: 
   drawGizmos: 0
   children:
   - {fileID: 6402316061889451186}
-  - {fileID: -2247863421084346560}
+  - {fileID: 0}
   - {fileID: -4755641854017797634}
 --- !u!114 &-4755641854017797634
 MonoBehaviour:
@@ -65,6 +67,7 @@ MonoBehaviour:
   position: {x: 148, y: 289}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAttack: 
   description: 
   drawGizmos: 0
   duration: 1
@@ -113,9 +116,9 @@ MonoBehaviour:
   - {fileID: -5660333016957678146}
   - {fileID: -4755641854017797634}
   - {fileID: 6402316061889451186}
-  - {fileID: -2247863421084346560}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAttack: 
 --- !u!114 &4300890025194573056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,6 +137,7 @@ MonoBehaviour:
   position: {x: -22, y: -102}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAttack: 
   description: 
   drawGizmos: 0
   child: {fileID: -8754077107127582826}
@@ -155,6 +159,7 @@ MonoBehaviour:
   position: {x: -194, y: 289}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAttack: 
   description: 
   drawGizmos: 0
   min: {x: -20, y: -20}

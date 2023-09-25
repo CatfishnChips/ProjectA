@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TheKiwiCoder;
 using UnityEngine;
 
-public class PerformAgressiveAction : MonoBehaviour
+public class PerformAgressiveAction : ActionNode
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnStart()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnStop()
     {
         
+    }
+
+    protected override State OnUpdate()
+    {
+        Debug.Log("BEN VARIM BEN!");
+        string choosenAttack = blackboard.choosenAgressiveAction;
+        if(choosenAttack == null) return State.Failure; // This is just a safe check if the AI didn't choose to make an attack the tree should not even execute this node.
+
+        EventManager.Instance.P2AttackMove?.Invoke(choosenAttack);
+        return State.Running;
     }
 }
