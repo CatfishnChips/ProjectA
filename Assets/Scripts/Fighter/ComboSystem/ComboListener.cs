@@ -18,7 +18,7 @@ public class ComboListener
     private bool _doesDictContainMove;
     public bool isActive;
 
-    private ActionAttack _attackAction = null;
+    private ActionFighterAttack _attackAction = null;
 
     public ComboListener(FighterStateMachine ctx){
         _ctx = ctx;
@@ -39,7 +39,7 @@ public class ComboListener
         _currentFrame++;
     }
 
-    public ActionAttack AttackOverride(ActionAttack action){
+    public ActionFighterAttack AttackOverride(ActionFighterAttack action){
         _receivedAttack = action;
         _attackAction = null;
         //Debug.Log("Current Mov Number: " + _currentMoveNumber);

@@ -24,34 +24,44 @@ public class Hitbox : MonoBehaviour, IHitDetector
     public Vector2 Offset {get => m_offset;}
     public Vector2 Size {get => m_size;}
     public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
+    public Transform Transform { get => transform; }
+
+    private CollisionData m_collisionData;
+    private IHurtbox m_hurtbox;
+    private Vector2 m_collisionPoint;
 
     public void CheckHit(){
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(m_offset.x * Mathf.Sign(transform.right.x), m_offset.y, 0), m_size, 0, m_layerMask);
 
-        CollisionData _collisionData = null;
-        IHurtbox _hurtbox = null;
+        m_collisionData = null;
+        m_hurtbox = null;
+
         foreach (Collider2D collider in colliders)
         {
-            _hurtbox = collider.GetComponent<IHurtbox>();
-            if (_hurtbox != null)
+            m_hurtbox = collider.GetComponent<IHurtbox>();
+            if (m_hurtbox != null)
             {
-                if (_hurtbox.Active)
+                if (m_hurtbox.Active)
                 {
-                    if (m_hurtboxMask.HasFlag((HurtboxMask)_hurtbox.Type)) 
+                    if (m_hurtboxMask.HasFlag((HurtboxMask)m_hurtbox.Type)) 
                     {
+                        // Calculate Collision Point
+                        m_collisionPoint = collider.ClosestPoint(transform.position + new Vector3(m_offset.x * Mathf.Sign(transform.right.x), m_offset.y, 0));
+
                         // Generate Collision Data
-                        _collisionData = new CollisionData
+                        m_collisionData = new CollisionData
                         {
                             action = m_hitResponder == null ? null : m_hitResponder.Action,
-                            hurtbox = _hurtbox,
-                            hitDetector = this
+                            hurtbox = m_hurtbox,
+                            hitbox = this,
+                            collisionPoint = m_collisionPoint
                         };
 
                         // Validate & Response
-                        if (_collisionData.Validate()) 
+                        if (m_collisionData.Validate()) 
                         {
-                            _collisionData.hitDetector.HitResponder?.Response(_collisionData);
-                            _collisionData.hurtbox.HurtResponder?.Response(_collisionData);
+                            m_collisionData.hitbox.HitResponder?.Response(m_collisionData);
+                            m_collisionData.hurtbox.HurtResponder?.Response(m_collisionData);
 
                             return;       
                         }  

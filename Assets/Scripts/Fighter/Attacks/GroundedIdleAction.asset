@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GroundedIdleAction
   m_EditorClassIdentifier: 
   name: GroundedIdle
-  frames: 0
+  frames: 60
   meshAnimation: {fileID: -203655887218126122, guid: 55bb3cc2706c40c47a6c99d9dffc7ec0,
     type: 3}
-  boxAnimation: {fileID: 0}
+  boxAnimation: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}

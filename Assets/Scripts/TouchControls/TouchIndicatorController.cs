@@ -4,7 +4,15 @@ using UnityEngine;
 using TMPro;
 
 public class TouchIndicatorController : MonoBehaviour
-{
+{   
+    [Header("Line Renderer")]
+    [SerializeField] private Material _lineMaterial;
+    [SerializeField] private AnimationCurve _lineCurve;
+    private GameObject _lineObject;
+    private LineRenderer _lineRenderer;
+    private int _pointCount;
+
+    [Header("References")]
     [SerializeField] private Transform _touchIndicator1, _touchIndicator2;
     [SerializeField] private TextMeshProUGUI _touchText1, _touchText2;
     private InputManager _inputManager = InputManager.Instance;
@@ -78,12 +86,17 @@ public class TouchIndicatorController : MonoBehaviour
         _touchIndicator2.transform.position = position;
         _touchText2.SetText("Began");
         _touchBHoldTime = 0;
+
+        EnableLine();
+        AddPoint(position);
     }
 
     private void DisableIndicator2(InputEventParams inputEventParams) 
     {
         _touchText2.SetText("Ended");
         _touchIndicator2.gameObject.SetActive(false);
+
+        DisableLine();
     }
 
     private void MoveIndicator2(InputEventParams inputEventParams) 
@@ -92,6 +105,8 @@ public class TouchIndicatorController : MonoBehaviour
         _touchIndicator2.transform.position = position;
         _touchText2.SetText("Dragging");
         _touchBHoldTime = 0;
+
+        AddPoint(position);
     }
 
     private void UpdateIndicator2(InputEventParams inputEventParams) 
@@ -100,4 +115,39 @@ public class TouchIndicatorController : MonoBehaviour
         _touchBHoldTime += Time.deltaTime;
         _touchText2.SetText("Hold - " + (int)_touchBHoldTime);
     }
+
+    #region Line Renderer
+
+    private void EnableLine(){
+         if (!_lineObject){
+            _lineObject = new GameObject();
+            //_lineObject.transform.SetParent(transform);
+            //_lineObject.transform.localPosition = Vector3.zero;
+            //_lineObject.transform.localScale = Vector3.one;
+            _lineRenderer = _lineObject.AddComponent<LineRenderer>();
+            _lineRenderer.useWorldSpace = true;
+            _lineRenderer.widthCurve = _lineCurve;
+            _lineRenderer.material = _lineMaterial;
+            _lineRenderer.numCornerVertices = 5;
+            _lineRenderer.numCapVertices = 5;
+        } 
+        _lineObject.SetActive(true);
+        _pointCount = 0;
+        _lineRenderer.positionCount = _pointCount;
+    }
+
+    private void AddPoint(Vector3 position){
+        _pointCount++;
+        _lineRenderer.positionCount = _pointCount;
+        _lineRenderer.SetPosition(_pointCount - 1, position); 
+    }
+
+    private void DisableLine(){
+        // Show a fading drawing of the gesture drawn.
+        // Maybe make it slowly move towards the camera or grow in size while fading.
+        // And also moving downwards to clear the screen like damage numbers.
+        _lineObject.SetActive(false);
+    }
+
+    #endregion
 }

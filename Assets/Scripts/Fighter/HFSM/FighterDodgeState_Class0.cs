@@ -24,7 +24,7 @@ public class FighterDodgeState_Class0 : FighterDodgeState
                 _ctx.IsHurt = false;
             }
         }
-        
+        //Debug.Log("FighterDodgeState_Class0(FixedUpdateState) - Frame: " + _currentFrame);
         _currentFrame++;
         CheckSwitchState();
     }

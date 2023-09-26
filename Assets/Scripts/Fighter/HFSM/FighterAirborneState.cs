@@ -9,8 +9,9 @@ public class FighterAirborneState : FighterBaseState
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private Vector2 _velocity;
     private float _gravity1, _gravity2;
-    private float _drag1, _drag2;
-    private float _distancePerTime;
+    private float _drag;
+    private float _time;
+    private float _direction;
 
     public FighterAirborneState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -30,7 +31,7 @@ public class FighterAirborneState : FighterBaseState
 
     public override void EnterState()
     {
-        _ctx.Gravity = Physics2D.gravity.y;
+        _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
@@ -42,28 +43,24 @@ public class FighterAirborneState : FighterBaseState
         if (_ctx.IsJumpPressed && _ctx.IsGrounded && _ctx.PreviousRootState == FighterStates.Grounded){
             _ctx.IsJumpPressed = false;
         
-           _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
-            //Debug.Log(_groundOffset);
-            float direction = _ctx.SwipeDirection.x == 0 ? 0f : -Mathf.Sign(_ctx.SwipeDirection.x);
-            _distancePerTime = _ctx.JumpDistance / (_ctx.JumpTime + _ctx.FallTime);
+            _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
+            _direction = _ctx.SwipeDirection.x == 0 ? 0f : _ctx.SwipeDirection.x;
+                
+            _time = (_ctx.JumpTime + _ctx.FallTime) * Time.fixedDeltaTime;
+            _drag = -2 * _ctx.JumpDistance / Mathf.Pow(_time, 2);
+            _drag *= _direction;
+
+            _velocity.x = 2 * _ctx.JumpDistance / _time; // Initial horizontal velocity;
+            _velocity.x *= _direction;
             
             // Zone 1
             float time1 = _ctx.JumpTime * Time.fixedDeltaTime;
-            _gravity1 = - 2 * (_ctx.JumpHeight) / (time1 * time1);
-            _velocity.y = 2 * (_ctx.JumpHeight) / time1; // Initial vertical velocity.
-
-            _drag1 = (-_distancePerTime * time1) / (time1 * time1);
-            _drag1 *= direction;
-
-            _velocity.x = (_ctx.JumpDistance) / time1; // Initial horizontal velocity;
-            _velocity.x *= direction;
+            _gravity1 = - 2 * _ctx.JumpHeight / Mathf.Pow(time1, 2); // g = 2h/t^2
+            _velocity.y = 2 * _ctx.JumpHeight / time1; // Initial vertical velocity. V0y = 2h/t
 
             // Zone 2
             float time2 = _ctx.FallTime * Time.fixedDeltaTime; 
-            _gravity2 = -2 * (_ctx.JumpHeight + _groundOffset) / (time2 * time2);
-
-            _drag2 = (-_distancePerTime * time2) / (time2 * time2);
-            _drag2 *= direction;
+            _gravity2 = -2 * (_ctx.JumpHeight + _groundOffset) / (time2 * time2); // Free Fall h = (1/2)gt^2
         }
         else{
             _ctx.Gravity = Physics2D.gravity.y;
@@ -86,7 +83,7 @@ public class FighterAirborneState : FighterBaseState
 
     public override void FixedUpdateState()
     {  
-        _ctx.Drag = _currentFrame <= _ctx.JumpTime ? _drag1 : _drag2;
+        _ctx.Drag = _drag;
         _ctx.Gravity = _currentFrame <= _ctx.JumpTime ? _gravity1 : _gravity2;
 
         _ctx.CurrentMovement += new Vector2(_ctx.IsGravityApplied ? _ctx.Drag : 0f, _ctx.IsGravityApplied ? _ctx.Gravity : 0f) * Time.fixedDeltaTime;

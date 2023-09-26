@@ -28,14 +28,18 @@ public class FighterWalkState : FighterBaseState
         
         if (_ctx.IsGrounded)
         {
-            _ctx.Animator.Play("MoveBT");
+            _ctx.Animator.PlayInFixedTime("MoveBT");
         }
     }
 
     public override void ExitState()
     {
-        _ctx.Velocity = new Vector2(0, _ctx.Velocity.y);
         _ctx.Animator.SetFloat("Blend", 0f);
+        _ctx.Gravity = 0f;
+        _ctx.Drag = 0f;
+        _ctx.CurrentMovement = new Vector2(0, _ctx.Velocity.y);
+        _ctx.Velocity = _ctx.CurrentMovement;
+        _ctx.Rigidbody2D.velocity = _ctx.Velocity;
     }
 
     public override void FixedUpdateState()

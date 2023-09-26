@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f8c6625b41fc84db67271d35f757d9, type: 3}
+  m_Script: {fileID: 11500000, guid: d1f64798f3180f248af4c14b875a0a25, type: 3}
   m_Name: Uppercut
   m_EditorClassIdentifier: 
   name: Uppercut
@@ -20,7 +20,7 @@ MonoBehaviour:
   m_part: 1
   m_ignoreBlock: 0
   m_blockStun: 5
-  m_freeze: 10
+  m_hitStop: 0
   m_knockbackStun: 80
   m_knockdownStun: 20
   m_knockupStun: {x: 0, y: 0}

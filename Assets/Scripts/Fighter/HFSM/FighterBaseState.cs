@@ -79,8 +79,10 @@ public abstract class FighterBaseState
         float speed;
 
         length = clip.length;
-        time = frames * Time.fixedDeltaTime;
+        //time = frames / clip.frameRate;
+        time = frames * Time.deltaTime;
         speed = length / time;
+        //Debug.Log("Calculated Lenght: " + time + " Actual Lenght: " + length  + " Frame Rate: " + clip.frameRate + " Calculated Speed: " + speed);
 
         return speed;
     }

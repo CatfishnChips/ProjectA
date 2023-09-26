@@ -47,6 +47,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     [ReadOnly] [SerializeField] protected FighterStates _previousRootState = default;
     [ReadOnly] [SerializeField] protected FighterStates _previousSubState = default;
     [ReadOnly] [SerializeField] protected ActionStates _actionState = default;
+    [ReadOnly] [SerializeField] protected int _currentFrame = 0;
 
     protected HitResponder _hitResponder;
     protected HurtResponder _hurtResponder;
@@ -54,6 +55,9 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     protected HealthManager _healthManager;
     protected StaminaManager _staminaManager;
+    protected ParticleEffectManager _particleEffectManager;
+    protected SpiritManager _spiritManager;
+    protected ProjectileManager m_projectileManager;
     protected Vector2 _velocity;
 
     #region Public Events
@@ -69,7 +73,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected ContinuousInput<float> _movementInput = new ContinuousInput<float>(0);
     protected ContinuousInput<bool> _holdTouchA = new ContinuousInput<bool>(false);
     protected ContinuousInput<bool> _holdTouchB = new ContinuousInput<bool>(false);
-    protected QueueInput<bool, string> _isAttackPerformed = new QueueInput<bool, string>(false);
+    protected QueueInput<bool, ActionFighterAttack> _isAttackPerformed = new QueueInput<bool, ActionFighterAttack>(false);
 
     #endregion
 
@@ -115,6 +119,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     public FighterStates PreviousRootState{get{return _previousRootState;} set{_previousRootState = value;}}
     public FighterStates PreviousSubState{get{return _previousSubState;} set{_previousSubState = value;}}
     public ActionStates ActionState{get{return _actionState;} set{_actionState = value;}}
+    public int CurrentFrame{get{return _currentFrame;} set{_currentFrame = value;}}
 
     public bool IsJumpPressed{get{return _isJumpPressed.Value;} set{_isJumpPressed.Value = value;}}
     public bool IsDashPressed{get{return _isDashPressed.Value;} set{_isDashPressed.Value = value;}}
@@ -123,7 +128,8 @@ public abstract class FighterStateMachine : MonoBehaviour
     public bool IsHoldingTouchA{get{return _holdTouchA.Value;}}
     public bool IsHoldingTouchB{get{return _holdTouchB.Value;}}
     public bool AttackPerformed{get{return _isAttackPerformed.Value;} set{_isAttackPerformed.Value = value;}}
-    public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
+    //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
+    public ActionFighterAttack AttackAction{get{return _isAttackPerformed.Queue.Peek();}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
@@ -150,6 +156,8 @@ public abstract class FighterStateMachine : MonoBehaviour
     public CollisionData HitCollisionData {get{return _hitCollisionData;}}
     public HealthManager HealthManager {get{return _healthManager;}}
     public StaminaManager StaminaManager {get{return _staminaManager;}}
+    public ParticleEffectManager ParticleEffectManager {get{return _particleEffectManager;}}
+    public ProjectileManager ProjectileManager {get => m_projectileManager;}
     public bool IsHit {get{return _isHit;} set{_isHit = value;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
     public bool CanBlock {get{return _staminaManager.CanBlock && (_currentRootState == FighterStates.Grounded || _previousRootState == FighterStates.Grounded) && (_currentSubState == FighterStates.Idle || _currentSubState == FighterStates.Walk);}}
@@ -196,7 +204,7 @@ public abstract class FighterStateMachine : MonoBehaviour
         
         _states = new FighterStateFactory(this);
         _comboListener = new ComboListener(this);
-        //_faceDirection = (int)Mathf.Sign(transform.forward.x);
+        _faceDirection = (int)Mathf.Sign(transform.forward.x);
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
         _animator.runtimeAnimatorController = _animOverrideCont;
@@ -229,14 +237,18 @@ public abstract class FighterStateMachine : MonoBehaviour
                 _actionDictionary.Add(attribution.action.name, attribution.action);
             }
         }
+        GetComponents();
+    }
 
+    protected virtual void GetComponents(){
         if (TryGetComponent(out HitResponder hitResponder)) _hitResponder = hitResponder;
         if (TryGetComponent(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
         if (TryGetComponent(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
         if (TryGetComponent(out HealthManager healthManager)) _healthManager = healthManager;
         if (TryGetComponent(out StaminaManager staminaManager)) _staminaManager = staminaManager;
-
-        ResetVariables();
+        if (TryGetComponent(out ParticleEffectManager particleEffectManager)) _particleEffectManager = particleEffectManager;
+        if (TryGetComponent(out SpiritManager spiritManager)) _spiritManager = spiritManager;
+        if (TryGetComponent(out ProjectileManager projectileManager)) m_projectileManager = projectileManager;
     }
 
     private bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
@@ -274,6 +286,8 @@ public abstract class FighterStateMachine : MonoBehaviour
         // Subscribe to component based events.
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
+
+        ResetVariables();
 
         // Start default state.
         _currentState = _states.GetRootState(FighterRootStates.Airborne);
@@ -337,8 +351,8 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     protected virtual void OnDash(Vector2 direction){
         _swipeDirection = direction;
-        _swipeDirection.x *= _faceDirection;
-        //Debug.Log("Swipe Direction: " + direction);
+        _swipeDirection.x *= -_faceDirection;
+        //Debug.Log("Swipe Direction: " + direction + " Swipe Direction Modified: " + _swipeDirection);
 
         if (direction.y <= -0.5f) {
             if (direction.y <= -0.9f) _swipeDirection.x = 0f;
@@ -375,9 +389,17 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     protected virtual void OnGestureB(string attackName){
         if (attackName == "L") return; // Temporary Bugfix
-        //if (_isAttackPerformed.Value) return;
 
-        StartCoroutine(InputDelay(_isAttackPerformed, attackName));
+        ActionAttack action = _attackMoveDict[attackName];
+
+        if (IsSameOrSubclass(typeof(ActionFighterAttack), action.GetType())){
+            // if (_isGrounded) action = _groundedAttackMoveDict[attackName];
+            // else action = _aerialAttackMoveDict[attackName];
+            StartCoroutine(InputDelay(_isAttackPerformed, action as ActionFighterAttack));
+        }
+        else if (IsSameOrSubclass(typeof(ActionSpiritAttack), action.GetType())){
+            _spiritManager?.SpawnSpirit(action as ActionSpiritAttack);
+        }
     }
 
     #endregion
@@ -393,6 +415,20 @@ public abstract class FighterStateMachine : MonoBehaviour
 
         //if (target.StaminaManager.CanBlock && target.StaminaManager) return; // If hit opponent blocked the attack.
         //Debug.Log("Script: FighterStateMachine" + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + target.CanBlock);
+         // Hit VFX
+        if (_particleEffectManager != null){
+            GameObject obj;
+            if (target.CanBlock){
+                obj = _particleEffectManager.DequeueObject(_particleEffectManager.PoolableObjects[1].Prefab, _particleEffectManager.PoolableObjects[1].QueueReference);
+            }
+            else{
+                obj = _particleEffectManager.DequeueObject(_particleEffectManager.PoolableObjects[0].Prefab, _particleEffectManager.PoolableObjects[0].QueueReference);
+            }
+            
+            obj.transform.position = new Vector3(data.collisionPoint.x, data.collisionPoint.y, -1f);
+            ParticleSystem particle = obj.GetComponent<ParticleSystem>();
+        }
+
         if (target.CanBlock) return; // If hit opponent blocked/can block the attack.
 
         if (target.CurrentSubState == FighterStates.Block){
@@ -457,16 +493,24 @@ public abstract class FighterStateMachine : MonoBehaviour
 
         // Screen Shake upon a successful hit.
         if (data.action.ScreenShakeVelocity != Vector3.zero)
-        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity);
+        CameraController.Instance.ScreenShake(data.action.ScreenShakeVelocity * Mathf.Sign(data.hitbox.Transform.right.x));
         
         // Stamina Recovery upon a successful hit.
         _staminaManager.UpdateStamina(data.action.StaminaRecovery);
+
+        // SpiritManager Functions
+        if (_spiritManager != null){
+            _spiritManager.Setup(this, data);
+            _spiritManager.DrawPath(); // DEBUG
+            _spiritManager.UpdateSpirit(data.action.SpiritRecovery);
+        }
     }
 
     protected virtual void OnHurt(CollisionData data){
         if (_isHurt) return;
         _hurtCollisionData = data;
         _isHurt = true;
+        Debug.Log("Script: FighterStateMachine - OnHurt " + " Time: " + Time.timeSinceLevelLoad);
 
         if (_isInvulnerable) return;
     }
@@ -477,7 +521,7 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     public virtual void SetFaceDirection(int value){
         _faceDirection = value;
-        transform.rotation = Quaternion.Euler(0f, 90f * _faceDirection, 0f);
+        transform.rotation = Quaternion.Euler(0f, 95f * _faceDirection, 0f);
         transform.localScale = new Vector3(_faceDirection, 1f, 1f);
     }
 
@@ -488,10 +532,12 @@ public abstract class FighterStateMachine : MonoBehaviour
         {
             case Player.P1:
                 SetFaceDirection(-1);
+                if (_spiritManager) EventManager.Instance.RecoveredFromStun_P1?.Invoke();
             break;
 
             case Player.P2:
                 SetFaceDirection(1);
+                if (_spiritManager) EventManager.Instance.RecoveredFromStun_P2?.Invoke();
             break;
         }
 
@@ -499,8 +545,12 @@ public abstract class FighterStateMachine : MonoBehaviour
         _isHurt = false;
         _isInvulnerable = false;
         _isGravityApplied = true;
-        _gravity = Physics2D.gravity.y;
+        _gravity = 0f;
         _drag = 0f;
+
+        _currentMovement = Vector2.zero;
+        _velocity = Vector2.zero;
+        _rigidbody2D.velocity = Vector2.zero;
         
         _isJumpPressed.Reset();
         _isAttackPerformed.Reset();
@@ -510,10 +560,11 @@ public abstract class FighterStateMachine : MonoBehaviour
         _isDashPressed.Reset();
         _isDodgePressed.Reset();
 
-        _staminaManager.Reset();
-        _healthManager.Reset();
+        _staminaManager?.Reset();
+        _healthManager?.Reset();
+        _spiritManager?.Reset();
 
-        _currentState = _states.GetRootState(FighterRootStates.Airborne);
+        _currentState = _states.GetRootState(FighterRootStates.Grounded);
         _currentState.EnterState();
     }
 

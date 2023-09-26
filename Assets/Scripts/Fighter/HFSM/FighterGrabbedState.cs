@@ -49,10 +49,18 @@ public class FighterGrabbedState : FighterBaseState
             _action = _ctx.ActionDictionary["AirborneIdle"] as ActionDefault;
         }
 
-        _ctx.AnimOverrideCont["Idle 1"] = _action.meshAnimation;
+        AnimationClip clip = _action.meshAnimation;
+        AnimationClip boxClip = _action.boxAnimation;
 
-        _ctx.Animator.Play("Idle");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;
+
+        float speedVar = AdjustAnimationTime(clip, _action.frames);
+        _ctx.Animator.SetFloat("SpeedVar", speedVar);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
+
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()

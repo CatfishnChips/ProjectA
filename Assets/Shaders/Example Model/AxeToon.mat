@@ -39,7 +39,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 699ab5e1519205845afa753332b1fe80, type: 3}
+        m_Texture: {fileID: 2800000, guid: aec0db98fc430584cb2632a31979f26e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadowTexture:
@@ -72,7 +72,7 @@ Material:
     - _DabsTiling: 10
     - _DiffuseFalloffTreshold: 2.26
     - _DiffuseLitTreshold: 1
-    - _DiffuseSoftness: 3.5
+    - _DiffuseSoftness: 1.71
     - _FalloffTreshold: 0
     - _HatchDensity: 10
     - _HatchRotation: 0

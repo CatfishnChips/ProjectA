@@ -19,9 +19,9 @@ public struct ComboMove{
 public class ComboMoveSpecs{
     //public int comboName;
     public int moveNumber;
-    public ActionAttack theMove;
+    public ActionFighterAttack theMove;
     public bool willOverride;
-    public ActionAttack moveToOverride;
+    public ActionFighterAttack moveToOverride;
     public Dictionary<string, ComboMoveSpecs> possibleNextMoves;
 
     public ComboMoveSpecs(){
@@ -42,6 +42,20 @@ public struct FrameEvent
         m_event = func;
     }
     public void Event(FighterStateMachine ctx, FighterAttackState state) { m_event(ctx, state); }
+}
+
+public delegate void FrameEventFunction_Spirit(SpiritController ctx);
+
+public struct FrameEvent_Spirit
+{
+    private int m_frame;
+    private FrameEventFunction_Spirit m_event;
+    public int Frame {get => m_frame;}
+    public FrameEvent_Spirit(int frame, FrameEventFunction_Spirit func){
+        m_frame = frame;
+        m_event = func;
+    }
+    public void Event(SpiritController ctx) { m_event(ctx); }
 }
 
 [Serializable]

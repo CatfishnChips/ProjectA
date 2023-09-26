@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(FighterStateMachine))]
 public class ProjectileManager : MonoBehaviour, IObjectPool
 {
     #region  IObjectPool Interface
@@ -27,12 +26,12 @@ public class ProjectileManager : MonoBehaviour, IObjectPool
     [SerializeField] private Transform m_spawnLocation;
 
     private void Awake(){
-        foreach (PoolableObject poolableObject in PoolableObjects){
-            poolableObject.QueueReference = CreatePool(poolableObject.Prefab, poolableObject.Amount);
-        }
+        
     }
     
     private void Start(){
-        
+        foreach (PoolableObject poolableObject in PoolableObjects){
+            poolableObject.QueueReference = CreatePool(poolableObject.Prefab, poolableObject.Amount);
+        }
     }
 }

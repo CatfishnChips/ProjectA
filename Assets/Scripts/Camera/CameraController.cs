@@ -25,8 +25,6 @@ public class CameraController : MonoBehaviour
 
     public bool _inCombat; // Alternatively enums can be used to determine the camera state.
     [SerializeField] private GameObject _virtualCamera1, _virtualCamera2;
-    [SerializeField] private Transform _combatConfineBorders;
-    [SerializeField] private CinemachineTargetGroup _combatTargetGroup;
     [SerializeField] private CinemachineImpulseSource _impulseSource;
 
     private float orthographicSize;
@@ -62,9 +60,7 @@ public class CameraController : MonoBehaviour
     {
         if (_inCombat) 
         {
-            //_combatConfineBorders.position = _player.position;
             AddToTargetGroup();
-            _combatConfineBorders.position = _combatTargetGroup.transform.position; // Don't forget to add the target before running this code!
             _virtualCamera1.SetActive(false);
             _virtualCamera2.SetActive(true);
         }

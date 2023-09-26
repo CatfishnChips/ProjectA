@@ -41,6 +41,13 @@ public class TimeController : MonoBehaviour
         _fixedDeltaTime = Time.fixedDeltaTime;
     }
 
+    public void TogglePause(){
+        if (Time.timeScale != 0f)
+        Time.timeScale = 0f;
+        else
+        Time.timeScale = _timeScale;
+    }
+
     public bool SlowDown(){
         if (_inEffect) return false;
         StartCoroutine(AdjustTimeScale());

@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private GameObject m_pauseOverlay;
+    [SerializeField] private GameObject m_debugOverlay;
+
     private HealthbarController m_healthbarController;
     private StaminabarController m_staminabarController;
     private TimerController m_timerController;
@@ -9,6 +13,7 @@ public class UIManager : MonoBehaviour
     private RoundIndicatorController m_roundController;
     private InteractionIndicatorController m_interactionController;
     private FocusIndicatorController m_focusController;
+    private SpiritbarController m_spiritbarController;
     private ComboIndicatorController m_comboController;
 
     private void Awake(){
@@ -19,6 +24,7 @@ public class UIManager : MonoBehaviour
         m_roundController = FindObjectOfType<RoundIndicatorController>();
         m_interactionController = FindObjectOfType<InteractionIndicatorController>();
         m_focusController = FindObjectOfType<FocusIndicatorController>();
+        m_spiritbarController = FindObjectOfType<SpiritbarController>();
         m_comboController = FindObjectOfType<ComboIndicatorController>();
     }
 
@@ -36,6 +42,8 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.RoundChanged += OnRoundChanged;
         EventManager.Instance.Focus_P1 += OnFocus_P1;
         EventManager.Instance.Focus_P2 += OnFocus_P2;
+        EventManager.Instance.SpiritChanged_P1 += OnSpiritChanged_P1;
+        EventManager.Instance.SpiritChanged_P2 += OnSpiritChanged_P2;
     }
 
     private void OnDisable(){
@@ -52,7 +60,26 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.RoundChanged -= OnRoundChanged;
         EventManager.Instance.Focus_P1 -= OnFocus_P1;
         EventManager.Instance.Focus_P2 -= OnFocus_P2;
+        EventManager.Instance.SpiritChanged_P1 -= OnSpiritChanged_P1;
+        EventManager.Instance.SpiritChanged_P2 -= OnSpiritChanged_P2;
     }
+
+    #region Public Methods
+
+    public void Button_ResetRound(){
+        EventManager.Instance.ResetMatch();
+    }
+
+    public void Button_Pause(){
+        EventManager.Instance.PauseMatch();
+        m_pauseOverlay.SetActive(!m_pauseOverlay.activeSelf);
+    }
+
+    public void Button_ToggleDebug(){
+        m_debugOverlay.SetActive(!m_debugOverlay.activeSelf);
+    }
+
+    #endregion
 
     #region Healthbar Controller
 
@@ -94,6 +121,22 @@ public class UIManager : MonoBehaviour
         if(!m_staminabarController) return;
         value = value / maxValue;
         m_staminabarController.UpdateBlock_P2(value);
+    }
+
+    #endregion
+
+    #region Spiritbar Controller
+
+    private void OnSpiritChanged_P1(float value, float maxValue){
+        if(!m_spiritbarController) return;
+        value = value / maxValue;
+        m_spiritbarController.UpdateSpiritbar_P1(value);
+    }
+
+    private void OnSpiritChanged_P2(float value, float maxValue){
+        if(!m_spiritbarController) return;
+        value = value / maxValue;
+        m_spiritbarController.UpdateSpiritbar_P2(value);
     }
 
     #endregion

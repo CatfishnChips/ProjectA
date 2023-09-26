@@ -6,6 +6,10 @@ public class FighterDashState : FighterBaseState
 {
     private ActionConditional _action;
     private int _currentFrame = 0;
+    private float _direction;
+    private float _time;
+    private float _initialVelocity;
+    private float _drag;
 
     public FighterDashState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -23,7 +27,7 @@ public class FighterDashState : FighterBaseState
         _ctx.IsDashPressed = false;
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
-        _ctx.Drag = 0f;
+        _drag = 0f;
 
         if (_ctx.IsGrounded) 
         {
@@ -35,41 +39,54 @@ public class FighterDashState : FighterBaseState
         }
 
         AnimationClip clip;
+        AnimationClip colClip;
         if (_ctx.SwipeDirection.x < 0)
         {
             clip = _action.Animations[0].meshAnimation;
+            colClip = _action.Animations[0].boxAnimation;
         }
         else
         {
             clip = _action.Animations[1].meshAnimation;
+            colClip = _action.Animations[1].boxAnimation;
         }
-        
-        _ctx.AnimOverrideCont["Dash"] = clip;
-        //_ctx.ColBoxOverrideCont["Dash"]
+
+        _direction = _ctx.SwipeDirection.x;
+        _time = _ctx.DashTime * Time.fixedDeltaTime;
+
+        _drag = -2 * _ctx.DashDistance / Mathf.Pow(_time, 2);
+        _drag *= _direction;
+
+        _initialVelocity = 2 * _ctx.DashDistance / _time; // Initial horizontal velocity;
+        _initialVelocity *= _direction;
+
+        _ctx.Drag = _drag;
+        _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
+
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
 
         // For this action, DashTime variable is used instead of animation's Frame variable.
         float speedVar = AdjustAnimationTime(clip, _ctx.DashTime);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
-
-        _ctx.Animator.Play("Dash");
-        _ctx.ColBoxAnimator.Play("Idle");
-
-        float direction = -Mathf.Sign(_ctx.SwipeDirection.x);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
         
-        float _time = _ctx.DashTime * Time.fixedDeltaTime;
-
-        _ctx.Drag = (-2 * _ctx.DashDistance) / (_time * _time) * direction;
-        float _initialDashVelocity = (2 * _ctx.DashDistance) / _time;
-
-        _initialDashVelocity = _initialDashVelocity * direction;
-
-        _ctx.CurrentMovement = new Vector2(_initialDashVelocity, _ctx.CurrentMovement.y);
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()
     {
+        _drag = 0f;
+        _direction = 0f;
+        _time = 0f;
+        _initialVelocity = 0f;
+        _currentFrame = 0;
+
         _ctx.IsGravityApplied = true;
+        _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
+        _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;
     }
 

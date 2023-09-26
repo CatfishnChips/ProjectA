@@ -1,9 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class MatchConducter : MonoBehaviour
 {   
+    #region Singleton
+
+    public static MatchConducter Instance;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
+        FillFighterSlots();
+
+        float xL = m_stageConfineBorders.points[0].x;
+        float yU = m_stageConfineBorders.points[0].y;
+        float xR = m_stageConfineBorders.points[2].x;
+        float yD = m_stageConfineBorders.points[2].y;
+        m_stageBorders = new Vector4(xL, xR, yD, yU);
+    }
+
+    #endregion
+
     #region Variables
 
     [Header("Settings")]
@@ -40,9 +65,15 @@ public class MatchConducter : MonoBehaviour
     [SerializeField] [ReadOnly] private FighterStateMachine m_fighterSlot1;
     [SerializeField] [ReadOnly] private FighterStateMachine m_fighterSlot2;
 
+    [SerializeField] private PolygonCollider2D m_stageConfineBorders;
+    private Vector4 m_stageBorders;
+
+    public PolygonCollider2D StageConfineBorders {get => m_stageConfineBorders;}
+    public Vector4 StageBorders {get => m_stageBorders;}
+
     #endregion
 
-    private void Awake(){
+    private void FillFighterSlots(){
         List<FighterStateMachine> fighters = new List<FighterStateMachine>();
         fighters.AddRange(FindObjectsOfType<FighterStateMachine>());
 
@@ -64,6 +95,9 @@ public class MatchConducter : MonoBehaviour
         EventManager.Instance.HealthChanged_P1 += OnHealthChanged_P1;
         EventManager.Instance.HealthChanged_P2 += OnHealthChanged_P2;
 
+        EventManager.Instance.ResetMatch += OnReset;
+        EventManager.Instance.PauseMatch += OnPause;
+
         m_currentTime = m_time;
         EventManager.Instance.TimeChanged?.Invoke(Mathf.FloorToInt(m_currentTime));
     }
@@ -71,7 +105,22 @@ public class MatchConducter : MonoBehaviour
     private void OnDisable(){
         EventManager.Instance.HealthChanged_P1 -= OnHealthChanged_P1;
         EventManager.Instance.HealthChanged_P2 -= OnHealthChanged_P2;
+
+        EventManager.Instance.ResetMatch -= OnReset;
+        EventManager.Instance.PauseMatch -= OnPause;
     }
+
+    #region Event Methods
+
+    private void OnReset(){
+        HandleRoundStart();
+    }
+
+    private void OnPause(){
+        HandlePause();
+    }
+
+    #endregion
 
     private void Update(){
         if (m_state != MatchStates.InRound) return;
@@ -194,6 +243,10 @@ public class MatchConducter : MonoBehaviour
         EventManager.Instance.TimeChanged?.Invoke(Mathf.FloorToInt(Mathf.Clamp(m_currentTime, 0f, m_time)));
 
         m_state = MatchStates.InRound;
+    }
+
+    private void HandlePause(){
+        TimeController.Instance.TogglePause();
     }
 }
 

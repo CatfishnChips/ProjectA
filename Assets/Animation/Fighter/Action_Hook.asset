@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f64798f3180f248af4c14b875a0a25, type: 3}
+  m_Name: Action_Hook
+  m_EditorClassIdentifier: 
+  name: Flick
+  m_tags: 273
+  m_damage: 20
+  m_chipDamage: 5
+  m_priority: 0
+  m_part: 1
+  m_ignoreBlock: 0
+  m_blockStun: 15
+  m_hitStop: 10
+  m_knockbackStun: 20
+  m_knockdownStun: 0
+  m_knockupStun: {x: 0, y: 0}
+  m_knockup: 0
+  m_knockback: 1
+  m_gravity: 1
+  m_staminaRecovery: 0
+  m_spiritRecovery: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_screenShakeVelocity: {x: 0.1, y: 0, z: 0}
+  m_cameraPosition: {x: 0, y: 0, z: 0}
+  m_cameraRotation: {x: 0, y: 0, z: 0}
+  m_cameraEaseFactor: 0
+  m_startFrames: 14
+  m_activeFrames: 5
+  m_recoveryFrames: 16
+  m_hitboxFrame: 0
+  m_hitboxOffset: {x: 0.75, y: 1.56}
+  m_hitboxLocation: {x: 0.75, y: 1.9203584}
+  m_hitboxSize: {x: 0.66, y: 0.39}
+  m_meshAnimationS: {fileID: 5957019114525006754, guid: b389397d1aa962c48b499fff14f75182,
+    type: 3}
+  m_meshAnimationA: {fileID: -203655887218126122, guid: b389397d1aa962c48b499fff14f75182,
+    type: 3}
+  m_meshAnimationR: {fileID: 7400000, guid: df8661685cd42a042bf368471e6f08ef, type: 2}
+  m_boxAnimationS: {fileID: 7400000, guid: a9bfb91e6faef104c973ba6172fad763, type: 2}
+  m_boxAnimationA: {fileID: 7400000, guid: 94919e22334b42349a670010eb3edb65, type: 2}
+  m_boxAnimationR: {fileID: 7400000, guid: e8478adfebbc3344fb98ac2aa116d6d4, type: 2}

@@ -35,16 +35,16 @@ public class FighterDodgeState : FighterBaseState
         }
         AnimationClip clip = _action.meshAnimation;
         AnimationClip boxClip = _action.boxAnimation;
-        _ctx.AnimOverrideCont["Dodge"] = clip;
-        _ctx.ColBoxOverrideCont["Dodge"] = boxClip;
+
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;
 
         float speedVar = AdjustAnimationTime(clip, _ctx.DodgeTime.x + _ctx.DodgeTime.y);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
-        float boxSpeedVar = AdjustAnimationTime(boxClip, _ctx.DodgeTime.x + _ctx.DodgeTime.y);
-        _ctx.ColBoxAnimator.SetFloat("SpeedVar", boxSpeedVar);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
 
-        _ctx.Animator.Play("Dodge");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()
@@ -63,8 +63,6 @@ public class FighterDodgeState : FighterBaseState
 
             if (_ctx.IsHurt){
                 Debug.Log("Script: FighterDodgeState - FixedUpdateState : Attack Dodged");
-                //_ctx.Focus = true;
-                //_ctx.ResetFocusTimer();
                 _ctx.IsHurt = false;
             }
         }
