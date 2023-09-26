@@ -43,6 +43,7 @@ public class FighterAttackState : FighterBaseState
         string attackName = _ctx.AttackName;
         _ctx.AttackPerformed = false;
         _currentFrame = 0;
+        _ctx.OnAttackStart?.Invoke();
 
         // Restart Combo Listener.
         if(!_ctx.ComboListener.isActive){
@@ -93,6 +94,7 @@ public class FighterAttackState : FighterBaseState
     {
         _ctx.IsGravityApplied = true;
         _ctx.ActionState = default;
+        _ctx.OnAttackEnd?.Invoke();
         _action.ExitStateFunction(_ctx, this);
     }
 

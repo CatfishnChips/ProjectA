@@ -34,11 +34,18 @@ namespace TheKiwiCoder {
         // Storage container object to hold game object subsystems
         Context context;
 
+        Blackboard blackboard;
+
         // Start is called before the first frame update
         void Start() {
             context = new Context(gameObject);
+            blackboard = new Blackboard();
+            context.enemyFSM.OnAttackStart += blackboard.OnEnemyAttackStart;
+            context.enemyFSM.OnAttackEnd += blackboard.OnEnemyAttackEnd;
+            context.selfFSM.OnAttackStart += blackboard.OnSelfAttackStart;
+            context.selfFSM.OnAttackEnd += blackboard.OnSelfAttackEnd;
             tree = tree.Clone();
-            tree.Bind(context);
+            tree.Bind(context, blackboard);
         }
 
         // Update is called once per frame
@@ -46,6 +53,14 @@ namespace TheKiwiCoder {
             if (tree) {
                 tree.Update();
             }
+        }
+
+        void OnDisable()
+        {
+            context.enemyFSM.OnAttackStart -= blackboard.OnEnemyAttackStart;
+            context.enemyFSM.OnAttackEnd -= blackboard.OnEnemyAttackEnd;
+            context.selfFSM.OnAttackStart -= blackboard.OnSelfAttackStart;
+            context.selfFSM.OnAttackEnd -= blackboard.OnSelfAttackEnd;
         }
 
         // Context CreateBehaviourTreeContext() {

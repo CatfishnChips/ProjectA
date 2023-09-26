@@ -13,7 +13,7 @@ namespace TheKiwiCoder {
         public Node.State treeState = Node.State.Running;
         public List<Node> nodes = new List<Node>();
         public Context context;
-        public Blackboard blackboard = new Blackboard();
+        public Blackboard blackboard;
 
         public Node.State Update() {
             if (rootNode.state == Node.State.Running) {
@@ -59,8 +59,9 @@ namespace TheKiwiCoder {
             return tree;
         }
 
-        public void Bind(Context context) {
+        public void Bind(Context context, Blackboard blackboard) {
             this.context = context;
+            this.blackboard = blackboard;
             Traverse(rootNode, node => {
                 node.context = context;
                 node.blackboard = blackboard;

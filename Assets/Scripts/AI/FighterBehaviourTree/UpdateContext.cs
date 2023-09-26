@@ -11,17 +11,14 @@ public class UpdateContext : ActionNode
         Debug.Log("Start: " + context.optimalDistance);
     }
 
-    protected override void OnStop()
-    {
-        throw new System.NotImplementedException();
-    }
+    protected override void OnStop(){}
 
     protected override State OnUpdate()
     {
         context.hittingAttacks = CalcHittingAttacks();
         context.distanceToOpponent.x = Math.Abs(context.enemyFSM.transform.position.x - context.selfFSM.transform.position.x);
         context.distanceToOpponent.y = Math.Abs(context.enemyFSM.transform.position.y - context.selfFSM.transform.position.y);
-        return State.Running;
+        return State.Success;
     }
 
     private Dictionary<string, ActionAttack> CalcHittingAttacks()

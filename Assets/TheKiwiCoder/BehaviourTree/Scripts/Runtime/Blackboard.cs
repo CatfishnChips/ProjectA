@@ -12,6 +12,38 @@ namespace TheKiwiCoder {
         public Vector3 moveToPosition;
         public string choosenAgressiveAction;
         public string choosenDefensiveAction;
-        public int dodgeFrame; // In frames. If Attempt defensive action decided to dodge it also tells how much to wait for the dogdge to work.
+        public ActionAttack enemyAttackAction;
+
+        public bool enemyAttackStarted;
+        public bool EnemyAttackEnded;
+
+        public bool selfAttackStarted;
+        public bool selfAttackEnded;
+
+        public void OnEnemyAttackStart()
+        {
+            Debug.Log("I've been Invoked!");
+            enemyAttackStarted = true;
+            EnemyAttackEnded = false;
+        }
+
+        public void OnEnemyAttackEnd()
+        {
+            enemyAttackStarted = false;
+            EnemyAttackEnded = true;
+        }
+
+        public void OnSelfAttackStart()
+        {
+            Debug.Log("I've been Invoked!");
+            selfAttackStarted = true;
+            selfAttackEnded = false;
+        }
+
+        public void OnSelfAttackEnd()
+        {
+            selfAttackStarted = false;
+            selfAttackEnded = true;
+        }
     }
 }

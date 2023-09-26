@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, AnimationClip>>
 {
@@ -54,6 +55,11 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected HealthManager _healthManager;
     protected StaminaManager _staminaManager;
     protected Vector2 _velocity;
+
+    #region Public Events
+    public UnityAction OnAttackStart;
+    public UnityAction OnAttackEnd;
+    #endregion
 
     #region Input Variables
     

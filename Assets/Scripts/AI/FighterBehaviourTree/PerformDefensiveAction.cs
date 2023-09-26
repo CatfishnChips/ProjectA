@@ -25,7 +25,7 @@ public class PerformDefensiveAction : ActionNode
 
         if(choosenAction == "Dodge")
         {
-            if(dodgeWaitStartFrame >= blackboard.dodgeFrame) 
+            if(dodgeWaitStartFrame >= blackboard.enemyAttackAction.StartFrames - 2) 
             {
                 EventManager.Instance.P2Swipe?.Invoke(new Vector2(1.0f, 1.0f));
                 return State.Success;
