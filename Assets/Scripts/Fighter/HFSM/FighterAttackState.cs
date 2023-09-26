@@ -46,6 +46,7 @@ public class FighterAttackState : FighterBaseState
         _action = _ctx.AttackAction;
         _ctx.AttackPerformed = false;
         _currentFrame = 0;
+        _ctx.OnAttackStart?.Invoke();
         _hadHit = false;
         _ctx.CurrentFrame =_currentFrame;
         _actionState = ActionStates.Start;
@@ -102,6 +103,7 @@ public class FighterAttackState : FighterBaseState
         _ctx.CurrentFrame = 0;
         _ctx.IsGravityApplied = true;
         _ctx.ActionState = default;
+        _ctx.OnAttackEnd?.Invoke();
         _action.ExitStateFunction(_ctx, this);
     }
 

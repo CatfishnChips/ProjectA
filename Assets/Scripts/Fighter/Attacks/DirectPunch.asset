@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DirectPunch
   m_EditorClassIdentifier: 
   name: DirectPunch
-  m_tags: 545
+  m_tags: 1569
   m_damage: 10
   m_chipDamage: 0
   m_priority: 0

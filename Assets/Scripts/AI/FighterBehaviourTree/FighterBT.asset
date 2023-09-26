@@ -1,0 +1,736 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7149117567766931579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 97239c18a5055f54ebf1a8453733d7ac
+  position: {x: 270.99994, y: 386.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: -5564537280148535860}
+  - {fileID: -3421329193651848488}
+--- !u!114 &-7147008530974509709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d71b2d7ccbad442a0e63c4c9c304cc, type: 3}
+  m_Name: AttemptComboAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 660f6b52f5501e746bf4ffb8e6c76943
+  position: {x: -371.5, y: 531}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  hasAttackEnded: 0
+  comboAttemptResult: 0
+--- !u!114 &-5564537280148535860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260a010d7f707b44e8081f7afa71b623, type: 3}
+  m_Name: CheckSelfState
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 270a6b3c35bd82b43bf9deeba30e6fbf
+  position: {x: 74.00011, y: 543.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  fighterState: 7
+--- !u!114 &-5198595182799456809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b5bb96d29ab6d479b8d29a6570d49d, type: 3}
+  m_Name: EnemyStartedAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 27577e96bd1b4de439f93cc78dcd4700
+  position: {x: -509, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &-3553672768749582108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7082fcf09b54914a944c19310a543e9, type: 3}
+  m_Name: DodgeOpportunityAttack
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: ad2618cc946fae1488265e4fd78ac278
+  position: {x: 252.00005, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &-3461740774868216060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: c43e3865e1b70044fb057bb694acff91
+  position: {x: 765.00006, y: 657.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: 7379778966287545059}
+  - {fileID: 5317359717410444396}
+--- !u!114 &-3421329193651848488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 460be9e34c566ea45b9e282b1adcb028, type: 3}
+  m_Name: Selector
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 6baa4b9930317e84d9f5dcacefddd864
+  position: {x: 453.0001, y: 530.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: 177480021668732396}
+  - {fileID: -3461740774868216060}
+  - {fileID: -1840738032937383972}
+--- !u!114 &-3247677787701465192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 460be9e34c566ea45b9e282b1adcb028, type: 3}
+  m_Name: Selector
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 54fb9627fb4e26349b7e525fef3a46ec
+  position: {x: -0.9999281, y: 231.89986}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: 3863610871985379848}
+  - {fileID: -7149117567766931579}
+--- !u!114 &-3175865701110744731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a8084d39a39b14c8326ad610567535, type: 3}
+  m_Name: CheckEnemyState
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 373b46819800b3c4580089fbf3763651
+  position: {x: -319, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  fighterState: 32
+--- !u!114 &-1840738032937383972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d625044c2b410c140992b2f77ed0bc21, type: 3}
+  m_Name: TaskMovement
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 297bbda3a67bf274d8b56771728b96ba
+  position: {x: 1041.0001, y: 657.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &-605847545962928957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c300150acd965e548b25fb094faa9b22, type: 3}
+  m_Name: PerformAgressiveAction
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 7b45cecf6331d054eb69fd991837a254
+  position: {x: 448.00012, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d285eb63c2cdd74180de7cfceaa96ad, type: 3}
+  m_Name: FighterBT
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: 7635126559455089159}
+  treeState: 0
+  nodes:
+  - {fileID: 7635126559455089159}
+  - {fileID: 6915214912426467414}
+  - {fileID: -3247677787701465192}
+  - {fileID: 3863610871985379848}
+  - {fileID: 4147723207166958489}
+  - {fileID: 4962567502504126604}
+  - {fileID: -7149117567766931579}
+  - {fileID: 177480021668732396}
+  - {fileID: -3461740774868216060}
+  - {fileID: 6009643140373387068}
+  - {fileID: 6029925211247233728}
+  - {fileID: 7379778966287545059}
+  - {fileID: 5317359717410444396}
+  - {fileID: -1840738032937383972}
+  - {fileID: 1955740741073932197}
+  - {fileID: -5564537280148535860}
+  - {fileID: -3175865701110744731}
+  - {fileID: -3421329193651848488}
+  - {fileID: -5198595182799456809}
+  - {fileID: -3553672768749582108}
+  - {fileID: -605847545962928957}
+  - {fileID: 7676075055995863792}
+  - {fileID: 9205810158981443051}
+  - {fileID: -7147008530974509709}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+--- !u!114 &177480021668732396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 90624356c63226041aa431d0b0618cbe
+  position: {x: 269.00003, y: 657.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: -5198595182799456809}
+  - {fileID: -3175865701110744731}
+  - {fileID: 6009643140373387068}
+  - {fileID: 6029925211247233728}
+  - {fileID: -3553672768749582108}
+  - {fileID: -605847545962928957}
+--- !u!114 &1955740741073932197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260a010d7f707b44e8081f7afa71b623, type: 3}
+  m_Name: CheckSelfState
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: fb943b8b1d8925640a0ab8399673e21a
+  position: {x: -759.99994, y: 530.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  fighterState: 32
+--- !u!114 &3863610871985379848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 56c0569fadf6c3f4c88450ddd250bc17
+  position: {x: -441.00003, y: 386.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: 1955740741073932197}
+  - {fileID: 4147723207166958489}
+  - {fileID: -7147008530974509709}
+  - {fileID: 4962567502504126604}
+--- !u!114 &4147723207166958489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f26bc04ab2729f94aa8d5de12c4d7983, type: 3}
+  m_Name: WaitForInputListener
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 361c06dc93adaf5438df3af04f33ecec
+  position: {x: -570, y: 530.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &4962567502504126604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c300150acd965e548b25fb094faa9b22, type: 3}
+  m_Name: PerformAgressiveAction
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 68bf9fea0e58bc342a57debcc85fd295
+  position: {x: -174, y: 530.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &5317359717410444396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c300150acd965e548b25fb094faa9b22, type: 3}
+  m_Name: PerformAgressiveAction
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 1b677414cd0fbdc4cbc1952a419037f8
+  position: {x: 862.00006, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &6009643140373387068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae5af1833eefe5458f82c20a8de959d, type: 3}
+  m_Name: AttemptDefensiveAction
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: a4b0f6f55cd7c4e42864b3880cdf1368
+  position: {x: -138.00002, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &6029925211247233728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ebe33c6010dda4d89999b3a4831d99, type: 3}
+  m_Name: PerformDefensiveAction
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 437c0258a042aec4486896a7e7aecb16
+  position: {x: 59.999973, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &6915214912426467414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb5496e8cd973748a10b3e3ef436ebd, type: 3}
+  m_Name: Repeat
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: d98bd52ec9ea4a04e966cbe614083197
+  position: {x: -1.000061, y: -30.950024}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  child: {fileID: 9205810158981443051}
+  restartOnSuccess: 1
+  restartOnFailure: 1
+--- !u!114 &7379778966287545059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000df73bc8695424390760a9dc3d6fba, type: 3}
+  m_Name: AttemptAgressiveAction
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 241c4aead6c145a4fbd6356309d7a353
+  position: {x: 660.00006, y: 817.89984}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  callMethod: 0
+--- !u!114 &7635126559455089159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163c147d123e4a945b688eddc64e3ea5, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: b2affa35fe4895b4cb9f120258b614ec
+  position: {x: -1.1499901, y: -150.65001}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  child: {fileID: 6915214912426467414}
+--- !u!114 &7676075055995863792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f1cc92478121d24993b9240d05a03d9, type: 3}
+  m_Name: UpdateContext
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 32ce564563c43ce49ba2a42cd496d38a
+  position: {x: -201.00002, y: 232.00002}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+--- !u!114 &9205810158981443051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 5c0b0fe22f04fc049a2974b7d8499c86
+  position: {x: -0.99972534, y: 92.225975}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    EnemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: 7676075055995863792}
+  - {fileID: -3247677787701465192}

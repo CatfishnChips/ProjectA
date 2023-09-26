@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8669598626827312891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61431bba79d7d7843b82bf1de71703f5, type: 3}
+  m_Name: Sequencer
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 20cffd911497d984eb8fdf82a1f96f57
+  position: {x: -1, y: 127}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    dodgeFrame: 0
+  description: 
+  drawGizmos: 0
+  children:
+  - {fileID: 752662541335917147}
+  - {fileID: 4179007974474797622}
+--- !u!114 &-1368181696317019611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb5496e8cd973748a10b3e3ef436ebd, type: 3}
+  m_Name: Repeat
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 400471c3f881c4e47a06eacfa6c2e9b1
+  position: {x: -1, y: -10}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    dodgeFrame: 0
+  description: 
+  drawGizmos: 0
+  child: {fileID: -8669598626827312891}
+  restartOnSuccess: 1
+  restartOnFailure: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d285eb63c2cdd74180de7cfceaa96ad, type: 3}
+  m_Name: NewBehaviourTree
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: 2280161190431868649}
+  treeState: 0
+  nodes:
+  - {fileID: 2280161190431868649}
+  - {fileID: -1368181696317019611}
+  - {fileID: -8669598626827312891}
+  - {fileID: 752662541335917147}
+  - {fileID: 4179007974474797622}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    dodgeFrame: 0
+--- !u!114 &752662541335917147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a055ff4bd9e6642b3f0dff32a86e1d, type: 3}
+  m_Name: RandomPosition
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 51906e8c1840611489412d4fce805c7f
+  position: {x: -151, y: 284}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    dodgeFrame: 0
+  description: 
+  drawGizmos: 0
+  min: {x: -10, y: -10}
+  max: {x: 10, y: 10}
+--- !u!114 &2280161190431868649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163c147d123e4a945b688eddc64e3ea5, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: 827d6fd9adb77c84a85a2b8db51675d4
+  position: {x: -1, y: -142.32}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    dodgeFrame: 0
+  description: 
+  drawGizmos: 0
+  child: {fileID: -1368181696317019611}
+--- !u!114 &4179007974474797622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5134d9de14153468b48928d3e7359a, type: 3}
+  m_Name: Wait
+  m_EditorClassIdentifier: 
+  state: 0
+  started: 0
+  guid: f7930a537435d5f44a0fe8a042338a57
+  position: {x: 122, y: 284}
+  blackboard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    choosenAgressiveAction: 
+    choosenDefensiveAction: 
+    dodgeFrame: 0
+  description: 
+  drawGizmos: 0
+  duration: 3

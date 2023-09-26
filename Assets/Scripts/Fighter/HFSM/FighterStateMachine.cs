@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, AnimationClip>>
 {
@@ -58,6 +59,11 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected SpiritManager _spiritManager;
     protected ProjectileManager m_projectileManager;
     protected Vector2 _velocity;
+
+    #region Public Events
+    public UnityAction OnAttackStart;
+    public UnityAction OnAttackEnd;
+    #endregion
 
     #region Input Variables
     
@@ -213,6 +219,8 @@ public abstract class FighterStateMachine : MonoBehaviour
         _colBoxOverrideCont.GetOverrides(_colBoxClipOverrides);
 
         _attackMoveDict = new Dictionary<string, ActionAttack>();
+        _groundedAttackMoveDict = new Dictionary<string, ActionAttack>();
+        _aerialAttackMoveDict = new Dictionary<string, ActionAttack>();
         _actionDictionary = new Dictionary<string, ActionBase>();
 
         foreach (ActionAttribution attribution in _actionAttribution)

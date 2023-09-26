@@ -35,6 +35,11 @@ public class AIDifficultySettings : ScriptableObject
     [Tooltip("Which action will the AI choose upon a successful defensive action descision (Higher favors dodge).")]
     private float _counterAttackOrDodge;
 
+    [SerializeField]
+    [Range(0.0f, 100.0f)]
+    [Tooltip("After a dodge AI tries to perform an opportunity attack. Higher the value higher the chance of AI to perform this action.")]
+    private float _opportunityAttackConsistency;
+
 
     public bool AggressionResult(float generatedNumber, bool calledPerFrame) 
     {
@@ -47,7 +52,7 @@ public class AIDifficultySettings : ScriptableObject
 
     public bool ComboResult(float generatedNumber)
     {
-        return generatedNumber < (_characterProficiency * Time.fixedDeltaTime); // Calls per frame to this method
+        return generatedNumber < _characterProficiency; 
     }
 
     public bool AttackAccuracy(float generatedNumber)
@@ -63,6 +68,11 @@ public class AIDifficultySettings : ScriptableObject
     public string DefensiveActionType(float generatedNumber)
     {
         return generatedNumber < _counterAttackOrDodge ? "Dodge" : "Counter";
+    }
+
+    public bool OpportunityAttack(float generatedNumber)
+    {
+        return generatedNumber < _opportunityAttackConsistency;
     }
 
 }

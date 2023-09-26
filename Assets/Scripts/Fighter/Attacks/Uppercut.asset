@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Uppercut
   m_EditorClassIdentifier: 
   name: Uppercut
-  m_tags: 0
+  m_tags: 1024
   m_damage: 50
   m_chipDamage: 0
   m_priority: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
   m_activeFrames: 7
   m_recoveryFrames: 12
   m_hitboxFrame: -1
-  m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxOffset: {x: 2, y: 2}
   m_hitboxSize: {x: 0.89, y: 2.8}
   m_meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
     type: 3}

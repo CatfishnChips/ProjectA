@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // public enum AnimationsEnum{
@@ -10,26 +11,27 @@ using UnityEngine;
 //     DirectPunch
 // }
 
+[Flags]
 public enum FighterStates
 {
-    None,
-    Idle,
-    Walk,
-    Run,
-    Airborne,
-    Grounded,
-    Attack,
-    Stunned,
-    Jump,
-    Dash,
-    Dodge,
-    Block,
-    Knockup,
-    Knockdown,
-    Knockback,
-    Grabbed,
-    SlamDunk,
-    FreeFall
+    None = 0 <<0,
+    Idle = 1 << 0,
+    Walk = 1 << 1,
+    Run = 1 << 2,
+    Airborne = 1 << 3,
+    Grounded = 1 << 4,
+    Attack = 1 << 5,
+    Stunned = 1 << 6,
+    Jump = 1 << 7,
+    Dash = 1 << 8,
+    Dodge = 1 << 9,
+    Block = 1 << 10,
+    Knockup = 1 << 11,
+    Knockdown = 1 << 12,
+    Knockback = 1 << 13,
+    Grabbed = 1 << 14,
+    SlamDunk = 1 << 15,
+    FreeFall = 1 << 16
 }
 
 public enum FighterRootStates
@@ -108,4 +110,10 @@ public enum StunnedState
     Grounded,
     Rise,
     Fall
+}
+
+public enum RandomCallMethod
+{
+    OnEachFrame,
+    OncePerCall
 }
