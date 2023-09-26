@@ -6,6 +6,7 @@ public class ParticleEffectManager : MonoBehaviour, IObjectPool
 {
     #region  IObjectPool Interface
 
+    // This list should be filled by the FighterStateMachine's MoveList. Each move stores its own VFX. Same VFX should not create new different pools! 
     [SerializeField] List<PoolableObject> m_poolableObjects = new List<PoolableObject>();
     public List<PoolableObject> PoolableObjects { get => m_poolableObjects; }
 

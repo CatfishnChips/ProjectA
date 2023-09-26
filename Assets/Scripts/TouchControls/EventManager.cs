@@ -25,6 +25,8 @@ public class EventManager : MonoBehaviour
     public UnityAction<Player, int> ScoreChanged;
     public UnityAction<int, int> RoundChanged;
     public UnityAction<Player> MatchEnded;
+    public UnityAction ResetMatch;
+    public UnityAction PauseMatch;
 
     #region Match Events
 
@@ -36,6 +38,7 @@ public class EventManager : MonoBehaviour
     public UnityAction<Interactions> Interaction_P1;
     public UnityAction<float, float> SpiritChanged_P1;
     public UnityAction<bool> Focus_P1;
+    public UnityAction RecoveredFromStun_P1;
 
     #endregion
     
@@ -71,6 +74,7 @@ public class EventManager : MonoBehaviour
     public UnityAction<Interactions> Interaction_P2;
     public UnityAction<float, float> SpiritChanged_P2;
     public UnityAction<bool> Focus_P2;
+    public UnityAction RecoveredFromStun_P2;
 
     #endregion
 

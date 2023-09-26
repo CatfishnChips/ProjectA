@@ -95,6 +95,9 @@ public class MatchConducter : MonoBehaviour
         EventManager.Instance.HealthChanged_P1 += OnHealthChanged_P1;
         EventManager.Instance.HealthChanged_P2 += OnHealthChanged_P2;
 
+        EventManager.Instance.ResetMatch += OnReset;
+        EventManager.Instance.PauseMatch += OnPause;
+
         m_currentTime = m_time;
         EventManager.Instance.TimeChanged?.Invoke(Mathf.FloorToInt(m_currentTime));
     }
@@ -102,7 +105,22 @@ public class MatchConducter : MonoBehaviour
     private void OnDisable(){
         EventManager.Instance.HealthChanged_P1 -= OnHealthChanged_P1;
         EventManager.Instance.HealthChanged_P2 -= OnHealthChanged_P2;
+
+        EventManager.Instance.ResetMatch -= OnReset;
+        EventManager.Instance.PauseMatch -= OnPause;
     }
+
+    #region Event Methods
+
+    private void OnReset(){
+        HandleRoundStart();
+    }
+
+    private void OnPause(){
+        HandlePause();
+    }
+
+    #endregion
 
     private void Update(){
         if (m_state != MatchStates.InRound) return;
@@ -225,6 +243,10 @@ public class MatchConducter : MonoBehaviour
         EventManager.Instance.TimeChanged?.Invoke(Mathf.FloorToInt(Mathf.Clamp(m_currentTime, 0f, m_time)));
 
         m_state = MatchStates.InRound;
+    }
+
+    private void HandlePause(){
+        TimeController.Instance.TogglePause();
     }
 }
 

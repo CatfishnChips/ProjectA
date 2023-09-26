@@ -5,7 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Fighter Attack Action", menuName = "ScriptableObject/Action/Attack/FighterAttack")]
 public class ActionFighterAttack : ActionAttack
 {
-    protected virtual List<FrameEvent> Events {get {return new List<FrameEvent>();}}
+    private List<FrameEvent> _frameEvents = new List<FrameEvent>();
+    protected virtual List<FrameEvent> Events {get {return _frameEvents;}}
+
+    public ActionFighterAttack(){
+        // Add FrameEvents here:
+        //Events.Add(new FrameEvent(21, (FighterStateMachine ctx, FighterAttackState state) => Debug.Log("ActionFighterAttack Event Callback - Frame: " + state._currentFrame)));
+    }
 
     public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
         _firstFrameStartup = true;
@@ -29,6 +35,8 @@ public class ActionFighterAttack : ActionAttack
             state._actionState = ActionStates.Recovery;
         }
         else state._actionState = ActionStates.None;
+
+        //Debug.Log("ActionFighterAttack(SwitchActionStateFunction) - Frame: " + state._currentFrame + " State: " + state._actionState);
     }
 
     public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
@@ -38,9 +46,11 @@ public class ActionFighterAttack : ActionAttack
                 if(_firstFrameStartup){
                     ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.Animator.Play("AttackStart");
-                    ctx.ColBoxAnimator.Play("AttackStart");
+                    ctx.Animator.PlayInFixedTime("AttackStart");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackStart");
                     _firstFrameStartup = false;
+                    
+                    ctx.HitResponder.UpdateData(this);
                 }
             break;
 
@@ -48,8 +58,8 @@ public class ActionFighterAttack : ActionAttack
                 if(_firstFrameActive){
                     ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.Animator.Play("AttackActive");
-                    ctx.ColBoxAnimator.Play("AttackActive");
+                    ctx.Animator.PlayInFixedTime("AttackActive");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackActive");
                     _firstFrameActive = false;
                 }
             break;
@@ -58,8 +68,8 @@ public class ActionFighterAttack : ActionAttack
                 if(_firstFrameRecovery){
                     ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.Animator.Play("AttackRecover");
-                    ctx.ColBoxAnimator.Play("AttackRecover");
+                    ctx.Animator.PlayInFixedTime("AttackRecover");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackRecover");
                     _firstFrameRecovery = false;
                 }
             break;
@@ -74,6 +84,7 @@ public class ActionFighterAttack : ActionAttack
 
         if (ctx.IsHit) {
             ctx.IsHit = false;
+            state.HadHit = true;
 
             if (_firstTimePause){
                 _firstTimePause = false;
@@ -96,6 +107,8 @@ public class ActionFighterAttack : ActionAttack
         } 
         else
         state._currentFrame++;
+
+        //Debug.Log("ActionFighterAttack(FixedUpdateFunction) - Frame: " + state._currentFrame + " State: " + state._actionState);
     }
 
     public virtual void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){

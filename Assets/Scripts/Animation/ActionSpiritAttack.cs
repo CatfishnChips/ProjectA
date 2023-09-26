@@ -47,7 +47,7 @@ public class ActionSpiritAttack : ActionAttack
                     //ctx.Animator.SetFloat("SpeedVar", ctx.Action.AnimSpeedS);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", ctx.Action.AnimSpeedS);
                     //ctx.Animator.Play("AttackStart");
-                    ctx.ColBoxAnimator.Play("AttackStart");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackStart");
                     _firstFrameStartup = false;
                 }
             break;
@@ -56,8 +56,8 @@ public class ActionSpiritAttack : ActionAttack
                 if(_firstFrameActive){
                     //ctx.Animator.SetFloat("SpeedVar", ctx.Action.AnimSpeedA);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", ctx.Action.AnimSpeedA);
-                    //ctx.Animator.Play("AttackActive");
-                    ctx.ColBoxAnimator.Play("AttackActive");
+                    //ctx.Animator.PlayInFixedTime("AttackActive");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackActive");
                     _firstFrameActive = false;
                 }
             break;
@@ -66,8 +66,8 @@ public class ActionSpiritAttack : ActionAttack
                 if(_firstFrameRecovery){
                     //ctx.Animator.SetFloat("SpeedVar", ctx.Action.AnimSpeedR);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", ctx.Action.AnimSpeedR);
-                    //ctx.Animator.Play("AttackRecover");
-                    ctx.ColBoxAnimator.Play("AttackRecover");
+                    //ctx.Animator.PlayInFixedTime("AttackRecover");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackRecover");
                     _firstFrameRecovery = false;
                 }
             break;

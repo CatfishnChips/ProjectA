@@ -177,7 +177,7 @@ public class GestureController : MonoBehaviour
     private void OnTouchAEnd(InputEventParams inputEventParams) 
     {
         float distance = Vector2.Distance(_touchA.InitialScreenPosition, inputEventParams.ScreenPosition);
-        Vector2 direction = (_touchA.InitialScreenPosition - inputEventParams.ScreenPosition).normalized;
+        Vector2 direction = (_touchA.InitialScreenPosition - inputEventParams.NormalizedScreenPosition).normalized;
 
         // Joystick
         _deltaVectorX = 0;
@@ -292,7 +292,7 @@ public class GestureController : MonoBehaviour
             EventManager.Instance.AttackMove?.Invoke(Name);
         }
         else{
-            string name = "Stab";
+            string name = "Tap";
             EventManager.Instance.AttackMove?.Invoke(name);
         }
     }

@@ -28,7 +28,8 @@ public enum FighterStates
     Knockdown,
     Knockback,
     Grabbed,
-    SlamDunk
+    SlamDunk,
+    FreeFall
 }
 
 public enum FighterRootStates
@@ -52,7 +53,8 @@ public enum FighterSubStates
     Knockdown = FighterStates.Knockdown,
     Knockback = FighterStates.Knockback,
     Grabbed = FighterStates.Grabbed,
-    SlamDunk = FighterStates.SlamDunk
+    SlamDunk = FighterStates.SlamDunk,
+    FreeFall = FighterStates.FreeFall
 }
 
 public enum Player
@@ -99,4 +101,11 @@ public enum SpiritState
     Idle,
     Knockup,
     Knockback
+}
+
+public enum StunnedState
+{
+    Grounded,
+    Rise,
+    Fall
 }

@@ -35,19 +35,28 @@ public class FighterKnockdownState : FighterBaseState
 
         ActionDefault action = _ctx.ActionDictionary["Knockdown"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
+        AnimationClip colClip = action.boxAnimation;
 
-        _ctx.AnimOverrideCont["Knockdown"] = clip;
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
+        
 
         float speedVar = AdjustAnimationTime(clip, _action.KnockdownStun);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
 
-        _ctx.Animator.Play("Knockdown");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()
     {
         _ctx.CurrentFrame = 0;
+        _ctx.Gravity = 0f;
+        _ctx.Drag = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = Vector2.zero;
+        _ctx.Rigidbody2D.velocity = Vector2.zero;
     }
 
     public override void FixedUpdateState()

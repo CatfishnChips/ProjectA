@@ -9,7 +9,7 @@ public class AnimationPreviewEditor : Editor
     private Vector2 m_location;
     private Vector2 m_characterPosition;
     private Vector2 m_origin;
-    private bool m_axis3D = true;
+    private bool m_axis3D = false;
     private Hitbox m_hitbox;
 
     private void OnEnable(){

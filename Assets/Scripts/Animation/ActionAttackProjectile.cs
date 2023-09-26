@@ -1,26 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.Remoting.Messaging;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Projectile Attack Action", menuName = "ScriptableObject/Action/Projectile")]
 public class ActionAttackProjectile : ActionFighterAttack
 {   
     public ActionAttackProjectile(){
-        m_frameEvents.Add(new FrameEvent(35, (FighterStateMachine ctx, FighterAttackState state) => PoolProjectile(ctx, state)));
+        m_frameEvents.Add(new FrameEvent(21, (FighterStateMachine ctx, FighterAttackState state) => PoolProjectile(ctx, state)));
     }
 
     private List<FrameEvent> m_frameEvents = new List<FrameEvent>(){
-        new FrameEvent(30, (FighterStateMachine ctx, FighterAttackState state) => Debug.Log("Frame: " + state._currentFrame + " Hello")),
+        //new FrameEvent(30, (FighterStateMachine ctx, FighterAttackState state) => Debug.Log("Frame: " + state._currentFrame + " Hello")),
         // new FrameEvent(35, (FighterStateMachine ctx, FighterAttackState state) => 
         // ((FighterStateMachine_Class1)ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].QueueReference))     
     };
 
     protected void PoolProjectile(FighterStateMachine ctx, FighterAttackState state){
-        var obj = ((FighterStateMachine_Class1)ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].QueueReference); 
+        //var obj = ((FighterStateMachine_Class1)ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].QueueReference); 
+        var obj = ((FighterStateMachine)ctx).ProjectileManager.DequeueObject(((FighterStateMachine)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine)ctx).ProjectileManager.PoolableObjects[0].QueueReference); 
         var projectile = obj.GetComponent<Projectile>();
         projectile.Action = this;
         projectile.Direction = new Vector2(ctx.FaceDirection, 0f);

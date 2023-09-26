@@ -53,20 +53,24 @@ public class FighterKnockbackState : FighterBaseState
 
         ActionDefault action = _ctx.ActionDictionary["Stunned"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
+        AnimationClip boxClip = action.boxAnimation;
 
-        _ctx.AnimOverrideCont["Stunned"] = clip;
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;
 
         _animationSpeed = AdjustAnimationTime(clip, _action.KnockbackStun); 
 
         if (_action.HitStop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
+            _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0f);
         }
         else{
             _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
+            _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
         }
 
-        _ctx.Animator.Play("Stunned");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()
@@ -82,6 +86,7 @@ public class FighterKnockbackState : FighterBaseState
 
             if (_isFirstTime){
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
             }
         }

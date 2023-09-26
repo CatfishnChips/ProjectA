@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class FighterStateFactory
@@ -27,6 +26,7 @@ public class FighterStateFactory
         _states[FighterStates.Knockback] = new FighterKnockbackState(_context, this);
         _states[FighterStates.Grabbed] = new FighterGrabbedState(_context, this);
         _states[FighterStates.SlamDunk] = new FighterSlamDunkState(_context, this);
+        _states[FighterStates.FreeFall] = new FighterFreeFallState(_context, this);
     }
 
     public void OverrideDictionary(Dictionary<FighterStates, FighterBaseState> dictionary){

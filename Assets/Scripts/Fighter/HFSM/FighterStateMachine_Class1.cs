@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FighterStateMachine_Class1 : FighterStateMachine
 {
-    protected ProjectileManager m_projectileManager;
-    public ProjectileManager ProjectileManager {get => m_projectileManager;}
+    //protected ProjectileManager m_projectileManager;
+    //public ProjectileManager ProjectileManager {get => m_projectileManager;}
     
     protected override void AwakeFunction(){
        base.AwakeFunction();

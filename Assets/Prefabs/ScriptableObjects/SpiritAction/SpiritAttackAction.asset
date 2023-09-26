@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85ba71060c151f458d2dc34962e9ef7, type: 3}
   m_Name: SpiritAttackAction
   m_EditorClassIdentifier: 
-  name: Punch
+  name: Spirit
   m_tags: 0
   m_damage: 15
   m_chipDamage: 5

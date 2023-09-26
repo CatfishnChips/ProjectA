@@ -15,10 +15,10 @@ MonoBehaviour:
   name: Dash
   Animations:
   - frames: 30
-    meshAnimation: {fileID: -203655887218126122, guid: 4808e02943c6f29458a4eba4bed62cd9,
+    meshAnimation: {fileID: -203655887218126122, guid: 55bb3cc2706c40c47a6c99d9dffc7ec0,
       type: 3}
-    boxAnimation: {fileID: 0}
+    boxAnimation: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}
   - frames: 30
-    meshAnimation: {fileID: -203655887218126122, guid: b1f80309bce993e4987d3ba29551ef26,
+    meshAnimation: {fileID: -203655887218126122, guid: 55bb3cc2706c40c47a6c99d9dffc7ec0,
       type: 3}
-    boxAnimation: {fileID: 0}
+    boxAnimation: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}

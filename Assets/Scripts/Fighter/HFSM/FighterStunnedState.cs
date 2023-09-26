@@ -9,6 +9,9 @@ public class FighterStunnedState : FighterBaseState
     private ActionAttack _action;
     private float _currentFrame = 0;
     private bool _isFirstTime = true;
+    private StunnedState _state = default;
+    
+    public StunnedState State {get{return _state;} set{_state = value;}}
 
     public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -57,6 +60,7 @@ public class FighterStunnedState : FighterBaseState
 
     public override void EnterState()
     {
+        //Debug.Log("FighterStunnedState(EnterState)");
         _currentFrame = 0;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
@@ -79,15 +83,26 @@ public class FighterStunnedState : FighterBaseState
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
         _ctx.Rigidbody2D.velocity = Vector2.zero;
+
+        switch(_ctx.Player){
+            case Player.P1:
+            EventManager.Instance.RecoveredFromStun_P1?.Invoke();
+            break;
+
+            case Player.P2:
+            EventManager.Instance.RecoveredFromStun_P2?.Invoke();
+            break;
+        }
     }
 
     public override void FixedUpdateState()
     {   
+        //Debug.Log("FighterStunnedState(FixedUpdateState)");
         if (_currentFrame > _action.HitStop){  
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-            //Debug.Log("Fighter Stunned State - Frame: " + _currentFrame + " Velocity Applied: " + _ctx.Velocity);
+            //Debug.Log("Fighter Stunned State - Frame: " + _currentFrame + " Velocity: " + _ctx.Velocity + " Drag/Grav Applied: " + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime);
         }
         CheckSwitchState();
         _currentFrame++;
@@ -95,6 +110,7 @@ public class FighterStunnedState : FighterBaseState
 
     public override void InitializeSubState()
     { 
+        //Debug.Log("FighterStunnedState(InitializeSubState)");
         FighterBaseState state;
         //Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
         if(!_action.IgnoreBlock && _ctx.CanBlock){
@@ -110,7 +126,10 @@ public class FighterStunnedState : FighterBaseState
             state = _factory.GetSubState(FighterSubStates.Knockdown);
         }
         else if (_action.KnockbackStun > 0){
+            if(_ctx.IsGrounded)
             state = _factory.GetSubState(FighterSubStates.Knockback);
+            else
+            state = _factory.GetSubState(FighterSubStates.FreeFall);
         }
         else{
             state = _factory.GetSubState(FighterSubStates.Idle);

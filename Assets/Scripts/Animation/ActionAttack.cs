@@ -129,6 +129,8 @@ public abstract class ActionAttack : ActionBase
     protected bool _firstTimePause = true;
     protected bool _pause = false;
     protected int _pauseFrames = 0;
+
+    public bool Pause { get => _pause; }
 }
 
 [System.Flags]

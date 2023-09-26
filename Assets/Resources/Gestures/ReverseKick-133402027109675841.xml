@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "ReverseKick">
+		<Point X = "-0.0004026738" Y = "-1.164153E-10" T = "0" Pressure = "0" />
+		<Point X = "-0.0003128586" Y = "3.556535E-05" T = "0" Pressure = "0" />
+		<Point X = "-0.0002319395" Y = "8.534297E-05" T = "0" Pressure = "0" />
+		<Point X = "-0.0001531912" Y = "0.0001379524" T = "0" Pressure = "0" />
+		<Point X = "-7.186056E-05" Y = "0.000187533" T = "0" Pressure = "0" />
+		<Point X = "1.398963E-05" Y = "0.0002304537" T = "0" Pressure = "0" />
+		<Point X = "8.417619E-05" Y = "0.0002229057" T = "0" Pressure = "0" />
+		<Point X = "0.0001321037" Y = "0.0001470433" T = "0" Pressure = "0" />
+		<Point X = "0.0001854562" Y = "7.400138E-05" T = "0" Pressure = "0" />
+		<Point X = "0.0002432766" Y = "3.595429E-06" T = "0" Pressure = "0" />
+		<Point X = "0.0002919296" Y = "-6.780471E-05" T = "0" Pressure = "0" />
+		<Point X = "0.000210599" Y = "-0.0001173853" T = "0" Pressure = "0" />
+		<Point X = "0.0001292685" Y = "-0.0001669659" T = "0" Pressure = "0" />
+		<Point X = "4.59461E-05" Y = "-0.0002138615" T = "0" Pressure = "0" />
+		<Point X = "-3.952265E-05" Y = "-0.0002577917" T = "0" Pressure = "0" />
+		<Point X = "-0.0001246995" Y = "-0.0003005845" T = "0" Pressure = "0" />
+</Gesture>

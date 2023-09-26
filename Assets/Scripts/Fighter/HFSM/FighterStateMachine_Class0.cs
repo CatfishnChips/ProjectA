@@ -13,8 +13,19 @@ public class FighterStateMachine_Class0 : FighterStateMachine
     public bool Focus {get{return m_focus;} set{m_focus = value;}}
     public int FocusTimer {get{return m_focusTimer;}}
 
+    protected override void AwakeFunction()
+    {
+        base.AwakeFunction();
+
+        Dictionary<FighterStates, FighterBaseState> overrideDictionary = new Dictionary<FighterStates, FighterBaseState>(){
+            {FighterStates.Dodge, new FighterDodgeState_Class0(this, _states)}
+        };
+        _states.OverrideDictionary(overrideDictionary);
+    }
+
     protected override void FixedUpdateFunction(){
         base.FixedUpdateFunction();
+        
         AdvanceFocusTimer();
     }
 

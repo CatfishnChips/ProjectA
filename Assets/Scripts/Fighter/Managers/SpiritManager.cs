@@ -64,23 +64,42 @@ public class SpiritManager : MonoBehaviour
     }
 
     private void Start(){
+        switch(_player){
+            case Player.P1:
+            EventManager.Instance.RecoveredFromStun_P2 += OnRecover;
+            break;
+
+            case Player.P2:
+            EventManager.Instance.RecoveredFromStun_P1 += OnRecover;
+            break;
+        }
+
         _prefab = Instantiate(_prefab);
         _prefab.Manager = this;
         _prefab.gameObject.SetActive(false);
         Reset();
     }
 
+    private void OnDisable(){
+        switch(_player){
+            case Player.P1:
+            EventManager.Instance.RecoveredFromStun_P2 -= OnRecover;
+            break;
+
+            case Player.P2:
+            EventManager.Instance.RecoveredFromStun_P1 -= OnRecover;
+            break;
+        }
+    }
+
+    private void OnRecover(){
+        _state = SpiritState.Idle; 
+        if (_lineObject)
+        _lineObject.SetActive(false);
+    }
+
     private void FixedUpdate(){
        UpdateSpirit(_spiritRegen);
-
-        // This should be handled via Events
-        // Maybe an OnSubStateChanged and OnRootStateChanged event could be implemented
-       if (_state != SpiritState.Idle){
-            if(_target.CurrentRootState == FighterStates.Stunned) return;
-            if(_target.CurrentSubState != FighterStates.Knockback || _target.CurrentSubState != FighterStates.Knockup)
-            _state = SpiritState.Idle; 
-            _lineObject.SetActive(false);
-       }
     }
 
     public void UpdateSpirit(float value){

@@ -30,6 +30,8 @@ public class FighterBlockState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
+        
+        ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
 
         if (_action.Knockback!= 0){
             float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
@@ -46,16 +48,18 @@ public class FighterBlockState : FighterBaseState
 
         if (_action.BlockStun == 0) return;
 
-        ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
+        AnimationClip colClip = action.boxAnimation;
 
-        _ctx.AnimOverrideCont["Block"] = clip;
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
 
         float speedVar = AdjustAnimationTime(clip, _action.BlockStun);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
 
-        _ctx.Animator.Play("Block");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()

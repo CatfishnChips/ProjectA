@@ -9,12 +9,10 @@ public class FighterSlamDunkState : FighterBaseState
     private int _currentFrame = 0;
     private Vector2 _velocity;
     private float _animationSpeed;
-    private float _colliderAnimationSpeed;
     private bool _isFirstTime = true;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private float _gravity;
     private float _drag;
-    private float _distancePerTime;
 
     public FighterSlamDunkState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -67,11 +65,10 @@ public class FighterSlamDunkState : FighterBaseState
         AnimationClip clip = action.meshAnimation;
         AnimationClip colClip = action.boxAnimation;
 
-        _ctx.AnimOverrideCont["Knockup"] = clip;
-        _ctx.AnimOverrideCont["Idle"] = colClip;
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
 
         _animationSpeed = AdjustAnimationTime(clip, _action.KnockupStun.y); 
-        _colliderAnimationSpeed = AdjustAnimationTime(colClip, _action.KnockupStun.y); 
 
         if (_action.HitStop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
@@ -79,11 +76,11 @@ public class FighterSlamDunkState : FighterBaseState
         }
         else{
             _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
-            _ctx.ColBoxAnimator.SetFloat("SpeedVar", _colliderAnimationSpeed);
+            _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
         }
 
-        _ctx.Animator.Play("Knockup");
-        _ctx.ColBoxAnimator.Play("Idle");
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()
@@ -101,7 +98,7 @@ public class FighterSlamDunkState : FighterBaseState
 
             if (_isFirstTime){
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
-                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _colliderAnimationSpeed);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
             }
             _ctx.Drag = _drag;

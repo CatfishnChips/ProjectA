@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private GameObject m_pauseOverlay;
+    [SerializeField] private GameObject m_debugOverlay;
+
     private HealthbarController m_healthbarController;
     private StaminabarController m_staminabarController;
     private TimerController m_timerController;
@@ -59,6 +63,23 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.SpiritChanged_P1 -= OnSpiritChanged_P1;
         EventManager.Instance.SpiritChanged_P2 -= OnSpiritChanged_P2;
     }
+
+    #region Public Methods
+
+    public void Button_ResetRound(){
+        EventManager.Instance.ResetMatch();
+    }
+
+    public void Button_Pause(){
+        EventManager.Instance.PauseMatch();
+        m_pauseOverlay.SetActive(!m_pauseOverlay.activeSelf);
+    }
+
+    public void Button_ToggleDebug(){
+        m_debugOverlay.SetActive(!m_debugOverlay.activeSelf);
+    }
+
+    #endregion
 
     #region Healthbar Controller
 

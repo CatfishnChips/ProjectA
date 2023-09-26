@@ -36,16 +36,27 @@ public class FighterIdleState : FighterBaseState
         {
             _action = _ctx.ActionDictionary["AirborneIdle"] as ActionDefault;
         }
+        AnimationClip clip = _action.meshAnimation;
+        AnimationClip boxClip = _action.boxAnimation;
 
-        _ctx.AnimOverrideCont["Idle 1"] = _action.meshAnimation;
-        _ctx.ColBoxOverrideCont["Idle"] = _action.boxAnimation;
+        _ctx.AnimOverrideCont["Idle"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Idle"] = boxClip;
 
-        _ctx.Animator.Play("Idle");
-        _ctx.ColBoxAnimator.Play("Idle");
+        // float speedVar = AdjustAnimationTime(clip, _action.frames);
+        _ctx.Animator.SetFloat("SpeedVar", 1f);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", 1f);
+
+        _ctx.Animator.PlayInFixedTime("IdleFallback");
+        _ctx.ColBoxAnimator.PlayInFixedTime("IdleFallback");
     }
 
     public override void ExitState()
     {
+        _ctx.Gravity = 0f;
+        _ctx.Drag = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = Vector2.zero;
+        _ctx.Rigidbody2D.velocity = Vector2.zero;
     }
 
     public override void FixedUpdateState()

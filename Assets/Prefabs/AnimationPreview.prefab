@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4948842602855765671}
-  - component: {fileID: 4948842602855765670}
+  - component: {fileID: 4069064928876100986}
   m_Layer: 0
   m_Name: AnimationPreview
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4948842602855765670
+--- !u!114 &4069064928876100986
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,15 +47,7 @@ MonoBehaviour:
   m_frame: 0
   m_manual: 0
   m_preview: 0
-  m_lockZ: 1
-  m_positionOffset: {x: 0, y: 0.5, z: 0}
-  m_rotationOffset: {x: 0, y: 90, z: 0}
-  m_animationObjects:
-  - Object: {fileID: 0}
-    Clip: {fileID: -203655887218126122, guid: 55bb3cc2706c40c47a6c99d9dffc7ec0, type: 3}
-    ApplyPositionOffset: 1
-    ApplyRotationOffset: 1
-  - Object: {fileID: 0}
-    Clip: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}
-    ApplyPositionOffset: 0
-    ApplyRotationOffset: 1
+  m_lockZ: 0
+  m_positionOffset: {x: 0, y: 0, z: 0}
+  m_rotationOffset: {x: 0, y: 0, z: 0}
+  m_animationObjects: []
