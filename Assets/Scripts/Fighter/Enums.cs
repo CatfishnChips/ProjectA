@@ -30,6 +30,8 @@ public enum FighterStates
     Knockdown = 1 << 12,
     Knockback = 1 << 13,
     Grabbed = 1 << 14,
+    SlamDunk = 1 << 15,
+    FreeFall = 1 << 16
 }
 
 public enum FighterRootStates
