@@ -347,7 +347,7 @@ public abstract class FighterStateMachine : MonoBehaviour
         //Debug.Log("Swipe Direction: " + direction + " Swipe Direction Modified: " + _swipeDirection);
 
         if (direction.y <= -0.5f) {
-            if (direction.y <= -0.9f) _swipeDirection.x = 0f;
+            if (direction.y <= -0.95f) _swipeDirection.x = 0f;
             //if (_isJumpPressed.Value) return;
             StartCoroutine(InputDelay(_isJumpPressed));
         }
