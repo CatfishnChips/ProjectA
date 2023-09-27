@@ -102,34 +102,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 27577e96bd1b4de439f93cc78dcd4700
-  position: {x: -509, y: 817.89984}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
-    enemyAttackAction: {fileID: 0}
-    enemyAttackStarted: 0
-    enemyAttackEnded: 0
-    selfAttackStarted: 0
-    selfAttackEnded: 0
-  description: 
-  drawGizmos: 0
---- !u!114 &-3553672768749582108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7082fcf09b54914a944c19310a543e9, type: 3}
-  m_Name: DodgeOpportunityAttack
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: ad2618cc946fae1488265e4fd78ac278
-  position: {x: 252.00005, y: 817.89984}
+  position: {x: -127.50009, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
@@ -247,7 +220,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 373b46819800b3c4580089fbf3763651
-  position: {x: -319, y: 817.89984}
+  position: {x: 62.49997, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
@@ -276,33 +249,6 @@ MonoBehaviour:
   started: 0
   guid: 297bbda3a67bf274d8b56771728b96ba
   position: {x: 1041.0001, y: 657.89984}
-  blackboard:
-    moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
-    enemyAttackAction: {fileID: 0}
-    enemyAttackStarted: 0
-    enemyAttackEnded: 0
-    selfAttackStarted: 0
-    selfAttackEnded: 0
-  description: 
-  drawGizmos: 0
---- !u!114 &-605847545962928957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c300150acd965e548b25fb094faa9b22, type: 3}
-  m_Name: PerformAgressiveAction
-  m_EditorClassIdentifier: 
-  state: 0
-  started: 0
-  guid: 7b45cecf6331d054eb69fd991837a254
-  position: {x: 448.00012, y: 817.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
@@ -348,8 +294,6 @@ MonoBehaviour:
   - {fileID: -3175865701110744731}
   - {fileID: -3421329193651848488}
   - {fileID: -5198595182799456809}
-  - {fileID: -3553672768749582108}
-  - {fileID: -605847545962928957}
   - {fileID: 7676075055995863792}
   - {fileID: 9205810158981443051}
   - {fileID: -7147008530974509709}
@@ -394,8 +338,6 @@ MonoBehaviour:
   - {fileID: -3175865701110744731}
   - {fileID: 6009643140373387068}
   - {fileID: 6029925211247233728}
-  - {fileID: -3553672768749582108}
-  - {fileID: -605847545962928957}
 --- !u!114 &1955740741073932197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,7 +494,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: a4b0f6f55cd7c4e42864b3880cdf1368
-  position: {x: -138.00002, y: 817.89984}
+  position: {x: 243.4999, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
@@ -579,7 +521,7 @@ MonoBehaviour:
   state: 0
   started: 0
   guid: 437c0258a042aec4486896a7e7aecb16
-  position: {x: 59.999973, y: 817.89984}
+  position: {x: 441.49997, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
