@@ -16,11 +16,12 @@ MonoBehaviour:
   applyRootMotion: 1
   m_tags: 276
   m_damage: 25
-  m_chipDamage: 0
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 0
   m_blockStun: 30
+  blockKnocback: 0.5
+  m_ignoreBlock: 0
   m_hitStop: 10
   m_knockbackStun: 20
   m_knockdownStun: 0

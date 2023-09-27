@@ -1718,7 +1718,7 @@ MonoBehaviour:
   m_layerMask:
     serializedVersion: 2
     m_Bits: 256
-  m_state: 1
+  m_state: 0
   m_openColor: {r: 0.8301887, g: 0.08223567, b: 0.7743195, a: 1}
   m_collidingColor: {r: 0.3379453, g: 0, b: 0.5188679, a: 1}
   m_hurtboxMask: 2
@@ -2650,7 +2650,7 @@ PrefabInstance:
     - target: {fileID: 6664263210252897054, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: orthographic size
-      value: 1.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897054, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -2665,37 +2665,37 @@ PrefabInstance:
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.375
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99858487
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.04977024
+      value: -1e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.018716887
+      value: -1e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000932864
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -4516,7 +4516,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.72, y: 0.8}
+  m_Offset: {x: -0.33, y: 1.47}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4527,7 +4527,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 1.45}
+  m_Size: {x: 0.93, y: 0.63}
   m_EdgeRadius: 0
 --- !u!114 &429341681
 MonoBehaviour:
@@ -4546,8 +4546,8 @@ MonoBehaviour:
   m_hurtboxPart: 2
   m_state: 1
   m_collider: {fileID: 429341680}
-  m_offset: {x: -0.72, y: 0.8}
-  m_size: {x: 0.7, y: 1.45}
+  m_offset: {x: -0.33, y: 1.47}
+  m_size: {x: 0.93, y: 0.63}
 --- !u!1 &439893172
 GameObject:
   m_ObjectHideFlags: 0
@@ -14528,7 +14528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_stamina: 100
-  m_block: 0
+  m_block: 5
   m_staminaRegen: 0.001
   m_currentStamina: 0
   m_currentBlock: 0
@@ -23052,7 +23052,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_animationObjects.Array.data[1].Clip
       value: 
-      objectReference: {fileID: 7400000, guid: 86eb3750def0b794795ba14499322ab7, type: 2}
+      objectReference: {fileID: 7400000, guid: 142a890a7d43efb46a0b8e3e1697c57b, type: 2}
     - target: {fileID: 4069064928876100986, guid: 5056e04150b382145bdfd78b3b1e5bc2,
         type: 3}
       propertyPath: m_animationObjects.Array.data[0].Object
@@ -25089,7 +25089,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.25, y: 2.05}
+  m_Offset: {x: -0.37, y: 2.32}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -25119,7 +25119,7 @@ MonoBehaviour:
   m_hurtboxPart: 0
   m_state: 1
   m_collider: {fileID: 1321268757}
-  m_offset: {x: -1.25, y: 2.05}
+  m_offset: {x: -0.37, y: 2.32}
   m_size: {x: 0.35, y: 0.35}
 --- !u!1 &1322347638
 GameObject:
@@ -28243,7 +28243,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.07, y: 1.51}
+  m_Offset: {x: -0.4, y: 1.96}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -28254,7 +28254,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.74, y: 0.84}
+  m_Size: {x: 0.83, y: 0.52}
   m_EdgeRadius: 0
 --- !u!114 &1469794610
 MonoBehaviour:
@@ -28273,8 +28273,8 @@ MonoBehaviour:
   m_hurtboxPart: 1
   m_state: 1
   m_collider: {fileID: 1469794609}
-  m_offset: {x: -1.07, y: 1.51}
-  m_size: {x: 0.74, y: 0.84}
+  m_offset: {x: -0.4, y: 1.96}
+  m_size: {x: 0.83, y: 0.52}
 --- !u!1 &1469811599
 GameObject:
   m_ObjectHideFlags: 0
@@ -29788,7 +29788,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.85, y: 0.88}
+  m_Offset: {x: -0.43, y: 0.88}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -29815,7 +29815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_state: 1
   m_collider: {fileID: 1627334570}
-  m_offset: {x: -0.85, y: 0.88}
+  m_offset: {x: -0.43, y: 0.88}
   m_size: {x: 0.65, y: 1.77}
 --- !u!1001 &1627374064
 PrefabInstance:
@@ -37299,12 +37299,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0422ea97c27626641aa43e4c99dc227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_offset: {x: 0, y: 0}
-  m_size: {x: 0, y: 0}
+  m_offset: {x: 0.17, y: 1.72}
+  m_size: {x: 1.07, y: 0.48}
   m_layerMask:
     serializedVersion: 2
     m_Bits: 512
-  m_state: 0
+  m_state: 1
   m_openColor: {r: 1, g: 0, b: 0, a: 1}
   m_collidingColor: {r: 1, g: 0.7118232, b: 0, a: 1}
   m_hurtboxMask: 2
