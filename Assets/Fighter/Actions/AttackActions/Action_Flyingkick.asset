@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Action_Flyingkick
   m_EditorClassIdentifier: 
   name: FlyingKick
+  applyRootMotion: 0
   m_tags: 276
   m_damage: 0
   m_chipDamage: 0
@@ -38,13 +39,13 @@ MonoBehaviour:
   m_startFrames: 0
   m_activeFrames: 0
   m_recoveryFrames: 0
-  m_hitboxFrame: 0
-  m_hitboxOffset: {x: 0, y: 0}
-  m_hitboxLocation: {x: 0, y: 0}
-  m_hitboxSize: {x: 0, y: 0}
+  m_hitboxFrame: 7
+  m_hitboxOffset: {x: 2.2562695, y: 1.6326367}
+  m_hitboxLocation: {x: 2.2562695, y: 2.1326365}
+  m_hitboxSize: {x: 1.1476562, y: 0.48}
   m_meshAnimationS: {fileID: 7400000, guid: d782337c84fe29a419f75d393f61e90d, type: 2}
   m_meshAnimationA: {fileID: 7400000, guid: e3f434c01f9bc6641afa8034598d4fd9, type: 2}
   m_meshAnimationR: {fileID: 7400000, guid: c13d7cae74a12f642ad2f1d7e2020ec6, type: 2}
-  m_boxAnimationS: {fileID: 0}
-  m_boxAnimationA: {fileID: 0}
-  m_boxAnimationR: {fileID: 0}
+  m_boxAnimationS: {fileID: 7400000, guid: 4b00e771bf7e42f4c862861f565e7d23, type: 2}
+  m_boxAnimationA: {fileID: 7400000, guid: 142a890a7d43efb46a0b8e3e1697c57b, type: 2}
+  m_boxAnimationR: {fileID: 7400000, guid: 86eb3750def0b794795ba14499322ab7, type: 2}
