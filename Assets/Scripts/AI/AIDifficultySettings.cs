@@ -43,7 +43,7 @@ public class AIDifficultySettings : ScriptableObject
 
     public bool AggressionResult(float generatedNumber, bool calledPerFrame) 
     {
-        bool result = calledPerFrame ? generatedNumber < _aggression * Time.fixedDeltaTime : generatedNumber < _aggression;
+        bool result = calledPerFrame ? generatedNumber < _aggression * Time.fixedDeltaTime * 10 : generatedNumber < _aggression;
         // calledPerFrame determines, wheter this funciton is meant to be called each frame or needed for just one call on a specific event.
         if (result && _aggression > 0) _aggression -= (100 - _aggressionConsistency) * 0.75f; // If decided to make an attack decrease aggression.
         if(_aggression < 0) _aggression = 0;

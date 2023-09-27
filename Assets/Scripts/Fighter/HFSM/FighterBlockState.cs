@@ -32,9 +32,9 @@ public class FighterBlockState : FighterBaseState
 
         float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
         float time = _action.BlockStun * Time.fixedDeltaTime;
-        _drag = _action.Knockback / (time * time) * direction;
+        _drag = _action.BlockKnocback / (time * time) * direction;
 
-        _velocity.x = _action.Knockback / time; // Initial horizontal velocity;
+        _velocity.x = _action.BlockKnocback / time; // Initial horizontal velocity;
         _velocity.x *= direction;
         
        // Apply Calculated Variables

@@ -8,8 +8,6 @@ public abstract class ActionAttack : ActionBase
     [SerializeField] protected Tags m_tags;
     [Tooltip("Damage dealt upon a successful uncontested hit to the target.")]
     [SerializeField] protected int m_damage;
-    [Tooltip("Damage dealt upon a successful hit to a blocking target.")]
-    [SerializeField] protected int m_chipDamage;
 
     [Header("Hitbox Properties")]
     [Tooltip("Which type of hitbox is prioritized for hit detection.")] // Probably won't be used.
@@ -17,12 +15,17 @@ public abstract class ActionAttack : ActionBase
     [Tooltip("Dictates how many times a move can hit. Set to 1 for single hit moves.")]
     [SerializeField] protected int m_part = 1;
 
+    [Header("Block Properties")]
+    [Tooltip("Damage dealt upon a successful hit to a blocking target.")]
+    [SerializeField] protected int m_chipDamage;
+    [Tooltip("Stun inflicted upon hitting the target that is blocking (in frames).")]
+    [SerializeField] protected int m_blockStun;
+    [Tooltip("Distance of pushback of hit when blocked.")]
+    [SerializeField] protected float blockKnocback;
+
     [Header("Stun Properties")]
     [Tooltip("Does attack ignore target's Block state?")]
     [SerializeField] protected bool m_ignoreBlock;
-
-    [Tooltip("Stun inflicted upon hitting the target that is blocking (in frames).")]
-    [SerializeField] protected int m_blockStun;
 
     [Tooltip("Time stop applied to the target and self upon hit (in frames).")]
     [SerializeField] protected int m_hitStop;
@@ -89,6 +92,7 @@ public abstract class ActionAttack : ActionBase
     public virtual Tags Tags {get => m_tags;}
     public virtual int Damage {get => m_damage;}
     public virtual int ChipDamage {get => m_chipDamage;}
+    public float BlockKnocback {get => blockKnocback;}
     public virtual int Priority {get => m_priority;}
     public virtual int Part {get => m_part;}
     public virtual bool IgnoreBlock {get => m_ignoreBlock;}

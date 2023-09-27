@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Action_Flyingkick
   m_EditorClassIdentifier: 
   name: FlyingKick
-  applyRootMotion: 0
-  m_tags: 276
+  applyRootMotion: 1
+  m_tags: 1300
   m_damage: 25
-  m_chipDamage: 0
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 0
   m_blockStun: 30
+  blockKnocback: 1
+  m_ignoreBlock: 0
   m_hitStop: 10
   m_knockbackStun: 20
   m_knockdownStun: 0
@@ -36,9 +37,9 @@ MonoBehaviour:
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_startFrames: 9
+  m_startFrames: 20
   m_activeFrames: 8
-  m_recoveryFrames: 27
+  m_recoveryFrames: 30
   m_hitboxFrame: 7
   m_hitboxOffset: {x: 2.2562695, y: 1.6326367}
   m_hitboxLocation: {x: 3.0989473, y: 2.1326365}

@@ -33,11 +33,11 @@ public class AnimationPreviewEditor : Editor
                 m_script.AnimationObjects[0].Clip.SampleAnimation(m_script.AnimationObjects[0].Object, time);
 
                 if (m_axis3D){
-                    m_origin = new Vector2(m_script.transform.position.z, m_script.transform.position.y);
+                    m_origin = new Vector2(m_script.AnimationObjects[0].Object.transform.parent.position.z, m_script.AnimationObjects[0].Object.transform.parent.transform.position.y);
                     m_characterPosition = new Vector2(m_script.AnimationObjects[0].Object.transform.position.z, m_script.AnimationObjects[0].Object.transform.position.y);
                 }
                 else{
-                    m_origin = new Vector2(m_script.transform.position.x, m_script.transform.position.y);
+                    m_origin = new Vector2(m_script.AnimationObjects[0].Object.transform.parent.position.x, m_script.AnimationObjects[0].Object.transform.parent.position.y);
                     m_characterPosition = new Vector2(m_script.AnimationObjects[0].Object.transform.position.x, m_script.AnimationObjects[0].Object.transform.position.y);
                 }
 

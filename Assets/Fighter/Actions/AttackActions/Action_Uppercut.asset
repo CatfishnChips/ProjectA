@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Action_Uppercut
   m_EditorClassIdentifier: 
   name: Uppercut
-  m_tags: 273
+  applyRootMotion: 0
+  m_tags: 1297
   m_damage: 25
-  m_chipDamage: 10
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 10
   m_blockStun: 15
+  blockKnocback: 0
+  m_ignoreBlock: 0
   m_hitStop: 10
   m_knockbackStun: 0
   m_knockdownStun: 15
@@ -35,9 +37,9 @@ MonoBehaviour:
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_startFrames: 5
-  m_activeFrames: 3
-  m_recoveryFrames: 24
+  m_startFrames: 10
+  m_activeFrames: 5
+  m_recoveryFrames: 20
   m_hitboxFrame: 0
   m_hitboxOffset: {x: 0.66, y: 1.42}
   m_hitboxLocation: {x: 0.66, y: 1.8792427}
