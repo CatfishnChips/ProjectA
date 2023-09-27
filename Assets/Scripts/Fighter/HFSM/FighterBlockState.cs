@@ -8,6 +8,7 @@ public class FighterBlockState : FighterBaseState
     private ActionAttack _action;
     private float _currentFrame = 0;
     private Vector2 _velocity;
+    private float _drag;
 
     public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -15,10 +16,6 @@ public class FighterBlockState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        // if (_ctx.IsHurt && _ctx.StaminaManager.CanBlock){
-        //     SwitchState(_factory.Block());
-        // }
-
         if (_currentFrame >= _action.BlockStun){
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
@@ -33,15 +30,16 @@ public class FighterBlockState : FighterBaseState
         
         ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
 
-        if (_action.Knockback!= 0){
-            float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
-            float time = _action.BlockStun * Time.fixedDeltaTime;
-            _ctx.Drag = _action.Knockback / (time * time) * direction;
+        float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
+        float time = _action.BlockStun * Time.fixedDeltaTime;
+        _drag = _action.Knockback / (time * time) * direction;
 
-            _velocity.x = _action.Knockback / time; // Initial horizontal velocity;
-            _velocity.x *= direction;
-        }
+        _velocity.x = _action.Knockback / time; // Initial horizontal velocity;
+        _velocity.x *= direction;
         
+       // Apply Calculated Variables
+        _ctx.Drag = _drag;
+        _ctx.Gravity = 0f;
         _ctx.CurrentMovement = _velocity;
 
         _ctx.StaminaManager.UpdateBlock(-1);

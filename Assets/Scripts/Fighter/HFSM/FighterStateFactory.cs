@@ -48,12 +48,12 @@ public class FighterStateFactory
     }
 }
 
-public struct StateFactoryElement
-{
-    public FighterStates State;
-    public FighterBaseState Reference;
-    public StateFactoryElement(FighterStates state, FighterBaseState reference){
-        State = state;
-        Reference = reference;
-    }
-}
+// public struct StateFactoryElement
+// {
+//     public FighterStates State;
+//     public FighterBaseState Reference;
+//     public StateFactoryElement(FighterStates state, FighterBaseState reference){
+//         State = state;
+//         Reference = reference;
+//     }
+// }

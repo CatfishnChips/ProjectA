@@ -49,8 +49,6 @@ public class ActionFighterAttack : ActionAttack
                     ctx.Animator.PlayInFixedTime("AttackStart");
                     ctx.ColBoxAnimator.PlayInFixedTime("AttackStart");
                     _firstFrameStartup = false;
-                    
-                    ctx.HitResponder.UpdateData(this);
                 }
             break;
 

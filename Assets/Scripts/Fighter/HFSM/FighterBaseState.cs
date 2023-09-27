@@ -37,21 +37,23 @@ public abstract class FighterBaseState
     }
 
     public void FixedUpdateStates(){ // This function allows for a chained multi-substate architecture by calling update of every substate of supdates.
-        FixedUpdateState();
         if(_currentSubState != null){
-            _currentSubState.FixedUpdateStates();
+            //Debug.Log("FighterBaseState(FixedUpdateStates) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " State: " + _currentSubState);
+            _currentSubState.FixedUpdateStates();  
         }
+        //Debug.Log("FighterBaseState(FixedUpdateStates) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " State: " + this);
+        FixedUpdateState();
     }
 
     public void ExitStates(){
-        ExitStates();
         if(_currentSubState != null){
             _currentSubState.ExitStates();
         }
+        ExitState();
     }
 
     protected void SwitchState(FighterBaseState newState){
-        ExitState();
+        ExitStates();
 
         newState.EnterState();
 

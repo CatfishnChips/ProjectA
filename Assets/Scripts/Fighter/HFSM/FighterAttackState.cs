@@ -34,7 +34,7 @@ public class FighterAttackState : FighterBaseState
         }
         else if (_actionState == ActionStates.Recovery){
             // Rework this attack transition!
-            if(_ctx.AttackPerformed && _hadHit && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
+            if(_ctx.AttackPerformed && _hadHit && !_action.Pause){
                 SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
         }
@@ -92,7 +92,7 @@ public class FighterAttackState : FighterBaseState
 
         // Due to HitResponder's data being updated in EnterState, before FixedUpdateState which plays the animations
         // back to back attacks before being able to enter the Recovery state makes it so that the last Hitbox hits once again with the new data
-        //_ctx.HitResponder.UpdateData(_action);
+        _ctx.HitResponder.UpdateData(_action);
 
         if (_ctx.Player == Player.P2) EventManager.Instance.FighterAttackStarted?.Invoke(_action.name);
         else EventManager.Instance.P2FighterAttackStarted?.Invoke(_action.name);

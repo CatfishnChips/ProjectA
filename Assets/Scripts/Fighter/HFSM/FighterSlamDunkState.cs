@@ -57,7 +57,10 @@ public class FighterSlamDunkState : FighterBaseState
         _velocity.x = 2 * _action.Knockback / _time; // Initial horizontal velocity;
         _velocity.x *= horizontalDirection;
 
-        _ctx.CurrentMovement = _velocity;
+        // Apply Calculated Variables
+        // _ctx.Drag = _drag;
+        // _ctx.Gravity = _gravity;
+        // _ctx.CurrentMovement = _velocity;
 
         if (_action.KnockupStun.y == 0) return;
 
@@ -101,8 +104,12 @@ public class FighterSlamDunkState : FighterBaseState
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
             }
+
+            // Apply Calculated Variables
+            _ctx.CurrentMovement = _velocity;
             _ctx.Drag = _drag;
             _ctx.Gravity = _gravity;
+
             //Debug.Log("Fighter SlamDunk State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
         }
         

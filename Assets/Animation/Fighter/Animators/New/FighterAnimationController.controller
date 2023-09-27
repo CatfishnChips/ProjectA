@@ -23,7 +23,7 @@ AnimatorState:
   m_Motion: {fileID: 7400000, guid: c2a7332b26a36c94984773ae5ab8b6b9, type: 2}
   m_Tag: 
   m_SpeedParameter: Blend
-  m_MirrorParameter: 
+  m_MirrorParameter: Mirror
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1102 &-3999161920695694518
@@ -66,13 +66,13 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: SpeedVar
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer

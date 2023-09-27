@@ -60,7 +60,9 @@ public class FighterDashState : FighterBaseState
         _initialVelocity = 2 * _ctx.DashDistance / _time; // Initial horizontal velocity;
         _initialVelocity *= _direction;
 
+        // Apply Calculated Variables
         _ctx.Drag = _drag;
+        _ctx.Gravity = 0f;
         _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
 
         _ctx.AnimOverrideCont["Action"] = clip;
@@ -93,7 +95,7 @@ public class FighterDashState : FighterBaseState
     public override void FixedUpdateState()
     {
         CheckSwitchState();
-        _currentFrame++;
+        _currentFrame++;  
     }
 
     public override void InitializeSubState()
