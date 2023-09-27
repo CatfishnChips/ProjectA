@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "Uppercut">
+		<Point X = "-0,0002783846" Y = "0" T = "0" Pressure = "0" />
+		<Point X = "-0,0002378461" Y = "-2,923276E-05" T = "0" Pressure = "0" />
+		<Point X = "-0,0001937529" Y = "-5,601434E-05" T = "0" Pressure = "0" />
+		<Point X = "-0,0001452848" Y = "-7,59596E-05" T = "0" Pressure = "0" />
+		<Point X = "-9,776128E-05" Y = "-9,764038E-05" T = "0" Pressure = "0" />
+		<Point X = "-4,998373E-05" Y = "-0,0001187821" T = "0" Pressure = "0" />
+		<Point X = "-4,007597E-06" Y = "-0,0001432063" T = "0" Pressure = "0" />
+		<Point X = "2,254313E-05" Y = "-0,0001138606" T = "0" Pressure = "0" />
+		<Point X = "4,460302E-05" Y = "-7,088683E-05" T = "0" Pressure = "0" />
+		<Point X = "6,72699E-05" Y = "-2,808997E-05" T = "0" Pressure = "0" />
+		<Point X = "8,957903E-05" Y = "1,490937E-05" T = "0" Pressure = "0" />
+		<Point X = "0,0001114873" Y = "5,804683E-05" T = "0" Pressure = "0" />
+		<Point X = "0,0001332831" Y = "0,0001012461" T = "0" Pressure = "0" />
+		<Point X = "0,0001556819" Y = "0,0001441822" T = "0" Pressure = "0" />
+		<Point X = "0,0001777278" Y = "0,0001872806" T = "0" Pressure = "0" />
+		<Point X = "0,0002048443" Y = "0,000228008" T = "0" Pressure = "0" />
+</Gesture>

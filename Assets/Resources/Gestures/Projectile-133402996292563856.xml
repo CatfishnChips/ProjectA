@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "Projectile">
+		<Point X = "-0,0001198095" Y = "-2,910383E-11" T = "0" Pressure = "0" />
+		<Point X = "-0,0001077626" Y = "-3,520172E-05" T = "0" Pressure = "0" />
+		<Point X = "-6,904727E-05" Y = "-5,778068E-05" T = "0" Pressure = "0" />
+		<Point X = "-2,148375E-05" Y = "-6,786562E-05" T = "0" Pressure = "0" />
+		<Point X = "2,792163E-05" Y = "-6,969081E-05" T = "0" Pressure = "0" />
+		<Point X = "7,634179E-05" Y = "-6,278499E-05" T = "0" Pressure = "0" />
+		<Point X = "0,0001193455" Y = "-4,48249E-05" T = "0" Pressure = "0" />
+		<Point X = "0,0001410445" Y = "-1,30994E-05" T = "0" Pressure = "0" />
+		<Point X = "0,0001230637" Y = "2,045225E-05" T = "0" Pressure = "0" />
+		<Point X = "8,952909E-05" Y = "4,765118E-05" T = "0" Pressure = "0" />
+		<Point X = "4,833133E-05" Y = "6,795669E-05" T = "0" Pressure = "0" />
+		<Point X = "5,80505E-07" Y = "7,680425E-05" T = "0" Pressure = "0" />
+		<Point X = "-4,803669E-05" Y = "7,14061E-05" T = "0" Pressure = "0" />
+		<Point X = "-8,949247E-05" Y = "5,200173E-05" T = "0" Pressure = "0" />
+		<Point X = "-0,0001039926" Y = "1,772589E-05" T = "0" Pressure = "0" />
+		<Point X = "-6,653386E-05" Y = "-2,750166E-06" T = "0" Pressure = "0" />
+</Gesture>

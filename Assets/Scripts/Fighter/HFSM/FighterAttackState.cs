@@ -122,6 +122,8 @@ public class FighterAttackState : FighterBaseState
         // Debug.Log("Frame L: " + _action.FrameLenght + " Current F: " + _currentFrame + " Buffer: " + _ctx.GetInputBuffer + " Bool: " + _ctx.ValidAttackInputInterval);
         _ctx.ValidAttackInputInterval = _action.FrameLenght - _currentFrame < _ctx.GetInputBuffer;
 
+        _ctx.CurrentMovement = _action.applyRootMotion ? _ctx.RootMotion : _ctx.CurrentMovement;
+
         _action.SwitchActionStateFunction(_ctx, this);
         _ctx.ActionState = _actionState;
 

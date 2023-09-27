@@ -47,12 +47,12 @@ public class AnimationPreview : MonoBehaviour
                 animationObject.Clip.SampleAnimation(animationObject.Object, time);
 
                 Vector3 position;
-                position.x = m_lockX ? 0f : animationObject.Object.transform.position.x;
-                position.y = m_lockY ? 0f : animationObject.Object.transform.position.y;
-                position.z = m_lockZ ? 0f : animationObject.Object.transform.position.z;
-                animationObject.Object.transform.position = position;
+                position.x = m_lockX ? 0f : animationObject.Object.transform.localPosition.x;
+                position.y = m_lockY ? 0f : animationObject.Object.transform.localPosition.y;
+                position.z = m_lockZ ? 0f : animationObject.Object.transform.localPosition.z;
+                animationObject.Object.transform.localPosition = position;
   
-                if (animationObject.ApplyPositionOffset) animationObject.Object.transform.position += m_positionOffset;
+                if (animationObject.ApplyPositionOffset) animationObject.Object.transform.localPosition += m_positionOffset;
                 if (animationObject.ApplyRotationOffset) animationObject.Object.transform.Rotate(m_rotationOffset);
             }  
         }

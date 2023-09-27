@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "Flick">
+		<Point X = "-0,0001427523" Y = "0" T = "0" Pressure = "0" />
+		<Point X = "-0,0001250039" Y = "-5,444635E-07" T = "0" Pressure = "0" />
+		<Point X = "-0,0001059325" Y = "-7,991766E-07" T = "0" Pressure = "0" />
+		<Point X = "-8,667295E-05" Y = "-9,96064E-07" T = "0" Pressure = "0" />
+		<Point X = "-6,720057E-05" Y = "-1,042208E-06" T = "0" Pressure = "0" />
+		<Point X = "-4,769076E-05" Y = "-1,061278E-06" T = "0" Pressure = "0" />
+		<Point X = "-2,830115E-05" Y = "-9,790747E-07" T = "0" Pressure = "0" />
+		<Point X = "-8,965435E-06" Y = "-8,617899E-07" T = "0" Pressure = "0" />
+		<Point X = "9,901996E-06" Y = "-3,746209E-07" T = "0" Pressure = "0" />
+		<Point X = "2,908864E-05" Y = "-1,121625E-07" T = "0" Pressure = "0" />
+		<Point X = "4,82116E-05" Y = "2,241832E-07" T = "0" Pressure = "0" />
+		<Point X = "6,719271E-05" Y = "6,710688E-07" T = "0" Pressure = "0" />
+		<Point X = "8,617132E-05" Y = "1,03717E-06" T = "0" Pressure = "0" />
+		<Point X = "0,0001053202" Y = "1,311055E-06" T = "0" Pressure = "0" />
+		<Point X = "0,0001241585" Y = "1,675802E-06" T = "0" Pressure = "0" />
+		<Point X = "0,0001424741" Y = "1,85156E-06" T = "0" Pressure = "0" />
+</Gesture>

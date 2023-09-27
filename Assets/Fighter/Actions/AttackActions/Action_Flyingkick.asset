@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Action_Flyingkick
   m_EditorClassIdentifier: 
   name: FlyingKick
-  applyRootMotion: 0
+  applyRootMotion: 1
   m_tags: 276
   m_damage: 25
   m_chipDamage: 0
