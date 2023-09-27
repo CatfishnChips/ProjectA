@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Action_Dodge
   m_EditorClassIdentifier: 
   name: Dodge
+  applyRootMotion: 0
   frames: 0
   meshAnimation: {fileID: -203655887218126122, guid: d29d8d479045aba4ba24869d9c5a879e,
     type: 3}
-  boxAnimation: {fileID: 7400000, guid: 707d46d6098031648b0287e7cfb9938d, type: 2}
+  boxAnimation: {fileID: 7400000, guid: d1acbffafb4435c448f11c6b36270b77, type: 2}

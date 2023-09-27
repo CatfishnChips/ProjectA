@@ -91,8 +91,6 @@ public class FighterAttackState : FighterBaseState
         _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
         _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
 
-        // Due to HitResponder's data being updated in EnterState, before FixedUpdateState which plays the animations
-        // back to back attacks before being able to enter the Recovery state makes it so that the last Hitbox hits once again with the new data
         _ctx.HitResponder.UpdateData(_action);
 
         if (_ctx.Player == Player.P2) EventManager.Instance.FighterAttackStarted?.Invoke(_action.name);
@@ -107,6 +105,10 @@ public class FighterAttackState : FighterBaseState
         _ctx.OnAttackEnd?.Invoke();
         _action.ExitStateFunction(_ctx, this);
         _performedComboMove = false;
+        
+        _ctx.Drag = 0f;
+        _ctx.Gravity = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
     }
 
     public override void InitializeSubState()
