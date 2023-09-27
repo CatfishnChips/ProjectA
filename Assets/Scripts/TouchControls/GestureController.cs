@@ -167,6 +167,7 @@ public class GestureController : MonoBehaviour
             float deltaDistanceX = _virtualJoystick.x / _sensitivity;
 
             _deltaVectorX = deltaDistanceX;
+            Debug.Log("DeltaVector: " + _deltaVectorX + " JoystickX: " + _virtualJoystick.x);
             if (Mathf.Abs(_virtualJoystick.x) <= _deadzone) _deltaVectorX = 0f;
             EventManager.Instance.Move?.Invoke(_deltaVectorX);
 

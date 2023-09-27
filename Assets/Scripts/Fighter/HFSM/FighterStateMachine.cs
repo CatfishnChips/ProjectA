@@ -440,7 +440,7 @@ public abstract class FighterStateMachine : MonoBehaviour
             ParticleSystem particle = obj.GetComponent<ParticleSystem>();
         }
 
-        if (target.CanBlock) return; // If hit opponent blocked/can block the attack.
+        if (target.CanBlock && target.IsInvulnerable) return; // If hit opponent blocked/can block the attack.
 
         if (target.CurrentSubState == FighterStates.Block){
             // Break

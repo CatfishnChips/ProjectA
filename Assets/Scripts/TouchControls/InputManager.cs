@@ -23,7 +23,8 @@ public class InputManager : MonoBehaviour
     #endregion
 
     [Header("Settings")]
-    [SerializeField] private float _touchMoveSensitivity = 1.25f;
+    [SerializeField] private float _touchMoveSensitivityA = 1.25f;
+    [SerializeField] private float _touchMoveSensitivityB = 3f;
 
     private bool _isTouching; // Used for once per touch actions.
     private int _touchAID, _touchBID = 12;
@@ -139,23 +140,21 @@ public class InputManager : MonoBehaviour
 
                         case TouchPhase.Moved:
                         // Move Sensitivity Treshold
-                        if (touch.phase == TouchPhase.Moved && touch.deltaPosition.magnitude < _touchMoveSensitivity) 
+                        if (touch.fingerId == _touchAID) 
                         {
-                            touch.phase = TouchPhase.Stationary;
+                            // Touch A
+                            if (touch.deltaPosition.magnitude >= _touchMoveSensitivityA)
+                            OnTouchADrag?.Invoke(new InputEventParams(touch.position, touchWorldPosition, touchMoveSpeed, touchMoveDelta));
+                            else touch.phase = TouchPhase.Stationary;
                         }
-                        else
+                        else if (touch.fingerId == _touchBID) 
                         {
-                            if (touch.fingerId == _touchAID) 
-                            {
-                                // Touch A
-                                OnTouchADrag?.Invoke(new InputEventParams(touch.position, touchWorldPosition, touchMoveSpeed, touchMoveDelta));
-                            }
-                            else if (touch.fingerId == _touchBID) 
-                            {
-                                // Touch B
-                                OnTouchBDrag?.Invoke(new InputEventParams(touch.position, touchWorldPosition, touchMoveSpeed, touchMoveDelta));
-                            }
-                        }                   
+                            // Touch B
+                            if (touch.deltaPosition.magnitude >= _touchMoveSensitivityB)
+                            OnTouchBDrag?.Invoke(new InputEventParams(touch.position, touchWorldPosition, touchMoveSpeed, touchMoveDelta));
+                            else touch.phase = TouchPhase.Stationary;
+                        }
+        
                         break;
 
                         case TouchPhase.Ended:

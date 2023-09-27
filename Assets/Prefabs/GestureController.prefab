@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4301f7838e3e4a4f885e4deda97be28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swipeDistance: 1
-  _swipeTimeout: 0.25
-  _swipeDelta: 7.5
-  _sensitivity: 10
-  _deadzone: 2
+  _swipeDistance: 0.5
+  _swipeTimeout: 0.5
+  _swipeDelta: 5
+  _sensitivity: 125
+  _deadzone: 25
   _gestureTimeout: 1
   _scoreTreshold: 0.25
   _holdTime: 0.25

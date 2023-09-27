@@ -51,7 +51,7 @@ public class TouchIndicatorController : MonoBehaviour
 
     private void EnableIndicator1(InputEventParams inputEventParams) 
     {   
-        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        Vector3 position = new Vector3(inputEventParams.ScreenPosition.x, inputEventParams.ScreenPosition.y, -9f);
         _touchIndicator1.gameObject.SetActive(true);
         _touchIndicator1.transform.position = position;
         _touchText1.SetText("Began");
@@ -66,7 +66,7 @@ public class TouchIndicatorController : MonoBehaviour
 
     private void MoveIndicator1(InputEventParams inputEventParams) 
     {   
-        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        Vector3 position = new Vector3(inputEventParams.ScreenPosition.x, inputEventParams.ScreenPosition.y, -9f);
         _touchIndicator1.transform.position = position;
         _touchText1.SetText("Dragging");
         _touchAHoldTime = 0;
@@ -74,21 +74,21 @@ public class TouchIndicatorController : MonoBehaviour
 
     private void UpdateIndicator1(InputEventParams inputEventParams) 
     {
-        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        Vector3 position = new Vector3(inputEventParams.ScreenPosition.x, inputEventParams.ScreenPosition.y, -9f);
         _touchAHoldTime += Time.deltaTime;
         _touchText1.SetText("Hold - " + (int)_touchAHoldTime);
     }
 
     private void EnableIndicator2(InputEventParams inputEventParams) 
     {
-        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        Vector3 position = new Vector3(inputEventParams.ScreenPosition.x, inputEventParams.ScreenPosition.y, -9f);
         _touchIndicator2.gameObject.SetActive(true);
         _touchIndicator2.transform.position = position;
         _touchText2.SetText("Began");
         _touchBHoldTime = 0;
 
         EnableLine();
-        AddPoint(position);
+        AddPoint(new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f));
     }
 
     private void DisableIndicator2(InputEventParams inputEventParams) 
@@ -101,17 +101,17 @@ public class TouchIndicatorController : MonoBehaviour
 
     private void MoveIndicator2(InputEventParams inputEventParams) 
     {
-        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        Vector3 position = new Vector3(inputEventParams.ScreenPosition.x, inputEventParams.ScreenPosition.y, -9f);
         _touchIndicator2.transform.position = position;
         _touchText2.SetText("Dragging");
         _touchBHoldTime = 0;
 
-        AddPoint(position);
+        AddPoint(new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f));
     }
 
     private void UpdateIndicator2(InputEventParams inputEventParams) 
     {
-        Vector3 position = new Vector3(inputEventParams.WorldPosition.x, inputEventParams.WorldPosition.y, -9f);
+        Vector3 position = new Vector3(inputEventParams.ScreenPosition.x, inputEventParams.ScreenPosition.y, -9f);
         _touchBHoldTime += Time.deltaTime;
         _touchText2.SetText("Hold - " + (int)_touchBHoldTime);
     }
