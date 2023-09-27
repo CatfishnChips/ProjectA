@@ -36,7 +36,7 @@ public class AttemptAgressiveAction : ActionNode
 
             float attackAccuracyScore = Random.Range(0.0f, 100.0f); // Decide if the AI is going to perform an accurate or inaccurate attack.
 
-            if (context.difficultySettings.AttackAccuracy(attackAccuracyScore))
+            if (context.difficultySettings.AttackAccuracyResult(attackAccuracyScore))
             {
                 if(hittingAttackNames.Count > 0)
                 {

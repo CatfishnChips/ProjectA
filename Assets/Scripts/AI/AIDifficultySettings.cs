@@ -40,6 +40,14 @@ public class AIDifficultySettings : ScriptableObject
     [Tooltip("After a dodge AI tries to perform an opportunity attack. Higher the value higher the chance of AI to perform this action.")]
     private float _opportunityAttackConsistency;
 
+    public float Aggression {get => _aggression; set{_aggression = value;}}
+    public float AggressionConsistency {get => _aggressionConsistency; set{_aggressionConsistency = value;}}
+    public float CharacterProficiency {get => _characterProficiency; set{_characterProficiency = value;}}
+    public float AttackAccuracy {get => _attackAccuracy; set{_attackAccuracy = value;}}
+    public float DefensiveAccuracy {get => _defensiveAccuracy; set{_defensiveAccuracy = value;}}
+    public float CounterAttackORDodge {get => _counterAttackOrDodge; set{_counterAttackOrDodge = value;}}
+    public float OpportunityAttackConsistency {get => _opportunityAttackConsistency; set{_opportunityAttackConsistency = value;}}
+
 
     public bool AggressionResult(float generatedNumber, bool calledPerFrame) 
     {
@@ -55,7 +63,7 @@ public class AIDifficultySettings : ScriptableObject
         return generatedNumber < _characterProficiency; 
     }
 
-    public bool AttackAccuracy(float generatedNumber)
+    public bool AttackAccuracyResult(float generatedNumber)
     {
         return generatedNumber < _attackAccuracy;
     }
