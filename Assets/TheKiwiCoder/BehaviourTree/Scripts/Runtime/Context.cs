@@ -34,7 +34,27 @@ namespace TheKiwiCoder {
             attackBoxFlexibilityMargin = btr.AttackBoxFlexibilityMargin;
             distanceMargin = btr.DistanceMargin;
             optimalDistanceMethod = btr.OptimalDistanceMethod;
+
+            optimalDistance = CalcOptimalXDistance(optimalDistanceMethod);
             // Add whatever else you need here...
+        }
+
+        private float CalcOptimalXDistance(AIPositionMethod method)
+        {
+            switch (method)
+            {
+                case AIPositionMethod.ArithmeticMean:
+                    float xTotal = 0.0f;
+                    foreach (KeyValuePair<string, ActionAttack> attack in selfFSM.GroundedAttackMoveDict)
+                    {
+                        // Debug.Log("Attack Name: " + attack.Key + ", Attack Distance: " + attack.Value.HitboxOffset.x);
+                        xTotal += attack.Value.HitboxOffset.x;
+                    }
+                    return xTotal / selfFSM.GroundedAttackMoveDict.Count;
+                default:
+                    return 10.0f; // Place Holder
+            }
+            
         }
     }
 }

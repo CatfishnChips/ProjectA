@@ -22,7 +22,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -52,7 +52,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -81,7 +81,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -109,7 +109,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -136,7 +136,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -163,7 +163,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -193,7 +193,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -224,7 +224,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -254,7 +254,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -282,7 +282,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -309,7 +309,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -359,7 +359,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
 --- !u!114 &177480021668732396
@@ -384,7 +384,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -418,7 +418,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -446,7 +446,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -478,7 +478,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -505,7 +505,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -532,7 +532,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -559,7 +559,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -586,7 +586,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -613,7 +613,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -643,7 +643,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -671,7 +671,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -699,7 +699,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 
@@ -726,7 +726,7 @@ MonoBehaviour:
     choosenDefensiveAction: 
     enemyAttackAction: {fileID: 0}
     enemyAttackStarted: 0
-    EnemyAttackEnded: 0
+    enemyAttackEnded: 0
     selfAttackStarted: 0
     selfAttackEnded: 0
   description: 

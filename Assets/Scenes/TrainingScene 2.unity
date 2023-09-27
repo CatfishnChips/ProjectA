@@ -2685,7 +2685,7 @@ PrefabInstance:
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -1e-45
+      value: 3e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -2820,7 +2820,7 @@ PrefabInstance:
     - target: {fileID: 6664263211327920355, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -1e-45
+      value: 3e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263211327920355, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -14409,6 +14409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 748390093}
   - component: {fileID: 748390092}
+  - component: {fileID: 748390094}
   - component: {fileID: 748390091}
   - component: {fileID: 748390090}
   - component: {fileID: 748390089}
@@ -14419,7 +14420,7 @@ GameObject:
   - component: {fileID: 748390084}
   m_Layer: 0
   m_Name: Fighter_Enemy
-  m_TagString: Player
+  m_TagString: Bot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14598,6 +14599,7 @@ MonoBehaviour:
   - action: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
   - action: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
   - action: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
+  - action: {fileID: 11400000, guid: 7155732e14409394dacb8dfe1fcebdd4, type: 2}
   - action: {fileID: 11400000, guid: c598b1051af6a3c499a47fc65962a1f4, type: 2}
   - action: {fileID: 11400000, guid: 8ee14044fb806f146a162d50263a24f3, type: 2}
   - action: {fileID: 11400000, guid: 93a6d7f648e264e40ac86231467df887, type: 2}
@@ -14606,8 +14608,6 @@ MonoBehaviour:
   - action: {fileID: 11400000, guid: abc65f5054684844493cd8d1c25e1f13, type: 2}
   - action: {fileID: 11400000, guid: 5bd99419bb49ce34ba7e81e80bb1e420, type: 2}
   - action: {fileID: 11400000, guid: 3f68611264b293a4287038a85230352f, type: 2}
-  - action: {fileID: 11400000, guid: 75aa02edea8e7cd43bc244fce05a58c3, type: 2}
-  - action: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
   _combosArray:
   - comboName: TriplePunch
     moves:
@@ -14648,7 +14648,7 @@ MonoBehaviour:
   _inputBuffer: 10
   _dashDistance: 3
   _dashTime: 15
-  _dodgeTime: {x: 15, y: 45}
+  _dodgeTime: {x: 0, y: 45}
   _airMoveSpeed: 1
   _jumpHeight: 2.5
   _jumpDistance: 3
@@ -14688,6 +14688,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 1, y: -90, z: 0}
+--- !u!114 &748390094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748390083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c6f9b140a52a14881ec09eaebb66eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tree: {fileID: 11400000, guid: d13da0fbb163d9b4ea96cfbce501fab2, type: 2}
+  difficultySettings: {fileID: 11400000, guid: 704af98938792dc4ebd89f93052155ab, type: 2}
+  _attackBoxFlexibilityMargin: 0.25
+  _distanceMargin: 1
+  _optimalDistanceMethod: 1
 --- !u!1 &753856709
 GameObject:
   m_ObjectHideFlags: 0

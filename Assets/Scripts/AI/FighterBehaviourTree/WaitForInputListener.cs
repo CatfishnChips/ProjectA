@@ -17,7 +17,7 @@ public class WaitForInputListener : ActionNode
 
     protected override State OnUpdate()
     {
-        if(!context.selfFSM.ValidAttackInputInterval)
+        if(!context.selfFSM.ValidAttackInputInterval && context.selfFSM.CurrentSubState == FighterStates.Attack)
         {
             return State.Running;
         }

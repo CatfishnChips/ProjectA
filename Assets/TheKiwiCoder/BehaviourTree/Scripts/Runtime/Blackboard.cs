@@ -14,23 +14,23 @@ namespace TheKiwiCoder {
         public string choosenDefensiveAction;
         public ActionAttack enemyAttackAction;
 
-        public bool enemyAttackStarted;
-        public bool EnemyAttackEnded;
+        [ReadOnly] public bool enemyAttackStarted;
+        [ReadOnly] public bool enemyAttackEnded;
 
-        public bool selfAttackStarted;
-        public bool selfAttackEnded;
+        [ReadOnly] public bool selfAttackStarted;
+        [ReadOnly] public bool selfAttackEnded;
 
         public void OnEnemyAttackStart()
         {
             Debug.Log("I've been Invoked!");
             enemyAttackStarted = true;
-            EnemyAttackEnded = false;
+            enemyAttackEnded = false;
         }
 
         public void OnEnemyAttackEnd()
         {
             enemyAttackStarted = false;
-            EnemyAttackEnded = true;
+            enemyAttackEnded = true;
         }
 
         public void OnSelfAttackStart()

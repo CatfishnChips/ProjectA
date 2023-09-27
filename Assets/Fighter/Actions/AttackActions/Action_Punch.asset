@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Action_Punch
   m_EditorClassIdentifier: 
   name: Tap
-  m_tags: 545
+  applyRootMotion: 0
+  m_tags: 1569
   m_damage: 10
-  m_chipDamage: 0
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 0
   m_blockStun: 5
+  blockKnocback: 0
+  m_ignoreBlock: 0
   m_hitStop: 5
   m_knockbackStun: 10
   m_knockdownStun: 0

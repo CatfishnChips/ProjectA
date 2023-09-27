@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Action_Hook
   m_EditorClassIdentifier: 
   name: Flick
-  m_tags: 273
+  applyRootMotion: 0
+  m_tags: 1297
   m_damage: 20
-  m_chipDamage: 5
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 5
   m_blockStun: 15
+  blockKnocback: 0
+  m_ignoreBlock: 0
   m_hitStop: 10
   m_knockbackStun: 20
   m_knockdownStun: 0
@@ -35,7 +37,7 @@ MonoBehaviour:
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_startFrames: 14
+  m_startFrames: 8
   m_activeFrames: 5
   m_recoveryFrames: 16
   m_hitboxFrame: 0

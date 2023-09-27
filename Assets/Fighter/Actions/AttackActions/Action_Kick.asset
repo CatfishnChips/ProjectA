@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Action_Kick
   m_EditorClassIdentifier: 
   name: ReverseKick
-  m_tags: 140
+  applyRootMotion: 0
+  m_tags: 1164
   m_damage: 45
-  m_chipDamage: 10
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 10
   m_blockStun: 20
+  blockKnocback: 0
+  m_ignoreBlock: 0
   m_hitStop: 10
   m_knockbackStun: 0
   m_knockdownStun: 20
@@ -35,9 +37,9 @@ MonoBehaviour:
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_startFrames: 5
-  m_activeFrames: 10
-  m_recoveryFrames: 41
+  m_startFrames: 12
+  m_activeFrames: 5
+  m_recoveryFrames: 25
   m_hitboxFrame: -1
   m_hitboxOffset: {x: 1.34, y: 0.97}
   m_hitboxLocation: {x: 1.34, y: 1.47}

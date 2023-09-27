@@ -47,7 +47,7 @@ public class AttemptComboAttack : ActionNode
             int comboProfCheck = Random.Range(0, 100);
 
             if(context.difficultySettings.ComboResult(comboProfCheck)){
-                if(comboAttacks is not null) 
+                if(comboAttacks is not null && comboAttacks.Count > 0) 
                 {
                     blackboard.choosenAgressiveAction = comboAttacks[Random.Range(0, comboAttacks.Count)];
                     return State.Success;
