@@ -22,6 +22,7 @@ public class ActionAttackProjectile : ActionFighterAttack
         projectile.Action = this;
         projectile.Direction = new Vector2(ctx.FaceDirection, 0f);
         //Debug.Log("Script: ActionAttackProjectile - PoolProjectile - Time: " + Time.timeSinceLevelLoad);
+        projectile.Rotate();
         projectile.HitResponder.UpdateData(this);
     }
 
@@ -34,7 +35,7 @@ public class ActionAttackProjectile : ActionFighterAttack
                 if(_firstFrameStartup){
                     ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.Animator.Play("AttackStart");
+                    ctx.Animator.PlayInFixedTime("AttackStart");
                     ctx.ColBoxAnimator.Play("AttackStart");
                     _firstFrameStartup = false;
                 }
@@ -44,7 +45,7 @@ public class ActionAttackProjectile : ActionFighterAttack
                 if(_firstFrameActive){
                     ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.Animator.Play("AttackActive");
+                    ctx.Animator.PlayInFixedTime("AttackActive");
                     _firstFrameActive = false;
 
                     // var obj = ((FighterStateMachine_Class1)ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].QueueReference);
@@ -57,7 +58,7 @@ public class ActionAttackProjectile : ActionFighterAttack
                 if(_firstFrameRecovery){
                     ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
                     ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.Animator.Play("AttackRecover");
+                    ctx.Animator.PlayInFixedTime("AttackRecover");
                     _firstFrameRecovery = false;
                 }
             break;

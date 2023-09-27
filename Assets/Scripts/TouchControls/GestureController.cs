@@ -318,7 +318,8 @@ public class GestureController : MonoBehaviour
         DollarRecognizer.Unistroke unistroke = _recognizer.SavePattern(name, _pointList);
         string gestureName = _nameInput.text;
         string fileName = string.Format("{0}/{1}-{2}.xml", Application.persistentDataPath, gestureName, DateTime.Now.ToFileTime());
-        GestureIO.WriteGesture(unistroke, gestureName, fileName);
+        //GestureIO.WriteGesture(unistroke, gestureName, fileName);
+        GestureIO.WriteGesture(_pointList.ToArray(), gestureName, fileName);
 
         // DEBUG
         string debugLog = $"{gestureName} has been written as;";

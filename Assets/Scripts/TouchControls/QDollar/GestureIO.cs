@@ -88,4 +88,19 @@ using UnityEngine;
                 sw.WriteLine("</Gesture>");
             }
         }
+
+        public static void WriteGesture(Vector2[] points, string gestureName, string fileName){
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                sw.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>");
+                sw.WriteLine("<Gesture Name = \"{0}\">", gestureName);
+                for (int i = 0; i < points.Length; i++)
+                {
+                    sw.WriteLine("\t\t<Point X = \"{0}\" Y = \"{1}\" T = \"0\" Pressure = \"0\" />",
+                        points[i].x, points[i].y
+                    );
+                }
+                sw.WriteLine("</Gesture>");
+            }
+        }
     }

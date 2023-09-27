@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour, IPoolableObject
@@ -34,7 +35,7 @@ public class Projectile : MonoBehaviour, IPoolableObject
 
     private void OnEnable(){
         if(m_hitResponder) m_hitResponder.HitResponse += OnHit;
-        if(m_hitResponder && m_action) m_hitResponder.UpdateData(m_action);
+        //if(m_hitResponder && m_action) m_hitResponder.UpdateData(m_action);
         //Debug.Log("Script: Projectile - OnEnable - Time: " + Time.timeSinceLevelLoad);
     }
 
@@ -46,8 +47,13 @@ public class Projectile : MonoBehaviour, IPoolableObject
         EnqueueObject(gameObject, QueueReference);
     }
     
-    private void Start(){
-        
+    public void Rotate(){
+        if(m_direction.x > 0){
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        } 
+        else {
+            transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+        }
     }
 
     private void FixedUpdate(){
