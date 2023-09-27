@@ -18,5 +18,5 @@ MonoBehaviour:
   _characterProficiency: 100
   _attackAccuracy: 100
   _defensiveAccuracy: 100
-  _counterAttackOrDodge: 50
+  _counterAttackOrDodge: 100
   _opportunityAttackConsistency: 100
