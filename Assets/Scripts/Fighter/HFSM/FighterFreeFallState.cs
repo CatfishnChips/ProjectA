@@ -63,6 +63,9 @@ public class FighterFreeFallState : FighterBaseState
         _velocity.x = 2 * _action.Knockback / _time; // Initial horizontal velocity;
         _velocity.x *= horizontalDirection;
 
+        // Apply Calculated Variables
+        _ctx.Drag = _drag;
+        _ctx.Gravity = _gravity;
         _ctx.CurrentMovement = _velocity;
 
         ActionDefault action = _ctx.ActionDictionary["Knockup"] as ActionDefault;

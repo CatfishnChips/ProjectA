@@ -46,6 +46,7 @@ public class FighterWalkState : FighterBaseState
     {
         if (_ctx.CurrentRootState == FighterStates.Grounded){
             _ctx.Animator.SetFloat("Blend", _ctx.MovementInput);
+            _ctx.CurrentMovement = _ctx.RootMotion;
         }
         else if (_ctx.CurrentRootState == FighterStates.Airborne)
         {

@@ -34,20 +34,18 @@ public class FighterKnockbackState : FighterBaseState
         _action = _collisionData.action;
         _ctx.IsHurt = false;
 
+        _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
+        _time = _action.KnockbackStun * Time.fixedDeltaTime;
 
-        if (_action.Knockback!= 0){
-            _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
-            _time = _action.KnockbackStun * Time.fixedDeltaTime;
+        _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
+        _drag *= _direction;
 
-            _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
-            _drag *= _direction;
+        _initialVelocity = 2 * _action.Knockback / _time; // Initial horizontal velocity;
+        _initialVelocity *= _direction;
 
-            _initialVelocity = 2 * _action.Knockback / _time; // Initial horizontal velocity;
-            _initialVelocity *= _direction;
-
-            _ctx.Drag = _drag;
-            _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
-        }
+        // Apply Calculated Variables
+        _ctx.Drag = _drag;
+        _ctx.Gravity = 0f;
 
         if (_action.KnockbackStun == 0) return;
 
@@ -88,6 +86,9 @@ public class FighterKnockbackState : FighterBaseState
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
                 _isFirstTime = false;
+                
+                // Apply Calculated Initial Velocity
+                _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
             }
         }
 

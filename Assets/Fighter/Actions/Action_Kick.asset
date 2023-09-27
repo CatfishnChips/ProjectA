@@ -22,7 +22,7 @@ MonoBehaviour:
   m_blockStun: 20
   m_hitStop: 10
   m_knockbackStun: 0
-  m_knockdownStun: 10
+  m_knockdownStun: 20
   m_knockupStun: {x: 12, y: 8}
   m_knockup: 1
   m_knockback: 2

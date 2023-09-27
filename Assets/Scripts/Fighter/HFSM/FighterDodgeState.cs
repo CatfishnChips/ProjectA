@@ -67,8 +67,8 @@ public class FighterDodgeState : FighterBaseState
             }
         }
         
-        _currentFrame++;
         CheckSwitchState();
+        _currentFrame++;
     }
 
     public override void InitializeSubState()

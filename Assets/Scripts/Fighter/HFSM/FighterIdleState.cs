@@ -57,10 +57,17 @@ public class FighterIdleState : FighterBaseState
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
         _ctx.Rigidbody2D.velocity = Vector2.zero;
+        Debug.Log("FighterIdleState(ExitState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad  + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
     }
 
     public override void FixedUpdateState()
-    {
+    {   
+        //_ctx.Rigidbody2D.velocity = Vector2.zero;
+
+        // Normaly should set CurrentMovement instead of velocity of rigidbody directly. 
+        // However FighterKnockbackState and FighterKnockup (and possibly more) registers reverse drag.
+        _ctx.CurrentMovement = Vector2.zero;
+        //Debug.Log("FighterIdleState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
         CheckSwitchState();
     }
 

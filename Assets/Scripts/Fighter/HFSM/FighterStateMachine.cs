@@ -59,6 +59,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected SpiritManager _spiritManager;
     protected ProjectileManager m_projectileManager;
     protected Vector2 _velocity;
+    protected Vector2 _rootMotion; // Provided by AnimatorRootMotionManager
 
     #region Public Events
     public UnityAction OnAttackStart;
@@ -131,6 +132,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
     public ActionFighterAttack AttackAction{get{return _isAttackPerformed.Queue.Peek();}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
+    public Vector2 RootMotion{get{return _rootMotion;} set{_rootMotion = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
     public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
 
@@ -199,7 +201,11 @@ public abstract class FighterStateMachine : MonoBehaviour
     #region Virtual Monobehaviour Functions
 
     protected virtual void AwakeFunction(){
-        _animator = GetComponent<Animator>();
+        if (TryGetComponent(out Animator animator)){
+            _animator = animator;
+        }
+        else _animator = transform.Find("Mesh").GetComponent<Animator>();
+
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         
         _states = new FighterStateFactory(this);
@@ -295,7 +301,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     protected virtual void UpdateFunction(){
-        _currentState.UpdateStates();
+        //_currentState.UpdateStates();
     }
 
     protected virtual void FixedUpdateFunction(){
@@ -391,7 +397,7 @@ public abstract class FighterStateMachine : MonoBehaviour
         if (attackName == "L") return; // Temporary Bugfix
 
         ActionAttack action = _attackMoveDict[attackName];
-
+        
         if (IsSameOrSubclass(typeof(ActionFighterAttack), action.GetType())){
             // if (_isGrounded) action = _groundedAttackMoveDict[attackName];
             // else action = _aerialAttackMoveDict[attackName];
@@ -521,8 +527,8 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     public virtual void SetFaceDirection(int value){
         _faceDirection = value;
-        transform.rotation = Quaternion.Euler(0f, 95f * _faceDirection, 0f);
-        transform.localScale = new Vector3(_faceDirection, 1f, 1f);
+        transform.rotation = Quaternion.Euler(0f, 90f * _faceDirection, 0f);
+        //transform.localScale = new Vector3(_faceDirection, 1f, 1f);
     }
 
     public virtual void ResetVariables(){

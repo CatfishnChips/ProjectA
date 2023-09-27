@@ -93,7 +93,7 @@ public class FighterAttackState : FighterBaseState
 
         // Due to HitResponder's data being updated in EnterState, before FixedUpdateState which plays the animations
         // back to back attacks before being able to enter the Recovery state makes it so that the last Hitbox hits once again with the new data
-        //_ctx.HitResponder.UpdateData(_action);
+        _ctx.HitResponder.UpdateData(_action);
 
         if (_ctx.Player == Player.P2) EventManager.Instance.FighterAttackStarted?.Invoke(_action.name);
         else EventManager.Instance.P2FighterAttackStarted?.Invoke(_action.name);

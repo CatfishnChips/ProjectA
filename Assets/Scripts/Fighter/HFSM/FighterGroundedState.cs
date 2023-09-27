@@ -10,6 +10,7 @@ public class FighterGroundedState : FighterBaseState
     public override void CheckSwitchState()
     {
         if (_ctx.IsHurt && !_ctx.IsInvulnerable){
+            //Debug.Log("FighterGroundedState(CheckSwitchState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
             SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
         }
 
@@ -30,15 +31,16 @@ public class FighterGroundedState : FighterBaseState
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
         _ctx.Rigidbody2D.velocity = Vector2.zero;
+        Debug.Log("FighterGroundedState(ExitState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
     }
 
     public override void FixedUpdateState()
     {
         _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
         _ctx.Velocity = _ctx.CurrentMovement;
-
-        if(_ctx.Velocity != Vector2.zero)
         _ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        //Debug.Log("FighterGroundedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
+        //Debug.Log("FighterGroundedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
         CheckSwitchState();
     }
 

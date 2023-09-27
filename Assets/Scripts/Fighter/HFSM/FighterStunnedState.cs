@@ -43,24 +43,27 @@ public class FighterStunnedState : FighterBaseState
         if (_ctx.CurrentSubState == FighterStates.Idle){   
             FighterBaseState state;   
 
-            if (_isFirstTime) {
-                _isFirstTime = false;
-            }      
-            else{
-                if (_ctx.IsGrounded){
-                    state = _factory.GetRootState(FighterRootStates.Grounded);
-                }
-                else{
-                    state = _factory.GetRootState(FighterRootStates.Airborne);
-                }
-                SwitchState(state);
+            if (_ctx.IsGrounded){
+                state = _factory.GetRootState(FighterRootStates.Grounded);
             }
+            else{
+                state = _factory.GetRootState(FighterRootStates.Airborne);
+            }
+            SwitchState(state);
+
+
+            // if (_isFirstTime) {
+            //     _isFirstTime = false;
+            // }      
+            // else{
+                
+            // }
         }
     }
 
     public override void EnterState()
     {
-        //Debug.Log("FighterStunnedState(EnterState)");
+        Debug.Log("FighterStunnedState(EnterState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
         _currentFrame = 0;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
@@ -97,12 +100,12 @@ public class FighterStunnedState : FighterBaseState
 
     public override void FixedUpdateState()
     {   
-        //Debug.Log("FighterStunnedState(FixedUpdateState)");
+        //Debug.Log("FighterStunnedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
+        Debug.Log("FighterStunnedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
         if (_currentFrame > _action.HitStop){  
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
             _ctx.Rigidbody2D.velocity = _ctx.Velocity;
-            //Debug.Log("Fighter Stunned State - Frame: " + _currentFrame + " Velocity: " + _ctx.Velocity + " Drag/Grav Applied: " + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime);
         }
         CheckSwitchState();
         _currentFrame++;
