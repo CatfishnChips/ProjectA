@@ -86,7 +86,7 @@ MonoBehaviour:
     selfAttackEnded: 0
   description: 
   drawGizmos: 0
-  fighterState: 7
+  fighterState: -1
 --- !u!114 &-5198595182799456809
 MonoBehaviour:
   m_ObjectHideFlags: 0

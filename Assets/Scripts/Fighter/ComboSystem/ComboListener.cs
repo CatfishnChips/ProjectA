@@ -39,7 +39,7 @@ public class ComboListener
         _currentFrame++;
     }
 
-    public ActionFighterAttack AttackOverride(ActionFighterAttack action){
+    public void AttackOverride(ref ActionFighterAttack action, ref bool success){
         _receivedAttack = action;
         _attackAction = null;
         //Debug.Log("Current Mov Number: " + _currentMoveNumber);
@@ -54,7 +54,7 @@ public class ComboListener
             if(_comboMovesDict.ContainsKey(action.name)){ 
                 _currentSearchDict = _comboMovesDict[action.name].possibleNextMoves;
             }
-            return action;
+            return;
         }
         else{
             _currentFrame = 0;
@@ -68,7 +68,8 @@ public class ComboListener
         }
 
         //_currentMoveNumber++;
-        return _attackAction;
+        action = _attackAction;
+        success = true;
     }
 
     private void ResetListener(){

@@ -7,6 +7,7 @@ public class FighterAttackState : FighterBaseState
     public int _currentFrame = 0;
     public ActionStates _actionState = default;
     private bool _hadHit = false;
+    private bool _performedComboMove = false;
 
     public bool HadHit { get {return _hadHit;} set{ _hadHit = value;} }
     public ActionFighterAttack Action { get => _action; }
@@ -34,7 +35,7 @@ public class FighterAttackState : FighterBaseState
         }
         else if (_actionState == ActionStates.Recovery){
             // Rework this attack transition!
-            if(_ctx.AttackPerformed && _hadHit && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
+            if(_ctx.AttackPerformed && _performedComboMove && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
                 SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
         }
@@ -75,7 +76,7 @@ public class FighterAttackState : FighterBaseState
 
         // }
 
-        _action = _ctx.ComboListener.AttackOverride(_action);
+        _ctx.ComboListener.AttackOverride(ref _action, ref _performedComboMove);
 
         _action.EnterStateFunction(_ctx, this);
         
@@ -105,6 +106,7 @@ public class FighterAttackState : FighterBaseState
         _ctx.ActionState = default;
         _ctx.OnAttackEnd?.Invoke();
         _action.ExitStateFunction(_ctx, this);
+        _performedComboMove = false;
     }
 
     public override void InitializeSubState()

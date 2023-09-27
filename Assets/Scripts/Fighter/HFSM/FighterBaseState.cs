@@ -44,14 +44,14 @@ public abstract class FighterBaseState
     }
 
     public void ExitStates(){
-        ExitStates();
+        ExitState();
         if(_currentSubState != null){
             _currentSubState.ExitStates();
         }
     }
 
     protected void SwitchState(FighterBaseState newState){
-        ExitState();
+        ExitStates();
 
         newState.EnterState();
 
