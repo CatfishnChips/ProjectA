@@ -32,6 +32,8 @@ public abstract class FighterStateMachine : MonoBehaviour
     [SerializeField] protected ComboMove[] _combosArray;
     protected ComboListener _comboListener;
 
+    protected Transform _mesh;
+
     protected Animator _animator;
     protected AnimatorOverrideController _animOverrideCont;
     protected AnimationClipOverrides _clipOverrides;
@@ -114,6 +116,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected bool _validAttackInputInterval;
 
     public Player Player {get{return _player;}}
+    public Transform Mesh {get{return _mesh;}}
 
     public FighterStates CurrentRootState{get{return _currentRootState;} set{_currentRootState = value;}}
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
@@ -201,10 +204,12 @@ public abstract class FighterStateMachine : MonoBehaviour
     #region Virtual Monobehaviour Functions
 
     protected virtual void AwakeFunction(){
+        _mesh = transform.Find("Mesh");
+
         if (TryGetComponent(out Animator animator)){
             _animator = animator;
         }
-        else _animator = transform.Find("Mesh").GetComponent<Animator>();
+        else _animator = _mesh.GetComponent<Animator>();
 
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         
@@ -528,7 +533,11 @@ public abstract class FighterStateMachine : MonoBehaviour
     public virtual void SetFaceDirection(int value){
         _faceDirection = value;
         transform.rotation = Quaternion.Euler(0f, 90f * _faceDirection, 0f);
-        //transform.localScale = new Vector3(_faceDirection, 1f, 1f);
+
+        _mesh.localRotation = Quaternion.Euler(0f, 5f, 0f);
+        
+        // Chaning scale at runtime creates problems with MagicaCloth
+        //_mesh.localScale = new Vector3(_faceDirection, 1f, 1f);
     }
 
     public virtual void ResetVariables(){
