@@ -58,7 +58,7 @@ public class AttemptAgressiveAction : ActionNode
         }
         else
         {
-            Debug.Log("Don't want to attack");
+            // Debug.Log("Don't want to attack");
             blackboard.choosenAgressiveAction = null;
             return State.Failure;
 

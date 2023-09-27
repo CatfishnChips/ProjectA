@@ -22,7 +22,6 @@ namespace TheKiwiCoder {
 
         public void OnEnemyAttackStart()
         {
-            Debug.Log("I've been Invoked!");
             enemyAttackStarted = true;
             enemyAttackEnded = false;
         }
@@ -35,7 +34,6 @@ namespace TheKiwiCoder {
 
         public void OnSelfAttackStart()
         {
-            Debug.Log("I've been Invoked!");
             selfAttackStarted = true;
             selfAttackEnded = false;
         }
