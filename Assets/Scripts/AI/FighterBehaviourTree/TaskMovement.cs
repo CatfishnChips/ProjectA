@@ -15,9 +15,9 @@ public class TaskMovement : ActionNode
 
     private void NonAttackingStateMovement()
     {
-        // Debug.Log("Distance: " + context.distanceToOpponent);
-        // Debug.Log("Optimal: " + context.optimalDistance);
-        // Debug.Log("Margin:" + context.distanceMargin);
+        Debug.Log("Distance: " + context.distanceToOpponent);
+        Debug.Log("Optimal: " + context.optimalDistance);
+        Debug.Log("Margin:" + context.distanceMargin);
         if (context.distanceToOpponent.x < context.optimalDistance - context.distanceMargin)
         {
             EventManager.Instance.P2Move(-1.0f * context.selfFSM.FaceDirection);

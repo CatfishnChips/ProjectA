@@ -15,33 +15,33 @@ MonoBehaviour:
   name: FlyingKick
   applyRootMotion: 0
   m_tags: 276
-  m_damage: 0
+  m_damage: 25
   m_chipDamage: 0
   m_priority: 0
   m_part: 1
   m_ignoreBlock: 0
-  m_blockStun: 0
-  m_hitStop: 0
-  m_knockbackStun: 0
+  m_blockStun: 30
+  m_hitStop: 10
+  m_knockbackStun: 20
   m_knockdownStun: 0
   m_knockupStun: {x: 0, y: 0}
   m_knockup: 0
-  m_knockback: 0
+  m_knockback: 3
   m_gravity: 1
   m_staminaRecovery: 0
   m_spiritRecovery: 0
   m_sound: {fileID: 0}
   m_soundLevel: 0
-  m_screenShakeVelocity: {x: 0, y: 0, z: 0}
+  m_screenShakeVelocity: {x: -0.1, y: 0, z: 0}
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_startFrames: 0
-  m_activeFrames: 0
-  m_recoveryFrames: 0
+  m_startFrames: 9
+  m_activeFrames: 8
+  m_recoveryFrames: 27
   m_hitboxFrame: 7
   m_hitboxOffset: {x: 2.2562695, y: 1.6326367}
-  m_hitboxLocation: {x: 2.2562695, y: 2.1326365}
+  m_hitboxLocation: {x: 3.0989473, y: 2.1326365}
   m_hitboxSize: {x: 1.1476562, y: 0.48}
   m_meshAnimationS: {fileID: 7400000, guid: d782337c84fe29a419f75d393f61e90d, type: 2}
   m_meshAnimationA: {fileID: 7400000, guid: e3f434c01f9bc6641afa8034598d4fd9, type: 2}
