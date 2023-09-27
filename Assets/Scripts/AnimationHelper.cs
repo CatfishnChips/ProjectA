@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -7,10 +6,9 @@ using UnityEditor.Animations;
 [ExecuteInEditMode]
 public class AnimationHelper : MonoBehaviour
 {
-    //m_script = (AnimationPreview)serializedObject.targetObject;
     [SerializeField] private Animator animator;
 
-    void CreateTPose() {
+    public void CreateTPose() {
         var recorder = new GameObjectRecorder(animator.gameObject);
         recorder.BindComponentsOfType<Transform>(animator.gameObject, true);
         recorder.TakeSnapshot(0f);
@@ -20,3 +18,4 @@ public class AnimationHelper : MonoBehaviour
         AssetDatabase.CreateAsset(tempClip, EditorUtility.SaveFilePanel("Save", Application.dataPath, "test", "anim").Replace(Application.dataPath, "Assets"));
     }
 }
+#endif

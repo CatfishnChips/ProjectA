@@ -1,4 +1,4 @@
-using System.Collections;
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -10,6 +10,8 @@ public class AnimationPreview : MonoBehaviour
     [SerializeField] private bool m_manual;
     [SerializeField] private bool m_preview;
     [SerializeField] private bool m_lockZ;
+    [SerializeField] private bool m_lockX;
+    [SerializeField] private bool m_lockY;
     [SerializeField] private Vector3 m_positionOffset;
     [SerializeField] private Vector3 m_rotationOffset;
     private UnityEditor.AnimationWindow _animationWindow;
@@ -43,7 +45,13 @@ public class AnimationPreview : MonoBehaviour
                 int frame = Mathf.Clamp(m_frame, 0, animationObject.FrameCount);
                 float time = frame / animationObject.FrameRate;
                 animationObject.Clip.SampleAnimation(animationObject.Object, time);
-                if (m_lockZ) animationObject.Object.transform.position = new Vector3(animationObject.Object.transform.position.x, animationObject.Object.transform.position.y, 0f);
+
+                Vector3 position;
+                position.x = m_lockX ? 0f : animationObject.Object.transform.position.x;
+                position.y = m_lockY ? 0f : animationObject.Object.transform.position.y;
+                position.z = m_lockZ ? 0f : animationObject.Object.transform.position.z;
+                animationObject.Object.transform.position = position;
+  
                 if (animationObject.ApplyPositionOffset) animationObject.Object.transform.position += m_positionOffset;
                 if (animationObject.ApplyRotationOffset) animationObject.Object.transform.Rotate(m_rotationOffset);
             }  
@@ -51,7 +59,14 @@ public class AnimationPreview : MonoBehaviour
 
         m_prevFrame = m_frame;      
     }
+
+    public bool TryGetAnimatorComponent(GameObject obj, out Animator animator){
+        animator = null;
+        if (obj == null) return false;
+        return obj.TryGetComponent(out animator);
+    }
 }
+
 
 [System.Serializable]
 public struct AnimationObject
@@ -64,3 +79,4 @@ public struct AnimationObject
     public float Lenght { get {return Clip != null ? Clip.length : 0;} }
     public int FrameCount { get {return Mathf.FloorToInt(Lenght * FrameRate);} }
 }
+#endif

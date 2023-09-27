@@ -77,28 +77,39 @@ public class InputManager : MonoBehaviour
                         // Screen Touch Side    // Better implementation maybe?
                         // If first touch occupied either Touch A or Touch B, then instead of looking at the initial touch location
                         // assign next touch to the other touch (Touch A or Touch B).
-                        if (_touchAID == 0 && _touchBID != 0) 
+                        // if (_touchAID == 0 && _touchBID != 0) 
+                        // {
+                        //     Debug.Log("Touch A is already occupied! Assigning to Touch B.");
+                        //     _touchBID = touch.fingerId;
+                        // } 
+                        // else if (_touchBID == 0 && _touchAID != 0) 
+                        // {
+                        //     Debug.Log("Touch B is already occupied! Assigning to Touch A.");
+                        //     _touchAID = touch.fingerId;
+                        // }
+                        // else 
+                        // {
+                        //     if (touch.position.x < Screen.width / 2)
+                        //     {
+                        //         //Debug.Log("Left Screen! Assigning to Touch A.");
+                        //         _touchAID = touch.fingerId;
+                        //     }
+                        //     else if (touch.position.x > Screen.width / 2) 
+                        //     {
+                        //         //Debug.Log("Right Screen! Assigning to Touch B.");
+                        //         _touchBID = touch.fingerId;
+                        //     }
+                        // }
+
+                        if (touch.position.x < Screen.width / 2)
                         {
-                            Debug.Log("Touch A is already occupied! Assigning to Touch B.");
-                            _touchBID = touch.fingerId;
-                        } 
-                        else if (_touchBID == 0 && _touchAID != 0) 
-                        {
-                            Debug.Log("Touch B is already occupied! Assigning to Touch A.");
+                            //Debug.Log("Left Screen! Assigning to Touch A.");
                             _touchAID = touch.fingerId;
                         }
-                        else 
+                        else if (touch.position.x > Screen.width / 2) 
                         {
-                            if (touch.position.x < Screen.width / 2)
-                            {
-                                //Debug.Log("Left Screen! Assigning to Touch A.");
-                                _touchAID = touch.fingerId;
-                            }
-                            else if (touch.position.x > Screen.width / 2) 
-                            {
-                                //Debug.Log("Right Screen! Assigning to Touch B.");
-                                _touchBID = touch.fingerId;
-                            }
+                            //Debug.Log("Right Screen! Assigning to Touch B.");
+                            _touchBID = touch.fingerId;
                         }
                         
                         if (touch.fingerId == _touchAID) 

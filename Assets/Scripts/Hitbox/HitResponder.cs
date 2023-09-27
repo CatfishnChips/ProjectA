@@ -28,7 +28,7 @@ public class HitResponder : MonoBehaviour, IHitResponder
         _part = 1; // Temporary
     }
 
-    private void Update(){
+    private void FixedUpdate(){
         foreach (Hitbox hitbox in _hitboxes){
             if (_part <= 0) return;
             if (!hitbox.Active)return;
