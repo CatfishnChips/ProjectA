@@ -44,7 +44,7 @@ public class FighterKnockupState : FighterBaseState
 
     public override void EnterState()
     {
-        Debug.Log("FighterKnockupState(EnterState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
+        //Debug.Log("FighterKnockupState(EnterState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
         _currentFrame = 0;
         _ctx.CurrentFrame =_currentFrame;
         _isFirstTime = true;
@@ -125,7 +125,7 @@ public class FighterKnockupState : FighterBaseState
             }
             _ctx.Drag = _drag;
             _ctx.Gravity = _currentFrame < _action.KnockupStun.x + _action.HitStop ? _gravity1 : _gravity2;
-            Debug.Log("FighterKnockupState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
+            //Debug.Log("FighterKnockupState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
             //Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
         }
         

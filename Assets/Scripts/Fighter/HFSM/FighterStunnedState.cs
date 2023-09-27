@@ -63,7 +63,7 @@ public class FighterStunnedState : FighterBaseState
 
     public override void EnterState()
     {
-        // Debug.Log("FighterStunnedState(EnterState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
+        //Debug.Log("FighterStunnedState(EnterState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
         _currentFrame = 0;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
@@ -101,7 +101,7 @@ public class FighterStunnedState : FighterBaseState
     public override void FixedUpdateState()
     {   
         //Debug.Log("FighterStunnedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
-        // Debug.Log("FighterStunnedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
+        //Debug.Log("FighterStunnedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
         if (_currentFrame > _action.HitStop){  
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
