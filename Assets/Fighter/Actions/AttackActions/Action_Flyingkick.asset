@@ -20,7 +20,7 @@ MonoBehaviour:
   m_part: 1
   m_chipDamage: 0
   m_blockStun: 30
-  blockKnocback: 1
+  blockKnocback: 2
   m_ignoreBlock: 0
   m_hitStop: 10
   m_knockbackStun: 20

@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8434b331e3e6feb4cb569fe3fc9815c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config:
+    InputDelay: 0
+    InputBuffer: 10

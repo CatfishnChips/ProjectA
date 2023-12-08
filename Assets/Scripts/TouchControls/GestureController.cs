@@ -167,6 +167,7 @@ public class GestureController : MonoBehaviour
             float deltaDistanceX = _virtualJoystick.x / _sensitivity;
 
             _deltaVectorX = deltaDistanceX;
+            //Debug.Log("DeltaVector: " + _deltaVectorX + " JoystickX: " + _virtualJoystick.x);
             if (Mathf.Abs(_virtualJoystick.x) <= _deadzone) _deltaVectorX = 0f;
             EventManager.Instance.Move?.Invoke(_deltaVectorX);
 
@@ -318,7 +319,8 @@ public class GestureController : MonoBehaviour
         DollarRecognizer.Unistroke unistroke = _recognizer.SavePattern(name, _pointList);
         string gestureName = _nameInput.text;
         string fileName = string.Format("{0}/{1}-{2}.xml", Application.persistentDataPath, gestureName, DateTime.Now.ToFileTime());
-        GestureIO.WriteGesture(unistroke, gestureName, fileName);
+        //GestureIO.WriteGesture(unistroke, gestureName, fileName);
+        GestureIO.WriteGesture(_pointList.ToArray(), gestureName, fileName);
 
         // DEBUG
         string debugLog = $"{gestureName} has been written as;";

@@ -5,6 +5,7 @@ public class UIManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject m_pauseOverlay;
     [SerializeField] private GameObject m_debugOverlay;
+    [SerializeField] private GameObject m_AISettings;
 
     private HealthbarController m_healthbarController;
     private StaminabarController m_staminabarController;
@@ -77,6 +78,10 @@ public class UIManager : MonoBehaviour
 
     public void Button_ToggleDebug(){
         m_debugOverlay.SetActive(!m_debugOverlay.activeSelf);
+    }
+
+    public void Button_ToggleAISetting(){
+        m_AISettings.SetActive(!m_AISettings.activeSelf);
     }
 
     #endregion
