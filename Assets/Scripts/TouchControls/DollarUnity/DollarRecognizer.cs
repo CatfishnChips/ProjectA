@@ -109,7 +109,7 @@ public class DollarRecognizer
 			Name = string.Intern(name);
 			Points = DollarRecognizer.resample(points, _kNormalizedPoints);
 			Angle = DollarRecognizer.indicativeAngle(Points);
-			DollarRecognizer.rotateBy(Points, -Angle);
+			//DollarRecognizer.rotateBy(Points, -Angle);
 			DollarRecognizer.scaleTo(Points, _kNormalizedSize);
 			DollarRecognizer.translateTo(Points, Vector2.zero);
 			Vector = DollarRecognizer.vectorize(Points);
@@ -220,7 +220,7 @@ public class DollarRecognizer
 	{
 		Vector2[] working = resample(points, _kNormalizedPoints);
 		float angle = indicativeAngle(working);
-		rotateBy(working, -angle);
+		//rotateBy(working, -angle);
 		scaleTo(working, _kNormalizedSize);
 		translateTo(working, Vector2.zero);
 

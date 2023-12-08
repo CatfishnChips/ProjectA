@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: AIHardDifficulty
   m_EditorClassIdentifier: 
   name: Hard
-  _aggression: 0
+  _aggression: 70
   _aggressionConsistency: 100
   _characterProficiency: 100
   _attackAccuracy: 100
   _defensiveAccuracy: 100
   _counterAttackOrDodge: 100
-  _opportunityAttackConsistency: 100
+  _opportunityAttackConsistency: 0
