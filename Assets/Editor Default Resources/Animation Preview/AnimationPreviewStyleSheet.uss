@@ -1,0 +1,172 @@
+/* CONTAINERS */
+
+.blackboard__custom-data-container
+{
+	flex-direction: column;
+	background-color: #282828;
+    border-color: #212121;
+	border-radius: var(--ds-metrics-window-pixels-4);
+	border-width: 1px;
+	padding: var(--ds-metrics-window-pixels-6);
+	min-width: 480px;
+}
+
+.blackboard__content-custom-data-container
+{
+	flex-direction: row;
+	background-color:  #282828;
+    border-color: var(--ds-colors-window-dark-grey-1);
+	border-radius: var(--ds-metrics-window-pixels-4);
+	padding: var(--ds-metrics-window-pixels-4);
+	align-self: center;
+	align-content: stretch;
+}
+
+.blackboard__overlay-custom-data-container
+{
+	flex-direction: row;
+	justify-content: space-between;
+}	
+
+.blackboard__info-custom-data-container
+{
+	background-color: var(--ds-colors-window-dark-grey-5);
+    border-color: #212121;
+	border-radius: var(--ds-metrics-window-pixels-4);
+	border-width: 1px;
+	padding: var(--ds-metrics-window-pixels-6);
+}
+
+.blackboard__scroll-view-tab-custom-data-container
+{
+	max-width: 80px;
+	min-height: 20px;
+	background-color: #3c3c3c;
+    border-color: #292929;
+	border-radius: var(--ds-metrics-window-pixels-2);
+	border-width: 1px;
+	border-bottom-left-radius: var(--ds-metrics-window-pixels-0);
+	border-bottom-right-radius: var(--ds-metrics-window-pixels-0);
+	padding-left: var(--ds-metrics-window-pixels-6);
+	margin-bottom: -1px;	
+	font-size: 12px;
+	justify-content: center;
+}
+
+.blackboard__scroll-view-custom-data-container
+{
+	background-color: var(--ds-colors-window-dark-grey-5);
+    border-color: var(--ds-colors-window-dark-grey-1);
+	border-radius: var(--ds-metrics-window-pixels-4);
+	border-top-left-radius: var(--ds-metrics-window-pixels-0);
+	padding: var(--ds-metrics-window-pixels-2);
+	border-width: 1px;
+	border-top-width: 0px;
+	align-items: center;
+}
+
+/* INPUTS */
+
+.blackboard__slider
+{
+	margin: var(--ds-metrics-window-pixels-4);
+	padding: var(--ds-metrics-window-pixels-2);
+}
+
+.blackboard__toggle
+{
+	justify-content: center;
+	align-content: center;
+	align-self: center;
+	-unity-text-align: middle-center;
+	margin: var(--ds-metrics-window-pixels-6);
+}
+
+.blackboard__text-field__hidden > .unity-text-field__input
+{
+	background-color: transparent;
+	border-color: transparent;
+}
+
+.blackboard__text-field__hidden > .unity-text-field__input:focus
+{
+	background-color: var(--ds-colors-window-dark-grey-1);
+	border-color: var(--ds-colors-window-dark-grey-6);
+}
+
+.blackboard__filename-text-field > .unity-text-field__input
+{
+	max-width: var(--ds-metrics-window-pixels-1000);
+	margin: var(--ds-metrics-window-pixels-4);
+	padding: var(--ds-metrics-window-pixels-4);
+}
+
+/* BUTTONS */
+
+.blackboard__button
+{
+	background-color: var(--ds-colors-window-dark-grey-5);
+	border-color: var(--ds-colors-window-dark-grey-1);
+	margin: var(--ds-metrics-window-pixels-6);
+	align-content: stretch;
+    min-height: var(--ds-metrics-window-pixels-25);
+	min-width: 50px;
+	padding: var(--ds-metrics-window-pixels-4);
+	height: auto;
+}
+
+.blackboard__remove-button
+{
+	background-color: var(--ds-colors-window-dark-grey-5);
+	border-color: var(--ds-colors-window-dark-grey-1);
+	margin: var(--ds-metrics-window-pixels-2);
+	border-radius: var(--ds-metrics-window-pixels-4);
+	padding: var(--ds-metrics-window-pixels-4);
+	align-content: stretch;
+    min-height: var(--ds-metrics-window-pixels-20);
+	height: auto;
+}
+
+.blackboard__button:hover
+{
+	background-color: var(--ds-colors-window-dark-grey-2);
+}
+
+.blackboard__button:active
+{
+	background-color: var(--ds-colors-window-dark-grey-3);
+	color: var(--ds-colors-window-yellow);
+}
+
+/* ELEMENTS */
+
+.blackboard__custom-data-container > Foldout
+{
+	background-color: var(--ds-colors-window-dark-grey-5);
+	margin-left: var(--ds-metrics-window-pixels-n4);
+	margin-top: var(--ds-metrics-window-pixels-4);
+}
+
+.blackboard__custom-data-container > Foldout > TextField
+{
+	margin-left: var(--ds-metrics-window-pixels-n12);
+	margin-top: var(--ds-metrics-window-pixels-8);
+}
+
+.unity-float-field__label {
+	width: 50px;
+	min-width: 50px;
+	max-width: 50px;
+}
+
+.unity-integer-field__label {
+	width: 50px;
+	min-width: 50px;
+	max-width: 50px;
+}
+
+.unity-object-field__label {
+	width: 50px;
+	min-width: 50px;
+	max-width: 50px;
+}

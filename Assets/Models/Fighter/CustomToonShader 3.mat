@@ -96,6 +96,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RimLighting: 0
+    - _SSSIntensity: 0.56
+    - _SSSPower: 0.02
     - _ShadowIntensity: 0.991
     - _ShadowPatternDensity: 6.8
     - _ShadowPatternRotation: 1.25

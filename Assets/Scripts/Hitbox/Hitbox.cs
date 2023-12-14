@@ -4,14 +4,12 @@ using UnityEngine;
 using UnityEngine.Animations;
 
 [ExecuteAlways]
-public class Hitbox : MonoBehaviour, IHitDetector
+public class Hitbox : Boxes, IHitDetector
 {
     [Header("Properties")]
-    [SerializeField] private Vector2 m_offset;
-    [SerializeField] private Vector2 m_size;
     [NotKeyable] [SerializeField] private LayerMask m_layerMask; // Determines which type of colliders this collider can interact with.
-    [DiscreteEvaluation] [SerializeField] private ColliderState m_state;
     [NotKeyable] [SerializeField] private Color m_openColor, m_collidingColor;
+
     //private BoxCollider2D[] _colliders = new BoxCollider2D[10];
     
     private Color _color {get { return m_state == ColliderState.Open ? m_openColor : m_collidingColor; }}
@@ -70,7 +68,7 @@ public class Hitbox : MonoBehaviour, IHitDetector
             }
         }
     }
-    
+
     private void OnDrawGizmos(){
         Gizmos.color = _color;
 
@@ -80,6 +78,21 @@ public class Hitbox : MonoBehaviour, IHitDetector
 
         Gizmos.DrawWireCube(Vector3.zero + new Vector3(m_offset.x, m_offset.y, 0), new Vector3(m_size.x, m_size.y, 0));
     }
+
+
+#if UNITY_EDITOR
+    public override void DrawHandles(Matrix4x4 matrix)
+    {
+        UnityEditor.Handles.color = _color;
+
+        if (m_state == ColliderState.Closed) return;
+
+        UnityEditor.Handles.matrix = matrix;
+
+        UnityEditor.Handles.DrawWireCube(Vector3.zero + new Vector3(m_offset.x, m_offset.y, 0), new Vector3(m_size.x, m_size.y, 0));
+    }
+
+#endif
 }
 
 // CheckHit for multiple colliders: 

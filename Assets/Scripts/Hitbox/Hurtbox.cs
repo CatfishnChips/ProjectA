@@ -4,17 +4,13 @@ using UnityEngine;
 using UnityEngine.Animations;
 
 [ExecuteAlways]
-public class Hurtbox : MonoBehaviour, IHurtbox
+public class Hurtbox : Boxes, IHurtbox
 {
     [NotKeyable] [SerializeField] private FighterStateMachine m_owner = null;
     [NotKeyable] [SerializeField] private HurtboxType m_hurtboxType = HurtboxType.Enemy;
     [NotKeyable] [SerializeField] private HurtboxPart m_hurtboxPart = HurtboxPart.High;
     private IHurtResponder m_hurtResponder;
-
-    [DiscreteEvaluation] [SerializeField] private ColliderState m_state = ColliderState.Open;
     [NotKeyable] [SerializeField] private BoxCollider2D m_collider;
-    [SerializeField] private Vector2 m_offset;
-    [SerializeField] private Vector2 m_size;
 
     public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
     public FighterStateMachine Owner { get => m_owner; }
@@ -60,4 +56,17 @@ public class Hurtbox : MonoBehaviour, IHurtbox
 
         Gizmos.DrawWireCube(Vector3.zero + new Vector3(m_offset.x, m_offset.y, 0), new Vector3(m_size.x, m_size.y, 0));
     }
+
+#if UNITY_EDITOR
+    public override void DrawHandles(Matrix4x4 matrix)
+    {
+        UnityEditor.Handles.color = Color.green;
+
+        if (m_state == ColliderState.Closed) return;
+
+        UnityEditor.Handles.matrix = matrix;
+
+        UnityEditor.Handles.DrawWireCube(Vector3.zero + new Vector3(m_offset.x, m_offset.y, 0), new Vector3(m_size.x, m_size.y, 0));
+    }
+#endif
 }
