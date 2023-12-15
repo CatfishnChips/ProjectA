@@ -59,7 +59,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularMap:
-        m_Texture: {fileID: 2800000, guid: 9eab03c0af0ce344ca3d5f3635e64bd0, type: 3}
+        m_Texture: {fileID: 2800000, guid: c74dd8dfa0e6a4e489635aaf0be79e5a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonRampTexture:
@@ -95,13 +95,15 @@ Material:
     - _OcclusionMultiplier: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _RimLighting: 0.533
+    - _RimLighting: 0.799
     - _Roughness: 0.257
+    - _SSSIntensity: 1.11
+    - _SSSPower: 1.79
     - _ShadowIntensity: 0.991
     - _ShadowPatternDensity: 6.8
     - _ShadowPatternRotation: 1.25
     - _ShadowPatternTiling: 1.3
-    - _Smoothness: 0.211
+    - _Smoothness: 0.244
     - _Softness: 0.44
     - _Test: 2.13
     - _USEPOSTERIZEDCOLORS: 0
