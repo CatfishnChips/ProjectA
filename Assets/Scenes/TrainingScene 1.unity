@@ -622,13 +622,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0.06, y: 0.42}
+  m_size: {x: 0.7, y: 0.83}
+  m_state: 1
   m_owner: {fileID: 748390092}
   m_hurtboxType: 2
   m_hurtboxPart: 2
-  m_state: 1
   m_collider: {fileID: 75971712}
-  m_offset: {x: 0.06, y: 0.42}
-  m_size: {x: 0.7, y: 0.83}
 --- !u!1 &87376330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1432,10 +1432,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_offset: {x: 0, y: 0}
   m_size: {x: 0, y: 0}
+  m_state: 0
   m_layerMask:
     serializedVersion: 2
     m_Bits: 256
-  m_state: 0
   m_openColor: {r: 0.8301887, g: 0.08223567, b: 0.7743195, a: 1}
   m_collidingColor: {r: 0.3379453, g: 0, b: 0.5188679, a: 1}
   m_hurtboxMask: 2
@@ -2077,13 +2077,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0, y: 0}
+  m_size: {x: 0, y: 0}
+  m_state: 0
   m_owner: {fileID: 748390092}
   m_hurtboxType: 2
   m_hurtboxPart: 1
-  m_state: 0
   m_collider: {fileID: 296487523}
-  m_offset: {x: 0, y: 0}
-  m_size: {x: 0, y: 0}
 --- !u!1001 &298133965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2503,13 +2503,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0.1, y: 1.24}
+  m_size: {x: 0.77, y: 0.81}
+  m_state: 1
   m_owner: {fileID: 748390092}
   m_hurtboxType: 2
   m_hurtboxPart: 1
-  m_state: 1
   m_collider: {fileID: 308970416}
-  m_offset: {x: 0.1, y: 1.24}
-  m_size: {x: 0.77, y: 0.81}
 --- !u!1 &311353118
 GameObject:
   m_ObjectHideFlags: 0
@@ -3300,13 +3300,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0.06, y: 0.42}
+  m_size: {x: 0.7, y: 0.83}
+  m_state: 1
   m_owner: {fileID: 2139261411}
   m_hurtboxType: 1
   m_hurtboxPart: 2
-  m_state: 1
   m_collider: {fileID: 429341680}
-  m_offset: {x: 0.06, y: 0.42}
-  m_size: {x: 0.7, y: 0.83}
 --- !u!1 &439893172
 GameObject:
   m_ObjectHideFlags: 0
@@ -3916,13 +3916,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0.18, y: 1.75}
+  m_size: {x: 0.35, y: 0.35}
+  m_state: 1
   m_owner: {fileID: 748390092}
   m_hurtboxType: 2
   m_hurtboxPart: 0
-  m_state: 1
   m_collider: {fileID: 495987281}
-  m_offset: {x: 0.18, y: 1.75}
-  m_size: {x: 0.35, y: 0.35}
 --- !u!1 &499535614
 GameObject:
   m_ObjectHideFlags: 0
@@ -14854,10 +14854,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567e23d30733afb46ac7249a7f2d91e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_state: 1
-  m_collider: {fileID: 965140068}
   m_offset: {x: 0.07, y: 0.88}
   m_size: {x: 0.65, y: 1.77}
+  m_state: 1
+  m_collider: {fileID: 965140068}
 --- !u!1 &974015910
 GameObject:
   m_ObjectHideFlags: 0
@@ -17279,10 +17279,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_offset: {x: 0, y: 0}
   m_size: {x: 0, y: 0}
+  m_state: 0
   m_layerMask:
     serializedVersion: 2
     m_Bits: 256
-  m_state: 0
   m_openColor: {r: 0.8301887, g: 0.08223567, b: 0.7743195, a: 1}
   m_collidingColor: {r: 0.3379453, g: 0, b: 0.5188679, a: 1}
   m_hurtboxMask: 1
@@ -17391,10 +17391,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_offset: {x: 0, y: 0}
   m_size: {x: 0, y: 0}
+  m_state: 0
   m_layerMask:
     serializedVersion: 2
     m_Bits: 512
-  m_state: 0
   m_openColor: {r: 1, g: 0, b: 0, a: 1}
   m_collidingColor: {r: 1, g: 0.7118232, b: 0, a: 1}
   m_hurtboxMask: 1
@@ -18011,13 +18011,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0.18, y: 1.75}
+  m_size: {x: 0.35, y: 0.35}
+  m_state: 1
   m_owner: {fileID: 2139261411}
   m_hurtboxType: 1
   m_hurtboxPart: 0
-  m_state: 1
   m_collider: {fileID: 1321268757}
-  m_offset: {x: 0.18, y: 1.75}
-  m_size: {x: 0.35, y: 0.35}
 --- !u!1 &1328331524
 GameObject:
   m_ObjectHideFlags: 0
@@ -20656,13 +20656,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0.1, y: 1.24}
+  m_size: {x: 0.77, y: 0.81}
+  m_state: 1
   m_owner: {fileID: 2139261411}
   m_hurtboxType: 1
   m_hurtboxPart: 1
-  m_state: 1
   m_collider: {fileID: 1469794609}
-  m_offset: {x: 0.1, y: 1.24}
-  m_size: {x: 0.77, y: 0.81}
 --- !u!1 &1469811599
 GameObject:
   m_ObjectHideFlags: 0
@@ -22436,10 +22436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567e23d30733afb46ac7249a7f2d91e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_state: 1
-  m_collider: {fileID: 1627334570}
   m_offset: {x: 0.07, y: 0.88}
   m_size: {x: 0.65, y: 1.77}
+  m_state: 1
+  m_collider: {fileID: 1627334570}
 --- !u!1001 &1627374064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25353,13 +25353,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c744926eb67e7e242b92745f5f35c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_offset: {x: 0, y: 0}
+  m_size: {x: 0, y: 0}
+  m_state: 0
   m_owner: {fileID: 2139261411}
   m_hurtboxType: 1
   m_hurtboxPart: 1
-  m_state: 0
   m_collider: {fileID: 1950392410}
-  m_offset: {x: 0, y: 0}
-  m_size: {x: 0, y: 0}
 --- !u!1 &1954642419
 GameObject:
   m_ObjectHideFlags: 0
@@ -27561,10 +27561,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_offset: {x: 0, y: 0}
   m_size: {x: 0, y: 0}
+  m_state: 0
   m_layerMask:
     serializedVersion: 2
     m_Bits: 512
-  m_state: 0
   m_openColor: {r: 1, g: 0, b: 0, a: 1}
   m_collidingColor: {r: 1, g: 0.7118232, b: 0, a: 1}
   m_hurtboxMask: 2
