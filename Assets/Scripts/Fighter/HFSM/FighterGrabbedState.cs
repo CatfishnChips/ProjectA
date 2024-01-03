@@ -16,7 +16,7 @@ public class FighterGrabbedState : FighterBaseState
     public override void CheckSwitchState()
     {
 
-        if (_ctx.AttackPerformed){
+        if (_ctx.FighterAttackPerformed){
             SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
         else if (_ctx.IsDodgePressed){

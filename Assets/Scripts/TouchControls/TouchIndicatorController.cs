@@ -15,34 +15,34 @@ public class TouchIndicatorController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform _touchIndicator1, _touchIndicator2;
     [SerializeField] private TextMeshProUGUI _touchText1, _touchText2;
-    private InputManager _inputManager = InputManager.Instance;
+    private InputEvents _inputManager = InputEvents.Instance;
 
     private float _touchAHoldTime, _touchBHoldTime;
 
     private void OnDisable() 
     {
-        InputManager.Instance.OnTouchABegin -= EnableIndicator1;
-        InputManager.Instance.OnTouchAEnd -= DisableIndicator1;
-        InputManager.Instance.OnTouchADrag -= MoveIndicator1;
-        InputManager.Instance.OnTouchAStationary -= UpdateIndicator1;
+        InputEvents.Instance.OnTouchABegin -= EnableIndicator1;
+        InputEvents.Instance.OnTouchAEnd -= DisableIndicator1;
+        InputEvents.Instance.OnTouchADrag -= MoveIndicator1;
+        InputEvents.Instance.OnTouchAStationary -= UpdateIndicator1;
 
-        InputManager.Instance.OnTouchBBegin -= EnableIndicator2;
-        InputManager.Instance.OnTouchBEnd -= DisableIndicator2;
-        InputManager.Instance.OnTouchBDrag -= MoveIndicator2;
-        InputManager.Instance.OnTouchBStationary -= UpdateIndicator2;
+        InputEvents.Instance.OnTouchBBegin -= EnableIndicator2;
+        InputEvents.Instance.OnTouchBEnd -= DisableIndicator2;
+        InputEvents.Instance.OnTouchBDrag -= MoveIndicator2;
+        InputEvents.Instance.OnTouchBStationary -= UpdateIndicator2;
     }
 
     void Start()
     {
-        InputManager.Instance.OnTouchABegin += EnableIndicator1;
-        InputManager.Instance.OnTouchAEnd += DisableIndicator1;
-        InputManager.Instance.OnTouchADrag += MoveIndicator1;
-        InputManager.Instance.OnTouchAStationary += UpdateIndicator1;
+        InputEvents.Instance.OnTouchABegin += EnableIndicator1;
+        InputEvents.Instance.OnTouchAEnd += DisableIndicator1;
+        InputEvents.Instance.OnTouchADrag += MoveIndicator1;
+        InputEvents.Instance.OnTouchAStationary += UpdateIndicator1;
 
-        InputManager.Instance.OnTouchBBegin += EnableIndicator2;
-        InputManager.Instance.OnTouchBEnd += DisableIndicator2;
-        InputManager.Instance.OnTouchBDrag += MoveIndicator2;
-        InputManager.Instance.OnTouchBStationary += UpdateIndicator2;
+        InputEvents.Instance.OnTouchBBegin += EnableIndicator2;
+        InputEvents.Instance.OnTouchBEnd += DisableIndicator2;
+        InputEvents.Instance.OnTouchBDrag += MoveIndicator2;
+        InputEvents.Instance.OnTouchBStationary += UpdateIndicator2;
 
 
         _touchIndicator1.gameObject.SetActive(false);

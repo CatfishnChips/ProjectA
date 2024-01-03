@@ -40,7 +40,10 @@ public class FighterDashState : FighterBaseState
 
         AnimationClip clip;
         AnimationClip colClip;
-        if (_ctx.SwipeDirection.x < 0)
+
+        Vector2 dashDirection = _ctx.SwipeDirection * -1f; // Adjust according to face direction.
+
+        if (dashDirection.x < 0)
         {
             clip = _action.Animations[0].meshAnimation;
             colClip = _action.Animations[0].boxAnimation;
@@ -51,7 +54,7 @@ public class FighterDashState : FighterBaseState
             colClip = _action.Animations[1].boxAnimation;
         }
 
-        _direction = _ctx.SwipeDirection.x;
+        _direction = dashDirection.x;
         _time = _ctx.DashTime * Time.fixedDeltaTime;
 
         _drag = -2 * _ctx.DashDistance / Mathf.Pow(_time, 2);

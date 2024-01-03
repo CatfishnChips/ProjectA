@@ -73,30 +73,30 @@ public class GestureController : MonoBehaviour
 
     private void Start() 
     {
-        InputManager.Instance.OnTouchABegin += OnTouchABegin;
-        InputManager.Instance.OnTouchAStationary += OnTouchAStationary;
-        InputManager.Instance.OnTouchADrag += OnTouchADrag;
-        InputManager.Instance.OnTouchAEnd += OnTouchAEnd;
+        InputEvents.Instance.OnTouchABegin += OnTouchABegin;
+        InputEvents.Instance.OnTouchAStationary += OnTouchAStationary;
+        InputEvents.Instance.OnTouchADrag += OnTouchADrag;
+        InputEvents.Instance.OnTouchAEnd += OnTouchAEnd;
 
-        InputManager.Instance.OnTouchBBegin += OnTouchBBegin;
-        InputManager.Instance.OnTouchBStationary += OnTouchBStationary;
-        InputManager.Instance.OnTouchBDrag += OnTouchBDrag;
-        InputManager.Instance.OnTouchBEnd += OnTouchBEnd;
+        InputEvents.Instance.OnTouchBBegin += OnTouchBBegin;
+        InputEvents.Instance.OnTouchBStationary += OnTouchBStationary;
+        InputEvents.Instance.OnTouchBDrag += OnTouchBDrag;
+        InputEvents.Instance.OnTouchBEnd += OnTouchBEnd;
 
         ReadGesture();
     }
 
     private void OnDisable()
     {
-        InputManager.Instance.OnTouchABegin -= OnTouchABegin;
-        InputManager.Instance.OnTouchAStationary -= OnTouchAStationary;
-        InputManager.Instance.OnTouchADrag -= OnTouchADrag;
-        InputManager.Instance.OnTouchAEnd -= OnTouchAEnd;
+        InputEvents.Instance.OnTouchABegin -= OnTouchABegin;
+        InputEvents.Instance.OnTouchAStationary -= OnTouchAStationary;
+        InputEvents.Instance.OnTouchADrag -= OnTouchADrag;
+        InputEvents.Instance.OnTouchAEnd -= OnTouchAEnd;
 
-        InputManager.Instance.OnTouchBBegin -= OnTouchBBegin;
-        InputManager.Instance.OnTouchBStationary -= OnTouchBStationary;
-        InputManager.Instance.OnTouchBDrag -= OnTouchBDrag;
-        InputManager.Instance.OnTouchBEnd -= OnTouchBEnd;
+        InputEvents.Instance.OnTouchBBegin -= OnTouchBBegin;
+        InputEvents.Instance.OnTouchBStationary -= OnTouchBStationary;
+        InputEvents.Instance.OnTouchBDrag -= OnTouchBDrag;
+        InputEvents.Instance.OnTouchBEnd -= OnTouchBEnd;
     }
 
     private void Update() 
@@ -177,6 +177,7 @@ public class GestureController : MonoBehaviour
 
     private void OnTouchAEnd(InputEventParams inputEventParams) 
     {
+        //Thinkin on implementing a more complex class to handle data and give precise result (for a move to be recorded as swipe release of the finger shouldn't be waited)
         float distance = Vector2.Distance(_touchA.InitialScreenPosition, inputEventParams.ScreenPosition);
         Vector2 direction = (_touchA.InitialScreenPosition - inputEventParams.NormalizedScreenPosition).normalized;
 

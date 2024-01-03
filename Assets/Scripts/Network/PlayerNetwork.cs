@@ -6,11 +6,32 @@ using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour
 {
-    private struct PlayerInputState : INetworkSerializable
+
+    [SerializeField] private FighterStateMachine _ctx;
+
+    private void Start()
+    {
+        if(IsOwner)
+        {
+        }
+        else
+        {
+        }
+        
+    }
+
+    private struct NetworkAttackInput : INetworkSerializable
     {
         public int tick;
         public bool hasPerformedAttack;
-        public FixedString64Bytes performedAttackName;
+        public string performedAttackName;
+
+        public NetworkAttackInput(int tick, bool hasPerformedAttack, string performedAttackName)
+        {   
+            this.tick = tick;
+            this.hasPerformedAttack = hasPerformedAttack;
+            this.performedAttackName = performedAttackName;
+        }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
@@ -20,8 +41,8 @@ public class PlayerNetwork : NetworkBehaviour
         }
     }
 
-    private NetworkVariable<PlayerInputState> playerInputStateNV = new NetworkVariable<PlayerInputState>(
-        new PlayerInputState
+    private NetworkVariable<NetworkAttackInput> networkAttackInput = new NetworkVariable<NetworkAttackInput>(
+        new NetworkAttackInput
         {
             tick = 60,
             hasPerformedAttack = false,
@@ -30,7 +51,7 @@ public class PlayerNetwork : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        playerInputStateNV.OnValueChanged += (PlayerInputState previousValue, PlayerInputState newValue) =>
+        networkAttackInput.OnValueChanged += (NetworkAttackInput previousValue, NetworkAttackInput newValue) =>
         {
             Debug.Log(OwnerClientId + "; Tick: " + newValue.tick + "; Has Performed Attack: " + newValue.hasPerformedAttack + "; Performed Attack: " + newValue.performedAttackName);    
         };
@@ -44,13 +65,22 @@ public class PlayerNetwork : NetworkBehaviour
         int i = c ? 50 : 23;
         if(Input.GetKeyDown(KeyCode.T))
         {
-            Debug.Log("Locally listened.");
-            playerInputStateNV.Value = new PlayerInputState{
-                tick = 50,
-                hasPerformedAttack = true,
-                performedAttackName = "Aduket"
-            };
+            JumpServerRpc(new ServerRpcParams());
+
+            // Debug.Log("Locally listened.");
+            // networkAttackInput.Value = new NetworkAttackInput{
+            //     tick = 50,
+            //     hasPerformedAttack = true,
+            //     performedAttackName = "Aduket"
+            // };
         }
     }
+
+    [ServerRpc]
+    private void JumpServerRpc(ServerRpcParams serverRpcParams)
+    {
+        Debug.Log(" ClientId: " + serverRpcParams.Receive.SenderClientId.ToString());
+    }
+
 
 }

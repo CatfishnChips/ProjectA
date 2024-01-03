@@ -76,13 +76,11 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected ContinuousInput<float> _movementInput = new ContinuousInput<float>(0);
     protected ContinuousInput<bool> _holdTouchA = new ContinuousInput<bool>(false);
     protected ContinuousInput<bool> _holdTouchB = new ContinuousInput<bool>(false);
-    protected QueueInput<bool, ActionFighterAttack> _isAttackPerformed = new QueueInput<bool, ActionFighterAttack>(false);
+    protected bool _fighterAttackPerformed = false;
 
     #endregion
 
     [SerializeField] protected int _comboBuffer = 5;
-    [SerializeField] protected int _inputDelay = 2; // Amount of time before registering an input.
-    [SerializeField] protected int _inputBuffer = 10; // in frames
     [SerializeField] protected float _dashDistance = 1f;
     [SerializeField] protected int _dashTime; // in frames
     [SerializeField] protected Vector2Int _dodgeTime; // X: Startup Y: Active // in frames
@@ -114,6 +112,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected bool _isGravityApplied;
     protected Vector2 _swipeDirection;
     protected bool _validAttackInputInterval;
+    protected ActionFighterAttack _fighterAttackAction;
 
     public Player Player {get{return _player;}}
     public Transform Mesh {get{return _mesh;}}
@@ -131,9 +130,9 @@ public abstract class FighterStateMachine : MonoBehaviour
     public bool IsGrounded{get{return _isGrounded;}}
     public bool IsHoldingTouchA{get{return _holdTouchA.Value;}}
     public bool IsHoldingTouchB{get{return _holdTouchB.Value;}}
-    public bool AttackPerformed{get{return _isAttackPerformed.Value;} set{_isAttackPerformed.Value = value;}}
+    public bool FighterAttackPerformed{get{return _fighterAttackPerformed;} set {_fighterAttackPerformed = value;}}
     //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
-    public ActionFighterAttack AttackAction{get{return _isAttackPerformed.Queue.Peek();}}
+    public ActionFighterAttack AttackAction{get{return _fighterAttackAction;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public Vector2 RootMotion{get{return _rootMotion;} set{_rootMotion = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
@@ -170,14 +169,13 @@ public abstract class FighterStateMachine : MonoBehaviour
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
     public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
     
-    public int GetInputBuffer { get { return _inputBuffer; } }
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
     public int FallTime {get{return _fallTime;}}
     public float Gravity {get{return _gravity;} set{_gravity = value;}}
     public float Drag {get{return _drag;} set{_drag = value;}}
     public float MovementInput {get{return _movementInput.Value;}}
-    public Vector2 SwipeDirection {get{return _swipeDirection * _faceDirection;}} // SwipeDirection is affected by FaceDirection
+    public Vector2 SwipeDirection {get{return _swipeDirection;}} // SwipeDirection is affected by FaceDirection
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
     public float JumpDistance {get{return _jumpDistance;}}
     public float DashDistance {get{return _dashDistance;}}
@@ -270,29 +268,29 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     protected virtual void StartFunction(){
         // Subscribe to Event Manager base events.
-        switch(_player){
-            case Player.P1:
-                EventManager.Instance.Move += OnMoveA;
-                EventManager.Instance.Swipe += OnDash;
-                EventManager.Instance.AttackMove += OnGestureB;
-                EventManager.Instance.OnTap += OnTapA;
-                EventManager.Instance.OnHoldA += OnHoldA;
-                EventManager.Instance.OnHoldB += OnHoldB;
-            break;
+        // switch(_player){
+        //     case Player.P1:
+        //         EventManager.Instance.Move += OnMoveA;
+        //         EventManager.Instance.Swipe += OnDash;
+        //         EventManager.Instance.AttackMove += OnGestureB;
+        //         EventManager.Instance.OnTap += OnTapA;
+        //         EventManager.Instance.OnHoldA += OnHoldA;
+        //         EventManager.Instance.OnHoldB += OnHoldB;
+        //     break;
 
-            case Player.P2:
-                EventManager.Instance.P2Move += OnMoveA;
-                EventManager.Instance.P2Swipe += OnDash;
-                EventManager.Instance.P2AttackMove += OnGestureB;
-                EventManager.Instance.P2OnTap += OnTapA;
-                EventManager.Instance.P2OnHoldA += OnHoldA;
-                EventManager.Instance.P2OnHoldB += OnHoldB;
-            break;
+        //     case Player.P2:
+        //         EventManager.Instance.P2Move += OnMoveA;
+        //         EventManager.Instance.P2Swipe += OnDash;
+        //         EventManager.Instance.P2AttackMove += OnGestureB;
+        //         EventManager.Instance.P2OnTap += OnTapA;
+        //         EventManager.Instance.P2OnHoldA += OnHoldA;
+        //         EventManager.Instance.P2OnHoldB += OnHoldB;
+        //     break;
 
-            default:
-                // Do no subscribe to any input events.
-            break;
-        }
+        //     default:
+        //         // Do no subscribe to any input events.
+        //     break;
+        // }
 
         // Subscribe to component based events.
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
@@ -313,6 +311,8 @@ public abstract class FighterStateMachine : MonoBehaviour
         _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastOffset, Vector2.down, _rayCastLenght, _rayCastLayerMask);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
 
+        HandleAttackInput();
+
         if(_comboListener.isActive){
             _comboListener.FixedUpdate();
         }
@@ -320,34 +320,34 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     protected virtual void OnDisableFunction(){
-        switch(_player){
-            case Player.P1:
-                EventManager.Instance.Move -= OnMoveA;
-                EventManager.Instance.Swipe -= OnDash;
-                EventManager.Instance.AttackMove -= OnGestureB;
-                EventManager.Instance.OnTap -= OnTapA;
-                EventManager.Instance.OnHoldA -= OnHoldA;
-                EventManager.Instance.OnHoldB -= OnHoldB;
-            break;
+        // switch(_player){
+        //     case Player.P1:
+        //         EventManager.Instance.Move -= OnMoveA;
+        //         EventManager.Instance.Swipe -= OnDash;
+        //         EventManager.Instance.AttackMove -= OnGestureB;
+        //         EventManager.Instance.OnTap -= OnTapA;
+        //         EventManager.Instance.OnHoldA -= OnHoldA;
+        //         EventManager.Instance.OnHoldB -= OnHoldB;
+        //     break;
 
-            case Player.P2:
-                EventManager.Instance.P2Move -= OnMoveA;
-                EventManager.Instance.P2Swipe -= OnDash;
-                EventManager.Instance.P2AttackMove -= OnGestureB;
-                EventManager.Instance.P2OnTap -= OnTapA;
-                EventManager.Instance.P2OnHoldA -= OnHoldA;
-                EventManager.Instance.P2OnHoldB -= OnHoldB;
-            break;
+        //     case Player.P2:
+        //         EventManager.Instance.P2Move -= OnMoveA;
+        //         EventManager.Instance.P2Swipe -= OnDash;
+        //         EventManager.Instance.P2AttackMove -= OnGestureB;
+        //         EventManager.Instance.P2OnTap -= OnTapA;
+        //         EventManager.Instance.P2OnHoldA -= OnHoldA;
+        //         EventManager.Instance.P2OnHoldB -= OnHoldB;
+        //     break;
 
-            default:
-                EventManager.Instance.Move -= OnMoveA;
-                EventManager.Instance.Swipe -= OnDash;
-                EventManager.Instance.AttackMove -= OnGestureB;
-                EventManager.Instance.OnTap -= OnTapA;
-                EventManager.Instance.OnHoldA -= OnHoldA;
-                EventManager.Instance.OnHoldB -= OnHoldB;
-            break;
-        }
+        //     default:
+        //         EventManager.Instance.Move -= OnMoveA;
+        //         EventManager.Instance.Swipe -= OnDash;
+        //         EventManager.Instance.AttackMove -= OnGestureB;
+        //         EventManager.Instance.OnTap -= OnTapA;
+        //         EventManager.Instance.OnHoldA -= OnHoldA;
+        //         EventManager.Instance.OnHoldB -= OnHoldB;
+        //     break;
+        // }
         
         // Component based events.
         if(_hitResponder) _hitResponder.HitResponse -= OnHit;
@@ -357,6 +357,33 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     #endregion
+
+    protected void HandleAttackInput()
+    {
+        if(!InputManager.Instance.AttackInput.Read()) {
+            Debug.Log("Attack input is: " + InputManager.Instance.AttackInput.Read() + " On Frame: " + GameSimulator.Instance.Tick);
+            return;
+        }
+
+        Debug.Log("Attack input is read to be true on Frame: " + GameSimulator.Instance.Tick);
+
+        string attackName = InputManager.Instance.AttackInput.ReadAction();
+        Debug.Log("Attack name is: " + attackName + " On Frame: " + GameSimulator.Instance.Tick);
+
+        if (attackName == "L") return; // Temporary Bugfix
+
+        ActionAttack action = _attackMoveDict[attackName];
+        
+        if (IsSameOrSubclass(typeof(ActionFighterAttack), action.GetType())){
+            // if (_isGrounded) action = _groundedAttackMoveDict[attackName];
+            // else action = _aerialAttackMoveDict[attackName];
+            _fighterAttackPerformed = true;
+            _fighterAttackAction = action as ActionFighterAttack;
+        }
+        else if (IsSameOrSubclass(typeof(ActionSpiritAttack), action.GetType())){
+            _spiritManager?.SpawnSpirit(action as ActionSpiritAttack);
+        }
+    }
 
     #region Input Functions
 
@@ -398,20 +425,20 @@ public abstract class FighterStateMachine : MonoBehaviour
         StartCoroutine(InputDelay(_movementInput, value));
     }
 
-    protected virtual void OnGestureB(string attackName){
-        if (attackName == "L") return; // Temporary Bugfix
+    // protected virtual void OnGestureB(string attackName){
+    //     if (attackName == "L") return; // Temporary Bugfix
 
-        ActionAttack action = _attackMoveDict[attackName];
+    //     ActionAttack action = _attackMoveDict[attackName];
         
-        if (IsSameOrSubclass(typeof(ActionFighterAttack), action.GetType())){
-            // if (_isGrounded) action = _groundedAttackMoveDict[attackName];
-            // else action = _aerialAttackMoveDict[attackName];
-            StartCoroutine(InputDelay(_isAttackPerformed, action as ActionFighterAttack));
-        }
-        else if (IsSameOrSubclass(typeof(ActionSpiritAttack), action.GetType())){
-            _spiritManager?.SpawnSpirit(action as ActionSpiritAttack);
-        }
-    }
+    //     if (IsSameOrSubclass(typeof(ActionFighterAttack), action.GetType())){
+    //         // if (_isGrounded) action = _groundedAttackMoveDict[attackName];
+    //         // else action = _aerialAttackMoveDict[attackName];
+    //         StartCoroutine(InputDelay(_fighterAttackPerformed, action as ActionFighterAttack));
+    //     }
+    //     else if (IsSameOrSubclass(typeof(ActionSpiritAttack), action.GetType())){
+    //         _spiritManager?.SpawnSpirit(action as ActionSpiritAttack);
+    //     }
+    // }
 
     #endregion
 
@@ -568,7 +595,7 @@ public abstract class FighterStateMachine : MonoBehaviour
         _rigidbody2D.velocity = Vector2.zero;
         
         _isJumpPressed.Reset();
-        _isAttackPerformed.Reset();
+        //_fighterAttackPerformed.Reset();
         _movementInput.Reset();
         _holdTouchA.Reset();
         _holdTouchB.Reset();
