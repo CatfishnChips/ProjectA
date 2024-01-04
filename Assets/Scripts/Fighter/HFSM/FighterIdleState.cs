@@ -12,16 +12,16 @@ public class FighterIdleState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.FighterAttackPerformed){
+        if (_ctx.AttackInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
-        else if (InputManager.Instance.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
+        else if (_ctx.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
             SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
         }
-        else if (InputManager.Instance.DashInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
+        else if (_ctx.DashInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
             SwitchState(_factory.GetSubState(FighterSubStates.Dash));
         }
-        else if (InputManager.Instance.MovementInput.Read() != 0){            
+        else if (_ctx.MovementInput.Read() != 0){            
             SwitchState(_factory.GetSubState(FighterSubStates.Walk));
         }  
     }

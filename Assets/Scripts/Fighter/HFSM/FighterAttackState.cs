@@ -26,7 +26,7 @@ public class FighterAttackState : FighterBaseState
             _ctx.ActionState = default;
             _ctx.ValidAttackInputInterval = false;
 
-            if (_ctx.FighterAttackPerformed){
+            if (_ctx.AttackInput.Read()){
                 SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
             else{
@@ -35,7 +35,7 @@ public class FighterAttackState : FighterBaseState
         }
         else if (_actionState == ActionStates.Recovery){
             // Rework this attack transition!
-            if(_ctx.FighterAttackPerformed && _performedComboMove && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
+            if(_ctx.AttackInput.Read() && _performedComboMove && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
                 SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
         }
@@ -44,8 +44,7 @@ public class FighterAttackState : FighterBaseState
     public override void EnterState()
     {   
         //string attackName = _ctx.AttackName;
-        _action = _ctx.AttackAction;
-        _ctx.FighterAttackPerformed = false;
+        _action = _ctx.AttackInput.ReadAction() as ActionFighterAttack;
         _currentFrame = 0;
         _ctx.OnAttackStart?.Invoke();
         _hadHit = false;

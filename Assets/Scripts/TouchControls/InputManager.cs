@@ -76,7 +76,7 @@ public class InputManager : MonoBehaviour
         StartCoroutine(LateFixedUpdate());
     }
 
-    // For the inputs to get close at the end of the frame if they were read.
+    // For the inputs to get closed at the end of the frame if they were read.
     // In the future if all the update logic was put together in one function, this coroutine will no longer needed.
     private IEnumerator LateFixedUpdate() 
     {

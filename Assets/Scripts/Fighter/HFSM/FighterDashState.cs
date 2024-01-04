@@ -24,7 +24,6 @@ public class FighterDashState : FighterBaseState
 
     public override void EnterState()
     {
-        _ctx.IsDashPressed = false;
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
         _drag = 0f;

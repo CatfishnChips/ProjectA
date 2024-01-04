@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class GestureController : MonoBehaviour
+public class GestureController : MonoBehaviour, IInputInvoker
 {
     #region Singleton
 
@@ -69,6 +69,20 @@ public class GestureController : MonoBehaviour
 
     private TouchData _touchA, _touchB;
 
+    private Action<Vector2> GestureSwipe;
+    public Action<float> GestureMove; 
+    public Action GestureOnTap; 
+    public Action<bool> GestureOnHoldA; 
+    public Action<bool> GestureOnHoldB; 
+    public Action<string> GestureAttackMove; 
+
+    public Action<Vector2> Swipe { get => GestureSwipe; }
+    public Action<float> Move { get => GestureMove; }
+    public Action OnTap { get => GestureOnTap; }
+    public Action<bool> OnHoldA { get => GestureOnHoldA; }
+    public Action<bool> OnHoldB { get => GestureOnHoldB; }
+    public Action<string> AttackMove { get => GestureAttackMove; }
+
     #endregion
 
     private void Start() 
@@ -132,15 +146,15 @@ public class GestureController : MonoBehaviour
         _touchA.HoldTime += Time.deltaTime;
 
         if(_touchA.HoldTime > _holdTime){
-            EventManager.Instance.OnHoldA?.Invoke(true);
+            GestureOnHoldA?.Invoke(true);
         }
         else{
-            EventManager.Instance.OnHoldA?.Invoke(false);
+            GestureOnHoldA?.Invoke(false);
         }
 
         // Swipe
         //_isSwipe = false;
-        if (!_isSwipe) EventManager.Instance.Move?.Invoke(_deltaVectorX);
+        if (!_isSwipe) GestureMove?.Invoke(_deltaVectorX);
 
         //Joystick
         //if (!_isSwipe)
@@ -153,7 +167,7 @@ public class GestureController : MonoBehaviour
         _touchA.TimeOnScreen += Time.deltaTime;
         _touchA.HoldTime = 0f;
 
-        EventManager.Instance.OnHoldA?.Invoke(false);
+        GestureOnHoldA?.Invoke(false);
         
         // Swipe
         if (_isSwipe && inputEventDragParams.Delta.magnitude < _swipeDelta) _isSwipe = false;
@@ -169,7 +183,7 @@ public class GestureController : MonoBehaviour
             _deltaVectorX = deltaDistanceX;
             //Debug.Log("DeltaVector: " + _deltaVectorX + " JoystickX: " + _virtualJoystick.x);
             if (Mathf.Abs(_virtualJoystick.x) <= _deadzone) _deltaVectorX = 0f;
-            EventManager.Instance.Move?.Invoke(_deltaVectorX);
+            GestureMove?.Invoke(_deltaVectorX);
 
             //Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);     
         }
@@ -177,15 +191,15 @@ public class GestureController : MonoBehaviour
 
     private void OnTouchAEnd(InputEventParams inputEventParams) 
     {
-        //Thinkin on implementing a more complex class to handle data and give precise result (for a move to be recorded as swipe release of the finger shouldn't be waited)
+        //Thinking on implementing a more complex class to handle data and give precise result (for a move to be recorded as swipe, release of the finger shouldn't be waited)
         float distance = Vector2.Distance(_touchA.InitialScreenPosition, inputEventParams.ScreenPosition);
         Vector2 direction = (_touchA.InitialScreenPosition - inputEventParams.NormalizedScreenPosition).normalized;
 
         // Joystick
         _deltaVectorX = 0;
-        EventManager.Instance.Move?.Invoke(_deltaVectorX);
+        GestureMove?.Invoke(_deltaVectorX);
 
-        EventManager.Instance.OnHoldA?.Invoke(false);
+        GestureOnHoldA?.Invoke(false);
 
         if (distance < _swipeDistance) _isSwipe = false;
         if (_touchA.TimeOnScreen >= _swipeTimeout) _isSwipe = false;
@@ -194,13 +208,13 @@ public class GestureController : MonoBehaviour
         
         if (_isSwipe){
             // Swipe
-            EventManager.Instance.Swipe?.Invoke(direction);
+            GestureSwipe?.Invoke(direction);
             //Debug.Log("Swipe! " + direction);
         }
         
         if(!_touchA.HasMoved){
             // Tap
-            EventManager.Instance.OnTap?.Invoke();
+            GestureOnTap?.Invoke();
         }
     }
 
@@ -238,12 +252,12 @@ public class GestureController : MonoBehaviour
 
                 if (Score < _scoreTreshold) return; 
 
-                EventManager.Instance.AttackMove?.Invoke(Name);
+                GestureAttackMove?.Invoke(Name);
             } 
-            EventManager.Instance.OnHoldB?.Invoke(true);
+            GestureOnHoldB?.Invoke(true);
         }
         else{
-            EventManager.Instance.OnHoldB?.Invoke(false);
+            GestureOnHoldB?.Invoke(false);
         }
 
         if (_pointAddTimer <= 0) 
@@ -259,7 +273,7 @@ public class GestureController : MonoBehaviour
         _touchB.TimeOnScreen += Time.deltaTime;
         _touchB.HoldTime = 0f;
 
-        EventManager.Instance.OnHoldB?.Invoke(false);
+        GestureOnHoldB?.Invoke(false);
 
         if (_pointAddTimer <= 0) 
         {
@@ -273,7 +287,7 @@ public class GestureController : MonoBehaviour
             RecognizeGesture(out string Name, out float Score);
 
             if (Score < _scoreTreshold) return; 
-            EventManager.Instance.AttackMove?.Invoke(Name);
+            GestureAttackMove?.Invoke(Name);
         } 
     }
 
@@ -281,7 +295,7 @@ public class GestureController : MonoBehaviour
     {
         //float distance = Vector2.Distance(_touchB.InitialScreenPosition, inputEventParams.ScreenPosition);
         //Vector2 direction = (_touchB.InitialScreenPosition - inputEventParams.ScreenPosition).normalized;
-        EventManager.Instance.OnHoldB?.Invoke(false);
+        GestureOnHoldB?.Invoke(false);
 
         if (!_isTouchBActive) return;
 
@@ -291,11 +305,11 @@ public class GestureController : MonoBehaviour
             RecognizeGesture(out string Name, out float Score);
 
             if (Score < _scoreTreshold) return; 
-            EventManager.Instance.AttackMove?.Invoke(Name);
+            GestureAttackMove?.Invoke(Name);
         }
         else{
             string name = "Tap";
-            EventManager.Instance.AttackMove?.Invoke(name);
+            GestureAttackMove?.Invoke(name);
         }
     }
 
@@ -369,6 +383,7 @@ public class GestureController : MonoBehaviour
         }
         //Debug.Log(debugLog);
     }
+
 }
 
 public struct TouchData
