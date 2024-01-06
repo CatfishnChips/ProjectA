@@ -56,7 +56,8 @@ public class FighterIdleState : FighterBaseState
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
-        _ctx.Rigidbody2D.velocity = Vector2.zero;
+        //_ctx.Rigidbody2D.velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
         //Debug.Log("FighterIdleState(ExitState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad  + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
     }
 

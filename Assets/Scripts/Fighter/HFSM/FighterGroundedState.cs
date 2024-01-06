@@ -30,7 +30,8 @@ public class FighterGroundedState : FighterBaseState
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
-        _ctx.Rigidbody2D.velocity = Vector2.zero;
+        //_ctx.Rigidbody2D.velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
         //Debug.Log("FighterGroundedState(ExitState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
     }
 
@@ -38,7 +39,8 @@ public class FighterGroundedState : FighterBaseState
     {
         _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
         _ctx.Velocity = _ctx.CurrentMovement;
-        _ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        _ctx.FighterController.targetVelocity = _ctx.Velocity;
         //Debug.Log("FighterGroundedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
         //Debug.Log("FighterGroundedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
         CheckSwitchState();

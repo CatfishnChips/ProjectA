@@ -57,12 +57,22 @@ public class AnimationPreviewEditorWindow : EditorWindow
     private bool _lockSelection;
     private bool _showGizmos;
 
+    private Color _backgroundColor = Color.clear;
+    private float _direction = -10f;
+    private bool _showGrid = true;
+    private int CameraDirection {get { return Mathf.Sign(_direction) == -1 ? 0 : 1; } 
+        set {
+            _direction = value == 0 ? -10f : 10f;
+        }
+    }
+
     private List<Boxes> _boxes;
 
     private Camera _sceneCamera;
     private GameObject _sceneRoot;
     private GameObject _sceneObject = null;
 
+    private static Toolbar toolbar;
     private static VisualElement overlayVisualElement;
     private static ObjectField prefabObjectField;
     private static ObjectField meshAnimationObjectField;
@@ -75,6 +85,9 @@ public class AnimationPreviewEditorWindow : EditorWindow
     private static Button selectButton;
     private static ObjectField actionObjectField;
     private static Button actionButton;
+    private static RadioButtonGroup cameraRadioButtonGroup;
+    private static ColorField backgroundColorField;
+    private static Toggle showGridToggle;
 
     private ActionAttack _actionAttack;
     private Hitbox _hitbox;
@@ -148,9 +161,13 @@ public class AnimationPreviewEditorWindow : EditorWindow
             _screenRect = EditorGUIUtility.GUIToScreenRect(_previewRect);
         }
 
+        GUI.backgroundColor = Color.white;
+        GUI.color = Color.white;
+        GUI.contentColor = Color.white;
+
         // Draw preview only in Repaint
         if (Event.current.type == EventType.Repaint)
-            _previewRenderUtility.BeginPreview(_previewRect, previewBackground: GUIStyle.none);
+            _previewRenderUtility.BeginPreview(_previewRect, GUI.skin.box);
         else
         {
             // Required to make handles work properly
@@ -278,11 +295,15 @@ public class AnimationPreviewEditorWindow : EditorWindow
         Selection.selectionChanged += LockSelection;
 
         AddToolbar();
+        AddCameraSettings();
+
+        // Create overlayVisualElement for floating controls.
         overlayVisualElement = new VisualElement();
         overlayVisualElement.AddClasses(
             "blackboard__overlay-custom-data-container"
         );
         rootVisualElement.Add(overlayVisualElement);
+
         AddAnimationControls();
         AddTools();
         AddStyles();
@@ -307,7 +328,7 @@ public class AnimationPreviewEditorWindow : EditorWindow
             startY = 0f,
             startZ = 0f,
             mainColor = Color.grey,
-            show = true
+            show = _showGrid
         };
     }
 
@@ -330,17 +351,30 @@ public class AnimationPreviewEditorWindow : EditorWindow
 
 
     private void SetupPreviewScene(){
+        // Camera
         _sceneCamera = _previewRenderUtility.camera;
         _sceneCamera.cameraType = CameraType.SceneView;
         _sceneCamera.fieldOfView = 30f;
         _sceneCamera.nearClipPlane = 0.3f;
         _sceneCamera.farClipPlane = 1000;
+
         _sceneCamera.orthographic = true;
         _sceneCamera.orthographicSize = 3.5f;
-        _sceneCamera.transform.position = new Vector3(0f, 0f, -10f);
+
+        _sceneCamera.transform.position = new Vector3(0f, 0f, _direction);
         _sceneCamera.transform.LookAt(Vector3.zero);
+
+        _sceneCamera.backgroundColor = _backgroundColor;
         _reset = _sceneCamera.transform.position;
 
+        // Lights
+        _previewRenderUtility.lights[0].transform.localEulerAngles = new Vector3(30, -30, 0);
+        _previewRenderUtility.lights[0].intensity = 2;
+
+        // Ambient Color
+        _previewRenderUtility.ambientColor = Color.white;
+        
+        // Root Object
         _sceneRoot = new GameObject("Animation_Preview_Scene_Root");
         _sceneRoot.transform.position = Vector3.zero;
         _sceneRoot.hideFlags = HideFlags.HideAndDontSave;
@@ -405,17 +439,6 @@ public class AnimationPreviewEditorWindow : EditorWindow
         if (results == null || results.Count() == 0) return false;
         boxes.AddRange(results);
         return true;
-    }
-
-    private RenderTexture CreatePreviewTexture(GameObject obj) {
-        _previewRenderUtility.BeginPreview(new Rect(0, 0, 128, 128), GUIStyle.none);
-
-        _previewRenderUtility.lights[0].transform.localEulerAngles = new Vector3(30, 30, 0);
-        _previewRenderUtility.lights[0].intensity = 2;
-        _previewRenderUtility.AddSingleGO(obj);
-        _previewRenderUtility.camera.Render();
-
-        return (RenderTexture)_previewRenderUtility.EndPreview();
     }
 
     private void HandleCameraMovement(){
@@ -498,6 +521,59 @@ public class AnimationPreviewEditorWindow : EditorWindow
         _time = _frame / _boxAnimation.frameRate;
     }
 
+    private void AddCameraSettings(){
+        VisualElement cameraSettingsVisualElement = new VisualElement();
+
+        Foldout cameraSettingsFoldout = ElementUtility.CreateFoldout("Camera Settings", false);
+
+        cameraSettingsFoldout.AddClasses(
+            "blackboard__custom-data-container"
+        );
+
+        cameraRadioButtonGroup = ElementUtility.CreateRadioButtonGroup(new string[]{"Front", "Back"}, CameraDirection, "Camera", callback => {
+            CameraDirection = callback.newValue;
+
+            // Flip the camera look at direction.
+            if (_sceneCamera != null){
+                _sceneCamera.transform.position = new Vector3(0f, 0f, _direction);
+                _sceneCamera.transform.LookAt(Vector3.zero);
+            }
+        });
+
+        cameraRadioButtonGroup.AddClasses(
+            "blackboard__radio-button-group"
+        );
+
+        backgroundColorField = ElementUtility.CreateColorField(_backgroundColor, "Background Color", false, false, false, callback => {
+            _backgroundColor = callback.newValue;
+            
+            // Change the background color of the _sceneCamera.
+            if (_sceneCamera != null)
+                _sceneCamera.backgroundColor = _backgroundColor;
+        });
+
+        backgroundColorField.AddClasses(
+            "blackboard__color-field"
+        );
+
+        showGridToggle = ElementUtility.CreateToggle(_showGrid, "Show Grid", callback => {
+            _showGrid = callback.newValue;
+
+            // Show/Hide Grid
+            if (_gridOverlay != null)
+                _gridOverlay.show = _showGrid;
+        });
+
+        // cameraSettingsFoldout.Add(cameraRadioButtonGroup);
+        // cameraSettingsFoldout.Add(backgroundColorField);
+        // cameraSettingsVisualElement.Add(cameraSettingsFoldout);
+        // toolbar.Add(cameraSettingsVisualElement);
+
+        toolbar.Add(showGridToggle);
+        toolbar.Add(cameraRadioButtonGroup);
+        toolbar.Add(backgroundColorField);
+    }
+
     private void AddTools(){
         VisualElement toolVisualElement = new VisualElement();
 
@@ -506,8 +582,6 @@ public class AnimationPreviewEditorWindow : EditorWindow
         toolFoldout.AddClasses(
             "blackboard__custom-data-container"
         );
-        //toolFoldout.style.justifyContent = Justify.FlexStart;
-
 
         // Override Menu
         VisualElement overrideVisualElement = new VisualElement();
@@ -679,7 +753,7 @@ public class AnimationPreviewEditorWindow : EditorWindow
 
     private void AddToolbar()
     {
-        Toolbar toolbar = new Toolbar();
+        toolbar = new Toolbar();
 
         prefabObjectField = ElementUtility.CreateObjectField(typeof(GameObject), _asset, "Prefab", callback =>{
             _asset = callback.newValue as GameObject;

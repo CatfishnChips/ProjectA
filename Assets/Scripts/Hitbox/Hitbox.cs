@@ -19,11 +19,6 @@ public class Hitbox : Boxes, IHitDetector
 
     public IHitResponder HitResponder { get => m_hitResponder; set => m_hitResponder = value; } 
 
-    public Vector2 Offset {get => m_offset;}
-    public Vector2 Size {get => m_size;}
-    public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
-    public Transform Transform { get => transform; }
-
     private CollisionData m_collisionData;
     private IHurtbox m_hurtbox;
     private Vector2 m_collisionPoint;
@@ -31,7 +26,7 @@ public class Hitbox : Boxes, IHitDetector
     public void CheckHit(){
         Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(m_offset.x * Mathf.Sign(transform.right.x), m_offset.y, 0), m_size, 0, m_layerMask);
 
-        m_collisionData = null;
+        m_collisionData = default;
         m_hurtbox = null;
 
         foreach (Collider2D collider in colliders)

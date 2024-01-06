@@ -116,7 +116,7 @@ public class FighterFreeFallState : FighterBaseState
         CheckSwitchState();
         _currentFrame++;
         _ctx.CurrentFrame =_currentFrame;
-        Debug.Log("FighterFreeFallState(FixedUpdateState) - Frame: " + _currentFrame + " Velocity: " + _ctx.Rigidbody2D.velocity);
+        //Debug.Log("FighterFreeFallState(FixedUpdateState) - Frame: " + _currentFrame + " Velocity: " + _ctx.Rigidbody2D.velocity);
     }
 
     public override void InitializeSubState()

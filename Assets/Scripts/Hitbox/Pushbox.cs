@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.Animations;
 
 [ExecuteAlways]
-public class CollisionBox : Boxes
+public class Pushbox : Boxes
 {
     [NotKeyable] [SerializeField] private BoxCollider2D m_collider;
+    [DiscreteEvaluation] [SerializeField] private ColliderProperty m_property;
+
+    public BoxCollider2D Collider { get => m_collider; }
+    public ColliderProperty Property { get => m_property; }
 
     private void Start(){
         if (m_collider != null){

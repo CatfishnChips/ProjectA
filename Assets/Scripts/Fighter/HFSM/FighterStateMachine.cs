@@ -169,7 +169,9 @@ public abstract class FighterStateMachine : MonoBehaviour
     public bool IsInvulnerable {get{return _isInvulnerable;} set{_isInvulnerable = value;}}
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
     public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
-    
+    private FighterController _fighterController; 
+    public FighterController FighterController {get{return _fighterController;}}   
+
     public int GetInputBuffer { get { return _inputBuffer; } }
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
@@ -252,6 +254,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     protected virtual void GetComponents(){
+        if (TryGetComponent(out FighterController fighterController)) _fighterController = fighterController;
         if (TryGetComponent(out HitResponder hitResponder)) _hitResponder = hitResponder;
         if (TryGetComponent(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
         if (TryGetComponent(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
@@ -317,6 +320,8 @@ public abstract class FighterStateMachine : MonoBehaviour
             _comboListener.FixedUpdate();
         }
         _currentState.FixedUpdateStates();
+
+        _fighterController.Simulate();
     }
 
     protected virtual void OnDisableFunction(){

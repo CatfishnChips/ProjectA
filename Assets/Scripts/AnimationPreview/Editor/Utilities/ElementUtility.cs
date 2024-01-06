@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 
@@ -22,6 +23,40 @@ public static class ElementUtility
         }
 
         return toggle;
+    }
+
+    public static ColorField CreateColorField(Color value = default, string label = null, bool hdr = false, bool showAlpha = false, bool showEyeDropper = false, EventCallback<ChangeEvent<Color>> onValueChanged = null)
+    {
+        ColorField colorField = new ColorField(){
+            value = value,
+            label = label,
+            hdr = hdr,
+            showAlpha = showAlpha,
+            showEyeDropper = showEyeDropper,
+        };
+
+        if (onValueChanged != null)
+        {
+            colorField.RegisterValueChangedCallback(onValueChanged);
+        }
+
+        return colorField;
+    }
+
+    public static RadioButtonGroup CreateRadioButtonGroup(string[] choices = null, int value = default, string label = null, EventCallback<ChangeEvent<int>> onValueChanged = null)
+    {
+        RadioButtonGroup radioButtonGroup = new RadioButtonGroup(){
+            choices = choices,
+            value = value,
+            label = label
+        };
+
+        if (onValueChanged != null)
+        {
+            radioButtonGroup.RegisterValueChangedCallback(onValueChanged);
+        }
+
+        return radioButtonGroup;
     }
 
     public static SliderInt CreateSliderInt(int value = default, string label = null, EventCallback<ChangeEvent<int>> onValueChanged = null)

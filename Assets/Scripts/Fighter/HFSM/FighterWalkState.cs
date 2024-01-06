@@ -39,7 +39,8 @@ public class FighterWalkState : FighterBaseState
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = new Vector2(0, _ctx.Velocity.y);
         _ctx.Velocity = _ctx.CurrentMovement;
-        _ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        _ctx.FighterController.targetVelocity = _ctx.Velocity;
     }
 
     public override void FixedUpdateState()
@@ -48,10 +49,10 @@ public class FighterWalkState : FighterBaseState
             _ctx.Animator.SetFloat("Blend", _ctx.MovementInput);
             _ctx.CurrentMovement = _ctx.RootMotion;
         }
-        else if (_ctx.CurrentRootState == FighterStates.Airborne)
-        {
-            _ctx.CurrentMovement = new Vector2(_ctx.MovementInput * _ctx.AirMoveSpeed, _ctx.CurrentMovement.y);
-        }
+        // else if (_ctx.CurrentRootState == FighterStates.Airborne)
+        // {
+        //     _ctx.CurrentMovement = new Vector2(_ctx.MovementInput * _ctx.AirMoveSpeed, _ctx.CurrentMovement.y);
+        // }
 
         CheckSwitchState();
     }

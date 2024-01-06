@@ -67,6 +67,23 @@
 
 /* INPUTS */
 
+.blackboard__color-field
+{
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	margin: var(--ds-metrics-window-pixels-6);
+}
+
+.blackboard__radio-button-group
+{
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	-unity-text-align: middle-center;
+	margin: var(--ds-metrics-window-pixels-2);
+}
+
 .blackboard__slider
 {
 	margin: var(--ds-metrics-window-pixels-4);
@@ -169,4 +186,10 @@
 	width: 50px;
 	min-width: 50px;
 	max-width: 50px;
+}
+
+.unity-color-field__label {
+	width: 125px;
+	min-width: 125px;
+	max-width: 125px;
 }

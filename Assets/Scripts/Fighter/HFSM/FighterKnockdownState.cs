@@ -56,7 +56,8 @@ public class FighterKnockdownState : FighterBaseState
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
-        _ctx.Rigidbody2D.velocity = Vector2.zero;
+        //_ctx.Rigidbody2D.velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
     }
 
     public override void FixedUpdateState()

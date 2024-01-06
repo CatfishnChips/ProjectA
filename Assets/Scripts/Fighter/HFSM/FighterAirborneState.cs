@@ -35,7 +35,8 @@ public class FighterAirborneState : FighterBaseState
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
-        _ctx.Rigidbody2D.velocity = Vector2.zero;
+        //_ctx.Rigidbody2D.velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
 
         _currentFrame = 0;
         
@@ -78,7 +79,8 @@ public class FighterAirborneState : FighterBaseState
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
-        _ctx.Rigidbody2D.velocity = Vector2.zero;
+        //_ctx.Rigidbody2D.velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
     }
 
     public override void FixedUpdateState()
@@ -89,7 +91,8 @@ public class FighterAirborneState : FighterBaseState
         _ctx.CurrentMovement += new Vector2(_ctx.IsGravityApplied ? _ctx.Drag : 0f, _ctx.IsGravityApplied ? _ctx.Gravity : 0f) * Time.fixedDeltaTime;
         _ctx.Velocity = _ctx.IsGravityApplied ? _ctx.CurrentMovement : Vector2.zero;
         //_ctx.Velocity = _ctx.CurrentMovement;
-        _ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        _ctx.FighterController.targetVelocity = _ctx.Velocity;
         //Debug.Log("Velocity Applied: " + _ctx.Velocity);
         CheckSwitchState();
         if (_ctx.IsGravityApplied) _currentFrame++;

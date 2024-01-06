@@ -75,7 +75,8 @@ public class FighterStunnedState : FighterBaseState
         _ctx.IsHurt = false;
 
         _ctx.Velocity = _ctx.CurrentMovement;
-        _ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
+        _ctx.FighterController.targetVelocity = _ctx.Velocity;
     }
 
     public override void ExitState()
@@ -85,7 +86,8 @@ public class FighterStunnedState : FighterBaseState
         _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
-        _ctx.Rigidbody2D.velocity = Vector2.zero;
+        // _ctx.Rigidbody2D.velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
 
         switch(_ctx.Player){
             case Player.P1:
@@ -105,7 +107,8 @@ public class FighterStunnedState : FighterBaseState
         if (_currentFrame > _action.HitStop){  
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
-            _ctx.Rigidbody2D.velocity = _ctx.Velocity;
+            //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
+            _ctx.FighterController.targetVelocity = _ctx.Velocity;
         }
         CheckSwitchState();
         _currentFrame++;

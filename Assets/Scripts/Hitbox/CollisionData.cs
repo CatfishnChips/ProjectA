@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionData
+public struct CollisionData
 {
     public ActionAttack action;
     public IHurtbox hurtbox;
@@ -27,12 +27,20 @@ public enum HurtboxPart
     Low
 }
 
+[System.Flags]
+public enum HurtboxProperty
+{
+    SuperArmor = 1 << 0,
+    ProjectileArmor = 1 << 1
+}
+
 public enum HurtboxType
 {
     Player = 1 << 0,
     Enemy = 1 << 1,
     Ally = 1 << 2
 }
+
 [System.Flags]
 public enum HurtboxMask 
 {

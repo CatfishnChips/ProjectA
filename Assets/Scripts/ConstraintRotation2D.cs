@@ -12,6 +12,6 @@ public class ConstraintRotation2D : MonoBehaviour
         else 
         transform.rotation = Quaternion.Euler(0, 180, 0);
 
-        transform.localScale = new Vector3(m_direction, 1f, 1f);
+        //transform.localScale = new Vector3(m_direction, 1f, 1f);
     }
 }
