@@ -285,7 +285,7 @@ public abstract class FighterStateMachine : MonoBehaviour
 
         _fighterManager.fighterEvents.OnFighterAttack += OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack += OnSpiritAttackInput;
-        _fighterManager.fighterEvents.Move += OnMoveA;
+        _fighterManager.fighterEvents.OnMove += OnMoveA;
         _fighterManager.fighterEvents.Swipe += OnSwipe;
         _fighterManager.fighterEvents.OnTap += OnTapA;
         _fighterManager.fighterEvents.OnHoldA += OnHoldA;
@@ -330,7 +330,7 @@ public abstract class FighterStateMachine : MonoBehaviour
         
         _fighterManager.fighterEvents.OnFighterAttack -= OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack -= OnSpiritAttackInput;
-        _fighterManager.fighterEvents.Move -= OnMoveA;
+        _fighterManager.fighterEvents.OnMove -= OnMoveA;
         _fighterManager.fighterEvents.Swipe -= OnSwipe;
         _fighterManager.fighterEvents.OnTap -= OnTapA;
         _fighterManager.fighterEvents.OnHoldA -= OnHoldA;
@@ -379,7 +379,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     protected virtual void OnFighterAttackInput(ActionFighterAttack attackAction){
-        Debug.Log("Attack with the name " + attackAction.name + " has been written to the attack input on Frame: " + GameSimulator.Instance.Tick);
+        Debug.Log("Attack with the name " + attackAction.name + " has been written to the attack input on Frame: " + GameSimulator.Instance.TickCount);
         _attackInput.Write(true, attackAction);
     }
 

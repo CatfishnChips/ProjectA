@@ -20,15 +20,23 @@ public class GameSimulator : MonoBehaviour
 
     #endregion
 
-    private int _tick; // Frame of the game by logic updates.
+    private int _tickCount; // Frame of the game by logic updates.
+    private int _updateCount; // Frame of the game by render updates.
     FighterRecord P1fighterRecData;
     FighterRecord P2fighterRecData;
 
-    public int Tick { get => _tick; }
+    public int TickCount { get => _tickCount; }
+    public int UpdateCount { get => _updateCount; }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        _tick++;
+        _tickCount++;
     }
+
+    void Update()
+    {
+        _updateCount++;
+    }
+
 }

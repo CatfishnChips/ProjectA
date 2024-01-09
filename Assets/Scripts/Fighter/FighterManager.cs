@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class FighterManager : MonoBehaviour
 {
-    private PlayerManager _playerManager;
     [SerializeField] private FighterID _fighterID;
 
     public FighterEvents fighterEvents;
@@ -16,28 +15,15 @@ public class FighterManager : MonoBehaviour
     protected Dictionary<string, ActionAttack> _aerialAttackMoveDict;
     protected Dictionary<string, ActionBase> _actionDictionary;
 
-    void Start()
+    void Awake()
     {
         fighterEvents = new FighterEvents();
-
-        _playerManager.inputEvents.AttackMove += OnGestureB;
-        _playerManager.inputEvents.Move += OnMoveA;
-        _playerManager.inputEvents.Swipe += OnSwipe;
-        _playerManager.inputEvents.OnTap += OnTapA;
-        _playerManager.inputEvents.OnHoldA += OnHoldA;
-        _playerManager.inputEvents.OnHoldB += OnHoldB;
 
         InitializeDictionaries();
     }
 
     void OnDisable()
     {
-        _playerManager.inputEvents.AttackMove -= OnGestureB;
-        _playerManager.inputEvents.Move -= OnMoveA;
-        _playerManager.inputEvents.Swipe -= OnSwipe;
-        _playerManager.inputEvents.OnTap -= OnTapA;
-        _playerManager.inputEvents.OnHoldA -= OnHoldA;
-        _playerManager.inputEvents.OnHoldB -= OnHoldB;
     }
 
     void InitializeDictionaries()
@@ -63,21 +49,31 @@ public class FighterManager : MonoBehaviour
         }
     }
 
+    void EmbedFighter()
+    {
+        
+    }
+
     #region input listener functions
 
     public void OnSwipe(Vector2 direction){
+        fighterEvents.Swipe?.Invoke(direction);
     }
 
     public void OnTapA(){
+        fighterEvents.OnTap?.Invoke();
     }
 
     public void OnHoldA(bool value){
+        fighterEvents.OnHoldA?.Invoke(value);
     }
 
     public void OnHoldB(bool value){
+        fighterEvents.OnHoldB?.Invoke(value);
     }
 
     public void OnMoveA(float value){
+        fighterEvents.OnMove?.Invoke(value);
     }
 
     public void OnGestureB(string attackName){

@@ -134,7 +134,7 @@ public class InputManager : MonoBehaviour
     protected virtual void OnGestureB(string attackName){
         if (attackName == "L") return; // Temporary Bugfix
 
-        Debug.Log("Attack with the name " + attackName + " has been written to the attack input on Frame: " + GameSimulator.Instance.Tick);
+        Debug.Log("Attack with the name " + attackName + " has been written to the attack input on Frame: " + GameSimulator.Instance.TickCount);
         _attackInput.Write(true, attackName);
 
         // ActionAttack action = _attackMoveDict[attackName];

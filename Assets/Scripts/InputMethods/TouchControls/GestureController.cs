@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class GestureController : MonoBehaviour, IInputInvoker
+public class GestureController : InputInvoker
 {
     #region Singleton
 
@@ -69,48 +69,34 @@ public class GestureController : MonoBehaviour, IInputInvoker
 
     private TouchData _touchA, _touchB;
 
-    private Action<Vector2> GestureSwipe;
-    public Action<float> GestureMove; 
-    public Action GestureOnTap; 
-    public Action<bool> GestureOnHoldA; 
-    public Action<bool> GestureOnHoldB; 
-    public Action<string> GestureAttackMove; 
-
-    public Action<Vector2> Swipe { get => GestureSwipe; }
-    public Action<float> Move { get => GestureMove; }
-    public Action OnTap { get => GestureOnTap; }
-    public Action<bool> OnHoldA { get => GestureOnHoldA; }
-    public Action<bool> OnHoldB { get => GestureOnHoldB; }
-    public Action<string> AttackMove { get => GestureAttackMove; }
-
     #endregion
 
     private void Start() 
     {
-        InputEvents.Instance.OnTouchABegin += OnTouchABegin;
-        InputEvents.Instance.OnTouchAStationary += OnTouchAStationary;
-        InputEvents.Instance.OnTouchADrag += OnTouchADrag;
-        InputEvents.Instance.OnTouchAEnd += OnTouchAEnd;
+        TouchInputReader.Instance.OnTouchABegin += OnTouchABegin;
+        TouchInputReader.Instance.OnTouchAStationary += OnTouchAStationary;
+        TouchInputReader.Instance.OnTouchADrag += OnTouchADrag;
+        TouchInputReader.Instance.OnTouchAEnd += OnTouchAEnd;
 
-        InputEvents.Instance.OnTouchBBegin += OnTouchBBegin;
-        InputEvents.Instance.OnTouchBStationary += OnTouchBStationary;
-        InputEvents.Instance.OnTouchBDrag += OnTouchBDrag;
-        InputEvents.Instance.OnTouchBEnd += OnTouchBEnd;
+        TouchInputReader.Instance.OnTouchBBegin += OnTouchBBegin;
+        TouchInputReader.Instance.OnTouchBStationary += OnTouchBStationary;
+        TouchInputReader.Instance.OnTouchBDrag += OnTouchBDrag;
+        TouchInputReader.Instance.OnTouchBEnd += OnTouchBEnd;
 
         ReadGesture();
     }
 
     private void OnDisable()
     {
-        InputEvents.Instance.OnTouchABegin -= OnTouchABegin;
-        InputEvents.Instance.OnTouchAStationary -= OnTouchAStationary;
-        InputEvents.Instance.OnTouchADrag -= OnTouchADrag;
-        InputEvents.Instance.OnTouchAEnd -= OnTouchAEnd;
+        TouchInputReader.Instance.OnTouchABegin -= OnTouchABegin;
+        TouchInputReader.Instance.OnTouchAStationary -= OnTouchAStationary;
+        TouchInputReader.Instance.OnTouchADrag -= OnTouchADrag;
+        TouchInputReader.Instance.OnTouchAEnd -= OnTouchAEnd;
 
-        InputEvents.Instance.OnTouchBBegin -= OnTouchBBegin;
-        InputEvents.Instance.OnTouchBStationary -= OnTouchBStationary;
-        InputEvents.Instance.OnTouchBDrag -= OnTouchBDrag;
-        InputEvents.Instance.OnTouchBEnd -= OnTouchBEnd;
+        TouchInputReader.Instance.OnTouchBBegin -= OnTouchBBegin;
+        TouchInputReader.Instance.OnTouchBStationary -= OnTouchBStationary;
+        TouchInputReader.Instance.OnTouchBDrag -= OnTouchBDrag;
+        TouchInputReader.Instance.OnTouchBEnd -= OnTouchBEnd;
     }
 
     private void Update() 
@@ -146,15 +132,15 @@ public class GestureController : MonoBehaviour, IInputInvoker
         _touchA.HoldTime += Time.deltaTime;
 
         if(_touchA.HoldTime > _holdTime){
-            GestureOnHoldA?.Invoke(true);
+            _inputEvents.OnHoldA?.Invoke(true);
         }
         else{
-            GestureOnHoldA?.Invoke(false);
+            _inputEvents.OnHoldA?.Invoke(false);
         }
 
         // Swipe
         //_isSwipe = false;
-        if (!_isSwipe) GestureMove?.Invoke(_deltaVectorX);
+        if (!_isSwipe) _inputEvents.Move?.Invoke(_deltaVectorX);
 
         //Joystick
         //if (!_isSwipe)
@@ -167,7 +153,7 @@ public class GestureController : MonoBehaviour, IInputInvoker
         _touchA.TimeOnScreen += Time.deltaTime;
         _touchA.HoldTime = 0f;
 
-        GestureOnHoldA?.Invoke(false);
+        _inputEvents.OnHoldA?.Invoke(false);
         
         // Swipe
         if (_isSwipe && inputEventDragParams.Delta.magnitude < _swipeDelta) _isSwipe = false;
@@ -183,7 +169,7 @@ public class GestureController : MonoBehaviour, IInputInvoker
             _deltaVectorX = deltaDistanceX;
             //Debug.Log("DeltaVector: " + _deltaVectorX + " JoystickX: " + _virtualJoystick.x);
             if (Mathf.Abs(_virtualJoystick.x) <= _deadzone) _deltaVectorX = 0f;
-            GestureMove?.Invoke(_deltaVectorX);
+            _inputEvents.Move?.Invoke(_deltaVectorX);
 
             //Debug.Log("Moving - Jostick Distance: " + _virtualJoystick.x + " DeltaDistance: " + deltaDistanceX);     
         }
@@ -197,9 +183,9 @@ public class GestureController : MonoBehaviour, IInputInvoker
 
         // Joystick
         _deltaVectorX = 0;
-        GestureMove?.Invoke(_deltaVectorX);
+        _inputEvents.Move?.Invoke(_deltaVectorX);
 
-        GestureOnHoldA?.Invoke(false);
+        _inputEvents.OnHoldA?.Invoke(false);
 
         if (distance < _swipeDistance) _isSwipe = false;
         if (_touchA.TimeOnScreen >= _swipeTimeout) _isSwipe = false;
@@ -208,13 +194,13 @@ public class GestureController : MonoBehaviour, IInputInvoker
         
         if (_isSwipe){
             // Swipe
-            GestureSwipe?.Invoke(direction);
+            _inputEvents.Swipe?.Invoke(direction);
             //Debug.Log("Swipe! " + direction);
         }
         
         if(!_touchA.HasMoved){
             // Tap
-            GestureOnTap?.Invoke();
+            _inputEvents.OnTap?.Invoke();
         }
     }
 
@@ -252,12 +238,12 @@ public class GestureController : MonoBehaviour, IInputInvoker
 
                 if (Score < _scoreTreshold) return; 
 
-                GestureAttackMove?.Invoke(Name);
+                _inputEvents.AttackMove?.Invoke(Name);
             } 
-            GestureOnHoldB?.Invoke(true);
+            _inputEvents.OnHoldB?.Invoke(true);
         }
         else{
-            GestureOnHoldB?.Invoke(false);
+            _inputEvents.OnHoldB?.Invoke(false);
         }
 
         if (_pointAddTimer <= 0) 
@@ -273,7 +259,7 @@ public class GestureController : MonoBehaviour, IInputInvoker
         _touchB.TimeOnScreen += Time.deltaTime;
         _touchB.HoldTime = 0f;
 
-        GestureOnHoldB?.Invoke(false);
+        _inputEvents.OnHoldB?.Invoke(false);
 
         if (_pointAddTimer <= 0) 
         {
@@ -287,7 +273,7 @@ public class GestureController : MonoBehaviour, IInputInvoker
             RecognizeGesture(out string Name, out float Score);
 
             if (Score < _scoreTreshold) return; 
-            GestureAttackMove?.Invoke(Name);
+            _inputEvents.AttackMove?.Invoke(Name);
         } 
     }
 
@@ -295,7 +281,7 @@ public class GestureController : MonoBehaviour, IInputInvoker
     {
         //float distance = Vector2.Distance(_touchB.InitialScreenPosition, inputEventParams.ScreenPosition);
         //Vector2 direction = (_touchB.InitialScreenPosition - inputEventParams.ScreenPosition).normalized;
-        GestureOnHoldB?.Invoke(false);
+        _inputEvents.OnHoldB?.Invoke(false);
 
         if (!_isTouchBActive) return;
 
@@ -305,11 +291,13 @@ public class GestureController : MonoBehaviour, IInputInvoker
             RecognizeGesture(out string Name, out float Score);
 
             if (Score < _scoreTreshold) return; 
-            GestureAttackMove?.Invoke(Name);
+            Debug.Log("Gesture controller tried to invoke the event.");
+            _inputEvents.AttackMove?.Invoke(Name);
         }
         else{
             string name = "Tap";
-            GestureAttackMove?.Invoke(name);
+            Debug.Log("Gesture controller tried to invoke the event.");
+            _inputEvents.AttackMove?.Invoke(name);
         }
     }
 

@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using ParrelSync.NonCore;
-using TMPro;
 using UnityEngine;
 
 public enum InputTypes
@@ -167,7 +163,7 @@ public class TouchQueueInput<T, U> : TouchInput<T>
     {
         if(!_isActive) return;
 
-        Debug.Log("Delay is: " + _delayFrameCounter + "/" + InputManager.Instance.InputDelay + " On Frame: " + GameSimulator.Instance.Tick);
+        Debug.Log("Delay is: " + _delayFrameCounter + "/" + InputManager.Instance.InputDelay + " On Frame: " + GameSimulator.Instance.TickCount);
 
         if(_delayFrameCounter < InputManager.Instance.InputDelay){
             _delayFrameCounter++;
@@ -175,6 +171,8 @@ public class TouchQueueInput<T, U> : TouchInput<T>
         } 
 
         _value = _holderValue;
+
+        Debug.Log("Buffer varaibale is: " + _bufferFrameCounter + "/" + InputManager.Instance.InputBuffer);
 
         if(_bufferFrameCounter > InputManager.Instance.InputBuffer)
         {
@@ -194,8 +192,10 @@ public class TouchQueueInput<T, U> : TouchInput<T>
     {
         if(_isActionRead) 
         {
+            Debug.Log("Action was read so trying to dequeue");
             _actionQueue.Dequeue();
             _isActionRead = false;
+            Reset();
         }
     }
 

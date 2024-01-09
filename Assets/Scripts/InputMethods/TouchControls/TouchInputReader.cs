@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class InputEvents : MonoBehaviour
+public class TouchInputReader : MonoBehaviour
 {
     #region Singleton
 
-    public static InputEvents Instance;
+    public static TouchInputReader Instance;
 
     private void Awake()
     {

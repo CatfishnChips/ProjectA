@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40015cb66ca61c46919ed3cb9b38892, type: 3}
   m_Name: Martial Artist
   m_EditorClassIdentifier: 
-  _actionAttribution: []
+  _actionAttribution:
+  - action: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
+  - action: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
+  - action: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
+  - action: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
+  - action: {fileID: 11400000, guid: c598b1051af6a3c499a47fc65962a1f4, type: 2}
+  - action: {fileID: 11400000, guid: 8ee14044fb806f146a162d50263a24f3, type: 2}
+  - action: {fileID: 11400000, guid: 93a6d7f648e264e40ac86231467df887, type: 2}
+  - action: {fileID: 11400000, guid: 241f5ebb1d2db6744ae355684c3c462f, type: 2}
+  - action: {fileID: 11400000, guid: 6f24950fb6be07a488a0a6e7087ea02b, type: 2}
+  - action: {fileID: 11400000, guid: abc65f5054684844493cd8d1c25e1f13, type: 2}
+  - action: {fileID: 11400000, guid: 5bd99419bb49ce34ba7e81e80bb1e420, type: 2}
+  - action: {fileID: 11400000, guid: 3f68611264b293a4287038a85230352f, type: 2}
+  - action: {fileID: 11400000, guid: 75aa02edea8e7cd43bc244fce05a58c3, type: 2}
+  - action: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
+  - action: {fileID: 11400000, guid: 7155732e14409394dacb8dfe1fcebdd4, type: 2}
