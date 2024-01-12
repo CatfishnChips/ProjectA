@@ -7,6 +7,7 @@ public class GameSimulator : MonoBehaviour
     #region Singleton
 
     public static GameSimulator Instance;
+    private RollbackManager rbManager;
 
     private void Awake()
     {
@@ -36,6 +37,10 @@ public class GameSimulator : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyUp(KeyCode.R))
+        {
+
+        }
         _updateCount++;
     }
 
