@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class FighterController : MonoBehaviour
 {   
@@ -30,18 +31,22 @@ public class FighterController : MonoBehaviour
     public bool IsTouchingWall { get => _isTouchingWall; }
 
     private Vector2 _targetDeltaPosition;
+    private Vector2 _targetPosition;
 
     private int _frame = 0;
-
-    private Vector2 _positionA;
-    private Vector2 _positionB;
-
+    
+    private Vector2 _initialPosition;
+    private Vector2 _positionA { get => new Vector2(_rigidbody.position.x, _rigidbody.position.y) + new Vector2(_offset.x * Mathf.Sign(transform.forward.x), _offset.y); }
+    private Vector2 _positionB { get =>  new Vector2(_collider.transform.position.x, _collider.transform.position.y) 
+        + new Vector2(_collider.Offset.x * Mathf.Sign(_collider.Transform.right.x), _collider.Offset.y); }
+ 
     public bool Static { get => (_collider.Property & ColliderProperty.Static) == ColliderProperty.Static; }
     public bool Priority { get => (_collider.Property & ColliderProperty.Priority) == ColliderProperty.Priority; }
 
     public Vector2 Position { get => _rigidbody.position; }
     public ScreenSide Side { get => _rigidbody.position.x < 0 ? ScreenSide.Left : ScreenSide.Right; }
 
+    private Action _action;
 
     public enum ScreenSide
     {
@@ -49,52 +54,100 @@ public class FighterController : MonoBehaviour
         Right
     }
 
+    private void Awake(){
+        // Set the Physics2D simulation mode to manual.
+        //Physics2D.simulationMode = SimulationMode2D.Script; 
+
+        _action = LateFixedUpdate;
+        KinematicPhysics2D.Instance.Subscribe(_action);
+    }
+
+    private void LateFixedUpdate(){
+        // Set the last position as _targetPosition.
+        _targetPosition = _rigidbody.position;
+
+        // Reset the rigidbody position to start.
+        _rigidbody.position = _initialPosition;
+
+        // Call Rigidbody2D.MovePosition() to interpolate between the start and end position.
+        //_rigidbody.MovePosition(_rigidbody.position + _targetDeltaPosition);
+        _rigidbody.MovePosition(_targetPosition);
+
+        // Simulate Physics in LateFixedUpdate().
+        //Physics2D.Simulate(0);
+    }
+
     public void Simulate(){
         _grounded = false;
         _velocity = targetVelocity;
         //Debug.Log(transform.name + " Position: " + _rigidbody.position);
 
-        _positionA = new Vector2(_rigidbody.position.x, _rigidbody.position.y) + new Vector2(_offset.x * Mathf.Sign(transform.forward.x), _offset.y);
-        _positionB = new Vector2(_collider.transform.position.x, _collider.transform.position.y) + new Vector2(_collider.Offset.x * Mathf.Sign(_collider.Transform.right.x), _collider.Offset.y);
+        _initialPosition = _rigidbody.position;
         
         Vector2 deltaPosition = _velocity * Time.fixedDeltaTime;
         Vector2 surface;
         Vector2 leftover;
 
         _targetDeltaPosition = deltaPosition;
+        _targetPosition = _initialPosition;
 
         // Horizontal Pass
-        _targetDeltaPosition = Collision(_targetDeltaPosition * Vector2.right, _positionA, false, out surface, out leftover);
+        _targetDeltaPosition = Interaction(deltaPosition * Vector2.right, false, out surface, out leftover);
+        _targetDeltaPosition = Collision(_targetDeltaPosition, false, out surface, out leftover);
+
+        // Move the Rigidbody for QueryInteractions.
+        _rigidbody.position = _initialPosition + _targetDeltaPosition;
+
         //Debug.Log(transform.name + " Collision Delta: " + collision);
-        _targetDeltaPosition = Interaction(_targetDeltaPosition, _positionB, false, out surface, out leftover);
 
         // Vector2 collision = Collision(deltaPosition * Vector2.right, _positionA, false, out surface, out leftover);
         // //Debug.Log(transform.name + " Collision Delta: " + collision);
         // _targetDeltaPosition = Interaction(collision, _positionB, false, out surface, out leftover);
 
-        _targetDeltaPosition += Overlap(deltaPosition * Vector2.up, surface, _positionB + surface + deltaPosition * Vector2.up);
+        _targetDeltaPosition += Overlap(deltaPosition * Vector2.up, surface);
         //Debug.Log("Overlap - " + transform.name + " Overlap Final Target Delta: " + _targetDeltaPosition + " Frame: " + _frame);
 
-        // Vertical Pass
-        _targetDeltaPosition += Collision(deltaPosition * Vector2.up, _positionA + _targetDeltaPosition, true, out _, out leftover);
+        // Move the Rigidbody for QueryInteractions.
+        _rigidbody.position = _initialPosition + _targetDeltaPosition;
 
-        _rigidbody.MovePosition(_rigidbody.position + _targetDeltaPosition);
+        // Vertical Pass
+        _targetDeltaPosition += Collision(deltaPosition * Vector2.up, true, out _, out leftover);
+
+        // Move the Rigidbody for QueryInteractions.
+        _rigidbody.position = _initialPosition + _targetDeltaPosition;
+
+        // Set the last position as _targetPosition.
+        _targetPosition = _rigidbody.position;
+
+        // Reset the rigidbody position to start.
+        _rigidbody.position = _initialPosition;
+
+
+        // Call Rigidbody2D.MovePosition() to interpolate between the start and end position.
+        //_rigidbody.MovePosition(_rigidbody.position + _targetDeltaPosition);
+        _rigidbody.MovePosition(_targetPosition);
+
+        // Simulate Physics in LateFixedUpdate().
+        //Physics2D.Simulate(0);
+
         _frame ++;
     }
 
     #region Collision Box Methods
 
     // Used with the Collision Box.
-    public Vector2 Collision(Vector2 deltaPosition, Vector2 position, bool verticalPass, out Vector2 surface, out Vector2 leftover){
+    public Vector2 Collision(Vector2 deltaPosition, bool verticalPass, out Vector2 surface, out Vector2 leftover){
+        Vector2 position = _positionA;
         float distance = deltaPosition.magnitude + skinWidth;
         Vector2 direction = deltaPosition.normalized;
         Vector2 targetDelta = deltaPosition;
-        surface = deltaPosition;
+        surface = Vector2.zero;
         leftover = Vector2.zero;
 
         if (distance > minMoveDistance + skinWidth){
             int count = Physics2D.BoxCastNonAlloc(position, _size, 0f, direction, _hitBuffer, distance, _mask);
-
+            
+            // Reset boolean.
             if (!verticalPass) _isTouchingWall = false;
 
             _hitBufferList.Clear();
@@ -103,32 +156,18 @@ public class FighterController : MonoBehaviour
             }
 
             for (int i = 0; i <_hitBufferList.Count; i++){
-                
-                // Is the collider on the ground?
-                // if (verticalPass){
-                // Vector2 currentNormal = _hitBuffer[i].normal;
-
-                // if (currentNormal.y > _minGroundNormalY){
-                //     _grounded = true;
-                //     if (verticalPass){
-                //         _groundNormal = currentNormal;
-                //         currentNormal.x = 0;
-                //     }
-                // }
-                // }
-
                 float modifiedDistance = _hitBufferList[i].distance - skinWidth;
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
 
-                surface = direction * distance; // Vector to the surface of the other object.
-                leftover = deltaPosition - surface; // Leftover vector when colliding with the other object.
+                surface = direction * distance; // Vector to the surface of the object.
+                leftover = deltaPosition - surface; // Leftover vector when colliding with the object.
                 targetDelta = surface;
 
                 // Is the collider against the wall?
                 if (!verticalPass) _isTouchingWall = true;
             }
         }
-
+        
         return targetDelta;
     }
 
@@ -136,11 +175,12 @@ public class FighterController : MonoBehaviour
 
     #region Push Box Methods
 
-    public Vector2 Interaction(Vector2 deltaPosition, Vector2 position, bool verticalPass, out Vector2 surface, out Vector2 leftover){
+    public Vector2 Interaction(Vector2 deltaPosition, bool verticalPass, out Vector2 surface, out Vector2 leftover){
+        Vector2 position = _positionB;
         float distance = deltaPosition.magnitude + skinWidth;
         Vector2 direction = deltaPosition.normalized;
         Vector2 targetDelta = deltaPosition;
-        surface = deltaPosition;
+        surface = Vector2.zero;
         leftover = Vector2.zero;
 
         if (distance > minMoveDistance + skinWidth){
@@ -161,8 +201,8 @@ public class FighterController : MonoBehaviour
                 float modifiedDistance = _hitBufferList[i].distance - skinWidth;
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
 
-                surface = direction * distance; // Vector to the surface of the other object.
-                leftover = deltaPosition - surface; // Leftover vector when colliding with the other object.
+                surface = direction * distance; // Vector to the surface of the object.
+                leftover = deltaPosition - surface; // Leftover vector when colliding with the object.
                 targetDelta = surface; 
 
                 // TRY TO ADD OVERLAP FUNCTION HERE IF POSSIBLE
@@ -190,32 +230,43 @@ public class FighterController : MonoBehaviour
     }
 
     public Vector2 Push(Vector2 surface, Vector2 leftover){ 
-        Vector2 collision = Collision(leftover, _positionA, false, out _, out _);
-        Vector2 deltaPosition = Interaction(collision, _positionB, false, out _, out _);
+        Vector2 collision = Collision(leftover, false, out _, out _);
+        Vector2 targetDelta = Interaction(collision, false, out _, out _);
 
-        // Consecutive calls of Rigidbody2D.MovePosition() will override the previous ones.
         float distance = (_targetDeltaPosition * Vector2.right).magnitude;
-        Vector2 direction = deltaPosition.normalized;
+        Vector2 direction = targetDelta.normalized;
 
-        float modifiedDistance = deltaPosition.magnitude - skinWidth;
-        deltaPosition = direction * modifiedDistance;
+        float modifiedDistance = targetDelta.magnitude - skinWidth;
+        targetDelta = direction * modifiedDistance;
 
         if (distance < modifiedDistance)
-            _targetDeltaPosition.x = deltaPosition.x;
+            _targetDeltaPosition.x = targetDelta.x;
 
-        _rigidbody.MovePosition(_rigidbody.position + _targetDeltaPosition);
+        // Move the Rigidbody for QueryInteractions.
+        _rigidbody.position = _initialPosition + _targetDeltaPosition;
+        _targetPosition = _rigidbody.position;
+
+        // Consecutive calls of Rigidbody2D.MovePosition() will override the previous ones.
+        //_rigidbody.MovePosition(_rigidbody.position + _targetDeltaPosition);
+        _rigidbody.MovePosition(_targetPosition);
+
         //Debug.Log("Push - " + transform.name + " TargetDeltaPosition: " + _targetDeltaPosition + " Push: " + deltaPosition + " Return: " + (surface + deltaPosition));
-        return surface + deltaPosition;
+        return targetDelta;
     }
 
-    private Vector2 Overlap(Vector2 deltaPosition, Vector2 surface, Vector2 position)
+    private Vector2 Overlap(Vector2 deltaPosition, Vector2 surface)
     {
+        // Calculate _positionA's position as if it would move the full vertical distance. 
+        Vector2 position = _positionA;
+        position += deltaPosition * Vector2.up;
+
         float distance = deltaPosition.magnitude;
         Vector2 targetDelta = Vector2.zero;
 
         if (distance > minMoveDistance){
             int count = Physics2D.OverlapBoxNonAlloc(position, _collider.Size, 0f, _colliderBuffer, _layerMask);
 
+            // Create bounds for the collider.
             Bounds boundsA = new Bounds(position, _collider.Size);
 
             _colliderBufferList.Clear();
@@ -226,6 +277,7 @@ public class FighterController : MonoBehaviour
             for (int i = 0; i <_colliderBufferList.Count; i++){
                 if (_colliderBufferList[i].attachedRigidbody == _collider.Collider.attachedRigidbody) continue;
 
+                // Get bounds of the overlapped collider.
                 Bounds boundsB = _colliderBufferList[i].bounds;
 
                 if (!boundsA.Intersects(boundsB)) continue;
@@ -240,6 +292,7 @@ public class FighterController : MonoBehaviour
 
                 Vector2 overlap = lowerMax - highterMin;
 
+                // Horizontal penetration distance between boundsA and boundsB.
                 distance = overlap.x + skinWidth;
 
                 Vector2 direction;
@@ -302,7 +355,7 @@ public class FighterController : MonoBehaviour
                         // If the colliders are directly on top of each other.
                         if (direction.magnitude == 0){
                             Debug.Log("Colliders are directly on top of each other!");
-                            direction = (new Vector2(boundsA.center.x, boundsA.center.y) - _positionB) * Vector2.right;
+                            direction = (new Vector2(boundsA.center.x, boundsA.center.y) - _initialPosition) * Vector2.right;
                             direction = direction.normalized;
                             
                             // If the deltaPosition only has vertical movement.
@@ -337,7 +390,7 @@ public class FighterController : MonoBehaviour
                         // If the colliders are directly on top of each other.
                         if (direction.magnitude == 0){
                             Debug.Log("Colliders are directly on top of each other!");
-                            direction = (_positionB - new Vector2(boundsA.center.x, boundsA.center.y)) * Vector2.right;
+                            direction = (_initialPosition - new Vector2(boundsA.center.x, boundsA.center.y)) * Vector2.right;
                             direction = direction.normalized;
                             
                             // If the deltaPosition only has vertical movement.
@@ -364,7 +417,7 @@ public class FighterController : MonoBehaviour
                         // If the colliders are directly on top of each other.
                         if (direction.magnitude == 0){
                             Debug.Log("Colliders are directly on top of each other!");
-                            direction = (new Vector2(boundsA.center.x, boundsA.center.y) - _positionB) * Vector2.right;
+                            direction = (new Vector2(boundsA.center.x, boundsA.center.y) - _initialPosition) * Vector2.right;
                             direction = direction.normalized;
                             
                             // If the deltaPosition only has vertical movement.
@@ -396,6 +449,7 @@ public class FighterController : MonoBehaviour
                 targetDelta = direction * distance;
             } 
         }
+
         return targetDelta;
     }
 
