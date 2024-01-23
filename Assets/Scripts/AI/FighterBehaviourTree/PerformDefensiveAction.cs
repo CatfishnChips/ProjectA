@@ -27,7 +27,7 @@ public class PerformDefensiveAction : ActionNode
         {
             if(dodgeWaitStartFrame >= blackboard.enemyAttackAction.StartFrames - 2) 
             {
-                EventManager.Instance.P2Swipe?.Invoke(new Vector2(1.0f, 1.0f));
+                context.inputEvents.Swipe?.Invoke(new Vector2(1.0f, 1.0f));
                 return State.Success;
             }
             else
@@ -37,7 +37,7 @@ public class PerformDefensiveAction : ActionNode
             } 
         }
         else{
-            EventManager.Instance.P2AttackMove?.Invoke(choosenAction);
+            context.inputEvents.AttackMove?.Invoke(choosenAction);
             return State.Success;
         }
     }

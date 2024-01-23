@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace TheKiwiCoder {
-    public class BehaviourTreeRunner : MonoBehaviour {
+    public class BehaviourTreeRunner : InputInvoker {
 
         // The main behaviour tree asset
         public BehaviourTree tree;
@@ -44,6 +44,7 @@ namespace TheKiwiCoder {
             context.enemyFSM.OnAttackEnd += blackboard.OnEnemyAttackEnd;
             context.selfFSM.OnAttackStart += blackboard.OnSelfAttackStart;
             context.selfFSM.OnAttackEnd += blackboard.OnSelfAttackEnd;
+            context.inputEvents = InputEvents;
             tree = tree.Clone();
             tree.Bind(context, blackboard);
         }

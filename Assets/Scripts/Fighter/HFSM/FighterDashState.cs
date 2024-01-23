@@ -40,7 +40,7 @@ public class FighterDashState : FighterBaseState
         AnimationClip clip;
         AnimationClip colClip;
 
-        Vector2 dashDirection = _ctx.SwipeDirection * -1f; // Adjust according to face direction.
+        Vector2 dashDirection = _ctx.SwipeDirection; // Adjust according to face direction.
 
         if (dashDirection.x < 0)
         {

@@ -13,6 +13,7 @@ namespace TheKiwiCoder {
         public AIDifficultySettings difficultySettings;
         public FighterStateMachine selfFSM;
         public FighterStateMachine enemyFSM;
+        public InputEvents inputEvents;
 
         public Dictionary<string, ActionAttack> hittingAttacks = new Dictionary<string, ActionAttack>();
 
@@ -28,7 +29,8 @@ namespace TheKiwiCoder {
             // Fetch all commonly used components
             BehaviourTreeRunner btr = gameObject.GetComponent<BehaviourTreeRunner>();
             difficultySettings = btr.DifficultySettings;
-            selfFSM = gameObject.GetComponent<FighterStateMachine>();
+            //Match conducter singleton gerektiriyor.
+            selfFSM = MatchConducter.Instance.FighterSlot2.GetComponent<FighterStateMachine>();
             enemyFSM = GameObject.FindWithTag("Player").GetComponent<FighterStateMachine>();
 
             attackBoxFlexibilityMargin = btr.AttackBoxFlexibilityMargin;

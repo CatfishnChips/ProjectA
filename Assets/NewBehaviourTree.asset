@@ -20,7 +20,11 @@ MonoBehaviour:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
     choosenDefensiveAction: 
-    dodgeFrame: 0
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    enemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
   description: 
   drawGizmos: 0
   children:
@@ -46,7 +50,11 @@ MonoBehaviour:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
     choosenDefensiveAction: 
-    dodgeFrame: 0
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    enemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
   description: 
   drawGizmos: 0
   child: {fileID: -8669598626827312891}
@@ -76,7 +84,11 @@ MonoBehaviour:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
     choosenDefensiveAction: 
-    dodgeFrame: 0
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    enemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
 --- !u!114 &752662541335917147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +109,11 @@ MonoBehaviour:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
     choosenDefensiveAction: 
-    dodgeFrame: 0
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    enemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
   description: 
   drawGizmos: 0
   min: {x: -10, y: -10}
@@ -122,7 +138,11 @@ MonoBehaviour:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
     choosenDefensiveAction: 
-    dodgeFrame: 0
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    enemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
   description: 
   drawGizmos: 0
   child: {fileID: -1368181696317019611}
@@ -146,7 +166,11 @@ MonoBehaviour:
     moveToPosition: {x: 0, y: 0, z: 0}
     choosenAgressiveAction: 
     choosenDefensiveAction: 
-    dodgeFrame: 0
+    enemyAttackAction: {fileID: 0}
+    enemyAttackStarted: 0
+    enemyAttackEnded: 0
+    selfAttackStarted: 0
+    selfAttackEnded: 0
   description: 
   drawGizmos: 0
   duration: 3

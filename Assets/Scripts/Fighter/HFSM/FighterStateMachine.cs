@@ -348,9 +348,12 @@ public abstract class FighterStateMachine : MonoBehaviour
     #region Input Functions
 
     protected virtual void OnSwipe(Vector2 direction){
+        _swipeDirection = direction;
+        _swipeDirection.x *= -_faceDirection;
+        Debug.Log("Fighter State Machine read direction: " + direction);
 
         if (direction.y <= -0.5f) {
-            if (direction.y <= -0.95f) direction.x = 0f;
+            if (direction.y <= -0.95f) _swipeDirection.x = 0f;
             _jumpInput.Write(true);
         }
         else if (direction.y < 0.5f && direction.y > -0.5f){

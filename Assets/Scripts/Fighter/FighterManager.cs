@@ -57,6 +57,7 @@ public class FighterManager : MonoBehaviour
     #region input listener functions
 
     public void OnSwipe(Vector2 direction){
+        Debug.Log("Swipe Detected");
         fighterEvents.Swipe?.Invoke(direction);
     }
 
