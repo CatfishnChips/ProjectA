@@ -3425,7 +3425,6 @@ GameObject:
   - component: {fileID: 2303607105570369509}
   - component: {fileID: 2303607105570369510}
   - component: {fileID: 2303607105570369511}
-  - component: {fileID: 2303607105570369517}
   m_Layer: 0
   m_Name: Fighter_Enemy
   m_TagString: Bot
@@ -3466,6 +3465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8de37acad9bb9547802ab35361adef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fighterManager: {fileID: 0}
   _player: 2
   _actionAttribution:
   - action: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
@@ -3517,8 +3517,6 @@ MonoBehaviour:
   _actionState: 0
   _currentFrame: 0
   _comboBuffer: 15
-  _inputDelay: 2
-  _inputBuffer: 10
   _dashDistance: 3
   _dashTime: 15
   _dodgeTime: {x: 0, y: 45}
@@ -3696,23 +3694,6 @@ MonoBehaviour:
       type: 3}
     m_amount: 3
   m_spawnLocation: {fileID: 2303607106533865552}
---- !u!114 &2303607105570369517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2303607105570369504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c6f9b140a52a14881ec09eaebb66eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tree: {fileID: 11400000, guid: d13da0fbb163d9b4ea96cfbce501fab2, type: 2}
-  difficultySettings: {fileID: 11400000, guid: 704af98938792dc4ebd89f93052155ab, type: 2}
-  _attackBoxFlexibilityMargin: 0.25
-  _distanceMargin: 1
-  _optimalDistanceMethod: 1
 --- !u!1 &2303607105570622454
 GameObject:
   m_ObjectHideFlags: 0

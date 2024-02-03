@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8de37acad9bb9547802ab35361adef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fighterManager: {fileID: 0}
+  _fighterManager: {fileID: 4718437645505889773}
   _player: 1
   _actionAttribution:
   - action: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
