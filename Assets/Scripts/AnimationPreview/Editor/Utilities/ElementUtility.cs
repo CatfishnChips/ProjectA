@@ -10,6 +10,49 @@ public static class ElementUtility
         return label;
     }
 
+    public static CurveField CreateCurveField(AnimationCurve value = default, string label = null, EventCallback<ChangeEvent<AnimationCurve>> onValueChanged = null){
+        CurveField curveField = new CurveField(){
+            value = value,
+            label = label
+        };
+
+        if (onValueChanged != null)
+        {
+            curveField.RegisterValueChangedCallback(onValueChanged);
+        }
+
+        return curveField;
+    }
+
+    public static Vector2Field CreateVector2Field(Vector2 value = default,  string label = null, EventCallback<ChangeEvent<Vector2>> onValueChanged = null){
+        Vector2Field vector2Field = new Vector2Field(){
+            value = value,
+            label = label
+        };
+
+        if (onValueChanged != null)
+        {
+            vector2Field.RegisterValueChangedCallback(onValueChanged);
+        }
+
+        return vector2Field;
+    }
+
+
+    public static Vector3Field CreateVector3Field(Vector3 value = default,  string label = null, EventCallback<ChangeEvent<Vector3>> onValueChanged = null){
+        Vector3Field vector3Field = new Vector3Field(){
+            value = value,
+            label = label
+        };
+
+        if (onValueChanged != null)
+        {
+            vector3Field.RegisterValueChangedCallback(onValueChanged);
+        }
+
+        return vector3Field;
+    }
+
     public static Toggle CreateToggle(bool value = default, string label = null, EventCallback<ChangeEvent<bool>> onValueChanged = null)
     {
         Toggle toggle = new Toggle(){

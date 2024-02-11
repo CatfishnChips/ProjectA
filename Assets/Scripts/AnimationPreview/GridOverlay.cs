@@ -1,25 +1,23 @@
 // Source: http://answers.unity3d.com/questions/482128/draw-grid-lines-in-game-view.html
 
 using UnityEngine;
-using System.Collections;
 
 public class GridOverlay
 {
-    public bool show = true;
+    public bool showMain = true;
+    public bool showSub = true;
 
-    public int gridSizeX;
-    public int gridSizeY;
-    public int gridSizeZ;
+    public Vector3 gridSize;
 
-    public float step;
+    public float largeStep;
+    public float smallStep;
 
-    public float startX;
-    public float startY;
-    public float startZ;
+    public Vector3 startPosition;
 
     private Material lineMaterial;
 
     public Color mainColor = new Color(0f, 1f, 0f, 1f);
+    public Color subColor = new Color(0f, 0.5f, 0f, 1f);
 
     void CreateLineMaterial()
     {
@@ -40,50 +38,92 @@ public class GridOverlay
         }
     }
 
-    public void OnPostRender()
-    {
-        CreateLineMaterial();
-        // set the current material
-        lineMaterial.SetPass(0);
+    public void OnPostRender() 
+	{        
+		CreateLineMaterial();
+		// set the current material
+		lineMaterial.SetPass( 0 );
+		
+		GL.Begin( GL.LINES );
+		if (smallStep == 0)
+			Debug.Log("Step is 0, wont draw Grid. Step it to higher than 0.");
 
-        GL.Begin(GL.LINES);
-        
-        if (step == 0)
+		if (largeStep == 0)
             Debug.Log("Step is 0, wont draw Grid. Step it to higher than 0.");
 
-        if (show)
+		if (showSub)
         {
-            GL.Color(mainColor);
+            GL.Color(subColor);
 
             //Layers
-            for (float j = 0; j <= gridSizeY; j += step)
+            for (float j = 0; j <= gridSize.y; j += smallStep)
             {
                 //X axis lines
-                for (float i = 0; i <= gridSizeZ; i += step)
+                for (float i = 0; i <= gridSize.z; i += smallStep)
                 {
-                    GL.Vertex3(startX, startY + j, startZ + i);
-                    GL.Vertex3(startX + gridSizeX, startY + j, startZ + i);
+                    GL.Vertex3(startPosition.x, startPosition.y + j , startPosition.z + i);
+                    GL.Vertex3(startPosition.x + gridSize.x, startPosition.y + j , startPosition.z + i);
                 }
 
                 //Z axis lines
-                for (float i = 0; i <= gridSizeX; i += step)
+                for (float i = 0; i <= gridSize.x; i += smallStep)
                 {
-                    GL.Vertex3(startX + i, startY + j, startZ);
-                    GL.Vertex3(startX + i, startY + j, startZ + gridSizeZ);
+                    GL.Vertex3(startPosition.x + i, startPosition.y + j , startPosition.z);
+                    GL.Vertex3(startPosition.x + i, startPosition.y + j , startPosition.z + gridSize.z);
                 }
             }
 
             //Y axis lines
-            for (float i = 0; i <= gridSizeZ; i += step)
+            for (float i = 0; i <= gridSize.z; i += smallStep)
             {
-                for (float k = 0; k <= gridSizeX; k += step)
+                for (float k = 0; k <= gridSize.x; k += smallStep)
                 {
-                    GL.Vertex3(startX + k, startY, startZ + i);
-                    GL.Vertex3(startX + k, startY + gridSizeY, startZ + i);
+                    GL.Vertex3(startPosition.x + k, startPosition.y , startPosition.z + i);
+                    GL.Vertex3(startPosition.x + k, startPosition.y + gridSize.y , startPosition.z + i);
                 }
             }
         }
 
-        GL.End();
-    }
+        if (showMain)
+        {
+            GL.Color(mainColor);
+
+            //Layers
+            for (float j = 0; j <= gridSize.y; j += largeStep)
+            {
+                //X axis lines
+                for (float i = 0; i <= gridSize.z; i += largeStep)
+                {
+                    GL.Vertex3(startPosition.x, startPosition.y + j, startPosition.z + i);
+                    GL.Vertex3(startPosition.x + gridSize.x, startPosition.y + j, startPosition.z + i);
+                }
+
+                //Z axis lines
+                for (float i = 0; i <= gridSize.x; i += largeStep)
+                {
+                    GL.Vertex3(startPosition.x + i, startPosition.y + j, startPosition.z);
+                    GL.Vertex3(startPosition.x + i, startPosition.y + j, startPosition.z + gridSize.z);
+                }
+            }
+
+            //Y axis lines
+            for (float i = 0; i <= gridSize.z; i += largeStep)
+            {
+                for (float k = 0; k <= gridSize.x; k += largeStep)
+                {
+                    GL.Vertex3(startPosition.x + k, startPosition.y, startPosition.z + i);
+                    GL.Vertex3(startPosition.x + k, startPosition.y + gridSize.y, startPosition.z + i);
+                }
+            }
+        }
+		
+		GL.End();
+	}
+
+    public Vector3 SnapToGrid(Vector3 position) {
+        position.x = Mathf.Round(position.x * largeStep) * smallStep;
+        position.y = Mathf.Round(position.y * largeStep) * smallStep;
+        position.z = Mathf.Round(position.z * largeStep) * smallStep;
+        return position; 
+    } 
 }

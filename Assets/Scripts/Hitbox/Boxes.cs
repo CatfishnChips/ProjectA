@@ -15,5 +15,5 @@ public abstract class Boxes : MonoBehaviour
     public bool Active { get {return m_state != ColliderState.Closed ? true : false;} }
     public Transform Transform { get => transform; }
 
-    public abstract void DrawHandles(Matrix4x4 matrix);
+    public virtual void DrawHandles(Matrix4x4 matrix) { }
 }

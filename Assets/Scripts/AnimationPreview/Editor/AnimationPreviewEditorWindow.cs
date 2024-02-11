@@ -119,8 +119,8 @@ public class AnimationPreviewEditorWindow : EditorWindow
     {
         //Show existing window instance. If one doesn't exist, make one.
         var window = GetWindow<AnimationPreviewEditorWindow>("Animation Preview");
-        window.Init(window);
         window.Show();
+        window.Init(window);
     }
 
     public void Init(EditorWindow window){
@@ -199,8 +199,7 @@ public class AnimationPreviewEditorWindow : EditorWindow
         }   
 
         if (_gridOverlay != null){
-            _gridOverlay.startX = -5;
-            _gridOverlay.startY = -5;
+            _gridOverlay.startPosition = new Vector3(-5, -5, 0);
             _gridOverlay.OnPostRender();
         }
 
@@ -320,15 +319,13 @@ public class AnimationPreviewEditorWindow : EditorWindow
 
     private void CreateGridOverlay(){
         _gridOverlay = new GridOverlay(){
-            gridSizeX = 10,
-            gridSizeY = 10,
-            gridSizeZ = 10,
-            step = 1,
-            startX = 0f,
-            startY = 0f,
-            startZ = 0f,
-            mainColor = Color.grey,
-            show = _showGrid
+           gridSize = new Vector3(10, 10, 10),
+            largeStep = 1,
+            smallStep = 0.25f,
+            mainColor = new Color(0.75f, 0.75f, 0.75f, 1f),
+            subColor = new Color(0.25f, 0.25f, 0.25f, 1f),
+            showMain = _showGrid,
+            showSub = _showGrid
         };
     }
 
@@ -561,7 +558,8 @@ public class AnimationPreviewEditorWindow : EditorWindow
 
             // Show/Hide Grid
             if (_gridOverlay != null)
-                _gridOverlay.show = _showGrid;
+                _gridOverlay.showMain = _showGrid;
+                _gridOverlay.showSub = _showGrid;
         });
 
         // cameraSettingsFoldout.Add(cameraRadioButtonGroup);

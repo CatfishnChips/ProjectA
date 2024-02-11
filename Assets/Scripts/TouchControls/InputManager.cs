@@ -199,6 +199,12 @@ public class InputManager : MonoBehaviour
         EventSystem.current.RaycastAll(eventData,raycastResults);
         return raycastResults.Count > 0;
     }
+
+    public void ScreenAspectRatio(){
+        Resolution resolution = Screen.currentResolution;
+        float screenSquareInches = resolution.width * resolution.height / Screen.dpi;
+        float screenAspectRatio = resolution.width / resolution.height;
+    }
 }
 
 public struct InputEventParams 

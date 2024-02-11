@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
- public class GestureIO
+public class GestureIO
     {
         /// <summary>
         /// Reads a multistroke gesture from an XML file
