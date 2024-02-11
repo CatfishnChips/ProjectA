@@ -331,7 +331,6 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     protected virtual void OnFighterAttackInput(ActionFighterAttack attackAction){
-        Debug.Log("Attack with the name " + attackAction.name + " has been written to the attack input on Frame: " + GameSimulator.Instance.TickCount);
         _attackInput.Write(attackAction);
     }
 

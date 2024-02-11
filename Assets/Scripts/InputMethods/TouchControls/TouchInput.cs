@@ -170,10 +170,8 @@ public class TouchQueueInput<T> : TouchInput<T>
             if(!_contentHolder[i].OnDelayQueue && !_contentHolder[i].OnBufferQueue){
                 if(_contentHolder[i].Content == null)
                 {
-                    Debug.Log("Trying to set the content for an input with content: Null");
                 }
                 else{
-                    Debug.Log("Trying to set the content for an input with content: " + _contentHolder[i].Content);
                 }
                 
                 _contentHolder[i].Set(content);
@@ -211,7 +209,6 @@ public class TouchQueueInput<T> : TouchInput<T>
         {
             if(_contentHolder[i].OnDelayQueue)
             {
-                Debug.Log("Delay is: " + _contentHolder[i].DelayFrameCounter + "/" + InputManager.Instance.InputDelay);
                 if(_contentHolder[i].DelayFrameCounter >= InputManager.Instance.InputDelay)
                 {
                     _contentQueue.Add(_contentHolder[i]);
@@ -230,7 +227,6 @@ public class TouchQueueInput<T> : TouchInput<T>
         if(_isContentRead) 
         {
             ActionAttack aa = _contentQueue[0].Content as ActionAttack;
-            Debug.Log("Action with name: " + aa.name + " Has been dequeued due to it being read.");
             _contentQueue[0].Reset();
             _contentQueue.RemoveAt(0);
             _isContentRead = false;
@@ -240,10 +236,8 @@ public class TouchQueueInput<T> : TouchInput<T>
         while (i < _contentQueue.Count)
         {
             _contentQueue[i].BufferFrameCounter++;
-            Debug.Log(i + 1 + "/" + _contentQueue.Count + " Attack input is: " + (_contentQueue[i].Content as ActionAttack).name + " Buffer is: " + _contentQueue[i].BufferFrameCounter + "/" + InputManager.Instance.InputBuffer);
             if(_contentQueue[i].BufferFrameCounter > InputManager.Instance.InputBuffer){
                 ActionAttack aa = _contentQueue[i].Content as ActionAttack;
-                Debug.Log("Action with name: " + aa.name + " Has been dequeued due to the reach of buffer time");
                 _contentQueue[0].Reset();
                 _contentQueue.RemoveAt(0);
             }

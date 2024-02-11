@@ -13,7 +13,6 @@ public class FighterIdleState : FighterBaseState
     public override void CheckSwitchState()
     {
         if (_ctx.AttackInput.Read()){
-            Debug.Log("Attack Input is read on frame: " + GameSimulator.Instance.TickCount);
             SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
         else if (_ctx.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){

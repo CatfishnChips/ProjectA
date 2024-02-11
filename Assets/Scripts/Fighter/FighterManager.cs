@@ -84,8 +84,6 @@ public class FighterManager : MonoBehaviour
             else if(swipeDirectionR == SwipeDirections.Up) actionAttack = _attackMoveDict[InputGestures.SwipeUpR];
             else if(swipeDirectionR == SwipeDirections.Down) actionAttack = _attackMoveDict[InputGestures.SwipeDownR];
 
-            Debug.Log(actionAttack);
-
             if(actionAttack != null) fighterEvents.OnFighterAttack?.Invoke(actionAttack as ActionFighterAttack);
         }
 
