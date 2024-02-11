@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -69,9 +68,8 @@ public class TouchInput<T> : ITouchInput
 
     public virtual T Read()
     {
-        _isValueRead = !_value.Equals(_defaultValue);
-        T result = _value;
-        return result;
+        _isValueRead = !_value.Equals(_defaultValue); // If the value is different than default when it's read only then we consider it read.
+        return _value;
     }
 
     public virtual void OnTick()
@@ -121,81 +119,137 @@ public class TouchInput<T> : ITouchInput
     }
 }
 
-public class TouchQueueInput<T, U> : TouchInput<T>
+public class TouchQueueInput<T> : TouchInput<T>
 {
-    private Queue<U> _actionQueue;
-    private bool _isActionRead;
-
-    public TouchQueueInput(T value, InputTypes inputType, SubInputTypes subInputType) : base(value, inputType, subInputType)
+    private class QueueableContent
     {
-        _actionQueue = new Queue<U>();
-        _isActionRead = false;        
+        public T Content;
+        public int DelayFrameCounter;
+        public int BufferFrameCounter;
+        public bool OnBufferQueue;
+        public bool OnDelayQueue;
+
+        public QueueableContent(){
+            DelayFrameCounter = 0;
+            BufferFrameCounter = 0;
+            OnBufferQueue = false;
+            OnDelayQueue = false;
+        }
+
+        public void Set(T content){
+            Content = content;
+            OnDelayQueue = true;
+        }
+
+        public void Reset(){
+            Content = default(T);
+            DelayFrameCounter = 0;
+            BufferFrameCounter = 0;
+            OnDelayQueue = false;
+            OnBufferQueue = false;
+        }
     }
 
-    public void Write(T value, U action)
+    private QueueableContent[] _contentHolder;
+    private List<QueueableContent> _contentQueue;
+    private bool _isContentRead;
+
+    public TouchQueueInput(InputTypes inputType, SubInputTypes subInputType) : base(default(T), inputType, subInputType)
+    {
+        _contentHolder = new QueueableContent[15];
+        for(int i = 0; i < _contentHolder.Length; i++) _contentHolder[i] = new QueueableContent();
+
+        _contentQueue = new List<QueueableContent>();
+        _isContentRead = false;        
+    }
+
+    public override void Write(T content)
     {
         _isActive = true;
-        if(_isListening)
-        {
-            _isListening = false;
-            _holderValue = value;
-            _actionQueue.Enqueue(action);
+        for(int i = 0; i < _contentHolder.Length; i++){
+            if(!_contentHolder[i].OnDelayQueue && !_contentHolder[i].OnBufferQueue){
+                if(_contentHolder[i].Content == null)
+                {
+                    Debug.Log("Trying to set the content for an input with content: Null");
+                }
+                else{
+                    Debug.Log("Trying to set the content for an input with content: " + _contentHolder[i].Content);
+                }
+                
+                _contentHolder[i].Set(content);
+                break;
+            } 
         }
     }
 
-    public U ReadAction()
+    public new bool Read()
     {
-        if(_actionQueue.Count == 0){
-            return default(U);
+        return _contentQueue.Count > 0;
+    }
+
+    public T ReadContent()
+    {
+        if(_contentQueue.Count == 0){
+            return default(T);
         }
         else{
-            _isActionRead = true;
-            return _actionQueue.Peek();
+            _isContentRead = true;
+            return _contentQueue[0].Content;
         } 
     }
 
-    public U PeekAction()
+    public T PeekContent()
     {
-        return _actionQueue.Peek();
+        return _contentQueue[0].Content;
     }
 
     public override void OnTick()
     {
         if(!_isActive) return;
 
-        Debug.Log("Delay is: " + _delayFrameCounter + "/" + InputManager.Instance.InputDelay + " On Frame: " + GameSimulator.Instance.TickCount);
-
-        if(_delayFrameCounter < InputManager.Instance.InputDelay){
-            _delayFrameCounter++;
-            return;
-        } 
-
-        _value = _holderValue;
-
-        Debug.Log("Buffer varaibale is: " + _bufferFrameCounter + "/" + InputManager.Instance.InputBuffer);
-
-        if(_bufferFrameCounter > InputManager.Instance.InputBuffer)
+        for(int i = 0; i < _contentHolder.Length; i++)
         {
-            if(_actionQueue.Count == 1) Reset();
-            else {
-                _actionQueue.Dequeue();
-                _isListening = true;
-                _bufferFrameCounter = 0;
-                _delayFrameCounter = 0;
+            if(_contentHolder[i].OnDelayQueue)
+            {
+                Debug.Log("Delay is: " + _contentHolder[i].DelayFrameCounter + "/" + InputManager.Instance.InputDelay);
+                if(_contentHolder[i].DelayFrameCounter >= InputManager.Instance.InputDelay)
+                {
+                    _contentQueue.Add(_contentHolder[i]);
+                    _contentHolder[i].OnDelayQueue = false;
+                    _contentHolder[i].OnBufferQueue = true;
+                }
+                _contentHolder[i].DelayFrameCounter++;
+
+                //if(queuedContent) _contentHolder[i].Reset();
             }
         }
-
-        _bufferFrameCounter++;
     }
 
     public override void OnLateTick()
     {
-        if(_isActionRead) 
+        if(_isContentRead) 
         {
-            Debug.Log("Action was read so trying to dequeue");
-            _actionQueue.Dequeue();
-            _isActionRead = false;
-            Reset();
+            ActionAttack aa = _contentQueue[0].Content as ActionAttack;
+            Debug.Log("Action with name: " + aa.name + " Has been dequeued due to it being read.");
+            _contentQueue[0].Reset();
+            _contentQueue.RemoveAt(0);
+            _isContentRead = false;
+        }
+
+        int i = 0;
+        while (i < _contentQueue.Count)
+        {
+            _contentQueue[i].BufferFrameCounter++;
+            Debug.Log(i + 1 + "/" + _contentQueue.Count + " Attack input is: " + (_contentQueue[i].Content as ActionAttack).name + " Buffer is: " + _contentQueue[i].BufferFrameCounter + "/" + InputManager.Instance.InputBuffer);
+            if(_contentQueue[i].BufferFrameCounter > InputManager.Instance.InputBuffer){
+                ActionAttack aa = _contentQueue[i].Content as ActionAttack;
+                Debug.Log("Action with name: " + aa.name + " Has been dequeued due to the reach of buffer time");
+                _contentQueue[0].Reset();
+                _contentQueue.RemoveAt(0);
+            }
+            else{
+                i++;
+            }
         }
     }
 
@@ -204,14 +258,16 @@ public class TouchQueueInput<T, U> : TouchInput<T>
 public class TouchContinuousInput<T> : TouchInput<T>
 {
     public TouchContinuousInput(T value, InputTypes inputType, SubInputTypes subInputType) : base(value, inputType, subInputType){}
-    private bool newInputRegistered;
+    private bool _newInputRegistered;
+    private bool _writtenToInput = false;
 
     public override void Write(T value)
     {
-        if(!_holderValue.Equals(_value)) newInputRegistered = true;
+        _writtenToInput = true;
+        if(!_holderValue.Equals(_value)) _newInputRegistered = true;
         _isActive = true;
         if(_isListening) _holderValue = value;
-         _delayFrameCounter = 0;
+        _delayFrameCounter = 0;
     }
 
     public override T Read()
@@ -221,10 +277,16 @@ public class TouchContinuousInput<T> : TouchInput<T>
 
     public override void OnTick()
     {
-        if(newInputRegistered)
+        if(_newInputRegistered)
         {
             if(_delayFrameCounter < GameManager.Instance.Config.InputDelay) return;
             _value = _holderValue;
         }
+    }
+
+    public override void OnLateTick()
+    {
+        if(!_writtenToInput) Reset();
+        _writtenToInput = false;
     }
 }

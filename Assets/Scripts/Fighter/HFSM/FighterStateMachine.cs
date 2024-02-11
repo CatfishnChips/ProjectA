@@ -23,14 +23,13 @@ public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, Animation
 public abstract class FighterStateMachine : MonoBehaviour
 {
     [SerializeField] protected FighterManager _fighterManager;
+    public Dictionary<InputGestures, ActionAttack> AttackMoveDict{get{return _fighterManager.AttackMoveDict;}}
+    public Dictionary<string, ActionBase> ActionDictionary{get{return _fighterManager.ActionDictionary;}}
+
     [SerializeField] protected Player _player;
-    [SerializeField] protected ActionAttribution[] _actionAttribution;
-    protected Dictionary<string, ActionAttack> _attackMoveDict;
-    protected Dictionary<string, ActionAttack> _groundedAttackMoveDict;
     protected Dictionary<string, ActionAttack> _aerialAttackMoveDict;
     protected Dictionary<string, ActionBase> _actionDictionary;
 
-    [SerializeField] protected ComboMove[] _combosArray;
     protected ComboListener _comboListener;
 
     protected Transform _mesh;
@@ -74,10 +73,11 @@ public abstract class FighterStateMachine : MonoBehaviour
     private TouchInput<bool> _jumpInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Jump);
     private TouchInput<bool> _dashInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Dash);
     private TouchInput<bool> _dodgeInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Dodge);
-    private TouchContinuousInput<float> _movementInput = new TouchContinuousInput<float>(0, InputTypes.Drag, SubInputTypes.None);
+    private TouchInput<bool> _blockInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Dodge);
+    private TouchContinuousInput<int> _movementInput = new TouchContinuousInput<int>(0, InputTypes.Drag, SubInputTypes.None);
     private TouchContinuousInput<bool> _holdAInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
     private TouchContinuousInput<bool> _holdBInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
-    private TouchQueueInput<bool, ActionAttack> _attackInput = new TouchQueueInput<bool, ActionAttack>(false, InputTypes.Gesture, SubInputTypes.None);
+    private TouchQueueInput<ActionAttack> _attackInput = new TouchQueueInput<ActionAttack>(InputTypes.Gesture, SubInputTypes.None);
     protected List<ITouchInput> _inputsList;
 
     #endregion
@@ -113,6 +113,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected bool _isInvulnerable;
     protected bool _isGravityApplied;
     protected Vector2 _swipeDirection;
+    protected int _dashDirection;
     protected bool _validAttackInputInterval;
     protected ActionFighterAttack _fighterAttackAction;
 
@@ -129,10 +130,10 @@ public abstract class FighterStateMachine : MonoBehaviour
     public TouchInput<bool> JumpInput { get => _jumpInput; }
     public TouchInput<bool> DashInput { get => _dashInput; }
     public TouchInput<bool> DodgeInput { get => _dodgeInput; }
-    public TouchContinuousInput<float> MovementInput { get => _movementInput; }
+    public TouchContinuousInput<int> MovementInput { get => _movementInput; }
     public TouchContinuousInput<bool> HoldAInput { get => _holdAInput; }
     public TouchContinuousInput<bool> HoldBInput { get => _holdBInput; }
-    public TouchQueueInput<bool, ActionAttack> AttackInput { get => _attackInput; }
+    public TouchQueueInput<ActionAttack> AttackInput { get => _attackInput; }
 
     //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
     public ActionFighterAttack AttackAction{get{return _fighterAttackAction;}}
@@ -149,12 +150,8 @@ public abstract class FighterStateMachine : MonoBehaviour
     public AnimatorOverrideController ColBoxOverrideCont{get{return _colBoxOverrideCont;} set{_colBoxOverrideCont = value;}}
     public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
 
-    public Dictionary<string, ActionAttack> AttackMoveDict{get{return _attackMoveDict;}}
-    public Dictionary<string, ActionAttack> GroundedAttackMoveDict { get { return _groundedAttackMoveDict; } }
-    public Dictionary<string, ActionAttack> AerialAttackMoveDict { get { return _aerialAttackMoveDict; } }
-    public Dictionary<string, ActionBase> ActionDictionary{get{return _actionDictionary;}}
     public ComboListener ComboListener{get{return _comboListener;} set{_comboListener = value;}}
-    public ComboMove[] CombosArray{get{return _combosArray;}}
+    public ComboMove[] CombosArray{get{return _fighterManager.CombosArray;}}
     public int ComboBuffer{get{return _comboBuffer;}}
 
     public HitResponder HitResponder {get{return _hitResponder;}}
@@ -179,6 +176,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     public float Gravity {get{return _gravity;} set{_gravity = value;}}
     public float Drag {get{return _drag;} set{_drag = value;}}
     public Vector2 SwipeDirection {get{return _swipeDirection;}} // SwipeDirection is affected by FaceDirection
+    public int DashDirection {get {return _dashDirection;}}
     public Vector2 CurrentMovement {get{return _currentMovement;} set{_currentMovement = value;}}
     public float JumpDistance {get{return _jumpDistance;}}
     public float DashDistance {get{return _dashDistance;}}
@@ -242,25 +240,6 @@ public abstract class FighterStateMachine : MonoBehaviour
         _colBoxClipOverrides = new AnimationClipOverrides(_colBoxOverrideCont.overridesCount);
         _colBoxOverrideCont.GetOverrides(_colBoxClipOverrides);
 
-        _attackMoveDict = new Dictionary<string, ActionAttack>();
-        _groundedAttackMoveDict = new Dictionary<string, ActionAttack>();
-        _aerialAttackMoveDict = new Dictionary<string, ActionAttack>();
-        _actionDictionary = new Dictionary<string, ActionBase>();
-
-        foreach (ActionAttribution attribution in _actionAttribution)
-        {
-            if (IsSameOrSubclass(typeof(ActionAttack), attribution.action.GetType()))
-            {
-                ActionAttack action = Instantiate(attribution.action) as ActionAttack;
-                _attackMoveDict.Add(action.name, action); // All Attack Actions
-                if(action.Tags.HasFlag(Tags.Grounded)) _groundedAttackMoveDict.Add(action.name, action); // Grounded attack Actions
-                else if(action.Tags.HasFlag(Tags.Aerial)) _aerialAttackMoveDict.Add(action.name, action); // Aerial Attack Actions
-            }
-            else 
-            {
-                _actionDictionary.Add(attribution.action.name, attribution.action);
-            }
-        }
         GetComponents();
     }
 
@@ -285,11 +264,8 @@ public abstract class FighterStateMachine : MonoBehaviour
 
         _fighterManager.fighterEvents.OnFighterAttack += OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack += OnSpiritAttackInput;
-        _fighterManager.fighterEvents.OnMove += OnMoveA;
-        _fighterManager.fighterEvents.Swipe += OnSwipe;
-        _fighterManager.fighterEvents.OnTap += OnTapA;
-        _fighterManager.fighterEvents.OnHoldA += OnHoldA;
-        _fighterManager.fighterEvents.OnHoldB += OnHoldB;
+        _fighterManager.fighterEvents.OnMove += OnMove;
+        _fighterManager.fighterEvents.OnDash += OnDash;
 
         // Subscribe to component based events.
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
@@ -330,11 +306,8 @@ public abstract class FighterStateMachine : MonoBehaviour
         
         _fighterManager.fighterEvents.OnFighterAttack -= OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack -= OnSpiritAttackInput;
-        _fighterManager.fighterEvents.OnMove -= OnMoveA;
-        _fighterManager.fighterEvents.Swipe -= OnSwipe;
-        _fighterManager.fighterEvents.OnTap -= OnTapA;
-        _fighterManager.fighterEvents.OnHoldA -= OnHoldA;
-        _fighterManager.fighterEvents.OnHoldB -= OnHoldB;
+        _fighterManager.fighterEvents.OnMove -= OnMove;
+        _fighterManager.fighterEvents.OnDash -= OnDash;
 
         // Component based events.
         if(_hitResponder) _hitResponder.HitResponse -= OnHit;
@@ -347,43 +320,19 @@ public abstract class FighterStateMachine : MonoBehaviour
 
     #region Input Functions
 
-    protected virtual void OnSwipe(Vector2 direction){
-        _swipeDirection = direction;
-        _swipeDirection.x *= -_faceDirection;
-        Debug.Log("Fighter State Machine read direction: " + direction);
-
-        if (direction.y <= -0.5f) {
-            if (direction.y <= -0.95f) _swipeDirection.x = 0f;
-            _jumpInput.Write(true);
-        }
-        else if (direction.y < 0.5f && direction.y > -0.5f){
-            _dashInput.Write(true);
-        }
-        else if (direction.y >= 0.5f){
-            _dodgeInput.Write(true);
-        }
+    protected virtual void OnDash(int direction){
+        Debug.Log(direction);
+        _dashDirection = direction * _faceDirection;
+        _dashInput.Write(true);
     }
 
-    protected virtual void OnTapA(){
-    }
-
-    protected virtual void OnHoldA(bool value){
-        _holdAInput.Write(value);
-    }
-
-    protected virtual void OnHoldB(bool value){
-        _holdBInput.Write(value);
-    }
-
-    protected virtual void OnMoveA(float value){
-        value = value == 0 ? 0 : Mathf.Sign(value);
-
+    protected virtual void OnMove(int value){
         _movementInput.Write(value);
     }
 
     protected virtual void OnFighterAttackInput(ActionFighterAttack attackAction){
         Debug.Log("Attack with the name " + attackAction.name + " has been written to the attack input on Frame: " + GameSimulator.Instance.TickCount);
-        _attackInput.Write(true, attackAction);
+        _attackInput.Write(attackAction);
     }
 
     protected virtual void OnSpiritAttackInput(ActionSpiritAttack attackAction){

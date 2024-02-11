@@ -25,13 +25,9 @@ public class PlayerManager : MonoBehaviour
     }
 
     void PossessFighter(FighterManager fighterManager){
-        inputEvents.AttackMove += fighterManager.OnGestureB;
-        inputEvents.Move += fighterManager.OnMoveA;
-        inputEvents.Swipe += fighterManager.OnSwipe;
-        inputEvents.OnTap += fighterManager.OnTapA;
-        inputEvents.OnHoldA += fighterManager.OnHoldA;
-        inputEvents.OnHoldB += fighterManager.OnHoldB;
-        Debug.Log(inputEvents.Swipe.ToString());
+        inputEvents.OnHold += fighterManager.OnHold;
+        inputEvents.OnSwipe += fighterManager.OnSwipe;
+        inputEvents.OnTap += fighterManager.OnTap;
     }
 
     void ConnectInputs(){

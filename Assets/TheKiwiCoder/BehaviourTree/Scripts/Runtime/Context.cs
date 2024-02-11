@@ -15,7 +15,7 @@ namespace TheKiwiCoder {
         public FighterStateMachine enemyFSM;
         public InputEvents inputEvents;
 
-        public Dictionary<string, ActionAttack> hittingAttacks = new Dictionary<string, ActionAttack>();
+        public Dictionary<InputGestures, ActionAttack> hittingAttacks = new Dictionary<InputGestures, ActionAttack>();
 
         public Vector2 distanceToOpponent = new Vector2();
         public AIPositionMethod optimalDistanceMethod;
@@ -47,12 +47,12 @@ namespace TheKiwiCoder {
             {
                 case AIPositionMethod.ArithmeticMean:
                     float xTotal = 0.0f;
-                    foreach (KeyValuePair<string, ActionAttack> attack in selfFSM.GroundedAttackMoveDict)
+                    foreach (KeyValuePair<InputGestures, ActionAttack> attack in selfFSM.AttackMoveDict)
                     {
                         // Debug.Log("Attack Name: " + attack.Key + ", Attack Distance: " + attack.Value.HitboxOffset.x);
                         xTotal += attack.Value.HitboxOffset.x;
                     }
-                    return xTotal / selfFSM.GroundedAttackMoveDict.Count;
+                    return xTotal / selfFSM.AttackMoveDict.Count;
                 default:
                     return 10.0f; // Place Holder
             }

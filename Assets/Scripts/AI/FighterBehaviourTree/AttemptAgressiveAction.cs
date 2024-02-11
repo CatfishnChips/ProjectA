@@ -31,16 +31,16 @@ public class AttemptAgressiveAction : ActionNode
         if (context.difficultySettings.AggressionResult(attackCheck, calledPerFrame)) // If decided to perform an attack.
         {
 
-            List<string> hittingAttackNames = context.hittingAttacks.Keys.ToList(); // Get the list of all attacks that has a great possibility to make a hit on the opponent and get their name on a string list
-            List<string> allAttackNames = context.selfFSM.AttackMoveDict.Keys.ToList(); // Get the list of all attacks and get their name on a string list
+            List<ActionAttack> hittingAttacks = context.hittingAttacks.Values.ToList(); // Get the list of all attacks that has a great possibility to make a hit on the opponent and get their name on a string list
+            List<ActionAttack> allAttacks = context.selfFSM.AttackMoveDict.Values.ToList(); // Get the list of all attacks and get their name on a string list
 
             float attackAccuracyScore = Random.Range(0.0f, 100.0f); // Decide if the AI is going to perform an accurate or inaccurate attack.
 
             if (context.difficultySettings.AttackAccuracyResult(attackAccuracyScore))
             {
-                if(hittingAttackNames.Count > 0)
+                if(hittingAttacks.Count > 0)
                 {
-                    blackboard.choosenAgressiveAction = hittingAttackNames[Random.Range(0, hittingAttackNames.Count)];
+                    blackboard.choosenAgressiveAction = hittingAttacks[Random.Range(0, hittingAttacks.Count)];
                     return State.Success;
                 }
                 else
@@ -50,7 +50,7 @@ public class AttemptAgressiveAction : ActionNode
                 }
             }
             else {
-                List<string> nonHittingAttackNames = allAttackNames.Except(hittingAttackNames).ToList(); // Find only inaccurate attacks.
+                List<ActionAttack> nonHittingAttackNames = allAttacks.Except(hittingAttacks).ToList(); // Find only inaccurate attacks.
                 blackboard.choosenAgressiveAction = nonHittingAttackNames[Random.Range(0, nonHittingAttackNames.Count)];
                 return State.Success;
             }

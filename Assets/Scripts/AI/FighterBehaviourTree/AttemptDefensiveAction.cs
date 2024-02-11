@@ -46,32 +46,32 @@ public class AttemptDefensiveAction : ActionNode
 
             if (actionType == "Counter") // AI Decided To Counter.
             {
-                List<string> viableAttackOptions = new List<string>();
+                List<ActionAttack> viableAttackOptions = new List<ActionAttack>();
 
-                foreach (KeyValuePair<string, ActionAttack> attack in context.hittingAttacks) // Get attacks that can counter the opponent.
+                foreach (KeyValuePair<InputGestures, ActionAttack> attack in context.hittingAttacks) // Get attacks that can counter the opponent.
                 {
                     Debug.Log("My Attack: " + attack.Key.ToString() + " Has: " + attack.Value.StartFrames + " Enemy Attack: " + enemyAttack.name + "Has: " + enemyAttack.StartFrames);
                     if (attack.Value.StartFrames < enemyAttack.StartFrames - 2)
                     {
-                        viableAttackOptions.Add(attack.Key);
+                        viableAttackOptions.Add(attack.Value);
                         Debug.Log("Viable Attacks: " + attack.Key);
                     }
                 }
 
                 if(viableAttackOptions.Count > 0)
                 {
-                    blackboard.choosenDefensiveAction = viableAttackOptions[Random.Range(0, viableAttackOptions.Count)]; // If we have an attack that will Counter, we counter.
+                    blackboard.choosenCounterAttack = viableAttackOptions[Random.Range(0, viableAttackOptions.Count)]; // If we have an attack that will Counter, we counter.
                 } 
                 else
                 { 
-                    blackboard.choosenDefensiveAction = "Dodge"; // If we don't have an attack that will counter, we will dodge since we decided to perform a successfull defensive action.
+                    blackboard.choosenDefenseMethod = "Dodge"; // If we don't have an attack that will counter, we will dodge since we decided to perform a successfull defensive action.
                     blackboard.enemyAttackAction = enemyAttack;
                 }
                 return State.Success;
             }
             else // AI Decided to Dodge.
             {
-                blackboard.choosenDefensiveAction = "Dodge";
+                blackboard.choosenDefenseMethod = "Dodge";
                 blackboard.enemyAttackAction = enemyAttack;
                 return State.Success;
             }

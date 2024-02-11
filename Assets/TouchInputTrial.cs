@@ -4,23 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class TouchInputReader : MonoBehaviour
+public class TouchInputTrial : MonoBehaviour
 {
-    #region Singleton
-
-    public static TouchInputReader Instance;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-    }
-
-    #endregion
 
     [Header("Settings")]
     [SerializeField] private float _touchMoveSensitivityA = 1.25f;
@@ -103,7 +88,6 @@ public class TouchInputReader : MonoBehaviour
                         if (touch.fingerId == _touchAID) 
                         {
                             // Touch A
-                            
                             OnTouchAStationary?.Invoke(new InputEventParams(touch.position, touchWorldPosition, 0f, Vector2.zero));
                         }
                         else if (touch.fingerId == _touchBID) 
@@ -176,14 +160,3 @@ public class TouchInputReader : MonoBehaviour
     }
 }
 
-public struct InputEventParams 
-{
-    public Vector2 ScreenPosition;
-    public Vector2 NormalizedScreenPosition {get{return new Vector2(ScreenPosition.x / Screen.width, ScreenPosition.y / Screen.height);}}
-    public Vector3 WorldPosition;
-    public float DeltaSpeed;
-    public Vector2 Delta;
-
-    public InputEventParams(Vector2 screenPosition, Vector3 worldPosition, float deltaSpeed, Vector2 delta) => 
-        (ScreenPosition, WorldPosition, DeltaSpeed, Delta) = (screenPosition, worldPosition, deltaSpeed, delta);
-}

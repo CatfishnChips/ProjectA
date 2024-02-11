@@ -20,15 +20,13 @@ public class TaskMovement : ActionNode
         // Debug.Log("Margin:" + context.distanceMargin);
         if (context.distanceToOpponent.x < context.optimalDistance - context.distanceMargin)
         {
-            context.inputEvents.Move(-1.0f * context.selfFSM.FaceDirection);
+            if(context.selfFSM.FaceDirection == 1) context.inputEvents.OnTap(ScreenSide.Left);
+            else context.inputEvents.OnTap(ScreenSide.Right);
         }
         else if (context.distanceToOpponent.x > context.optimalDistance + context.distanceMargin)
         {
-            context.inputEvents.Move(context.selfFSM.FaceDirection);
-        }
-        else
-        {
-            context.inputEvents.Move(0.0f);
+            if(context.selfFSM.FaceDirection == -1) context.inputEvents.OnTap(ScreenSide.Left);
+            else context.inputEvents.OnTap(ScreenSide.Right);
         }
 
     }

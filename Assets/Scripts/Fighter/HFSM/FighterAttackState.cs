@@ -44,7 +44,7 @@ public class FighterAttackState : FighterBaseState
     public override void EnterState()
     {   
         //string attackName = _ctx.AttackName;
-        _action = _ctx.AttackInput.ReadAction() as ActionFighterAttack;
+        _action = _ctx.AttackInput.ReadContent() as ActionFighterAttack;
         _currentFrame = 0;
         _ctx.OnAttackStart?.Invoke();
         _hadHit = false;
@@ -75,7 +75,9 @@ public class FighterAttackState : FighterBaseState
 
         // }
 
+        // Debug.Log("Entered state with attack: " + _action);
         _ctx.ComboListener.AttackOverride(ref _action, ref _performedComboMove);
+        //Debug.Log("Combo move altered the actions to: " + _action);
 
         _action.EnterStateFunction(_ctx, this);
         

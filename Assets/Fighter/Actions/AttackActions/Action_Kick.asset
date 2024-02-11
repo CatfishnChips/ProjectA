@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Action_Kick
   m_EditorClassIdentifier: 
   name: ReverseKick
+  inputGesture: 12
   applyRootMotion: 0
   m_tags: 1164
   m_damage: 45

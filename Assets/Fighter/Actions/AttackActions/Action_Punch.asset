@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Action_Punch
   m_EditorClassIdentifier: 
   name: Tap
+  inputGesture: 2
   applyRootMotion: 0
   m_tags: 1569
   m_damage: 10

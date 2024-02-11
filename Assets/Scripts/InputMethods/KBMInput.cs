@@ -12,7 +12,7 @@ public class KBMInput : InputInvoker
         if(Input.GetKeyUp(KeyCode.K))
         {
             Debug.Log("Attack Input was registered at update: " + GameSimulator.Instance.UpdateCount + " and Tick: " + GameSimulator.Instance.TickCount);
-            _inputEvents.AttackMove(attackToPerform);
+            _inputEvents.OnTap?.Invoke(ScreenSide.Right);
         }       
     }
 }

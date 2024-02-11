@@ -12,11 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40015cb66ca61c46919ed3cb9b38892, type: 3}
   m_Name: Martial Artist
   m_EditorClassIdentifier: 
+  _inputAttackAttribution:
+  - inputGesture: 2
+    actionFighterAttack: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378,
+      type: 2}
+  - inputGesture: 14
+    actionFighterAttack: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b,
+      type: 2}
+  - inputGesture: 11
+    actionFighterAttack: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78,
+      type: 2}
+  - inputGesture: 12
+    actionFighterAttack: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705,
+      type: 2}
+  - inputGesture: 13
+    actionFighterAttack: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957,
+      type: 2}
   _actionAttribution:
-  - action: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
-  - action: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
-  - action: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
-  - action: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
   - action: {fileID: 11400000, guid: c598b1051af6a3c499a47fc65962a1f4, type: 2}
   - action: {fileID: 11400000, guid: 8ee14044fb806f146a162d50263a24f3, type: 2}
   - action: {fileID: 11400000, guid: 93a6d7f648e264e40ac86231467df887, type: 2}
@@ -25,6 +37,18 @@ MonoBehaviour:
   - action: {fileID: 11400000, guid: abc65f5054684844493cd8d1c25e1f13, type: 2}
   - action: {fileID: 11400000, guid: 5bd99419bb49ce34ba7e81e80bb1e420, type: 2}
   - action: {fileID: 11400000, guid: 3f68611264b293a4287038a85230352f, type: 2}
-  - action: {fileID: 11400000, guid: 75aa02edea8e7cd43bc244fce05a58c3, type: 2}
-  - action: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
-  - action: {fileID: 11400000, guid: 7155732e14409394dacb8dfe1fcebdd4, type: 2}
+  combosArray:
+  - comboName: Dargon's Way
+    moves:
+    - moveNumber: 0
+      theMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+      willOverride: 0
+      moveToOverride: {fileID: 0}
+    - moveNumber: 1
+      theMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+      willOverride: 1
+      moveToOverride: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+    - moveNumber: 2
+      theMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+      willOverride: 1
+      moveToOverride: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}

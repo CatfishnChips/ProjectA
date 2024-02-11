@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Action_Hook
   m_EditorClassIdentifier: 
   name: Flick
+  inputGesture: 14
   applyRootMotion: 0
   m_tags: 1297
   m_damage: 20

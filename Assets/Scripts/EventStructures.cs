@@ -4,24 +4,17 @@ using UnityEngine.Events;
 
 public class InputEvents
 {
-    public Action<Vector2> Swipe;
-    public Action<float> Move;
-    public Action OnTap;
-    public Action<bool> OnHoldA;
-    public Action<bool> OnHoldB;
-    public Action<string> AttackMove;
+    public Action<ScreenSide, SwipeDirections, SwipeDirections> OnSwipe;
+    public Action<ScreenSide> OnHold;
+    public Action<ScreenSide> OnTap;
+    public Action<ActionAttack> DirectAttackInput; // To directly perform the attack without passing the input method
 
     public void SyncorinzeEvents(ref InputEvents inputEvents)
     {
         Debug.Log("Event being synched");
-        // Debug.Log(Swipe.ToString());
-        Swipe = inputEvents.Swipe;
-        // Debug.Log(Swipe.ToString());
-        Move = inputEvents.Move;
+        OnSwipe = inputEvents.OnSwipe;
+        OnHold= inputEvents.OnHold;
         OnTap = inputEvents.OnTap;
-        OnHoldA = inputEvents.OnHoldA;
-        OnHoldB = inputEvents.OnHoldB;
-        AttackMove = inputEvents.AttackMove;
     }
 }
 
@@ -29,11 +22,9 @@ public class FighterEvents
 {
     #region input events
 
-    public Action<Vector2> Swipe;
-    public Action<float> OnMove;
-    public Action OnTap;
-    public Action<bool> OnHoldA;
-    public Action<bool> OnHoldB;
+    public Action<int> OnDash;
+    public Action<int> OnMove;
+    public Action OnBlock;
     public UnityAction<ActionFighterAttack> OnFighterAttack;
     public Action<ActionSpiritAttack> OnSpiritAttack;
 

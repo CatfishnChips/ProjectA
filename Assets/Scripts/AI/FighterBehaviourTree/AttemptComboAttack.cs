@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class AttemptComboAttack : ActionNode
 {
-    List<string> comboAttacks;
-    List<string> nonComboAttacks;
+    List<ActionAttack> comboAttacks;
+    List<ActionAttack> nonComboAttacks;
 
     public bool hasAttackEnded;
 
@@ -32,13 +32,18 @@ public class AttemptComboAttack : ActionNode
 
     private State ComboAttemptResult()
     {
-        try{comboAttacks = context.selfFSM.ComboListener.GetCurrentSearchDict().Keys.ToList();}
+        try{
+            foreach(ComboMoveSpecs comboMoveSpec in context.selfFSM.ComboListener.GetCurrentSearchDict().Values)
+            {
+                comboAttacks.Add(comboMoveSpec.theMove);
+            }
+        }
         catch(NullReferenceException){
             comboAttacks = null;
             return State.Running;
         }
 
-        nonComboAttacks = context.selfFSM.AttackMoveDict.Keys.ToList().Except(comboAttacks).ToList();
+        nonComboAttacks = context.selfFSM.AttackMoveDict.Values.ToList().Except(comboAttacks).ToList();
 
         int agressionCheck = Random.Range(0, 100);
 

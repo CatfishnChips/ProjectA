@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class FighterDashState : FighterBaseState
 {
@@ -40,9 +41,7 @@ public class FighterDashState : FighterBaseState
         AnimationClip clip;
         AnimationClip colClip;
 
-        Vector2 dashDirection = _ctx.SwipeDirection; // Adjust according to face direction.
-
-        if (dashDirection.x < 0)
+        if (_ctx.DashDirection == -1)
         {
             clip = _action.Animations[0].meshAnimation;
             colClip = _action.Animations[0].boxAnimation;
@@ -53,7 +52,7 @@ public class FighterDashState : FighterBaseState
             colClip = _action.Animations[1].boxAnimation;
         }
 
-        _direction = dashDirection.x;
+        _direction = _ctx.DashDirection;
         _time = _ctx.DashTime * Time.fixedDeltaTime;
 
         _drag = -2 * _ctx.DashDistance / Mathf.Pow(_time, 2);

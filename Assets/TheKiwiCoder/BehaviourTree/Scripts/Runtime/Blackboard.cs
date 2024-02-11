@@ -10,9 +10,10 @@ namespace TheKiwiCoder {
     [System.Serializable]
     public class Blackboard {
         public Vector3 moveToPosition;
-        public string choosenAgressiveAction;
-        public string choosenDefensiveAction;
+        public ActionAttack choosenAgressiveAction;
         public ActionAttack enemyAttackAction;
+        public string choosenDefenseMethod;
+        public ActionAttack choosenCounterAttack;
 
         [ReadOnly] public bool enemyAttackStarted;
         [ReadOnly] public bool enemyAttackEnded;
