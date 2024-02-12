@@ -54,7 +54,7 @@ public class FighterController : MonoBehaviour
         Right
     }
 
-    private void Awake(){
+    private void Start(){
         // Set the Physics2D simulation mode to manual.
         //Physics2D.simulationMode = SimulationMode2D.Script; 
 

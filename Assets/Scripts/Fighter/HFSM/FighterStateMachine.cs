@@ -326,7 +326,6 @@ public abstract class FighterStateMachine : MonoBehaviour
     #region Input Functions
 
     protected virtual void OnDash(int direction){
-        Debug.Log(direction);
         _dashDirection = direction * _faceDirection;
         _dashInput.Write(true);
     }
