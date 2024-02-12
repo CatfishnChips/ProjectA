@@ -14,13 +14,13 @@ public class DodgeOpportunityAttack : ActionNode
         int opportunityCheck = Random.Range(0, 100);
 
         int quickestAttackFrame = 1000;
-        string quickestAttack = "";
+        ActionAttack quickestAttack = null;
 
-        foreach (KeyValuePair<string, ActionAttack> attack in context.selfFSM.AttackMoveDict)
+        foreach (KeyValuePair<InputGestures, ActionAttack> attack in context.selfFSM.AttackMoveDict)
         {
             if(attack.Value.StartFrames < quickestAttackFrame) {
                 quickestAttackFrame = attack.Value.StartFrames;
-                quickestAttack = attack.Key;
+                quickestAttack = attack.Value;
             }
 
         }

@@ -8,16 +8,16 @@ public class FighterWalkState : FighterBaseState
 
     public override void CheckSwitchState()
     {
-        if (_ctx.AttackPerformed){
+        if (_ctx.AttackInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
-        else if (_ctx.IsDodgePressed){
+        else if (_ctx.DodgeInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
         }
-        else if (_ctx.IsDashPressed){
+        else if (_ctx.DashInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Dash));
         }
-        else if(_ctx.MovementInput == 0){
+        else if(_ctx.MovementInput.Read() == 0){
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
@@ -46,13 +46,13 @@ public class FighterWalkState : FighterBaseState
     public override void FixedUpdateState()
     {
         if (_ctx.CurrentRootState == FighterStates.Grounded){
-            _ctx.Animator.SetFloat("Blend", _ctx.MovementInput);
+            _ctx.Animator.SetFloat("Blend", _ctx.MovementInput.Read() * _ctx.FaceDirection);
             _ctx.CurrentMovement = _ctx.RootMotion;
         }
-        // else if (_ctx.CurrentRootState == FighterStates.Airborne)
-        // {
-        //     _ctx.CurrentMovement = new Vector2(_ctx.MovementInput * _ctx.AirMoveSpeed, _ctx.CurrentMovement.y);
-        // }
+        else if (_ctx.CurrentRootState == FighterStates.Airborne)
+        {
+            _ctx.CurrentMovement = new Vector2(_ctx.MovementInput.Read() * _ctx.FaceDirection * _ctx.AirMoveSpeed, _ctx.CurrentMovement.y);
+        }
 
         CheckSwitchState();
     }

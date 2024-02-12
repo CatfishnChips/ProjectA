@@ -45,7 +45,7 @@ public class ActionContinuousAttack : ActionFighterAttack
 
             // REWORK HERE!
             if (!_timePaused){
-                _pauseTime = ctx.IsHoldingTouchB;
+                _pauseTime = ctx.HoldBInput.Read();
                 _timePaused = !_pauseTime;
             }
         }

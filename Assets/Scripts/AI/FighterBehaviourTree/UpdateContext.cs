@@ -19,11 +19,11 @@ public class UpdateContext : ActionNode
         return State.Success;
     }
 
-    private Dictionary<string, ActionAttack> CalcHittingAttacks()
+    private Dictionary<InputGestures, ActionAttack> CalcHittingAttacks()
     {
-        Dictionary<string, ActionAttack> hittingAttacks = new Dictionary<string, ActionAttack>();
+        Dictionary<InputGestures, ActionAttack> hittingAttacks = new Dictionary<InputGestures, ActionAttack>();
 
-        foreach (KeyValuePair<string, ActionAttack> attack in context.selfFSM.AttackMoveDict)
+        foreach (KeyValuePair<InputGestures, ActionAttack> attack in context.selfFSM.AttackMoveDict)
         {
             // Debug.Log("Name: " + attack.Value.name);
             // Debug.Log("Offset X: " + attack.Value.HitboxOffset.x);

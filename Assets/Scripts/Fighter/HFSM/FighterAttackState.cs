@@ -26,7 +26,7 @@ public class FighterAttackState : FighterBaseState
             _ctx.ActionState = default;
             _ctx.ValidAttackInputInterval = false;
 
-            if (_ctx.AttackPerformed){
+            if (_ctx.AttackInput.Read()){
                 SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
             else{
@@ -35,7 +35,7 @@ public class FighterAttackState : FighterBaseState
         }
         else if (_actionState == ActionStates.Recovery){
             // Rework this attack transition!
-            if(_ctx.AttackPerformed && _performedComboMove && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
+            if(_ctx.AttackInput.Read() && _performedComboMove && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
                 SwitchState(_factory.GetSubState(FighterSubStates.Attack));
             }
         }
@@ -44,8 +44,7 @@ public class FighterAttackState : FighterBaseState
     public override void EnterState()
     {   
         //string attackName = _ctx.AttackName;
-        _action = _ctx.AttackAction;
-        _ctx.AttackPerformed = false;
+        _action = _ctx.AttackInput.ReadContent() as ActionFighterAttack;
         _currentFrame = 0;
         _ctx.OnAttackStart?.Invoke();
         _hadHit = false;
@@ -76,7 +75,9 @@ public class FighterAttackState : FighterBaseState
 
         // }
 
+        // Debug.Log("Entered state with attack: " + _action);
         _ctx.ComboListener.AttackOverride(ref _action, ref _performedComboMove);
+        //Debug.Log("Combo move altered the actions to: " + _action);
 
         _action.EnterStateFunction(_ctx, this);
         
@@ -122,7 +123,7 @@ public class FighterAttackState : FighterBaseState
     public override void FixedUpdateState(){
         _action.FixedUpdateFunction(_ctx, this);
         // Debug.Log("Frame L: " + _action.FrameLenght + " Current F: " + _currentFrame + " Buffer: " + _ctx.GetInputBuffer + " Bool: " + _ctx.ValidAttackInputInterval);
-        _ctx.ValidAttackInputInterval = _action.FrameLenght - _currentFrame < _ctx.GetInputBuffer;
+        //_ctx.ValidAttackInputInterval = _action.FrameLenght - _currentFrame < _ctx.GetInputBuffer;
 
         _ctx.CurrentMovement = _action.applyRootMotion ? _ctx.RootMotion : _ctx.CurrentMovement;
 

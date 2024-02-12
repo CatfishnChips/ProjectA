@@ -41,8 +41,7 @@ public class FighterAirborneState : FighterBaseState
         _currentFrame = 0;
         
         // Jump Action
-        if (_ctx.IsJumpPressed && _ctx.IsGrounded && _ctx.PreviousRootState == FighterStates.Grounded){
-            _ctx.IsJumpPressed = false;
+        if (_ctx.JumpInput.Read() && _ctx.IsGrounded && _ctx.PreviousRootState == FighterStates.Grounded){
         
             _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
             _direction = _ctx.SwipeDirection.x == 0 ? 0f : _ctx.SwipeDirection.x;

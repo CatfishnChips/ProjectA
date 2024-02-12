@@ -8,6 +8,18 @@ public struct ActionAttribution{
     public ActionBase action;
 }
 
+[Serializable]
+public struct InputAttackAttribution
+{
+    public InputGestures inputGesture;
+    public ActionFighterAttack actionFighterAttack;
+}
+
+[Serializable]
+public struct AttackActionAttribution{
+    public ActionFighterAttack fighterAttack;
+}
+
 //To achive a modifiable Combo system through inspector.
 [Serializable]
 public struct ComboMove{

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "Flick">
+		<Point X = "0.6227517" Y = "0.3429257" T = "0" Pressure = "0" />
+		<Point X = "0.6402878" Y = "0.3423262" T = "0" Pressure = "0" />
+		<Point X = "0.6402878" Y = "0.3423262" T = "0" Pressure = "0" />
+		<Point X = "0.6803058" Y = "0.338729" T = "0" Pressure = "0" />
+		<Point X = "0.6803058" Y = "0.338729" T = "0" Pressure = "0" />
+		<Point X = "0.7329137" Y = "0.3345324" T = "0" Pressure = "0" />
+		<Point X = "0.7329137" Y = "0.3345324" T = "0" Pressure = "0" />
+		<Point X = "0.7895684" Y = "0.3315347" T = "0" Pressure = "0" />
+		<Point X = "0.7895684" Y = "0.3315347" T = "0" Pressure = "0" />
+		<Point X = "0.8498201" Y = "0.3315347" T = "0" Pressure = "0" />
+		<Point X = "0.8498201" Y = "0.3315347" T = "0" Pressure = "0" />
+		<Point X = "0.9006295" Y = "0.3339329" T = "0" Pressure = "0" />
+		<Point X = "0.9006295" Y = "0.3339329" T = "0" Pressure = "0" />
+		<Point X = "0.9334533" Y = "0.3351319" T = "0" Pressure = "0" />
+</Gesture>

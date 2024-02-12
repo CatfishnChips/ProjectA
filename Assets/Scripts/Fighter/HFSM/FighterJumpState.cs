@@ -24,7 +24,6 @@ public class FighterJumpState : FighterBaseState
 
     public override void EnterState()
     {
-        _ctx.IsJumpPressed = false;
         _currentFrame = 0;
         _action = _ctx.ActionDictionary["Jump"] as ActionDefault;
         AnimationClip clip = _action.meshAnimation;

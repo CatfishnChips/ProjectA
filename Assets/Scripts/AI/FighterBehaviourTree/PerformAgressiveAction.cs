@@ -23,10 +23,10 @@ public class PerformAgressiveAction : ActionNode
 
     private State StartMethodReturn()
     {
-        string choosenAttack = blackboard.choosenAgressiveAction;
+        ActionAttack choosenAttack = blackboard.choosenAgressiveAction;
         if(choosenAttack == null) return State.Failure; // This is just a safe check if the AI didn't choose to make an attack the tree should not even execute this node.
 
-        EventManager.Instance.P2AttackMove?.Invoke(choosenAttack);
+        context.inputEvents.DirectAttackInput?.Invoke(choosenAttack);
         return State.Running;
     }
 }

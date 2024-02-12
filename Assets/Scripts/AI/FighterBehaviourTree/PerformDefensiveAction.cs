@@ -20,14 +20,14 @@ public class PerformDefensiveAction : ActionNode
 
     protected override State OnUpdate()
     {
-        string choosenAction = blackboard.choosenDefensiveAction;
-        if(choosenAction == null) return State.Failure; // This is just a safe check if the AI didn't choose to make an attack the tree should not even execute this node.
+        string choosenMethod = blackboard.choosenDefenseMethod;
+        if(choosenMethod == null) return State.Failure; // This is just a safe check if the AI didn't choose to make an attack the tree should not even execute this node.
 
-        if(choosenAction == "Dodge")
+        if(choosenMethod == "Dodge")
         {
             if(dodgeWaitStartFrame >= blackboard.enemyAttackAction.StartFrames - 2) 
             {
-                EventManager.Instance.P2Swipe?.Invoke(new Vector2(1.0f, 1.0f));
+                context.inputEvents.OnSwipe?.Invoke(ScreenSide.Left, SwipeDirections.Left, SwipeDirections.None);
                 return State.Success;
             }
             else
@@ -37,7 +37,7 @@ public class PerformDefensiveAction : ActionNode
             } 
         }
         else{
-            EventManager.Instance.P2AttackMove?.Invoke(choosenAction);
+            context.inputEvents.DirectAttackInput?.Invoke(blackboard.choosenCounterAttack);
             return State.Success;
         }
     }

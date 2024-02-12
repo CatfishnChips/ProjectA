@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class ActionBase : ScriptableObject
 {
     public new string name;
+    public InputGestures inputGesture;
     public bool applyRootMotion;
 
     public static float AdjustAnimationTime(AnimationClip clip, int frames){

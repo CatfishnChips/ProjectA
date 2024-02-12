@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class FighterDashState : FighterBaseState
 {
@@ -24,7 +25,6 @@ public class FighterDashState : FighterBaseState
 
     public override void EnterState()
     {
-        _ctx.IsDashPressed = false;
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
         _drag = 0f;
@@ -40,7 +40,8 @@ public class FighterDashState : FighterBaseState
 
         AnimationClip clip;
         AnimationClip colClip;
-        if (_ctx.SwipeDirection.x < 0)
+
+        if (_ctx.DashDirection == -1)
         {
             clip = _action.Animations[0].meshAnimation;
             colClip = _action.Animations[0].boxAnimation;
@@ -51,7 +52,7 @@ public class FighterDashState : FighterBaseState
             colClip = _action.Animations[1].boxAnimation;
         }
 
-        _direction = _ctx.SwipeDirection.x;
+        _direction = _ctx.DashDirection;
         _time = _ctx.DashTime * Time.fixedDeltaTime;
 
         _drag = -2 * _ctx.DashDistance / Mathf.Pow(_time, 2);

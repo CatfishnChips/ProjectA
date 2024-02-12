@@ -22,7 +22,6 @@ public class FighterDodgeState : FighterBaseState
     public override void EnterState()
     {
         _isFirstTime = true;
-        _ctx.IsDodgePressed = false;
         _currentFrame = 0;
         
         if (_ctx.IsGrounded) 
