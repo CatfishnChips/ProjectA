@@ -428,7 +428,7 @@ PrefabInstance:
     - target: {fileID: 4822988217880536768, guid: cdeccfd142236b140aa2f796527dff5f,
         type: 3}
       propertyPath: InputBuffer
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4822988217880536769, guid: cdeccfd142236b140aa2f796527dff5f,
         type: 3}
@@ -1150,7 +1150,7 @@ PrefabInstance:
     - target: {fileID: 6664263210252897054, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: orthographic size
-      value: 1.5
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897054, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -1165,37 +1165,37 @@ PrefabInstance:
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.375
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.55
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99858487
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.049770225
+      value: 3e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.018716887
+      value: -1e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0009328638
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210846730366, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -12385,7 +12385,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7699235268624337218}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7699235268624337220
+--- !u!114 &7699235268624337230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12394,12 +12394,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7699235268624337219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94be1d8b6ae904e4684d5a317651dfd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f390940f0187914585a256f4a576373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swipeDistance: 80
-  _swipeSpeed: 1500
-  _holdThreshold: 0.15
+  _minSwipeDistance: 20
+  _minSwipeSpeed: 2000
+  _swipeTimeLimit: 0.25
+  _holdThreshold: 0.2
+  _joystickDeadzone: 50
 --- !u!1001 &9222620605962242266
 PrefabInstance:
   m_ObjectHideFlags: 0

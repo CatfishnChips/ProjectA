@@ -2,9 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KBMInput : InputInvoker
+public class KBMInput : MonoBehaviour, IInputInvoker
 {
+    InputEvents _inputEvents;
     public string attackToPerform;
+
+    public InputEvents GetInputEvents()
+    {
+        return _inputEvents;
+    }
+
+    public bool IsActiveAndEnabled()
+    {
+        return isActiveAndEnabled;
+    }
+
+    public void SetInputEvents(InputEvents inputEvents)
+    {
+        _inputEvents = inputEvents;
+    }
 
     // Update is called once per frame
     void Update()

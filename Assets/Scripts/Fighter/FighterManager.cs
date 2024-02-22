@@ -61,17 +61,23 @@ public class FighterManager : MonoBehaviour
 
     public void OnHold(ScreenSide side)
     {
-        if(side == ScreenSide.Left) fighterEvents.OnMove?.Invoke(-1);
-        else if(side == ScreenSide.Right) fighterEvents.OnMove?.Invoke(1);
-        else if(side == ScreenSide.LeftNRight) fighterEvents.OnBlock?.Invoke();
+        if(side == ScreenSide.LeftNRight) fighterEvents.OnBlock?.Invoke();
     }
 
-    public void OnSwipe(ScreenSide screenSide, SwipeDirections swipeDirectionL, SwipeDirections swipeDirectionR)
+    public void OnDrag(ScreenSide side, GestureDirections direction)
+    {
+        if(side == ScreenSide.Left) {
+            if(direction == GestureDirections.Left) fighterEvents.OnMove?.Invoke(-1);
+            else if(direction == GestureDirections.Right) fighterEvents.OnMove?.Invoke(1);
+        }
+    }
+
+    public void OnSwipe(ScreenSide screenSide, GestureDirections swipeDirectionL, GestureDirections swipeDirectionR)
     {
         if(screenSide == ScreenSide.Left)
         {
-            if(swipeDirectionL == SwipeDirections.Left) fighterEvents.OnDash?.Invoke(-1);
-            if(swipeDirectionL == SwipeDirections.Right) fighterEvents.OnDash?.Invoke(1);
+            if(swipeDirectionL == GestureDirections.Left) fighterEvents.OnDash?.Invoke(-1);
+            if(swipeDirectionL == GestureDirections.Right) fighterEvents.OnDash?.Invoke(1);
             
         }
 
@@ -79,10 +85,10 @@ public class FighterManager : MonoBehaviour
         {
             ActionAttack actionAttack = null;
 
-            if(swipeDirectionR == SwipeDirections.Right) actionAttack = _attackMoveDict[InputGestures.SwipeRightR];
-            else if(swipeDirectionR == SwipeDirections.Left) actionAttack = _attackMoveDict[InputGestures.SwipeLeftR];
-            else if(swipeDirectionR == SwipeDirections.Up) actionAttack = _attackMoveDict[InputGestures.SwipeUpR];
-            else if(swipeDirectionR == SwipeDirections.Down) actionAttack = _attackMoveDict[InputGestures.SwipeDownR];
+            if(swipeDirectionR == GestureDirections.Right) actionAttack = _attackMoveDict[InputGestures.SwipeRightR];
+            else if(swipeDirectionR == GestureDirections.Left) actionAttack = _attackMoveDict[InputGestures.SwipeLeftR];
+            else if(swipeDirectionR == GestureDirections.Up) actionAttack = _attackMoveDict[InputGestures.SwipeUpR];
+            else if(swipeDirectionR == GestureDirections.Down) actionAttack = _attackMoveDict[InputGestures.SwipeDownR];
 
             if(actionAttack != null) fighterEvents.OnFighterAttack?.Invoke(actionAttack as ActionFighterAttack);
         }

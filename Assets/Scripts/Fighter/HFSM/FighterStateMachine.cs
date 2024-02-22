@@ -20,7 +20,7 @@ public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, Animation
     }
 }
 
-public abstract class FighterStateMachine : MonoBehaviour
+public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 {
     [SerializeField] protected FighterManager _fighterManager;
     public Dictionary<InputGestures, ActionAttack> AttackMoveDict{get{return _fighterManager.AttackMoveDict;}}
@@ -42,8 +42,8 @@ public abstract class FighterStateMachine : MonoBehaviour
     protected AnimatorOverrideController _colBoxOverrideCont;
     protected AnimationClipOverrides _colBoxClipOverrides;
 
-    protected FighterStateFactory _states;
     protected FighterBaseState _currentState;
+    protected FighterStateFactory _states;
     [ReadOnly] [SerializeField] protected FighterStates _currentRootState = default;
     [ReadOnly] [SerializeField] protected FighterStates _currentSubState = default;
     [ReadOnly] [SerializeField] protected FighterStates _previousRootState = default;
@@ -120,6 +120,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     public Player Player {get{return _player;}}
     public Transform Mesh {get{return _mesh;}}
 
+    public FighterBaseState CurrentState { get => _currentState; set => _currentState = value; }
     public FighterStates CurrentRootState{get{return _currentRootState;} set{_currentRootState = value;}}
     public FighterStates CurrentSubState{get{return _currentSubState;} set{_currentSubState = value;}}
     public FighterStates PreviousRootState{get{return _previousRootState;} set{_previousRootState = value;}}
@@ -140,7 +141,6 @@ public abstract class FighterStateMachine : MonoBehaviour
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public Vector2 RootMotion{get{return _rootMotion;} set{_rootMotion = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
-    public FighterBaseState CurrentState{get{return _currentState;} set{_currentState = value;}}
 
     public Animator Animator{get{return _animator;}}
     public AnimatorOverrideController AnimOverrideCont{get{return _animOverrideCont;} set{_animOverrideCont = value;}}
@@ -282,7 +282,7 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     protected virtual void UpdateFunction(){
-        //_currentState.UpdateStates();
+        _currentState.UpdateStates();
     }
 
     protected virtual void FixedUpdateFunction(){
@@ -343,6 +343,11 @@ public abstract class FighterStateMachine : MonoBehaviour
     }
 
     #endregion
+
+    public void SwitchState(StateMachineBaseState state)
+    {
+        _currentState = state as FighterBaseState;
+    }
 
     #region Event Functions
 
@@ -502,9 +507,10 @@ public abstract class FighterStateMachine : MonoBehaviour
         _healthManager?.Reset();
         _spiritManager?.Reset();
 
-        _currentState = _states.GetRootState(FighterRootStates.Grounded);
+        _currentState = _states.GetRootState(FighterRootStates.Grounded) as FighterBaseState;
         _currentState.EnterState();
     }
+
 
     #endregion
 

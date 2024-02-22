@@ -23,7 +23,7 @@ public class TouchInputReader : MonoBehaviour
     #endregion
 
     [Header("Settings")]
-    [SerializeField] private float _touchMoveSensitivityA = 1.25f;
+    [SerializeField] private float _touchMoveSensitivityA = 3f;
     [SerializeField] private float _touchMoveSensitivityB = 3f;
 
     private bool _isTouching; // Used for once per touch actions.
@@ -68,7 +68,7 @@ public class TouchInputReader : MonoBehaviour
                     Vector3 touchWorldPosition = ConvertToWorldPosition(touch.position);
 
                     Vector2 touchMoveDelta = touch.deltaPosition;
-                    float touchMoveSpeed = touch.deltaPosition.magnitude / touch.deltaTime;
+                    float touchMoveSpeed = touch.deltaPosition.magnitude / Time.deltaTime;
                     int touchTapCount = touch.tapCount; // Currently not being used!
 
                     switch (touch.phase) 

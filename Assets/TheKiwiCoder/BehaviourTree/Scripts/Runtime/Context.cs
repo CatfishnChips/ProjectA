@@ -31,14 +31,13 @@ namespace TheKiwiCoder {
             difficultySettings = btr.DifficultySettings;
             //Match conducter singleton gerektiriyor.
             selfFSM = MatchConducter.Instance.FighterSlot2.GetComponent<FighterStateMachine>();
-            enemyFSM = GameObject.FindWithTag("Player").GetComponent<FighterStateMachine>();
+            enemyFSM = MatchConducter.Instance.FighterSlot1.GetComponent<FighterStateMachine>();
 
             attackBoxFlexibilityMargin = btr.AttackBoxFlexibilityMargin;
             distanceMargin = btr.DistanceMargin;
             optimalDistanceMethod = btr.OptimalDistanceMethod;
 
             optimalDistance = CalcOptimalXDistance(optimalDistanceMethod);
-            // Add whatever else you need here...
         }
 
         private float CalcOptimalXDistance(AIPositionMethod method)

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace TheKiwiCoder {
-    public class BehaviourTreeRunner : InputInvoker {
+    public class BehaviourTreeRunner : MonoBehaviour, IInputInvoker {
 
         // The main behaviour tree asset
         public BehaviourTree tree;
         [SerializeField] private AIDifficultySettings difficultySettings;
+
+        private InputEvents _inputEvents; 
 
         [Tooltip("Enlarges the hitboxes to allow AI to take action while the hitbox is not precisely hitting the opponent.")]
         [SerializeField] private float _attackBoxFlexibilityMargin;
@@ -44,7 +46,7 @@ namespace TheKiwiCoder {
             context.enemyFSM.OnAttackEnd += blackboard.OnEnemyAttackEnd;
             context.selfFSM.OnAttackStart += blackboard.OnSelfAttackStart;
             context.selfFSM.OnAttackEnd += blackboard.OnSelfAttackEnd;
-            context.inputEvents = InputEvents;
+            context.inputEvents = _inputEvents;
             tree = tree.Clone();
             tree.Bind(context, blackboard);
         }
@@ -78,6 +80,21 @@ namespace TheKiwiCoder {
                     n.OnDrawGizmos();
                 }
             });
+        }
+
+        public InputEvents GetInputEvents()
+        {
+            return _inputEvents;
+        }
+
+        public void SetInputEvents(InputEvents inputEvents)
+        {
+            _inputEvents = inputEvents;
+        }
+
+        public bool IsActiveAndEnabled()
+        {
+            return isActiveAndEnabled;
         }
     }
 }

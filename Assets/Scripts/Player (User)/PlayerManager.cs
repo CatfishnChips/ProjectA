@@ -6,16 +6,16 @@ public class PlayerManager : MonoBehaviour
 {
     private PlayerID _playerID;
     [SerializeField] private FighterManager _fighterManager;
-    private InputInvoker _inputInvoker;
+    private IInputInvoker _inputInvoker;
 
     public InputEvents inputEvents = new InputEvents(); 
 
     void Start()
     {
-        InputInvoker[] inputInvokers = transform.GetComponents<InputInvoker>();
-        foreach(InputInvoker invoker in inputInvokers)
+        IInputInvoker[] inputInvokers = transform.GetComponents<IInputInvoker>();
+        foreach(IInputInvoker invoker in inputInvokers)
         {
-            if(invoker.isActiveAndEnabled){
+            if(invoker.IsActiveAndEnabled()){
                 _inputInvoker = invoker;
                 break;
             }
@@ -25,6 +25,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     void PossessFighter(FighterManager fighterManager){
+        inputEvents.OnDrag += fighterManager.OnDrag;
         inputEvents.OnHold += fighterManager.OnHold;
         inputEvents.OnSwipe += fighterManager.OnSwipe;
         inputEvents.OnTap += fighterManager.OnTap;
@@ -32,7 +33,7 @@ public class PlayerManager : MonoBehaviour
 
     void ConnectInputs(){
         if(_inputInvoker == null) return;
-        _inputInvoker.InputEvents = inputEvents;
+        _inputInvoker.SetInputEvents(inputEvents);
     }
 
     void OnDisable(){

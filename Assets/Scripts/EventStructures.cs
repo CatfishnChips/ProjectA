@@ -4,7 +4,8 @@ using UnityEngine.Events;
 
 public class InputEvents
 {
-    public Action<ScreenSide, SwipeDirections, SwipeDirections> OnSwipe;
+    public Action<ScreenSide, GestureDirections, GestureDirections> OnSwipe;
+    public Action<ScreenSide, GestureDirections> OnDrag;
     public Action<ScreenSide> OnHold;
     public Action<ScreenSide> OnTap;
     public Action<ActionAttack> DirectAttackInput; // To directly perform the attack without passing the input method

@@ -27,7 +27,7 @@ public class PerformDefensiveAction : ActionNode
         {
             if(dodgeWaitStartFrame >= blackboard.enemyAttackAction.StartFrames - 2) 
             {
-                context.inputEvents.OnSwipe?.Invoke(ScreenSide.Left, SwipeDirections.Left, SwipeDirections.None);
+                context.inputEvents.OnSwipe?.Invoke(ScreenSide.Left, GestureDirections.Left, GestureDirections.None);
                 return State.Success;
             }
             else

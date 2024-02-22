@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class GestureControllerNoPattern : InputInvoker
+public class GestureControllerNoPattern : MonoBehaviour, IInputInvoker
 {
     #region Singleton
 
@@ -18,20 +19,26 @@ public class GestureControllerNoPattern : InputInvoker
 
     #endregion
 
-    [Header("Swipe Settings")]
-    [SerializeField] private float _swipeDistance; // Minimum distance required to register as a swipe. // Can also use Screen.width and Screen.height.
-    [SerializeField] private float _swipeSpeed; // How fast the finger should move to register a gsture as a swipe. 
-    [SerializeField] private float _holdThreshold; // Minimum amount of time required to register a stationary touch as holding.
+    protected InputEvents _inputEvents;
 
-    public float SwipeDistance { get => _swipeDistance; }
-    public float SwipeSpeed { get => _swipeSpeed; }
+    [Header("Swipe Settings")]
+    [SerializeField] private float _minSwipeDistance; // Minimum distance required to register as a swipe. // Can also use Screen.width and Screen.height.
+    [SerializeField] private float _minSwipeSpeed; // How fast the finger should move to register a gsture as a swipe. 
+    [SerializeField] private float _swipeTimeLimit;
+    [SerializeField] private float _holdThreshold; // Minimum amount of time required to register a stationary touch as holding.
+    [SerializeField] private float _joystickDeadzone;
+
+    public float SwipeDistance { get => _minSwipeDistance; }
+    public float SwipeSpeed { get => _minSwipeSpeed; }
+    public float SwipeTimeLimit { get => _swipeTimeLimit; set => _swipeTimeLimit = value; }
     public float HoldThreshold { get => _holdThreshold; }
+    public float JoystickDeadzone { get => _joystickDeadzone; }
 
     private TouchData _touchA, _touchB;
 
     private void Start() 
     {
-        _touchA = new TouchData();
+        _touchA = new VariantTouchData();
         _touchB = new TouchData();
 
         TouchInputReader.Instance.OnTouchABegin += _touchA.OnTouchBegin;
@@ -70,6 +77,10 @@ public class GestureControllerNoPattern : InputInvoker
             _inputEvents.OnHold?.Invoke(ScreenSide.Right);
         }
 
+        if(_touchA.Type == TouchType.Drag){
+            _inputEvents.OnDrag?.Invoke(ScreenSide.Left, _touchA.DragDirection);
+        }
+
         if(_touchA.Type == TouchType.Tap && _touchB.Type == TouchType.Tap) 
         {
             _inputEvents.OnTap?.Invoke(ScreenSide.LeftNRight);
@@ -89,11 +100,11 @@ public class GestureControllerNoPattern : InputInvoker
         }
         else if(_touchA.Type == TouchType.Swipe) 
         {
-            _inputEvents.OnSwipe?.Invoke(ScreenSide.Left, _touchA.SwipeDirection, SwipeDirections.None);
+            _inputEvents.OnSwipe?.Invoke(ScreenSide.Left, _touchA.SwipeDirection, GestureDirections.None);
         }
         else if(_touchB.Type == TouchType.Swipe) 
         {
-            _inputEvents.OnSwipe?.Invoke(ScreenSide.Right, SwipeDirections.None,  _touchB.SwipeDirection);
+            _inputEvents.OnSwipe?.Invoke(ScreenSide.Right, GestureDirections.None,  _touchB.SwipeDirection);
         }
 
         if(!_touchA.IsActive){
@@ -104,6 +115,21 @@ public class GestureControllerNoPattern : InputInvoker
             _touchB.Type = TouchType.None;
         }
 
+    }
+
+    public InputEvents GetInputEvents()
+    {
+        return _inputEvents;
+    }
+
+    public void SetInputEvents(InputEvents inputEvents)
+    {
+        _inputEvents = inputEvents;
+    }
+
+    public bool IsActiveAndEnabled()
+    {
+        return isActiveAndEnabled;
     }
 }
 
@@ -118,7 +144,8 @@ public class TouchData{
     public float HoldTime;
     public bool HasMoved;
     public bool IsActive;
-    public SwipeDirections SwipeDirection;
+    public GestureDirections SwipeDirection;
+    public GestureDirections DragDirection;
     public TouchState State;
     public TouchType Type;
 
@@ -131,7 +158,7 @@ public class TouchData{
     public void OnTouchBegin(InputEventParams inputEventParams) 
     {
         Reset();
-        InitialScreenPosition = inputEventParams.NormalizedScreenPosition;
+        InitialScreenPosition = inputEventParams.ScreenPosition;
         InitialWorldPosition = inputEventParams.WorldPosition;
 
         HasMoved = false;
@@ -140,7 +167,7 @@ public class TouchData{
         IsActive = true;
     }
 
-    public void OnTouchStationary(InputEventParams inputEventParams)
+    public virtual void OnTouchStationary(InputEventParams inputEventParams)
     {
         if(State != TouchState.Stationary) 
         {
@@ -155,7 +182,7 @@ public class TouchData{
         }
     }
 
-    public void OnTouchDrag(InputEventParams inputEventDragParams) 
+    public virtual void OnTouchDrag(InputEventParams inputEventDragParams) 
     {  
         TimeOnScreen += Time.deltaTime;
 
@@ -164,9 +191,9 @@ public class TouchData{
             Type = TouchType.Hold;  
         }
 
-        if(State != TouchState.Drag) 
+        if(State != TouchState.Move) 
         {
-            State = TouchState.Drag;
+            State = TouchState.Move;
             DragStartScreenPosition = inputEventDragParams.ScreenPosition;
             DragTime = 0f;
         }
@@ -176,7 +203,7 @@ public class TouchData{
         DragTime += Time.deltaTime;
     }
 
-    public void OnTouchEnd(InputEventParams inputEventParams) 
+    public virtual void OnTouchEnd(InputEventParams inputEventParams) 
     {
         TouchState previousState = State;
 
@@ -189,7 +216,7 @@ public class TouchData{
                 if(Type != TouchType.Hold) Type = TouchType.Tap;
                 break;
 
-            case TouchState.Drag:
+            case TouchState.Move:
                 distance = Vector2.Distance(DragStartScreenPosition, inputEventParams.ScreenPosition);
                 direction = (inputEventParams.ScreenPosition - DragStartScreenPosition).normalized;
 
@@ -197,10 +224,10 @@ public class TouchData{
 
                 if(isSwipe) 
                 {                    
-                    if(direction.y > 0.716) SwipeDirection = SwipeDirections.Up;
-                    else if(direction.y < -0.716) SwipeDirection = SwipeDirections.Down;
-                    else if(direction.x < -0.716) SwipeDirection = SwipeDirections.Left;
-                    else if(direction.x > 0.716) SwipeDirection = SwipeDirections.Right;
+                    if(direction.y > 0.716) SwipeDirection = GestureDirections.Up;
+                    else if(direction.y < -0.716) SwipeDirection = GestureDirections.Down;
+                    else if(direction.x < -0.716) SwipeDirection = GestureDirections.Left;
+                    else if(direction.x > 0.716) SwipeDirection = GestureDirections.Right;
 
                     Type = TouchType.Swipe;
                 }
@@ -231,63 +258,76 @@ public class TouchData{
     }
 }
 
-public enum TouchState
-{
-    None,
-    Stationary,
-    Drag,
-}
+public class VariantTouchData : TouchData{
 
-public enum TouchType
-{
-    None,
-    Tap,
-    Swipe,
-    Hold
-}
+    public override void OnTouchStationary(InputEventParams inputEventParams)
+    {
+        if(State != TouchState.Stationary) 
+        {
+            HoldTime = 0;
+            State = TouchState.Stationary;
+        }
 
-public enum ScreenSide
-{
-    None,
-    Left,
-    Right,
-    LeftNRight
-}
+        TimeOnScreen += Time.deltaTime;
+        HoldTime += Time.deltaTime;
+        
+        if(HasMoved && TimeOnScreen > GestureControllerNoPattern.Instance.SwipeTimeLimit){
+            if(Math.Abs(InitialScreenPosition.x - inputEventParams.ScreenPosition.x) > GestureControllerNoPattern.Instance.JoystickDeadzone)
+            {
+                Type = TouchType.Drag;
+                if(inputEventParams.ScreenPosition.x - InitialScreenPosition.x > 0){DragDirection = GestureDirections.Right;}
+                else{DragDirection = GestureDirections.Left;}
+            }
+            else{
+                DragDirection = GestureDirections.None;
+            }
+        }
+        else{
+            if(HoldTime > GestureControllerNoPattern.Instance.HoldThreshold) {
+                Type = TouchType.Hold;  
+            }
+        }
+        
+    }
 
-public enum SwipeDirections
-{
-    None,
-    Up,
-    Down,
-    Left,
-    Right,
-}
+    public override void OnTouchDrag(InputEventParams inputEventDragParams)
+    {
+        if(inputEventDragParams.DeltaSpeed < GestureControllerNoPattern.Instance.SwipeDistance || Type == TouchType.Hold || TimeOnScreen > GestureControllerNoPattern.Instance.SwipeTimeLimit){
+            Type = TouchType.Drag;
+        }
 
-public enum InputGestures
-{
-    None,
+        if(Type == TouchType.Drag){
+            if(Math.Abs(InitialScreenPosition.x - inputEventDragParams.ScreenPosition.x) > GestureControllerNoPattern.Instance.JoystickDeadzone)
+            {
+                Type = TouchType.Drag;
+                if(inputEventDragParams.ScreenPosition.x - InitialScreenPosition.x > 0){DragDirection = GestureDirections.Right;}
+                else{DragDirection = GestureDirections.Left;}
+            }
+            else{
+                DragDirection = GestureDirections.None;
+            }
+        }
+        
 
-    TapL,
-    TapR,
-    TApD,
+        if(State != TouchState.Move) 
+        {
+            State = TouchState.Move;
+            DragStartScreenPosition = inputEventDragParams.ScreenPosition;
+            DragTime = 0f;
+        }
+        
+        HasMoved = true;
+        TimeOnScreen += Time.deltaTime;
+        DragTime += Time.deltaTime;
+    }
 
-    HoldL,
-    HoldR,
-    HoldD,
+    public override void OnTouchEnd(InputEventParams inputEventParams)
+    {
+        if(Type == TouchType.Drag) {
+            IsActive = false;
+            return;
+        }
+        base.OnTouchEnd(inputEventParams);
+    }
 
-    SwipeUpL,
-    SwipeDownL,
-    SwipeLeftL,
-    SwipeRightL,
-
-    SwipeUpR,
-    SwipeDownR,
-    SwipeLeftR,
-    SwipeRightR,
-
-    SwipeUpD,
-    SwipeDownD,
-    SwipeLeftD,
-    SwipeRightD,
-    
 }
