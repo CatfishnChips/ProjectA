@@ -23,6 +23,8 @@ public class InputManager : MonoBehaviour
 
     public int InputDelay = 2; // Amount of time before registering an input.
     public int InputBuffer = 10; // in frames
+    [Tooltip("The number of frames that will be waited to set the contiuous input to it's default value after the last written frame.")]
+    public int ContinousInputDefaultAfterFrames = 1;
     protected List<ITouchInput> _inputsList;
 
     // private TouchInput<bool> _jumpInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Jump);

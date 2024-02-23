@@ -224,11 +224,8 @@ public class TouchQueueInput<T> : TouchInput<T>
 
     public override void OnLateTick()
     {
-        Debug.Log("Late tick is called. Frame is: " + GameSimulator.Instance.TickCount);
-        Debug.Log(_inputType);
         if(_isContentRead) 
         {
-            ActionAttack aa = _contentQueue[0].Content as ActionAttack;
             _contentQueue[0].Reset();
             _contentQueue.RemoveAt(0);
             _isContentRead = false;
@@ -252,15 +249,19 @@ public class TouchQueueInput<T> : TouchInput<T>
 
 public class TouchContinuousInput<T> : TouchInput<T>
 {
-    public TouchContinuousInput(T value, InputTypes inputType, SubInputTypes subInputType) : base(value, inputType, subInputType){}
     private bool _newInputRegistered;
     private bool _writtenToInput = false;
+    private int _resetFrameCounter;
+
+    public TouchContinuousInput(T value, InputTypes inputType, SubInputTypes subInputType) : base(value, inputType, subInputType){
+        _resetFrameCounter = 0;
+    }
 
     public override void Write(T value)
     {
         //Debug.Log("Written to input. Frame is: " + GameSimulator.Instance.TickCount);
         _writtenToInput = true;
-        _newInputRegistered = !value.Equals(_value);
+        _newInputRegistered = !value.Equals(_holderValue);
         if(_newInputRegistered) _delayFrameCounter = 0; 
         _isActive = true;
         _holderValue = value;
@@ -275,21 +276,32 @@ public class TouchContinuousInput<T> : TouchInput<T>
     {
         if(!_isActive) return;
 
-        if(_newInputRegistered)
-        {
-            //Debug.Log(_delayFrameCounter + " / " + InputManager.Instance.InputDelay);
-            if(_delayFrameCounter < InputManager.Instance.InputDelay){
-                _delayFrameCounter++;
-                return;
-            } 
-            _value = _holderValue;
-        }
+        //Debug.Log(_delayFrameCounter + " / " + InputManager.Instance.InputDelay);
+        if(_delayFrameCounter < InputManager.Instance.InputDelay){
+            _delayFrameCounter++;
+            return;
+        } 
+        _value = _holderValue;
     }
 
     public override void OnLateTick()
     {
         //Debug.Log("Late tick is called. Frame is: " + GameSimulator.Instance.TickCount);
-        if(!_writtenToInput) Reset();
+        if(!_writtenToInput) {
+            _resetFrameCounter++;
+        }
+        else{
+            _resetFrameCounter = 0;
+        }
+
+        if(_resetFrameCounter > InputManager.Instance.ContinousInputDefaultAfterFrames) Reset();
+
         _writtenToInput = false;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        _resetFrameCounter = 0;
     }
 }
