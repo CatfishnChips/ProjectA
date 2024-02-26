@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KBMInput : MonoBehaviour, IInputInvoker
 {
     InputEvents _inputEvents;
     public string attackToPerform;
+    public string secondAttackToPerform;
 
     public InputEvents GetInputEvents()
     {
@@ -27,8 +26,13 @@ public class KBMInput : MonoBehaviour, IInputInvoker
     {
         if(Input.GetKeyUp(KeyCode.K))
         {
-            Debug.Log("Attack Input was registered at update: " + GameSimulator.Instance.UpdateCount + " and Tick: " + GameSimulator.Instance.TickCount);
-            _inputEvents.OnTap?.Invoke(ScreenSide.Right);
-        }       
+            //_inputEvents.OnTap?.Invoke(ScreenSide.Right);
+            _inputEvents.DirectAttackInputByString?.Invoke(attackToPerform);
+        }
+
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            _inputEvents.DirectAttackInputByString?.Invoke(secondAttackToPerform);
+        }
     }
 }

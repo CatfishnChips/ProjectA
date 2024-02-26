@@ -41,14 +41,28 @@ MonoBehaviour:
   - comboName: Dargon's Way
     moves:
     - moveNumber: 0
-      theMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+      theMove: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
       willOverride: 0
       moveToOverride: {fileID: 0}
     - moveNumber: 1
-      theMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+      theMove: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
       willOverride: 1
-      moveToOverride: {fileID: 11400000, guid: 3b78433787155da4094eba7d65e877ae, type: 2}
+      moveToOverride: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
     - moveNumber: 2
-      theMove: {fileID: 11400000, guid: 2b51e6a4e339c4d41b54f63d8357d10e, type: 2}
+      theMove: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
       willOverride: 1
-      moveToOverride: {fileID: 11400000, guid: 3bf165ba44fa9344c990e91800e3433f, type: 2}
+      moveToOverride: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
+  - comboName: Serpents's Way
+    moves:
+    - moveNumber: 0
+      theMove: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
+      willOverride: 0
+      moveToOverride: {fileID: 0}
+    - moveNumber: 1
+      theMove: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
+      willOverride: 1
+      moveToOverride: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
+    - moveNumber: 2
+      theMove: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
+      willOverride: 1
+      moveToOverride: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}

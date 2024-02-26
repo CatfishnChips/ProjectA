@@ -11,6 +11,7 @@ public class FighterManager : MonoBehaviour
     public FighterEvents fighterEvents;
 
     private Dictionary<InputGestures, ActionAttack> _attackMoveDict;
+    private Dictionary<string, ActionAttack> _attackMoveDictByName;
     private Dictionary<string, ActionBase> _actionDictionary;
 
     public Dictionary<InputGestures, ActionAttack> AttackMoveDict { get => _attackMoveDict; set => _attackMoveDict = value; }
@@ -31,11 +32,13 @@ public class FighterManager : MonoBehaviour
     void InitializeDictionaries()
     {
         _attackMoveDict = new Dictionary<InputGestures, ActionAttack>();
+        _attackMoveDictByName = new Dictionary<string, ActionAttack>();
         _actionDictionary = new Dictionary<string, ActionBase>();
 
         foreach (InputAttackAttribution attribution in _fighterID.InputAttackAttribution)
         {
             _attackMoveDict.Add(attribution.inputGesture, attribution.actionFighterAttack); // All Attack Actions
+            _attackMoveDictByName.Add(attribution.actionFighterAttack.name, _attackMoveDict[attribution.inputGesture]);
         }
 
         foreach (ActionAttribution attribution in _fighterID.ActionAttribution)
@@ -97,8 +100,15 @@ public class FighterManager : MonoBehaviour
 
     // To listen for direct attack inputs. With this method an attackcen be directly performed by providing it to the method as a parameter
     // Useful for some practices such as AI integration
-    public void OnDirectAttackInput(ActionAttack attack)
+    public void OnDirectAttackInputByAction(ActionAttack attack)
     {
+        if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttack?.Invoke(attack as ActionFighterAttack);
+        else fighterEvents.OnSpiritAttack?.Invoke(attack as ActionSpiritAttack);
+    }
+
+    public void OnDirectAttackInputByString(string attackName)
+    {
+        ActionAttack attack = _attackMoveDictByName[attackName];
         if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttack?.Invoke(attack as ActionFighterAttack);
         else fighterEvents.OnSpiritAttack?.Invoke(attack as ActionSpiritAttack);
     }

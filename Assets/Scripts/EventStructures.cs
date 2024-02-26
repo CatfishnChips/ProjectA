@@ -8,7 +8,8 @@ public class InputEvents
     public Action<ScreenSide, GestureDirections> OnDrag;
     public Action<ScreenSide> OnHold;
     public Action<ScreenSide> OnTap;
-    public Action<ActionAttack> DirectAttackInput; // To directly perform the attack without passing the input method
+    public Action<ActionAttack> DirectAttackInputByAction; // To directly perform the attack without passing the input method
+    public Action<string> DirectAttackInputByString;
 
     public void SyncorinzeEvents(ref InputEvents inputEvents)
     {

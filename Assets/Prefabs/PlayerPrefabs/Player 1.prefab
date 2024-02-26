@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7699235267919987232}
   - component: {fileID: 7699235267919987235}
-  - component: {fileID: 7699235267919987234}
   - component: {fileID: 7699235267919987233}
   - component: {fileID: 9215249920356687981}
   m_Layer: 0
@@ -48,30 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fighterManager: {fileID: 0}
---- !u!114 &7699235267919987234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7699235267919987229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4301f7838e3e4a4f885e4deda97be28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _swipeDistance: 0.5
-  _swipeTimeout: 0.5
-  _swipeDelta: 5
-  _sensitivity: 125
-  _deadzone: 25
-  _gestureTimeout: 1
-  _scoreTreshold: 0.25
-  _holdTime: 0.25
-  _pointAddInterval: 0
-  _nameInput: {fileID: 0}
-  _nameText: {fileID: 0}
-  _scoreText: {fileID: 0}
 --- !u!114 &7699235267919987233
 MonoBehaviour:
   m_ObjectHideFlags: 0

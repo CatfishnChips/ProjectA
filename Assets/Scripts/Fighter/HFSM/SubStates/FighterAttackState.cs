@@ -55,29 +55,11 @@ public class FighterAttackState : FighterBaseState
         if(!_ctx.ComboListener.isActive){
             _ctx.ComboListener.isActive = true;
         }
-        
-        // Determine Attack depending on context.
-        // if (_ctx.IsGrounded){
-        //     _action = _ctx.AttackMoveDict[attackName] as ActionFighterAttack;
-        // }
-        // else  _action = _ctx.AttackMoveDict[attackName] as ActionFighterAttack;
 
-        // if (_ctx.MovementInput == 1){
-            
-        // }
-        // else if (_ctx.MovementInput == -1){
-
-        // }
-        // else if (_ctx.IsGrounded){
-        //     _action = _ctx.AttackMoveDict[attackName];
-        // }
-        // else if (!_ctx.IsGrounded){
-
-        // }
-
-        // Debug.Log("Entered state with attack: " + _action);
+        Debug.Log("Entered state with attack: " + _action);
         _ctx.ComboListener.AttackOverride(ref _action, ref _performedComboMove);
-        //Debug.Log("Combo move altered the actions to: " + _action);
+        Debug.Log(_action);
+        Debug.Log("Combo move altered the action to: " + _action);
 
         _action.EnterStateFunction(_ctx, this);
         
@@ -100,6 +82,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void ExitState()
     {
+        Debug.Log("Attack ended");
         _ctx.CurrentFrame = 0;
         _ctx.IsGravityApplied = true;
         _ctx.ActionState = default;

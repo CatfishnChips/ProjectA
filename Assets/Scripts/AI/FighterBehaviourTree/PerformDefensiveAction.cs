@@ -37,7 +37,7 @@ public class PerformDefensiveAction : ActionNode
             } 
         }
         else{
-            context.inputEvents.DirectAttackInput?.Invoke(blackboard.choosenCounterAttack);
+            context.inputEvents.DirectAttackInputByAction?.Invoke(blackboard.choosenCounterAttack);
             return State.Success;
         }
     }

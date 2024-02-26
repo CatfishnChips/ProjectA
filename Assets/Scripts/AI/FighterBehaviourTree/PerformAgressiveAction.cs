@@ -26,7 +26,7 @@ public class PerformAgressiveAction : ActionNode
         ActionAttack choosenAttack = blackboard.choosenAgressiveAction;
         if(choosenAttack == null) return State.Failure; // This is just a safe check if the AI didn't choose to make an attack the tree should not even execute this node.
 
-        context.inputEvents.DirectAttackInput?.Invoke(choosenAttack);
+        context.inputEvents.DirectAttackInputByAction?.Invoke(choosenAttack);
         return State.Running;
     }
 }

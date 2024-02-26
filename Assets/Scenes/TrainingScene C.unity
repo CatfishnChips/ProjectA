@@ -1185,7 +1185,7 @@ PrefabInstance:
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -1e-45
+      value: 3e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263210252897055, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -1320,7 +1320,7 @@ PrefabInstance:
     - target: {fileID: 6664263211327920355, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -1e-45
+      value: 3e-45
       objectReference: {fileID: 0}
     - target: {fileID: 6664263211327920355, guid: e601c2242db7a664a88400e0ac4de247,
         type: 3}
@@ -3980,6 +3980,11 @@ PrefabInstance:
     - target: {fileID: 5826269824890258107, guid: 9b4bee3d31c796a47856cb464ffa20a7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826269824890258109, guid: 9b4bee3d31c796a47856cb464ffa20a7,
+        type: 3}
+      propertyPath: _comboBuffer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -12356,33 +12361,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7699235267919987234, guid: de951d19f1b0b1d4484235e225944b3f,
-        type: 3}
-      propertyPath: _nameText
-      value: 
-      objectReference: {fileID: 1315626144}
-    - target: {fileID: 7699235267919987234, guid: de951d19f1b0b1d4484235e225944b3f,
+    - target: {fileID: 7699235267919987233, guid: de951d19f1b0b1d4484235e225944b3f,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7699235267919987234, guid: de951d19f1b0b1d4484235e225944b3f,
+    - target: {fileID: 7699235267919987233, guid: de951d19f1b0b1d4484235e225944b3f,
         type: 3}
-      propertyPath: _nameInput
-      value: 
-      objectReference: {fileID: 1457339221}
-    - target: {fileID: 7699235267919987234, guid: de951d19f1b0b1d4484235e225944b3f,
+      propertyPath: attackToPerform
+      value: Tap
+      objectReference: {fileID: 0}
+    - target: {fileID: 7699235267919987233, guid: de951d19f1b0b1d4484235e225944b3f,
         type: 3}
-      propertyPath: _scoreText
-      value: 
-      objectReference: {fileID: 1403053305}
+      propertyPath: secondAttackToPerform
+      value: Uppercut
+      objectReference: {fileID: 0}
     - target: {fileID: 7699235267919987235, guid: de951d19f1b0b1d4484235e225944b3f,
         type: 3}
       propertyPath: _fighterManager
       value: 
       objectReference: {fileID: 1046762877}
-    m_RemovedComponents:
-    - {fileID: 7699235267919987234, guid: de951d19f1b0b1d4484235e225944b3f, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de951d19f1b0b1d4484235e225944b3f, type: 3}
 --- !u!1 &7699235268624337219 stripped
 GameObject:
@@ -12390,21 +12389,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7699235268624337218}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7699235268624337230
+--- !u!114 &7699235268624337235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7699235268624337219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f390940f0187914585a256f4a576373, type: 3}
+  m_Script: {fileID: 11500000, guid: c4301f7838e3e4a4f885e4deda97be28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minSwipeDistance: 20
+  _minSwipeDistance: 50
   _minSwipeSpeed: 2250
-  _swipeTimeLimit: 0.2
+  _swipeTimeLimit: 0.25
   _holdThreshold: 0.2
   _joystickDeadzone: 25
 --- !u!1001 &9222620605962242266
