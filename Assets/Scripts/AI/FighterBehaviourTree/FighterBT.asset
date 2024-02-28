@@ -18,9 +18,10 @@ MonoBehaviour:
   position: {x: 270.99994, y: 386.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -48,9 +49,10 @@ MonoBehaviour:
   position: {x: -371.5, y: 531}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -77,9 +79,10 @@ MonoBehaviour:
   position: {x: 74.00011, y: 543.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -105,9 +108,10 @@ MonoBehaviour:
   position: {x: -127.50009, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -132,9 +136,10 @@ MonoBehaviour:
   position: {x: 765.00006, y: 657.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -162,9 +167,10 @@ MonoBehaviour:
   position: {x: 453.0001, y: 530.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -193,9 +199,10 @@ MonoBehaviour:
   position: {x: -0.9999281, y: 231.89986}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -223,9 +230,10 @@ MonoBehaviour:
   position: {x: 62.49997, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -251,9 +259,10 @@ MonoBehaviour:
   position: {x: 1041.0001, y: 657.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -299,9 +308,10 @@ MonoBehaviour:
   - {fileID: -7147008530974509709}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -324,9 +334,10 @@ MonoBehaviour:
   position: {x: 269.00003, y: 657.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -356,9 +367,10 @@ MonoBehaviour:
   position: {x: -759.99994, y: 530.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -384,9 +396,10 @@ MonoBehaviour:
   position: {x: -441.00003, y: 386.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -416,9 +429,10 @@ MonoBehaviour:
   position: {x: -570, y: 530.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -443,9 +457,10 @@ MonoBehaviour:
   position: {x: -174, y: 530.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -470,9 +485,10 @@ MonoBehaviour:
   position: {x: 862.00006, y: 817.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -497,9 +513,10 @@ MonoBehaviour:
   position: {x: 243.4999, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -524,9 +541,10 @@ MonoBehaviour:
   position: {x: 441.49997, y: 817.9999}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -551,9 +569,10 @@ MonoBehaviour:
   position: {x: -1.000061, y: -30.950024}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -581,9 +600,10 @@ MonoBehaviour:
   position: {x: 660.00006, y: 817.89984}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -609,9 +629,10 @@ MonoBehaviour:
   position: {x: -1.1499901, y: -150.65001}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -637,9 +658,10 @@ MonoBehaviour:
   position: {x: -201.00002, y: 232.00002}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0
@@ -664,9 +686,10 @@ MonoBehaviour:
   position: {x: -0.99972534, y: 92.225975}
   blackboard:
     moveToPosition: {x: 0, y: 0, z: 0}
-    choosenAgressiveAction: 
-    choosenDefensiveAction: 
+    choosenAgressiveAction: {fileID: 0}
     enemyAttackAction: {fileID: 0}
+    choosenDefenseMethod: 
+    choosenCounterAttack: {fileID: 0}
     enemyAttackStarted: 0
     enemyAttackEnded: 0
     selfAttackStarted: 0

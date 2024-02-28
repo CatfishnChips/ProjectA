@@ -1,26 +1,30 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Data;
+using EditableFighterActions;
 using UnityEngine;
 
 public class FighterManager : MonoBehaviour
 {
-    [SerializeField] private FighterID _fighterID;
+    [SerializeField] private FighterBlueprint _fighterBlueprint;
+    private RootNode _inputBasedActionTree;
+    private RootNode _conditionalActionTree;
 
     public FighterEvents fighterEvents;
 
-    private Dictionary<InputGestures, ActionAttack> _attackMoveDict;
+    private Dictionary<InputGestures, ActionAttack> _neutralAttackMoveDict;
     private Dictionary<string, ActionAttack> _attackMoveDictByName;
     private Dictionary<string, ActionBase> _actionDictionary;
 
-    public Dictionary<InputGestures, ActionAttack> AttackMoveDict { get => _attackMoveDict; set => _attackMoveDict = value; }
+    public Dictionary<InputGestures, ActionAttack> AttackMoveDict { get => _neutralAttackMoveDict; set => _neutralAttackMoveDict = value; }
     public Dictionary<string, ActionBase> ActionDictionary { get => _actionDictionary; set => _actionDictionary = value; }
-    public ComboMove[] CombosArray{get => _fighterID.CombosArray;}
 
     void Awake()
     {
         fighterEvents = new FighterEvents();
+
+        _inputBasedActionTree = _fighterBlueprint.GetRootDict()[ActionTypes.InputBased];
+        _conditionalActionTree = _fighterBlueprint.GetRootDict()[ActionTypes.Conditional];
 
         InitializeDictionaries();
     }
@@ -31,19 +35,35 @@ public class FighterManager : MonoBehaviour
 
     void InitializeDictionaries()
     {
-        _attackMoveDict = new Dictionary<InputGestures, ActionAttack>();
+        _neutralAttackMoveDict = new Dictionary<InputGestures, ActionAttack>();
         _attackMoveDictByName = new Dictionary<string, ActionAttack>();
         _actionDictionary = new Dictionary<string, ActionBase>();
 
-        foreach (InputAttackAttribution attribution in _fighterID.InputAttackAttribution)
+
+        List<BPNode> inputBasedActionNodes = new List<BPNode>();
+        _inputBasedActionTree.InOrderTreeToList(_inputBasedActionTree, ref inputBasedActionNodes);
+
+        foreach (ActionNode actionNode in inputBasedActionNodes)
         {
-            _attackMoveDict.Add(attribution.inputGesture, attribution.actionFighterAttack); // All Attack Actions
-            _attackMoveDictByName.Add(attribution.actionFighterAttack.name, _attackMoveDict[attribution.inputGesture]);
+            Debug.Log(actionNode.fighterAction.name);
+
+            if(!_actionDictionary.ContainsKey(actionNode.fighterAction.name)) _actionDictionary.Add(actionNode.fighterAction.name, actionNode.fighterAction);
+
+            ActionAttack actionAttack = actionNode.fighterAction as ActionAttack;
+
+            if(actionAttack){
+                if(actionNode.GetType() == typeof(NeutralActionNode)) _neutralAttackMoveDict.Add(actionNode.inputGesture, actionAttack); // Neutral Attack Actions
+
+                if(!_attackMoveDictByName.ContainsKey(actionNode.fighterAction.name)) _attackMoveDictByName.Add(actionNode.fighterAction.name, actionAttack); // All attack actions
+            }
         }
 
-        foreach (ActionAttribution attribution in _fighterID.ActionAttribution)
+        List<BPNode> conditionalActionNodes = new List<BPNode>();
+        _conditionalActionTree.InOrderTreeToList(_conditionalActionTree, ref conditionalActionNodes);
+
+        foreach (ActionNode actionNode in conditionalActionNodes)
         {
-            _actionDictionary.Add(attribution.action.name, attribution.action);
+            _actionDictionary.Add(actionNode.fighterAction.name, actionNode.fighterAction);
         }
 
     }
@@ -58,7 +78,7 @@ public class FighterManager : MonoBehaviour
     public void OnTap(ScreenSide side)
     {
         if(side == ScreenSide.Right){
-            fighterEvents.OnFighterAttack?.Invoke(_attackMoveDict[InputGestures.TapR] as ActionFighterAttack);
+            fighterEvents.OnFighterAttack?.Invoke(_neutralAttackMoveDict[InputGestures.TapR] as ActionFighterAttack);
         }   
     }
 
@@ -88,10 +108,10 @@ public class FighterManager : MonoBehaviour
         {
             ActionAttack actionAttack = null;
 
-            if(swipeDirectionR == GestureDirections.Right) actionAttack = _attackMoveDict[InputGestures.SwipeRightR];
-            else if(swipeDirectionR == GestureDirections.Left) actionAttack = _attackMoveDict[InputGestures.SwipeLeftR];
-            else if(swipeDirectionR == GestureDirections.Up) actionAttack = _attackMoveDict[InputGestures.SwipeUpR];
-            else if(swipeDirectionR == GestureDirections.Down) actionAttack = _attackMoveDict[InputGestures.SwipeDownR];
+            if(swipeDirectionR == GestureDirections.Right) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeRightR];
+            else if(swipeDirectionR == GestureDirections.Left) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeLeftR];
+            else if(swipeDirectionR == GestureDirections.Up) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeUpR];
+            else if(swipeDirectionR == GestureDirections.Down) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeDownR];
 
             if(actionAttack != null) fighterEvents.OnFighterAttack?.Invoke(actionAttack as ActionFighterAttack);
         }

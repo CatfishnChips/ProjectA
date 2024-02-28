@@ -74,6 +74,13 @@ public enum ActionStates
     Recovery,
 }
 
+public enum ActionTypes
+{
+    None,
+    InputBased,
+    Conditional
+}
+
 public enum Interactions
 {
     None, 

@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/FighterBlueprintEditor.uss?fileID=7433441132597879392&amp;guid=f3067b43c1662074cae086dd16a1e6b9&amp;type=3#FighterBlueprintEditor" />
+    <uie:Toolbar>
+        <uie:ToolbarMenu display-tooltip-when-elided="true" text="Assets" />
+    </uie:Toolbar>
+    <TheKiwiCoder.SplitView fixed-pane-initial-dimension="200">
+        <ui:VisualElement name="left-panel">
+            <ui:Label text="Inspector" display-tooltip-when-elided="true" style="background-color: rgb(37, 37, 37);" />
+            <EditableFighterActions.InspectorView />
+        </ui:VisualElement>
+        <ui:VisualElement name="right-panel" style="flex-grow: 1;">
+            <ui:Label text="Blueprint Graph" display-tooltip-when-elided="true" style="background-color: rgb(37, 37, 37);" />
+            <EditableFighterActions.FighterBlueprintView focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </TheKiwiCoder.SplitView>
+</ui:UXML>

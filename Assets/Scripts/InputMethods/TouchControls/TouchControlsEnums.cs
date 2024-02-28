@@ -37,7 +37,7 @@ public enum InputGestures
 
     TapL,
     TapR,
-    TApD,
+    TapD,
 
     HoldL,
     HoldR,

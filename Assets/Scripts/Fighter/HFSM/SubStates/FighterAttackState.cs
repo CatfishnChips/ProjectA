@@ -57,7 +57,7 @@ public class FighterAttackState : FighterBaseState
         }
 
         Debug.Log("Entered state with attack: " + _action);
-        _ctx.ComboListener.AttackOverride(ref _action, ref _performedComboMove);
+        //_ctx.ComboListener.AttackOverride(ref _action, ref _performedComboMove);
         Debug.Log(_action);
         Debug.Log("Combo move altered the action to: " + _action);
 

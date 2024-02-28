@@ -151,7 +151,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
 
     public ComboListener ComboListener{get{return _comboListener;} set{_comboListener = value;}}
-    public ComboMove[] CombosArray{get{return _fighterManager.CombosArray;}}
+    public ComboMove[] CombosArray{get{return null;}}
     public int ComboBuffer{get{return _comboBuffer;}}
 
     public HitResponder HitResponder {get{return _hitResponder;}}
@@ -294,9 +294,9 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastOffset, Vector2.down, _rayCastLenght, _rayCastLayerMask);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
 
-        if(_comboListener.isActive){
-            _comboListener.FixedUpdate();
-        }
+        // if(_comboListener.isActive){
+        //     _comboListener.FixedUpdate();
+        // }
         _currentState.FixedUpdateStates();
 
         _fighterController.Simulate();
