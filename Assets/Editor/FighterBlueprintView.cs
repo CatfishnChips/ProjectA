@@ -28,7 +28,7 @@ namespace EditableFighterActions{
         }
 
         NodeView FindNodeView(BPNode node){
-            return GetNodeByGuid(node.Guid) as NodeView;
+            return node.nodeView as NodeView;
         }
 
         internal void PopulateView(FighterBlueprint blueprint)
@@ -49,7 +49,6 @@ namespace EditableFighterActions{
                 NodeView parentView = FindNodeView(n);
 
                 children.ForEach(c => {
-
                     NodeView childView = FindNodeView(c);
 
                     Edge edge = parentView.output.ConnectTo(childView.input);

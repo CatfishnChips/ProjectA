@@ -48,7 +48,6 @@ namespace EditableFighterActions{
                 dict.Add(rootNodes[i].type, rootNodes[i].rootNode);
                 Debug.Log(rootNodes[i].type);
             }
-            Debug.Log("Prepared the dict! ");
             return dict;
         }
     }

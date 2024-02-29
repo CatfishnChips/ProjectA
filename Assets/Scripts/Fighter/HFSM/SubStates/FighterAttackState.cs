@@ -104,6 +104,7 @@ public class FighterAttackState : FighterBaseState
     }
 
     public override void FixedUpdateState(){
+        base.FixedUpdateState();
         _action.FixedUpdateFunction(_ctx, this);
         // Debug.Log("Frame L: " + _action.FrameLenght + " Current F: " + _currentFrame + " Buffer: " + _ctx.GetInputBuffer + " Bool: " + _ctx.ValidAttackInputInterval);
         //_ctx.ValidAttackInputInterval = _action.FrameLenght - _currentFrame < _ctx.GetInputBuffer;

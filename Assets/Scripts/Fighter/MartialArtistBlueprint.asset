@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9045419332838578942
+--- !u!114 &-8138331636262038485
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 0, y: 0}
+  positionOnGraph: {x: 150.99997, y: 53.740784}
   children: []
   inputGesture: 0
-  fighterAction: {fileID: 0}
---- !u!114 &-8823361063860629097
+  fighterAction: {fileID: 11400000, guid: 6f24950fb6be07a488a0a6e7087ea02b, type: 2}
+--- !u!114 &-7982413573524852727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28,125 +28,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 316, y: 972}
-  children: []
-  inputGesture: 0
-  fighterAction: {fileID: 0}
---- !u!114 &-7183763990402079828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
-  m_Name: ChainActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1364.0001, y: -651.0269}
-  children: []
-  inputGesture: 2
-  fighterAction: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
---- !u!114 &-6198090037541866691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 314.85, y: 595.80005}
-  children: []
-  inputGesture: 0
-  fighterAction: {fileID: 11400000, guid: 2c3fb1b6d450d664cbed6d02db98fc1d, type: 2}
---- !u!114 &-5975465923622789991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 316, y: 774}
-  children: []
-  inputGesture: 0
-  fighterAction: {fileID: 0}
---- !u!114 &-4316505121684916728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 307.43454, y: -332.9365}
+  positionOnGraph: {x: 146, y: -615}
   children:
-  - {fileID: -976535329418889678}
-  - {fileID: 6451101295732699667}
-  inputGesture: 2
-  fighterAction: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
---- !u!114 &-4300390024235574113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 0, y: 0}
-  children: []
-  inputGesture: 0
-  fighterAction: {fileID: 0}
---- !u!114 &-4248350965756329327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 316, y: 1196}
-  children: []
-  inputGesture: 0
-  fighterAction: {fileID: 0}
---- !u!114 &-2692148608560263149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 316.43457, y: -169.93646}
-  children: []
-  inputGesture: 11
-  fighterAction: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
---- !u!114 &-1008427970071991885
+  - {fileID: 3254030051327373464}
+  inputGesture: 14
+  fighterAction: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
+--- !u!114 &-6891084032284580955
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,11 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff69e6b1ad15ad47b003a915149a34d, type: 3}
   m_Name: RootNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 0, y: 697}
+  positionOnGraph: {x: -129, y: -125}
   children:
-  - {fileID: -6198090037541866691}
+  - {fileID: 4499035773204513225}
+  - {fileID: -7982413573524852727}
+  - {fileID: 5458441699911745602}
+  - {fileID: 1133765153074997452}
+  - {fileID: -1381876245269970130}
+  - {fileID: 8591419039009745688}
+  - {fileID: -8138331636262038485}
+  - {fileID: -5237489429507526308}
   name: 
---- !u!114 &-976535329418889678
+--- !u!114 &-5237489429507526308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,15 +65,61 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
-  m_Name: ChainActionNode
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 824.0001, y: -450}
-  children:
-  - {fileID: -7183763990402079828}
-  - {fileID: 2459626070482255859}
-  inputGesture: 2
-  fighterAction: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
+  positionOnGraph: {x: 150.99997, y: 240.81557}
+  children: []
+  inputGesture: 6
+  fighterAction: {fileID: 11400000, guid: abc65f5054684844493cd8d1c25e1f13, type: 2}
+--- !u!114 &-2695239562484324806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 0, y: 0}
+  children: []
+  inputGesture: 0
+  fighterAction: {fileID: 0}
+--- !u!114 &-1873962000301212949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 931.4791, y: 63.000015}
+  children: []
+  inputGesture: 0
+  fighterAction: {fileID: 11400000, guid: 5bd99419bb49ce34ba7e81e80bb1e420, type: 2}
+--- !u!114 &-1381876245269970130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 151.42575, y: -125.145874}
+  children: []
+  inputGesture: 13
+  fighterAction: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,32 +134,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootNodes:
   - type: 1
-    rootNode: {fileID: 2719362538315469004}
+    rootNode: {fileID: -6891084032284580955}
   - type: 2
-    rootNode: {fileID: -1008427970071991885}
+    rootNode: {fileID: 1694845543922580460}
   nodes:
-  - {fileID: 2719362538315469004}
-  - {fileID: -4316505121684916728}
-  - {fileID: -976535329418889678}
-  - {fileID: 6451101295732699667}
-  - {fileID: -2692148608560263149}
-  - {fileID: 6109489222107287083}
-  - {fileID: 5029689319446983086}
-  - {fileID: 8623586707029863221}
-  - {fileID: -7183763990402079828}
-  - {fileID: 6258172458125186715}
-  - {fileID: -1008427970071991885}
-  - {fileID: -6198090037541866691}
-  - {fileID: 5969428694940243864}
-  - {fileID: 2459626070482255859}
-  - {fileID: -5975465923622789991}
-  - {fileID: -8823361063860629097}
-  - {fileID: -4248350965756329327}
-  - {fileID: -4300390024235574113}
-  - {fileID: 821505547672125496}
-  - {fileID: 4321074476797116193}
-  - {fileID: -9045419332838578942}
---- !u!114 &821505547672125496
+  - {fileID: -6891084032284580955}
+  - {fileID: 4499035773204513225}
+  - {fileID: 5458441699911745602}
+  - {fileID: -7982413573524852727}
+  - {fileID: 1133765153074997452}
+  - {fileID: -1381876245269970130}
+  - {fileID: 7859536290328866274}
+  - {fileID: 3254030051327373464}
+  - {fileID: 3515973827919089645}
+  - {fileID: 3237958247849569587}
+  - {fileID: -5237489429507526308}
+  - {fileID: -8138331636262038485}
+  - {fileID: 8591419039009745688}
+  - {fileID: 1694845543922580460}
+  - {fileID: 5003424467209621410}
+  - {fileID: 1414007061814015768}
+  - {fileID: 2682750803160150536}
+  - {fileID: -1873962000301212949}
+  - {fileID: -2695239562484324806}
+--- !u!114 &1133765153074997452
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,11 +169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 0, y: 0}
+  positionOnGraph: {x: 151.42575, y: -283.14584}
   children: []
-  inputGesture: 0
-  fighterAction: {fileID: 0}
---- !u!114 &2459626070482255859
+  inputGesture: 12
+  fighterAction: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
+--- !u!114 &1414007061814015768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,14 +182,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
-  m_Name: ChainActionNode
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1352, y: -441}
+  positionOnGraph: {x: 931.4791, y: -303}
   children: []
-  inputGesture: 7
-  fighterAction: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
---- !u!114 &2719362538315469004
+  inputGesture: 0
+  fighterAction: {fileID: 11400000, guid: 8ee14044fb806f146a162d50263a24f3, type: 2}
+--- !u!114 &1694845543922580460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,15 +201,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff69e6b1ad15ad47b003a915149a34d, type: 3}
   m_Name: RootNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: -1.7489982, y: -0.000040992833}
-  children:
-  - {fileID: -4316505121684916728}
-  - {fileID: -2692148608560263149}
-  - {fileID: 6109489222107287083}
-  - {fileID: 5029689319446983086}
-  - {fileID: 8623586707029863221}
+  positionOnGraph: {x: 716, y: -204.50017}
+  children: []
   name: 
---- !u!114 &4321074476797116193
+--- !u!114 &2682750803160150536
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -283,27 +216,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 0, y: 0}
+  positionOnGraph: {x: 931.4791, y: -126.99996}
   children: []
   inputGesture: 0
-  fighterAction: {fileID: 0}
---- !u!114 &5029689319446983086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 316.43457, y: 170.06354}
-  children: []
-  inputGesture: 13
-  fighterAction: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
---- !u!114 &5969428694940243864
+  fighterAction: {fileID: 11400000, guid: 93a6d7f648e264e40ac86231467df887, type: 2}
+--- !u!114 &3237958247849569587
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -315,61 +232,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
   m_Name: ChainActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1352, y: -247}
+  positionOnGraph: {x: 1260.4258, y: -937.1459}
   children: []
-  inputGesture: 5
-  fighterAction: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
---- !u!114 &6109489222107287083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
-  m_Name: NeutralActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 316.43457, y: 0.0635376}
-  children: []
-  inputGesture: 12
-  fighterAction: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
---- !u!114 &6258172458125186715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
-  m_Name: ChainActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1352, y: -30}
-  children: []
-  inputGesture: 9
-  fighterAction: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
---- !u!114 &6451101295732699667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
-  m_Name: ChainActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 824.4345, y: -266.9365}
-  children:
-  - {fileID: 6258172458125186715}
-  - {fileID: 5969428694940243864}
-  inputGesture: 14
+  inputGesture: 2
   fighterAction: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
---- !u!114 &8623586707029863221
+--- !u!114 &3254030051327373464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
+  m_Name: ChainActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 716.4258, y: -615.1459}
+  children: []
+  inputGesture: 2
+  fighterAction: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
+--- !u!114 &3515973827919089645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
+  m_Name: ChainActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 1260.4258, y: -741.1459}
+  children: []
+  inputGesture: 11
+  fighterAction: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
+--- !u!114 &4499035773204513225
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,7 +280,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 316.43457, y: 335.06354}
+  positionOnGraph: {x: 151.42575, y: -784.1459}
+  children:
+  - {fileID: 7859536290328866274}
+  inputGesture: 2
+  fighterAction: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
+--- !u!114 &5003424467209621410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 931.4791, y: -461}
   children: []
-  inputGesture: 14
-  fighterAction: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
+  inputGesture: 0
+  fighterAction: {fileID: 11400000, guid: c598b1051af6a3c499a47fc65962a1f4, type: 2}
+--- !u!114 &5458441699911745602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 151.42575, y: -461.14587}
+  children: []
+  inputGesture: 11
+  fighterAction: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
+--- !u!114 &7859536290328866274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
+  m_Name: ChainActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 716.4258, y: -842.1459}
+  children:
+  - {fileID: 3237958247849569587}
+  - {fileID: 3515973827919089645}
+  inputGesture: 2
+  fighterAction: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
+--- !u!114 &8591419039009745688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
+  m_Name: NeutralActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 151, y: 429}
+  children: []
+  inputGesture: 10
+  fighterAction: {fileID: 11400000, guid: 241f5ebb1d2db6744ae355684c3c462f, type: 2}

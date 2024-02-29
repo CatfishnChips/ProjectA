@@ -20,6 +20,7 @@ namespace EditableFighterActions{
             initialTitle = node.name;
             this.title = initialTitle;
             this.viewDataKey = node.Guid;
+            node.nodeView = this;
 
             style.left = node.positionOnGraph.x;
             style.top = node.positionOnGraph.y;
@@ -77,10 +78,11 @@ namespace EditableFighterActions{
         }
 
         private void CreateInputPorts(){
+            //GetType could be more healthier in these if statements
             if(node is RootNode){
 
             }
-            else if(node is ActionNode){
+            else if(node is ChainActionNode){
                 input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
             }
             else if(node is NeutralActionNode){
@@ -97,7 +99,7 @@ namespace EditableFighterActions{
             if(node is RootNode){
                 output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
             }
-            else if(node is ActionNode){
+            else if(node is ChainActionNode){
                 output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
             }
             else if(node is NeutralActionNode){

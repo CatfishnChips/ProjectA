@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace EditableFighterActions{
@@ -6,6 +7,7 @@ namespace EditableFighterActions{
     public abstract class BPNode : ScriptableObject
     {
         private string guid;
+        public Node nodeView;
         public Vector2 positionOnGraph;
 
         [SerializeField]
