@@ -1,16 +1,19 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EditableFighterActions{
     public class RootNode : BPNode
     {
         public new string name; 
-        public Dictionary<InputGestures, BPNode> childrenDict;
+        public Dictionary<InputGestures, ActionNode> childrenDict;
 
         public RootNode(){
+            childrenDict = new Dictionary<InputGestures, ActionNode>();
             Children.ForEach(c => {
                 ActionNode childActionNode = c as ActionNode;
                 if(childActionNode) childrenDict.Add(childActionNode.inputGesture, childActionNode);
             });
+            Debug.Log(childrenDict.Count);
         }
         
         public override void InOrderTreeToList(BPNode node, ref List<BPNode> list)

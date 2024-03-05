@@ -144,16 +144,15 @@ public abstract class ActionAttack : ActionBase
 
         if(state.listeningForChainInput && state._currentFrame >= m_inputIgnoreFrames){
             Debug.Log("Current Frame: " + state._currentFrame);
-            BPNode chainMoveNext = ctx.ActionManager.CheckIfChain(ctx.AttackInput.ReadContent());
-            if(chainMoveNext != null) {
-                ctx.ActionManager.ItarateForward(chainMoveNext);
+            if(ctx.ActionManager.CheckIfChain(ctx.AttackInput.ReadContent())) {
+                state.chainInputGesture = ctx.AttackInput.ReadContent();
                 state.performedComboMove = true;
             }
 
             state.listeningForChainInput = false;
         }
 
-        if(state._currentFrame > m_cancelFrames) ctx.ActionManager.Reset();
+        if(state._currentFrame == m_cancelFrames + 1) ctx.ActionManager.Reset();
     }
 
 

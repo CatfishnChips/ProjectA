@@ -10,6 +10,7 @@ public class FighterAttackState : FighterBaseState
 
     public bool performedComboMove = false;
     public bool listeningForChainInput = true;
+    public InputGestures chainInputGesture = InputGestures.None;
 
     private bool isReading;
 
@@ -39,6 +40,7 @@ public class FighterAttackState : FighterBaseState
             }
         }
         else if (_currentFrame >= _action.CancelFrames && performedComboMove){
+            _ctx.chainInputGesture = chainInputGesture;
             SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
     }
@@ -46,12 +48,14 @@ public class FighterAttackState : FighterBaseState
     public override void EnterState()
     {   
         //string attackName = _ctx.AttackName;
-        _action = _ctx.ActionManager.GetAction(_ctx.AttackInput.ReadContent()) as ActionFighterAttack;
+        if(_ctx.chainInputGesture != InputGestures.None) _action = _ctx.ActionManager.GetAction(_ctx.chainInputGesture) as ActionFighterAttack;
+        else _action = _ctx.ActionManager.GetAction(_ctx.AttackInput.ReadContent()) as ActionFighterAttack;
         _currentFrame = 0;
         _ctx.OnAttackStart?.Invoke();
         _hadHit = false;
         _ctx.CurrentFrame =_currentFrame;
         _actionState = ActionStates.Start;
+        _ctx.chainInputGesture = InputGestures.None;
 
         _action.EnterStateFunction(_ctx, this);
         
@@ -82,6 +86,9 @@ public class FighterAttackState : FighterBaseState
         _action.ExitStateFunction(_ctx, this);
         performedComboMove = false;
         listeningForChainInput = true;
+
+        if(chainInputGesture != _ctx.chainInputGesture) _ctx.ActionManager.Reset();
+        chainInputGesture = InputGestures.None;
         
         _ctx.Drag = 0f;
         _ctx.Gravity = 0f;

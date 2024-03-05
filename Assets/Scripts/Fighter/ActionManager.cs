@@ -1,55 +1,36 @@
+using System.Collections.Generic;
 using EditableFighterActions;
 using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
 
-    private BPNode _root;
-    private BPNode _currentSearchNode;
+    private Dictionary<InputGestures, ActionNode> _rootDict;
+    private Dictionary<InputGestures, ActionNode> _currentSearchDict;
 
-    public ActionManager(BPNode root){
-        _root = root;
-        Debug.Log(_root);
-        _currentSearchNode = _root;
+    public ActionManager(Dictionary<InputGestures, ActionNode> rootDict){
+        _rootDict = rootDict;
+        Debug.Log(_rootDict);
+        _currentSearchDict = _rootDict;
     }
 
-    public BPNode CheckIfChain(InputGestures gesture){
+    public bool CheckIfChain(InputGestures gesture){
         Debug.Log("Checking if chain move.");
-        foreach(BPNode child in _currentSearchNode.Children){
-            if(gesture == (child as ActionNode).inputGesture){
-                Debug.Log("Chain move!");
-                return child;
-            }
-        }
-        return null;
-    }
 
-    public void ItarateForward(BPNode node){
-        _currentSearchNode = node;
+        return _currentSearchDict.ContainsKey(gesture);
     }
 
     public ActionBase GetAction(InputGestures gesture){
-        Debug.Log(_currentSearchNode);
-        if(_currentSearchNode == _root){
-            foreach(BPNode child in _currentSearchNode.Children){
-                ActionNode childActionNode = child as ActionNode;
-                if(childActionNode && gesture == (child as ActionNode).inputGesture){
-                    _currentSearchNode = child;
-                    Debug.Log(childActionNode.fighterAction.name);
-                    return childActionNode.fighterAction;
-                }
-            }
+        if(_currentSearchDict.ContainsKey(gesture)){
+            _currentSearchDict = _currentSearchDict[gesture].childrenDict;
+            return _currentSearchDict[gesture].fighterAction;
         }
-        else{
-            Debug.Log(_currentSearchNode);
-            return (_currentSearchNode as ActionNode).fighterAction;
-        }
-        return null;
+        else return null;
     }
 
     public void Reset(){
         Debug.Log("Resetted.");
-        _currentSearchNode = _root;
+        _currentSearchDict = _rootDict;
     }
 
 }

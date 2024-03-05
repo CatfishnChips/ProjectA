@@ -31,6 +31,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     protected Dictionary<string, ActionBase> _actionDictionary;
 
     private ActionManager _actionManager;
+    public InputGestures chainInputGesture;
     protected ComboListener _comboListener;
 
     protected Transform _mesh;
@@ -231,7 +232,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         
         _states = new FighterStateFactory(this);
-        _actionManager = new ActionManager(_fighterManager.InputBasedActionTree);
+        Debug.Log(_fighterManager.InputBasedActionTree.childrenDict.Count);
+        _actionManager = new ActionManager(_fighterManager.InputBasedActionTree.childrenDict);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);

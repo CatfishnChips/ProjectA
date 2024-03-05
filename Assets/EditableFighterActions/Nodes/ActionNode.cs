@@ -5,9 +5,10 @@ namespace EditableFighterActions{
     {
         public InputGestures inputGesture;
         public ActionBase fighterAction;
-        public Dictionary<InputGestures, BPNode> childrenDict;
+        public Dictionary<InputGestures, ActionNode> childrenDict;
 
         public ActionNode(){
+            childrenDict = new Dictionary<InputGestures, ActionNode>();
             Children.ForEach(c => {
                 ActionNode childActionNode = c as ActionNode;
                 if(childActionNode) childrenDict.Add(childActionNode.inputGesture, childActionNode);
