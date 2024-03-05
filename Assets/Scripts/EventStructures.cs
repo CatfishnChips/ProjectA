@@ -27,7 +27,9 @@ public class FighterEvents
     public Action<int> OnDash;
     public Action<int> OnMove;
     public Action OnBlock;
-    public UnityAction<ActionFighterAttack> OnFighterAttack;
+    public UnityAction<InputGestures> OnFighterAttackGesture;
+    public UnityAction<ActionAttack> OnFighterAttackByAction;
+    public UnityAction<string> OnFighterAttackByName;
     public Action<ActionSpiritAttack> OnSpiritAttack;
 
     #endregion

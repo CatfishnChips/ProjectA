@@ -41,6 +41,8 @@ MonoBehaviour:
   m_startFrames: 12
   m_activeFrames: 5
   m_recoveryFrames: 25
+  m_cancelFrames: 23
+  m_inputIgnoreFrames: 3
   m_hitboxFrame: -1
   m_hitboxOffset: {x: 1.34, y: 0.97}
   m_hitboxLocation: {x: 1.34, y: 1.47}

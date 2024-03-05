@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using EditableFighterActions;
 using UnityEngine;
 
 public abstract class ActionAttack : ActionBase
@@ -69,6 +70,8 @@ public abstract class ActionAttack : ActionBase
     [SerializeField] protected int m_startFrames;
     [SerializeField] protected int m_activeFrames;
     [SerializeField] protected int m_recoveryFrames;
+    [SerializeField] protected int m_cancelFrames;
+    [SerializeField] protected int m_inputIgnoreFrames;
 
     [Header("AI Properties")]
     [SerializeField] protected int m_hitboxFrame;
@@ -113,6 +116,7 @@ public abstract class ActionAttack : ActionBase
     public virtual int StartFrames {get => m_startFrames;}
     public virtual int ActiveFrames {get => m_activeFrames;}
     public virtual int RecoveryFrames {get => m_recoveryFrames;}
+    public virtual int CancelFrames {get => m_cancelFrames;}
     public virtual int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
 
     public int HitboxFrame {get => m_hitboxFrame; set {m_hitboxFrame = value;}}
@@ -135,6 +139,24 @@ public abstract class ActionAttack : ActionBase
     protected int _pauseFrames = 0;
 
     public bool Pause { get => _pause; }
+
+    public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+
+        if(state.listeningForChainInput && state._currentFrame >= m_inputIgnoreFrames){
+            Debug.Log("Current Frame: " + state._currentFrame);
+            BPNode chainMoveNext = ctx.ActionManager.CheckIfChain(ctx.AttackInput.ReadContent());
+            if(chainMoveNext != null) {
+                ctx.ActionManager.ItarateForward(chainMoveNext);
+                state.performedComboMove = true;
+            }
+
+            state.listeningForChainInput = false;
+        }
+
+        if(state._currentFrame > m_cancelFrames) ctx.ActionManager.Reset();
+    }
+
+
 }
 
 [System.Flags]

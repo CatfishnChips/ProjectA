@@ -4,6 +4,14 @@ namespace EditableFighterActions{
     public class RootNode : BPNode
     {
         public new string name; 
+        public Dictionary<InputGestures, BPNode> childrenDict;
+
+        public RootNode(){
+            Children.ForEach(c => {
+                ActionNode childActionNode = c as ActionNode;
+                if(childActionNode) childrenDict.Add(childActionNode.inputGesture, childActionNode);
+            });
+        }
         
         public override void InOrderTreeToList(BPNode node, ref List<BPNode> list)
         {

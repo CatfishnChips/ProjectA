@@ -18,6 +18,9 @@ public class FighterManager : MonoBehaviour
 
     public Dictionary<InputGestures, ActionAttack> AttackMoveDict { get => _neutralAttackMoveDict; set => _neutralAttackMoveDict = value; }
     public Dictionary<string, ActionBase> ActionDictionary { get => _actionDictionary; set => _actionDictionary = value; }
+    
+    public RootNode InputBasedActionTree { get => _inputBasedActionTree; }
+    public RootNode ConditionalActionTree { get => _conditionalActionTree; }
 
     void Awake()
     {
@@ -45,7 +48,7 @@ public class FighterManager : MonoBehaviour
 
         foreach (ActionNode actionNode in inputBasedActionNodes)
         {
-            Debug.Log(actionNode.fighterAction.name);
+            //Debug.Log(actionNode.fighterAction.name);
 
             if(!_actionDictionary.ContainsKey(actionNode.fighterAction.name)) _actionDictionary.Add(actionNode.fighterAction.name, actionNode.fighterAction);
 
@@ -78,7 +81,7 @@ public class FighterManager : MonoBehaviour
     public void OnTap(ScreenSide side)
     {
         if(side == ScreenSide.Right){
-            fighterEvents.OnFighterAttack?.Invoke(_neutralAttackMoveDict[InputGestures.TapR] as ActionFighterAttack);
+            fighterEvents.OnFighterAttackGesture?.Invoke(InputGestures.TapR);
         }   
     }
 
@@ -106,14 +109,14 @@ public class FighterManager : MonoBehaviour
 
         if(screenSide == ScreenSide.Right)
         {
-            ActionAttack actionAttack = null;
+            InputGestures inputGesture = InputGestures.None;
 
-            if(swipeDirectionR == GestureDirections.Right) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeRightR];
-            else if(swipeDirectionR == GestureDirections.Left) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeLeftR];
-            else if(swipeDirectionR == GestureDirections.Up) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeUpR];
-            else if(swipeDirectionR == GestureDirections.Down) actionAttack = _neutralAttackMoveDict[InputGestures.SwipeDownR];
+            if(swipeDirectionR == GestureDirections.Right) inputGesture = InputGestures.SwipeRightR;
+            else if(swipeDirectionR == GestureDirections.Left) inputGesture = InputGestures.SwipeLeftR;
+            else if(swipeDirectionR == GestureDirections.Up) inputGesture = InputGestures.SwipeUpR;
+            else if(swipeDirectionR == GestureDirections.Down) inputGesture = InputGestures.SwipeDownR;
 
-            if(actionAttack != null) fighterEvents.OnFighterAttack?.Invoke(actionAttack as ActionFighterAttack);
+            if(inputGesture != InputGestures.None) fighterEvents.OnFighterAttackGesture?.Invoke(inputGesture);
         }
 
     }
@@ -122,14 +125,14 @@ public class FighterManager : MonoBehaviour
     // Useful for some practices such as AI integration
     public void OnDirectAttackInputByAction(ActionAttack attack)
     {
-        if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttack?.Invoke(attack as ActionFighterAttack);
+        if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttackByAction?.Invoke(attack as ActionFighterAttack);
         else fighterEvents.OnSpiritAttack?.Invoke(attack as ActionSpiritAttack);
     }
 
     public void OnDirectAttackInputByString(string attackName)
     {
         ActionAttack attack = _attackMoveDictByName[attackName];
-        if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttack?.Invoke(attack as ActionFighterAttack);
+        if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttackByAction?.Invoke(attack as ActionFighterAttack);
         else fighterEvents.OnSpiritAttack?.Invoke(attack as ActionSpiritAttack);
     }
 

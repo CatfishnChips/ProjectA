@@ -30,6 +30,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     protected Dictionary<string, ActionAttack> _aerialAttackMoveDict;
     protected Dictionary<string, ActionBase> _actionDictionary;
 
+    private ActionManager _actionManager;
     protected ComboListener _comboListener;
 
     protected Transform _mesh;
@@ -66,6 +67,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     #region Public Events
     public UnityAction OnAttackStart;
     public UnityAction OnAttackEnd;
+    public UnityAction OnActionInterrupted;
+    public UnityAction OnActionPassedCancel;
     #endregion
 
     #region Input Variables
@@ -77,7 +80,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     private TouchContinuousInput<int> _movementInput = new TouchContinuousInput<int>(0, InputTypes.Drag, SubInputTypes.None);
     private TouchContinuousInput<bool> _holdAInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
     private TouchContinuousInput<bool> _holdBInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
-    private TouchQueueInput<ActionAttack> _attackInput = new TouchQueueInput<ActionAttack>(InputTypes.Gesture, SubInputTypes.None);
+    private TouchQueueInput<InputGestures> _attackInput = new TouchQueueInput<InputGestures>(InputTypes.Gesture, SubInputTypes.None);
     protected List<ITouchInput> _inputsList;
 
     #endregion
@@ -134,7 +137,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public TouchContinuousInput<int> MovementInput { get => _movementInput; }
     public TouchContinuousInput<bool> HoldAInput { get => _holdAInput; }
     public TouchContinuousInput<bool> HoldBInput { get => _holdBInput; }
-    public TouchQueueInput<ActionAttack> AttackInput { get => _attackInput; }
+    public TouchQueueInput<InputGestures> AttackInput { get => _attackInput; }
 
     //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
     public ActionFighterAttack AttackAction{get{return _fighterAttackAction;}}
@@ -150,6 +153,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public AnimatorOverrideController ColBoxOverrideCont{get{return _colBoxOverrideCont;} set{_colBoxOverrideCont = value;}}
     public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
 
+    public ActionManager ActionManager { get => _actionManager; }
     public ComboListener ComboListener{get{return _comboListener;} set{_comboListener = value;}}
     public ComboMove[] CombosArray{get{return null;}}
     public int ComboBuffer{get{return _comboBuffer;}}
@@ -227,7 +231,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         
         _states = new FighterStateFactory(this);
-        _comboListener = new ComboListener(this);
+        _actionManager = new ActionManager(_fighterManager.InputBasedActionTree);
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);
@@ -265,7 +269,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     protected virtual void StartFunction(){
 
-        _fighterManager.fighterEvents.OnFighterAttack += OnFighterAttackInput;
+        _fighterManager.fighterEvents.OnFighterAttackGesture += OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack += OnSpiritAttackInput;
         _fighterManager.fighterEvents.OnMove += OnMove;
         _fighterManager.fighterEvents.OnDash += OnDash;
@@ -309,7 +313,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     protected virtual void OnDisableFunction(){
         
-        _fighterManager.fighterEvents.OnFighterAttack -= OnFighterAttackInput;
+        _fighterManager.fighterEvents.OnFighterAttackGesture -= OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack -= OnSpiritAttackInput;
         _fighterManager.fighterEvents.OnMove -= OnMove;
         _fighterManager.fighterEvents.OnDash -= OnDash;
@@ -334,8 +338,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _movementInput.Write(value);
     }
 
-    protected virtual void OnFighterAttackInput(ActionFighterAttack attackAction){
-        _attackInput.Write(attackAction);
+    protected virtual void OnFighterAttackInput(InputGestures gesture){
+        _attackInput.Write(gesture);
     }
 
     protected virtual void OnSpiritAttackInput(ActionSpiritAttack attackAction){

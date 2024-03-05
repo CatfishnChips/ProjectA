@@ -46,7 +46,7 @@ namespace EditableFighterActions{
             Dictionary<ActionTypes, RootNode> dict = new Dictionary<ActionTypes, RootNode>();
             for(int i = 0; i < rootNodes.Length; i++){
                 dict.Add(rootNodes[i].type, rootNodes[i].rootNode);
-                Debug.Log(rootNodes[i].type);
+                //Debug.Log(rootNodes[i].type);
             }
             return dict;
         }

@@ -39,7 +39,9 @@ public class ActionFighterAttack : ActionAttack
         //Debug.Log("ActionFighterAttack(SwitchActionStateFunction) - Frame: " + state._currentFrame + " State: " + state._actionState);
     }
 
-    public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+    public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+        base.FixedUpdateFunction(ctx, state);
+
         switch(state._actionState)
         {
             case ActionStates.Start:

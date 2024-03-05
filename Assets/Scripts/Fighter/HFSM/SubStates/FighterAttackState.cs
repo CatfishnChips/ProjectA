@@ -7,7 +7,11 @@ public class FighterAttackState : FighterBaseState
     public int _currentFrame = 0;
     public ActionStates _actionState = default;
     private bool _hadHit = false;
-    private bool _performedComboMove = false;
+
+    public bool performedComboMove = false;
+    public bool listeningForChainInput = true;
+
+    private bool isReading;
 
     public bool HadHit { get {return _hadHit;} set{ _hadHit = value;} }
     public ActionFighterAttack Action { get => _action; }
@@ -18,6 +22,7 @@ public class FighterAttackState : FighterBaseState
 
     public override void CheckSwitchState()
     {
+        Debug.Log("Current Frame: " + _currentFrame + "Cancel Frame: " + _action.CancelFrames);
         if (_actionState == ActionStates.None){
 
             if(_ctx.Player == Player.P1) EventManager.Instance.FighterAttackEnded?.Invoke();
@@ -33,33 +38,20 @@ public class FighterAttackState : FighterBaseState
                 SwitchState(_factory.GetSubState(FighterSubStates.Idle));
             }
         }
-        else if (_actionState == ActionStates.Recovery){
-            // Rework this attack transition!
-            if(_ctx.AttackInput.Read() && _performedComboMove && !_action.Pause && _currentFrame >= _action.StartFrames + _action.ActiveFrames + 2){
-                SwitchState(_factory.GetSubState(FighterSubStates.Attack));
-            }
+        else if (_currentFrame >= _action.CancelFrames && performedComboMove){
+            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
     }
 
     public override void EnterState()
     {   
         //string attackName = _ctx.AttackName;
-        _action = _ctx.AttackInput.ReadContent() as ActionFighterAttack;
+        _action = _ctx.ActionManager.GetAction(_ctx.AttackInput.ReadContent()) as ActionFighterAttack;
         _currentFrame = 0;
         _ctx.OnAttackStart?.Invoke();
         _hadHit = false;
         _ctx.CurrentFrame =_currentFrame;
         _actionState = ActionStates.Start;
-
-        // Restart Combo Listener.
-        if(!_ctx.ComboListener.isActive){
-            _ctx.ComboListener.isActive = true;
-        }
-
-        Debug.Log("Entered state with attack: " + _action);
-        //_ctx.ComboListener.AttackOverride(ref _action, ref _performedComboMove);
-        Debug.Log(_action);
-        Debug.Log("Combo move altered the action to: " + _action);
 
         _action.EnterStateFunction(_ctx, this);
         
@@ -82,13 +74,14 @@ public class FighterAttackState : FighterBaseState
 
     public override void ExitState()
     {
-        Debug.Log("Attack ended");
+        Debug.Log("Attack ended at frame: " + _currentFrame);
         _ctx.CurrentFrame = 0;
         _ctx.IsGravityApplied = true;
         _ctx.ActionState = default;
         _ctx.OnAttackEnd?.Invoke();
         _action.ExitStateFunction(_ctx, this);
-        _performedComboMove = false;
+        performedComboMove = false;
+        listeningForChainInput = true;
         
         _ctx.Drag = 0f;
         _ctx.Gravity = 0f;
@@ -104,7 +97,6 @@ public class FighterAttackState : FighterBaseState
     }
 
     public override void FixedUpdateState(){
-        base.FixedUpdateState();
         _action.FixedUpdateFunction(_ctx, this);
         // Debug.Log("Frame L: " + _action.FrameLenght + " Current F: " + _currentFrame + " Buffer: " + _ctx.GetInputBuffer + " Bool: " + _ctx.ValidAttackInputInterval);
         //_ctx.ValidAttackInputInterval = _action.FrameLenght - _currentFrame < _ctx.GetInputBuffer;
