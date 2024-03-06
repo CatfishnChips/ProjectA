@@ -28,13 +28,13 @@ public class ActionAttackProjectile : ActionFighterAttack
 
     protected override List<FrameEvent> Events {get => m_frameEvents;}
      
-    public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
-        switch(state._actionState)
+    public void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+        switch(_actionState)
         {
             case ActionStates.Start:
                 if(_firstFrameStartup){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
+                    ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
                     ctx.Animator.PlayInFixedTime("AttackStart");
                     ctx.ColBoxAnimator.Play("AttackStart");
                     _firstFrameStartup = false;
@@ -43,8 +43,8 @@ public class ActionAttackProjectile : ActionFighterAttack
 
             case ActionStates.Active:
                 if(_firstFrameActive){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
+                    ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
                     ctx.Animator.PlayInFixedTime("AttackActive");
                     _firstFrameActive = false;
 
@@ -56,8 +56,8 @@ public class ActionAttackProjectile : ActionFighterAttack
 
             case ActionStates.Recovery:
                 if(_firstFrameRecovery){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
+                    ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
                     ctx.Animator.PlayInFixedTime("AttackRecover");
                     _firstFrameRecovery = false;
                 }
@@ -66,12 +66,12 @@ public class ActionAttackProjectile : ActionFighterAttack
        
         // Invoke events.
         foreach(FrameEvent e in Events){
-            if (state._currentFrame == e.Frame){
+            if (_currentFrame == e.Frame){
                 e.Event(ctx, state);
             }
         }
 
         if (ctx.IsHit) ctx.IsHit = false;
-        state._currentFrame++;
+        _currentFrame++;
     }
 }

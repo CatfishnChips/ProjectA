@@ -17,6 +17,7 @@ namespace EditableFighterActions{
         public string Guid { get => guid; set => guid = value; }
 
         public abstract void InOrderTreeToList(BPNode node, ref List<BPNode> list);
+        public abstract void InitializeDictionary();
 
     }
 }

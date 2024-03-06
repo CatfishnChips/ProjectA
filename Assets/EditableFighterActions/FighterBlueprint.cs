@@ -48,6 +48,10 @@ namespace EditableFighterActions{
             }
             return dict;
         }
+
+        public void InitializeDictionaries(){
+            nodes.ForEach(n => n.InitializeDictionary());
+        }
     }
 
     [Serializable]

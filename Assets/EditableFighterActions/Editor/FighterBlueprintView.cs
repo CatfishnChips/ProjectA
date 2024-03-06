@@ -23,7 +23,7 @@ namespace EditableFighterActions{
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/FighterBlueprintEditor.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/EditableFighterActions/Editor/FighterBlueprintEditor.uss");
             styleSheets.Add(styleSheet);
         }
 

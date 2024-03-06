@@ -117,6 +117,7 @@ public abstract class ActionAttack : ActionBase
     public virtual int ActiveFrames {get => m_activeFrames;}
     public virtual int RecoveryFrames {get => m_recoveryFrames;}
     public virtual int CancelFrames {get => m_cancelFrames;}
+    public virtual int InputIgnoreFrames {get => m_inputIgnoreFrames;}
     public virtual int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
 
     public int HitboxFrame {get => m_hitboxFrame; set {m_hitboxFrame = value;}}
@@ -140,20 +141,22 @@ public abstract class ActionAttack : ActionBase
 
     public bool Pause { get => _pause; }
 
-    public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
+    // public virtual void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
 
-        if(state.listeningForChainInput && state._currentFrame >= m_inputIgnoreFrames){
-            Debug.Log("Current Frame: " + state._currentFrame);
-            if(ctx.ActionManager.CheckIfChain(ctx.AttackInput.ReadContent())) {
-                state.chainInputGesture = ctx.AttackInput.ReadContent();
-                state.performedComboMove = true;
-            }
+    //     if(state.listeningForChainInput && state._currentFrame >= m_inputIgnoreFrames){
+    //         if(ctx.AttackInput.ReadContent() != InputGestures.None){
+    //             if(ctx.ActionManager.CheckIfChain(ctx.AttackInput.ReadContent())){
+    //                 state.chainInputGesture = ctx.AttackInput.ReadContent();
+    //                 state.performedComboMove = true;
+    //             }
+    //             else{
+    //                 state.listeningForChainInput = false;
+    //             }
+    //         }
+    //     }
 
-            state.listeningForChainInput = false;
-        }
-
-        if(state._currentFrame == m_cancelFrames + 1) ctx.ActionManager.Reset();
-    }
+    //     if(state._currentFrame == m_cancelFrames + 1) ctx.ActionManager.Reset();
+    // }
 
 
 }

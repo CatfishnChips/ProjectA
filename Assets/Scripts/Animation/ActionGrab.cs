@@ -16,53 +16,53 @@ public class ActionGrab : ActionFighterAttack
     }
 
     // REWORK HERE, HAS THE OLD LOGIC
-    public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
+    public override void FixedUpdateFunction()
     {
-        if (state._currentFrame <= state.Action.StartFrames){
+        if (_currentFrame <= StartFrames){
             if(_firstFrameStartup){
-                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                ctx.Animator.Play("AttackStart");
-                ctx.ColBoxAnimator.Play("AttackStart");
+                _ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
+                _ctx.Animator.Play("AttackStart");
+                _ctx.ColBoxAnimator.Play("AttackStart");
                 _firstFrameStartup = false;
             }
         }
-        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
+        else if (_currentFrame > StartFrames && _currentFrame <= StartFrames + ActiveFrames){
             if(_firstFrameActive){
-                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                ctx.Animator.Play("AttackActive");
+                _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
+                _ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
         }
-        else if(state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
-        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
+        else if(_currentFrame > StartFrames + ActiveFrames && 
+        _currentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
             if(_firstFrameRecovery){
                 // If attack successfuly connects, change the animation.
-                if (ctx.IsHit){
-                    FighterStateMachine target = ctx.HitCollisionData.hurtbox.Owner;
-                    ctx.IsHit = false;
+                if (_ctx.IsHit){
+                    FighterStateMachine target = _ctx.HitCollisionData.hurtbox.Owner;
+                    _ctx.IsHit = false;
                     // Do the further grab logic here.
 
-                    ctx.AnimOverrideCont["DirectPunchR"] = m_alternativeMeshAnimation;
-                    ctx.ColBoxOverrideCont["Uppercut_Recovery"] = m_alternativeColliderAnimation;
-                    ctx.Animator.SetFloat("SpeedVar", m_frame);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", m_frame);
+                    _ctx.AnimOverrideCont["DirectPunchR"] = m_alternativeMeshAnimation;
+                    _ctx.ColBoxOverrideCont["Uppercut_Recovery"] = m_alternativeColliderAnimation;
+                    _ctx.Animator.SetFloat("SpeedVar", m_frame);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", m_frame);
                 }
                 else{
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
+                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
                 }
 
-                ctx.Animator.Play("AttackRecover");
+                _ctx.Animator.Play("AttackRecover");
                 _firstFrameRecovery = false;
             }
         }
-        state._currentFrame++;
+        _currentFrame++;
     }
 
-    public override void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state)
+    public override void ExitStateFunction()
     {
-        base.ExitStateFunction(ctx, state);
+        base.ExitStateFunction();
     }
 }

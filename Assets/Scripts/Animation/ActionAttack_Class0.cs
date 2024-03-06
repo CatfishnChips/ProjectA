@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Attack Action", menuName = "ScriptableObject/Action/Class0/Attack")]
 public class ActionAttack_Class0 : ActionFighterAttack
 {
+    protected FighterStateMachine_Class0 _ctx_0;
+
     [Header("Focus Properties")]
     [SerializeField] protected int m_focusDamage;
     [SerializeField] protected int m_focusChipDamage;
@@ -32,10 +34,12 @@ public class ActionAttack_Class0 : ActionFighterAttack
 
     public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
         base.EnterStateFunction(ctx, state);
+        _ctx = ctx as FighterStateMachine_Class0;
         m_focus = ((FighterStateMachine_Class0)ctx).Focus;
     }
     
-    public override void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        ((FighterStateMachine_Class0)ctx).SetFocus(false);
+    public override void ExitStateFunction(){
+        base.ExitStateFunction();
+        _ctx_0.SetFocus(false);
     }
 }

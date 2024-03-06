@@ -16,78 +16,78 @@ public class ActionParry : ActionAttack_Class0
         m_isDodged = false;
     }
 
-    public override void SwitchActionStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        if (state._currentFrame <= state.Action.StartFrames){
-            state._actionState = ActionStates.Start;
+    public override void SwitchActionStateFunction(){
+        if (_currentFrame <= StartFrames){
+            _actionState = ActionStates.Start;
         }
-        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
+        else if (_currentFrame > StartFrames && _currentFrame <= StartFrames + ActiveFrames){
             if (m_isDodged){
-                state._actionState = ActionStates.Recovery;
+                _actionState = ActionStates.Recovery;
             }
-            else state._actionState = ActionStates.Active;
+            else _actionState = ActionStates.Active;
         }
-        else if (state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
-        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
+        else if (_currentFrame > StartFrames + ActiveFrames && 
+        _currentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
             if (m_isDodged){
-                state._actionState = ActionStates.Recovery;
+                _actionState = ActionStates.Recovery;
             }
-            else state._actionState = ActionStates.None;
+            else _actionState = ActionStates.None;
         } 
     }
 
-    public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
-        switch(state._actionState)
+    public override void FixedUpdateFunction(){
+        switch(_actionState)
         {
             case ActionStates.Start:
                 if(_firstFrameStartup){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.Animator.Play("AttackStart");
-                    ctx.ColBoxAnimator.Play("AttackStart");
+                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
+                    _ctx.Animator.Play("AttackStart");
+                    _ctx.ColBoxAnimator.Play("AttackStart");
                     _firstFrameStartup = false;
                 }
             break;
 
             case ActionStates.Active:
                 if(_firstFrameActive){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.Animator.Play("AttackActive");
+                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
+                    _ctx.Animator.Play("AttackActive");
                     _firstFrameActive = false;
-                    ctx.IsInvulnerable = true;
+                    _ctx.IsInvulnerable = true;
                 }
 
-                if (ctx.IsHurt) {
-                    ctx.IsHurt = false;
+                if (_ctx.IsHurt) {
+                    _ctx.IsHurt = false;
                     m_isDodged = true;
-                    ((FighterStateMachine_Class0)ctx).SetFocus(true);
+                    _ctx_0.SetFocus(true);
                     m_focus = true;
                 }
             break;
 
             case ActionStates.Recovery:
                 if(_firstFrameRecovery){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.Animator.Play("AttackRecover");
+                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
+                    _ctx.Animator.Play("AttackRecover");
                     _firstFrameRecovery = false;
-                    state._currentFrame = state.Action.StartFrames + state.Action.ActiveFrames;
+                    _currentFrame = StartFrames + ActiveFrames;
                 }
             break;
         }
        
         // Invoke events.
         foreach(FrameEvent e in Events){
-            if (state._currentFrame == e.Frame){
-                e.Event(ctx, state);
+            if (_currentFrame == e.Frame){
+                e.Event(_ctx, _ctx.CurrentState as FighterAttackState);
             }
         }
 
-        if (ctx.IsHit) ctx.IsHit = false;
-        state._currentFrame++;
+        if (_ctx.IsHit) _ctx.IsHit = false;
+        _currentFrame++;
     }
 
-    public override void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        ctx.IsInvulnerable = false;
+    public override void ExitStateFunction(){
+        _ctx.IsInvulnerable = false;
     }
 }

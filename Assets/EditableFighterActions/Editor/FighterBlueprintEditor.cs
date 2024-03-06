@@ -23,12 +23,12 @@ namespace EditableFighterActions{
             VisualElement root = rootVisualElement;
 
             // Import UXML
-            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/FighterBlueprintEditor.uxml");
+            var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/EditableFighterActions/Editor/FighterBlueprintEditor.uxml");
             visualTree.CloneTree(root);
 
             // A stylesheet can be added to a VisualElement.
             // The style will be applied to the VisualElement and all of its children.
-            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/FighterBlueprintEditor.uss");
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/EditableFighterActions/Editor/FighterBlueprintEditor.uss");
             root.styleSheets.Add(styleSheet);
 
             blueprintView = root.Q<FighterBlueprintView>();

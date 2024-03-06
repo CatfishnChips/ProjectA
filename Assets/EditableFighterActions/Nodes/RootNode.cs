@@ -5,15 +5,15 @@ namespace EditableFighterActions{
     public class RootNode : BPNode
     {
         public new string name; 
+        [SerializeField]
         public Dictionary<InputGestures, ActionNode> childrenDict;
 
-        public RootNode(){
+        public override void InitializeDictionary(){
             childrenDict = new Dictionary<InputGestures, ActionNode>();
             Children.ForEach(c => {
                 ActionNode childActionNode = c as ActionNode;
-                if(childActionNode) childrenDict.Add(childActionNode.inputGesture, childActionNode);
+                if(childActionNode && !childrenDict.ContainsKey(childActionNode.inputGesture)) childrenDict.Add(childActionNode.inputGesture, childActionNode);
             });
-            Debug.Log(childrenDict.Count);
         }
         
         public override void InOrderTreeToList(BPNode node, ref List<BPNode> list)

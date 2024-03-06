@@ -26,6 +26,8 @@ public class FighterManager : MonoBehaviour
     {
         fighterEvents = new FighterEvents();
 
+        _fighterBlueprint.InitializeDictionaries();
+
         _inputBasedActionTree = _fighterBlueprint.GetRootDict()[ActionTypes.InputBased];
         _conditionalActionTree = _fighterBlueprint.GetRootDict()[ActionTypes.Conditional];
 

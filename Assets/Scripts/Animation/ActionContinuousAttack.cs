@@ -24,47 +24,47 @@ public class ActionContinuousAttack : ActionFighterAttack
         _timePaused = false;
     }
 
-    public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state)
+    public override void FixedUpdateFunction()
     {
-        if (state._currentFrame <= state.Action.StartFrames){
+        if (_currentFrame <= StartFrames){
             if(_firstFrameStartup){
-                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                ctx.Animator.Play("AttackStart");
-                ctx.ColBoxAnimator.Play("AttackStart");
+                _ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
+                _ctx.Animator.Play("AttackStart");
+                _ctx.ColBoxAnimator.Play("AttackStart");
                 _firstFrameStartup = false;
             }
         }
-        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
+        else if (_currentFrame > StartFrames && _currentFrame <= StartFrames + ActiveFrames){
             if(_firstFrameActive){
-                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                ctx.Animator.Play("AttackActive");
+                _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
+                _ctx.Animator.Play("AttackActive");
                 _firstFrameActive = false;
             }
 
             // REWORK HERE!
             if (!_timePaused){
-                _pauseTime = ctx.HoldBInput.Read();
+                _pauseTime = _ctx.HoldBInput.Read();
                 _timePaused = !_pauseTime;
             }
         }
-        else if(state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
-        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
+        else if(_currentFrame > StartFrames + ActiveFrames && 
+        _currentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
             if(_firstFrameRecovery){
-                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                ctx.Animator.Play("AttackRecover");
+                _ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
+                _ctx.Animator.Play("AttackRecover");
                 _firstFrameRecovery = false;
             }
         }
 
         if (!_pauseTime)
-        state._currentFrame++;
+        _currentFrame++;
     }
 
-    public override void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state)
+    public override void ExitStateFunction()
     {
-        base.ExitStateFunction(ctx, state);
+        base.ExitStateFunction();
     }
 }

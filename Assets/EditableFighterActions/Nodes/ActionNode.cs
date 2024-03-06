@@ -1,13 +1,15 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EditableFighterActions{
     public abstract class ActionNode : BPNode
     {
         public InputGestures inputGesture;
         public ActionBase fighterAction;
+        [SerializeField]
         public Dictionary<InputGestures, ActionNode> childrenDict;
 
-        public ActionNode(){
+        public override void InitializeDictionary(){
             childrenDict = new Dictionary<InputGestures, ActionNode>();
             Children.ForEach(c => {
                 ActionNode childActionNode = c as ActionNode;

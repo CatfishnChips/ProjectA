@@ -232,8 +232,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         
         _states = new FighterStateFactory(this);
-        Debug.Log(_fighterManager.InputBasedActionTree.childrenDict.Count);
         _actionManager = new ActionManager(_fighterManager.InputBasedActionTree.childrenDict);
+        chainInputGesture = InputGestures.None;
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);

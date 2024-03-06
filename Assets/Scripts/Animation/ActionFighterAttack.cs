@@ -5,15 +5,59 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Fighter Attack Action", menuName = "ScriptableObject/Action/Attack/FighterAttack")]
 public class ActionFighterAttack : ActionAttack
 {
-    private List<FrameEvent> _frameEvents = new List<FrameEvent>();
+    protected FighterStateMachine _ctx;
+    protected FighterAttackState _state;
+    protected int _currentFrame = 0;
+    protected ActionStates _actionState = default;
+    protected bool _hadHit = false;
+
+    private bool performedChainMove = false;
+    private bool cancelInputRead = false;
+    protected bool listeningForChainInput = true;
+    protected InputGestures chainInputGesture = InputGestures.None;
+
+    protected bool isReading;
+
+    public bool HadHit { get {return _hadHit;} set{ _hadHit = value;} }
+    public int CurrentFrame {get{return _currentFrame;}}
+    public bool CancelInputRead { get => cancelInputRead; set => cancelInputRead = value; }
+
+    protected List<FrameEvent> _frameEvents = new List<FrameEvent>();
     protected virtual List<FrameEvent> Events {get {return _frameEvents;}}
+
 
     public ActionFighterAttack(){
         // Add FrameEvents here:
         //Events.Add(new FrameEvent(21, (FighterStateMachine ctx, FighterAttackState state) => Debug.Log("ActionFighterAttack Event Callback - Frame: " + state._currentFrame)));
     }
 
+    public virtual FighterSubStates SwitchState(){
+        if (_actionState == ActionStates.None){
+
+            if(_ctx.Player == Player.P1) EventManager.Instance.FighterAttackEnded?.Invoke();
+            else if(_ctx.Player == Player.P2) EventManager.Instance.P2FighterAttackEnded?.Invoke();
+
+            _ctx.ActionState = default;
+            _ctx.ValidAttackInputInterval = false;
+
+            if (_ctx.AttackInput.Read()){
+                return FighterSubStates.Attack;
+            }
+            else{
+                return FighterSubStates.Idle;
+            }
+        }
+        else if (_currentFrame >= CancelFrames && _state.ChainActionGesture != InputGestures.None){
+            performedChainMove = true;
+            return FighterSubStates.Attack;
+        }
+
+        return FighterSubStates.None;
+    }
+
     public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
+        _ctx = ctx;
+        _state = state;
         _firstFrameStartup = true;
         _firstFrameActive = true;
         _firstFrameRecovery = true;
@@ -21,55 +65,78 @@ public class ActionFighterAttack : ActionAttack
         _pause = false;
         _pauseFrames = 0;
         ctx.IsGravityApplied = m_gravity;
+
+        Debug.Log(name);
+        _currentFrame = 0;
+        ctx.OnAttackStart?.Invoke();
+        _hadHit = false;
+        ctx.CurrentFrame =_currentFrame;
+        _actionState = ActionStates.Start;
+        ctx.chainInputGesture = InputGestures.None;
+        
+        _ctx.ClipOverrides["AttackStart"] = MeshAnimationS;
+        _ctx.ClipOverrides["AttackActive"] = MeshAnimationA;
+        _ctx.ClipOverrides["AttackRecover"] = MeshAnimationR;
+
+        _ctx.ColBoxClipOverrides["Box_AttackStart"] = BoxAnimationS;
+        _ctx.ColBoxClipOverrides["Box_AttackActive"] = BoxAnimationA;
+        _ctx.ColBoxClipOverrides["Box_AttackRecover"] = BoxAnimationR;
+
+        _ctx.AnimOverrideCont.ApplyOverrides(_ctx.ClipOverrides);
+        _ctx.ColBoxOverrideCont.ApplyOverrides(_ctx.ColBoxClipOverrides);
+
+        _ctx.HitResponder.UpdateData(this);
+
+        if (_ctx.Player == Player.P2) EventManager.Instance.FighterAttackStarted?.Invoke(name);
+        else EventManager.Instance.P2FighterAttackStarted?.Invoke(name);
+
     }
 
-    public virtual void SwitchActionStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        if (state._currentFrame <= state.Action.StartFrames){
-            state._actionState = ActionStates.Start;
+    public virtual void SwitchActionStateFunction(){
+        if (_currentFrame <= m_startFrames){
+            _actionState = ActionStates.Start;
         }
-        else if (state._currentFrame > state.Action.StartFrames && state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames){
-            state._actionState = ActionStates.Active;
+        else if (_currentFrame > m_startFrames && _currentFrame <= m_startFrames + m_activeFrames){
+            _actionState = ActionStates.Active;
         }
-        else if (state._currentFrame > state.Action.StartFrames + state.Action.ActiveFrames && 
-        state._currentFrame <= state.Action.StartFrames + state.Action.ActiveFrames + state.Action.RecoveryFrames){
-            state._actionState = ActionStates.Recovery;
+        else if (_currentFrame > m_startFrames + m_activeFrames && 
+        _currentFrame <= m_startFrames + m_activeFrames + RecoveryFrames){
+            _actionState = ActionStates.Recovery;
         }
-        else state._actionState = ActionStates.None;
+        else _actionState = ActionStates.None;
 
         //Debug.Log("ActionFighterAttack(SwitchActionStateFunction) - Frame: " + state._currentFrame + " State: " + state._actionState);
     }
 
-    public override void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
-        base.FixedUpdateFunction(ctx, state);
-
-        switch(state._actionState)
+    public virtual void FixedUpdateFunction(){
+        switch(_actionState)
         {
             case ActionStates.Start:
                 if(_firstFrameStartup){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedS);
-                    ctx.Animator.PlayInFixedTime("AttackStart");
-                    ctx.ColBoxAnimator.PlayInFixedTime("AttackStart");
+                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
+                    _ctx.Animator.PlayInFixedTime("AttackStart");
+                    _ctx.ColBoxAnimator.PlayInFixedTime("AttackStart");
                     _firstFrameStartup = false;
                 }
             break;
 
             case ActionStates.Active:
                 if(_firstFrameActive){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                    ctx.Animator.PlayInFixedTime("AttackActive");
-                    ctx.ColBoxAnimator.PlayInFixedTime("AttackActive");
+                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
+                    _ctx.Animator.PlayInFixedTime("AttackActive");
+                    _ctx.ColBoxAnimator.PlayInFixedTime("AttackActive");
                     _firstFrameActive = false;
                 }
             break;
 
             case ActionStates.Recovery:
                 if(_firstFrameRecovery){
-                    ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedR);
-                    ctx.Animator.PlayInFixedTime("AttackRecover");
-                    ctx.ColBoxAnimator.PlayInFixedTime("AttackRecover");
+                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
+                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
+                    _ctx.Animator.PlayInFixedTime("AttackRecover");
+                    _ctx.ColBoxAnimator.PlayInFixedTime("AttackRecover");
                     _firstFrameRecovery = false;
                 }
             break;
@@ -77,22 +144,22 @@ public class ActionFighterAttack : ActionAttack
        
         // Invoke events.
         foreach(FrameEvent e in Events){
-            if (state._currentFrame == e.Frame){
-                e.Event(ctx, state);
+            if (_currentFrame == e.Frame){
+                e.Event(_ctx, _ctx.CurrentState as FighterAttackState);
             }
         }
 
-        if (ctx.IsHit) {
-            ctx.IsHit = false;
-            state.HadHit = true;
+        if (_ctx.IsHit) {
+            _ctx.IsHit = false;
+            HadHit = true;
 
             if (_firstTimePause){
                 _firstTimePause = false;
                 _pause = true;
                 _pauseFrames = m_hitStop;
                 
-                ctx.Animator.SetFloat("SpeedVar", 0);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", 0);
+                _ctx.Animator.SetFloat("SpeedVar", 0);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0);
             }
         } 
 
@@ -100,17 +167,40 @@ public class ActionFighterAttack : ActionAttack
         if (_pause){
             if (_pauseFrames <= 0){
                 _pause = false;
-                ctx.Animator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
-                ctx.ColBoxAnimator.SetFloat("SpeedVar", state.Action.AnimSpeedA);
+                _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
             }
             _pauseFrames--;
         } 
-        else
-        state._currentFrame++;
+        else _currentFrame++;
 
-        //Debug.Log("ActionFighterAttack(FixedUpdateFunction) - Frame: " + state._currentFrame + " State: " + state._actionState);
+        _ctx.CurrentMovement = applyRootMotion ? _ctx.RootMotion : _ctx.CurrentMovement;
+
+        SwitchActionStateFunction();
+        _ctx.ActionState = _actionState;
+
+        _ctx.CurrentFrame =_currentFrame;
     }
 
-    public virtual void ExitStateFunction(FighterStateMachine ctx, FighterAttackState state){
+    public virtual void ExitStateFunction(){
+        Debug.Log("Attack ended at frame: " + _currentFrame);
+        _ctx.CurrentFrame = 0;
+        _ctx.IsGravityApplied = true;
+        _ctx.ActionState = default;
+        _ctx.OnAttackEnd?.Invoke();
+        if(!performedChainMove) {
+            _state.ChainActionGesture = InputGestures.None;
+            _ctx.ActionManager.Reset();
+        }
+        performedChainMove = false;
+        listeningForChainInput = true;
+
+        if(chainInputGesture != _ctx.chainInputGesture) _ctx.ActionManager.Reset();
+        chainInputGesture = InputGestures.None;
+        
+        _ctx.Drag = 0f;
+        _ctx.Gravity = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
+
     }
 }
