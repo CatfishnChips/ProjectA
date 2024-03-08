@@ -31,7 +31,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     protected Dictionary<string, ActionBase> _actionDictionary;
 
     private ActionManager _actionManager;
-    public InputGestures chainInputGesture;
+    private InputGestures _chainActionGesture;
     protected ComboListener _comboListener;
 
     protected Transform _mesh;
@@ -155,9 +155,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public AnimationClipOverrides ColBoxClipOverrides{get{return _colBoxClipOverrides;}}
 
     public ActionManager ActionManager { get => _actionManager; }
-    public ComboListener ComboListener{get{return _comboListener;} set{_comboListener = value;}}
-    public ComboMove[] CombosArray{get{return null;}}
-    public int ComboBuffer{get{return _comboBuffer;}}
+    public InputGestures ChainActionGesture { get => _chainActionGesture; set => _chainActionGesture = value; }
 
     public HitResponder HitResponder {get{return _hitResponder;}}
     public HurtResponder HurtResponder {get{return _hurtResponder;}}
@@ -233,7 +231,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         
         _states = new FighterStateFactory(this);
         _actionManager = new ActionManager(_fighterManager.InputBasedActionTree.childrenDict);
-        chainInputGesture = InputGestures.None;
+        _chainActionGesture = InputGestures.None;
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
         
         _animOverrideCont = new AnimatorOverrideController(_animator.runtimeAnimatorController);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Fighter Attack Action", menuName = "ScriptableObject/Action/Attack/FighterAttack")]
-public class ActionFighterAttack : ActionAttack
+public class ActionFighterAttack : ActionAttack, ICancellableAction
 {
     protected FighterStateMachine _ctx;
     protected FighterAttackState _state;
@@ -13,8 +13,7 @@ public class ActionFighterAttack : ActionAttack
 
     private bool performedChainMove = false;
     private bool cancelInputRead = false;
-    protected bool listeningForChainInput = true;
-    protected InputGestures chainInputGesture = InputGestures.None;
+    protected bool _listeningForChainInput = true;
 
     protected bool isReading;
 
@@ -47,9 +46,10 @@ public class ActionFighterAttack : ActionAttack
                 return FighterSubStates.Idle;
             }
         }
-        else if (_currentFrame >= CancelFrames && _state.ChainActionGesture != InputGestures.None){
+        else if (_currentFrame >= CancelFrames && _ctx.ChainActionGesture != InputGestures.None){
             performedChainMove = true;
-            return FighterSubStates.Attack;
+            if(_ctx.ActionManager.PeekAction(_ctx.ChainActionGesture).GetType() == typeof(ActionConditional)) return FighterSubStates.Dash;
+            else if(_ctx.ActionManager.PeekAction(_ctx.ChainActionGesture).GetType() == typeof(ActionFighterAttack)) return FighterSubStates.Attack;
         }
 
         return FighterSubStates.None;
@@ -66,13 +66,13 @@ public class ActionFighterAttack : ActionAttack
         _pauseFrames = 0;
         ctx.IsGravityApplied = m_gravity;
 
-        Debug.Log(name);
+        //Debug.Log(name);
         _currentFrame = 0;
-        ctx.OnAttackStart?.Invoke();
+        _ctx.OnAttackStart?.Invoke();
         _hadHit = false;
-        ctx.CurrentFrame =_currentFrame;
+        _ctx.CurrentFrame =_currentFrame;
         _actionState = ActionStates.Start;
-        ctx.chainInputGesture = InputGestures.None;
+        _ctx.ChainActionGesture = InputGestures.None;
         
         _ctx.ClipOverrides["AttackStart"] = MeshAnimationS;
         _ctx.ClipOverrides["AttackActive"] = MeshAnimationA;
@@ -182,21 +182,28 @@ public class ActionFighterAttack : ActionAttack
         _ctx.CurrentFrame =_currentFrame;
     }
 
+    public void CancelCheck(){
+        if(CurrentFrame <= CancelFrames && CurrentFrame > InputIgnoreFrames && _ctx.AttackInput.Read() && _listeningForChainInput){
+            if(_ctx.ActionManager.CheckIfChain(_ctx.AttackInput.ReadContent())){
+                _ctx.ChainActionGesture = _ctx.AttackInput.ReadContent();
+            }else{
+                _listeningForChainInput = false;
+            }
+        }
+    }
+
     public virtual void ExitStateFunction(){
-        Debug.Log("Attack ended at frame: " + _currentFrame);
+        //Debug.Log("Attack ended at frame: " + _currentFrame);
         _ctx.CurrentFrame = 0;
         _ctx.IsGravityApplied = true;
         _ctx.ActionState = default;
         _ctx.OnAttackEnd?.Invoke();
         if(!performedChainMove) {
-            _state.ChainActionGesture = InputGestures.None;
+            _ctx.ChainActionGesture = InputGestures.None;
             _ctx.ActionManager.Reset();
         }
         performedChainMove = false;
-        listeningForChainInput = true;
-
-        if(chainInputGesture != _ctx.chainInputGesture) _ctx.ActionManager.Reset();
-        chainInputGesture = InputGestures.None;
+        _listeningForChainInput = true;
         
         _ctx.Drag = 0f;
         _ctx.Gravity = 0f;

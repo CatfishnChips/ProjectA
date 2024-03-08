@@ -157,6 +157,7 @@ MonoBehaviour:
   - {fileID: 2682750803160150536}
   - {fileID: -1873962000301212949}
   - {fileID: -2695239562484324806}
+  - {fileID: 5020985173213847586}
 --- !u!114 &1133765153074997452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,6 +307,22 @@ MonoBehaviour:
   children: []
   inputGesture: 0
   fighterAction: {fileID: 11400000, guid: c598b1051af6a3c499a47fc65962a1f4, type: 2}
+--- !u!114 &5020985173213847586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
+  m_Name: ChainActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 0, y: 0}
+  children: []
+  inputGesture: 0
+  fighterAction: {fileID: 0}
 --- !u!114 &5458441699911745602
 MonoBehaviour:
   m_ObjectHideFlags: 0

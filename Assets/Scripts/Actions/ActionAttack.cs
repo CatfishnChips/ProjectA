@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using EditableFighterActions;
 using UnityEngine;
 
 public abstract class ActionAttack : ActionBase
@@ -70,7 +66,7 @@ public abstract class ActionAttack : ActionBase
     [SerializeField] protected int m_startFrames;
     [SerializeField] protected int m_activeFrames;
     [SerializeField] protected int m_recoveryFrames;
-    [SerializeField] protected int m_cancelFrames;
+    [SerializeField] protected int m_cancelFrame;
     [SerializeField] protected int m_inputIgnoreFrames;
 
     [Header("AI Properties")]
@@ -116,7 +112,7 @@ public abstract class ActionAttack : ActionBase
     public virtual int StartFrames {get => m_startFrames;}
     public virtual int ActiveFrames {get => m_activeFrames;}
     public virtual int RecoveryFrames {get => m_recoveryFrames;}
-    public virtual int CancelFrames {get => m_cancelFrames;}
+    public virtual int CancelFrames {get => m_cancelFrame;}
     public virtual int InputIgnoreFrames {get => m_inputIgnoreFrames;}
     public virtual int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
 

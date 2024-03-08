@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class FighterDashState : FighterBaseState
 {
@@ -12,6 +9,9 @@ public class FighterDashState : FighterBaseState
     private float _initialVelocity;
     private float _drag;
 
+    private bool _listeningForChainInput;
+    private bool _performedChainMove;
+
     public FighterDashState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
@@ -21,6 +21,10 @@ public class FighterDashState : FighterBaseState
         if (_currentFrame >= _ctx.DashTime){
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
+        if(_currentFrame >= _action.CancelFrame && _ctx.ChainActionGesture != InputGestures.None){
+            _performedChainMove = true;
+            if(_ctx.ActionManager.PeekAction(_ctx.ChainActionGesture).GetType() == typeof(ActionFighterAttack)) SwitchState(_factory.GetSubState(FighterSubStates.Attack)); 
+        }
     }
 
     public override void EnterState()
@@ -29,14 +33,15 @@ public class FighterDashState : FighterBaseState
         _ctx.IsGravityApplied = false;
         _drag = 0f;
 
-        if (_ctx.IsGrounded) 
-        {
-            _action = _ctx.ActionDictionary["Dash"] as ActionConditional;
+        if(_ctx.ChainActionGesture != InputGestures.None) _action = _ctx.ActionManager.GetAction(InputGestures.SwipeRightL) as ActionConditional;
+        else _action = _ctx.ActionManager.GetAction(InputGestures.SwipeRightL) as ActionConditional;
+
+        if(_action == null) { // Safety check if all the precautions to reset Action Manager somehow failed.
+            _ctx.ActionManager.Reset();
+            _action = _ctx.ActionManager.GetAction(InputGestures.SwipeRightL) as ActionConditional;
         }
-        else 
-        {
-            _action = _ctx.ActionDictionary["Dash"] as ActionConditional;
-        }
+
+        _ctx.ChainActionGesture = InputGestures.None;
 
         AnimationClip clip;
         AnimationClip colClip;
@@ -86,6 +91,13 @@ public class FighterDashState : FighterBaseState
         _initialVelocity = 0f;
         _currentFrame = 0;
 
+        if(!_performedChainMove) {
+            _ctx.ChainActionGesture = InputGestures.None;
+            _ctx.ActionManager.Reset();
+        }
+        _performedChainMove = false;
+        _listeningForChainInput = true;
+
         _ctx.IsGravityApplied = true;
         _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
@@ -95,8 +107,19 @@ public class FighterDashState : FighterBaseState
 
     public override void FixedUpdateState()
     {
+        CancelCheck();
         CheckSwitchState();
         _currentFrame++;  
+    }
+
+    public void CancelCheck(){
+        if(_currentFrame <= _action.CancelFrame && _currentFrame > _action.InputIgnoreFrames && _ctx.AttackInput.Read() && _listeningForChainInput){
+            if(_ctx.ActionManager.CheckIfChain(_ctx.AttackInput.ReadContent())){
+                _ctx.ChainActionGesture = _ctx.AttackInput.ReadContent();
+            }else{
+                _listeningForChainInput = false;
+            }
+        }
     }
 
     public override void InitializeSubState()

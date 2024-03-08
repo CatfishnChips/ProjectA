@@ -14,32 +14,40 @@ public class ActionManager : MonoBehaviour
     }
 
     public ActionBase GetAction(InputGestures gesture){
-        Debug.Log("Trying to get an action with gesture: " + gesture);
+        // Debug.Log("Trying to get an action with gesture: " + gesture);
         int i = 0;
         foreach(KeyValuePair<InputGestures, ActionNode> keyValuePair in _currentSearchDict){
-            Debug.Log(i + ": " + "Key: " + keyValuePair.Key + " Value: " + keyValuePair.Value.fighterAction.name);
+            // Debug.Log(i + ": " + "Key: " + keyValuePair.Key + " Value: " + keyValuePair.Value.fighterAction.name);
             i++;
         }
         if(_currentSearchDict.ContainsKey(gesture)){
             ActionBase action = _currentSearchDict[gesture].fighterAction;
             _currentSearchDict = _currentSearchDict[gesture].childrenDict;
-            Debug.Log("Found a key with the given gesture.");
+            // Debug.Log("Found a key with the given gesture.");
             return action;
         }
         else{
-            Debug.Log("Couldn't find a key with the given gesture.");
+            // Debug.Log("Couldn't find a key with the given gesture.");
             return null;
         } 
     }
 
+    public ActionBase PeekAction(InputGestures gesture){
+        if(_currentSearchDict.ContainsKey(gesture)){
+            ActionBase action = _currentSearchDict[gesture].fighterAction;
+            return action;
+        }
+        else return null;
+    }
+
     public bool CheckIfChain(InputGestures gesture){
-        Debug.Log("Chain move check result: " + _currentSearchDict.ContainsKey(gesture));
+        // Debug.Log("Chain move check result: " + _currentSearchDict.ContainsKey(gesture));
 
         return _currentSearchDict.ContainsKey(gesture);
     }
 
     public void Reset(){
-        Debug.Log("Resetted.");
+        // Debug.Log("Resetted.");
         _currentSearchDict = _rootDict;
     }
 

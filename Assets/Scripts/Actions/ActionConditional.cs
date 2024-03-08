@@ -7,6 +7,12 @@ public class ActionConditional : ActionBase
 {
     public List<AnimationData> Animations;
     public float AnimationSpeed(int index) { return AdjustAnimationTime(Animations[index].meshAnimation, Animations[0].frames); }
+
+    [SerializeField] private int m_cancelFrame;
+    [SerializeField] private int m_inputIgnoreFrames;
+
+    public int CancelFrame { get => m_cancelFrame; }
+    public int InputIgnoreFrames { get => m_inputIgnoreFrames; }
 }
 
 [Serializable]
