@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FighterDodgeState : FighterBaseState
+[CreateAssetMenu(fileName = "Fighter Dodge State", menuName = "FighterStates/Sub/DodgeState")]
+public class FighterDodgeState : ActionDefault
 {
-    protected ActionDefault _action;
-    protected int _currentFrame = 0;
     protected bool _isFirstTime = true;
 
-    public FighterDodgeState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
-    :base(currentContext, fighterStateFactory){
+    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
+    {
+        base.Initialize(ctx, factory);
     }
 
     public override void CheckSwitchState()
     {
         if (_currentFrame >= _ctx.DodgeTime.x + _ctx.DodgeTime.y){
-            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            SwitchState(_factory.GetSubState(FighterStates.Idle));
         }
     }
 
@@ -24,16 +24,8 @@ public class FighterDodgeState : FighterBaseState
         _isFirstTime = true;
         _currentFrame = 0;
         
-        if (_ctx.IsGrounded) 
-        {
-            _action = _ctx.ActionDictionary["Dodge"] as ActionDefault;
-        }
-        else 
-        {
-            _action = _ctx.ActionDictionary["Dodge"] as ActionDefault;
-        }
-        AnimationClip clip = _action.meshAnimation;
-        AnimationClip boxClip = _action.boxAnimation;
+        AnimationClip clip = meshAnimation;
+        AnimationClip boxClip = boxAnimation;
 
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;

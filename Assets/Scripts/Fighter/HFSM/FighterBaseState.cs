@@ -1,14 +1,39 @@
+using System;
 using UnityEngine;
 
 public abstract class FighterBaseState : StateMachineBaseState
 {
-    protected new FighterStateMachine _ctx;
+    public new string name;
+    public FighterStates stateName;
+    public InputGestures inputGesture;
+    public bool applyRootMotion;
+
+    protected FighterStateMachine _ctx;
     protected FighterStateFactory _factory;
 
-    public FighterBaseState(IStateMachineRunner ctx, FighterStateFactory factory) : base(ctx)
-    {
-        _ctx = ctx as FighterStateMachine;
+    protected int _currentFrame;
+    protected int CurrentFrame { get => _currentFrame; set => _currentFrame = value; }
+
+    public FighterBaseState(){
+        name = GetType().ToString();
+        if(stateName == default){
+            foreach(FighterStates state in (FighterStates[])Enum.GetValues(typeof(FighterStates))){
+                if(name.Contains(state.ToString())){
+                    stateName = state;
+                }
+            }
+        }
+    }
+
+    public virtual void Initialize(IStateMachineRunner ctx, FighterStateFactory factory){
+        base.Initialize(ctx);
+        _ctx = _context as FighterStateMachine;
         _factory = factory;
+    }
+
+    public FighterBaseState Clone(){
+        FighterBaseState cloneState = Instantiate(this);
+        return cloneState;
     }
 
     public static float AdjustAnimationTime(AnimationClip clip, int frames){

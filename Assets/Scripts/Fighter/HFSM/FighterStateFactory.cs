@@ -1,32 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FighterStateFactory
 {
     FighterStateMachine _context;
-    Dictionary<FighterStates, FighterBaseState> _states = new Dictionary<FighterStates, FighterBaseState>();
+    Dictionary<FighterStates, FighterBaseState> _states;
+    Dictionary<string, ActionAttack> _attackStates;
 
-    public FighterStateFactory(FighterStateMachine currentContext){
-        this._context = currentContext;
-
-        _states[FighterStates.Idle] = new FighterIdleState(_context, this);
-        _states[FighterStates.Walk] = new FighterWalkState(_context, this);
-        _states[FighterStates.Run] = new FighterRunState(_context, this);
-        _states[FighterStates.Airborne] = new FighterAirborneState(_context, this);
-        _states[FighterStates.Grounded] = new FighterGroundedState(_context, this);
-        _states[FighterStates.Attack] = new FighterAttackState(_context, this);
-        _states[FighterStates.Stunned] = new FighterStunnedState(_context, this);
-        _states[FighterStates.Jump] = new FighterJumpState(_context, this);
-        _states[FighterStates.Dash] = new FighterDashState(_context, this);
-        _states[FighterStates.Dodge] = new FighterDodgeState(_context, this);
-        _states[FighterStates.Block] = new FighterBlockState(_context, this);
-        _states[FighterStates.Knockup] = new FighterKnockupState(_context, this);
-        _states[FighterStates.Knockdown] = new FighterKnockdownState(_context, this);
-        _states[FighterStates.Knockback] = new FighterKnockbackState(_context, this);
-        _states[FighterStates.Grabbed] = new FighterGrabbedState(_context, this);
-        _states[FighterStates.SlamDunk] = new FighterSlamDunkState(_context, this);
-        _states[FighterStates.FreeFall] = new FighterFreeFallState(_context, this);
+    public FighterStateFactory(FighterStateMachine currentContext, FighterManager manager){
+        _context = currentContext;
+        _states = manager.ActionDictionary;
+        _attackStates = manager.AttackMoveDictByName;
     }
 
     public void OverrideDictionary(Dictionary<FighterStates, FighterBaseState> dictionary){
@@ -35,17 +19,28 @@ public class FighterStateFactory
         }
     }
 
-    public FighterBaseState GetRootState(FighterRootStates state){
+    public FighterBaseState GetRootState(FighterStates state){
+        _context.ActionManager.Reset();
         _context.PreviousRootState = _context.CurrentRootState;
-        _context.CurrentRootState = (FighterStates)state;
-        return _states[(FighterStates)state];
+        _context.CurrentRootState = state;
+        Debug.Log(_states[state]);
+        return _states[state];
     }
 
-    public FighterBaseState GetSubState(FighterSubStates state){
+    public FighterBaseState GetSubState(FighterStates state){
+        _context.ActionManager.Reset();
         _context.PreviousSubState = _context.CurrentSubState;
-        _context.CurrentSubState = (FighterStates)state;
-        return _states[(FighterStates)state];
+        _context.CurrentSubState = state;
+        return _states[state];
     }
+
+    public FighterBaseState GetChainState(InputGestures gesture){
+        FighterBaseState action = _context.ActionManager.GetAction(gesture);
+        _context.PreviousSubState = _context.CurrentSubState;
+        _context.CurrentSubState = action.stateName;
+        return action;
+    }
+
 }
 
 // public struct StateFactoryElement

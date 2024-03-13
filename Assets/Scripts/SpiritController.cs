@@ -63,7 +63,7 @@ public class SpiritController : MonoBehaviour
         _isActive = true;
         _currentFrame = 0;
 
-        _action.EnterStateFunction(this);
+        _action.EnterState(this);
         
         // ClipOverrides["DirectPunchA"] = _action.MeshAnimationA;
         // ClipOverrides["DirectPunchR"] = _action.MeshAnimationR;
@@ -115,12 +115,12 @@ public class SpiritController : MonoBehaviour
     private void FixedUpdate(){
         if (!_isActive) return;
 
-        _action.FixedUpdateFunction(this);
+        _action.FixedUpdateState();
         
         //Debug.Log("Frame L: " + _action.FrameLenght + " Current F: " + _currentFrame + " Buffer: " + _ctx.GetInputBuffer + " Bool: " + _ctx.ValidAttackInputInterval);
         //_ctx.ValidAttackInputInterval = _action.FrameLenght - _currentFrame < _ctx.GetInputBuffer;
 
-        _action.SwitchActionStateFunction(this);
+        _action.SwitchActionStateFunction();
 
         CheckSwitchState();
     }

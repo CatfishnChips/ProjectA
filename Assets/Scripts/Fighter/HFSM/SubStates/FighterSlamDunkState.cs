@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FighterSlamDunkState : FighterBaseState
+[CreateAssetMenu(fileName = "Fighter SlamDunk State", menuName = "FighterStates/Sub/SlamDunkState")]
+public class FighterSlamDunkState : ActionDefault
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private int _currentFrame = 0;
     private Vector2 _velocity;
     private float _animationSpeed;
     private bool _isFirstTime = true;
@@ -14,8 +14,9 @@ public class FighterSlamDunkState : FighterBaseState
     private float _gravity;
     private float _drag;
 
-    public FighterSlamDunkState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
-    :base(currentContext, fighterStateFactory){
+    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
+    {
+        base.Initialize(ctx, factory);
     }
 
     public override void CheckSwitchState()
@@ -25,10 +26,10 @@ public class FighterSlamDunkState : FighterBaseState
             
             // Knockup always transitions to Knockdown state.
             if (_action.KnockdownStun > 0){
-                state = _factory.GetSubState(FighterSubStates.Knockdown);
+                state = _factory.GetSubState(FighterStates.Knockdown);
             }
             else{
-                state = _factory.GetSubState(FighterSubStates.Idle);
+                state = _factory.GetSubState(FighterStates.Idle);
             }
             SwitchState(state);
         }
@@ -64,9 +65,8 @@ public class FighterSlamDunkState : FighterBaseState
 
         if (_action.KnockupStun.y == 0) return;
 
-        ActionDefault action = _ctx.ActionDictionary["Knockup"] as ActionDefault;
-        AnimationClip clip = action.meshAnimation;
-        AnimationClip colClip = action.boxAnimation;
+        AnimationClip clip = meshAnimation;
+        AnimationClip colClip = boxAnimation;
 
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;

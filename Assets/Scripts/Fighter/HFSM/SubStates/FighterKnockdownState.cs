@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FighterKnockdownState : FighterBaseState
+[CreateAssetMenu(fileName = "Fighter KnockDown State", menuName = "FighterStates/Sub/KnockDownState")]
+public class FighterKnockdownState : ActionDefault
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private int _currentFrame = 0;
 
-    public FighterKnockdownState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
-    :base(currentContext, fighterStateFactory){
+    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
+    {
+        base.Initialize(ctx, factory);
     }
 
     public override void CheckSwitchState()
     {
         if (_currentFrame >= _action.KnockdownStun){   
-            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            SwitchState(_factory.GetSubState(FighterStates.Idle));
         }
     }
 
@@ -33,9 +34,8 @@ public class FighterKnockdownState : FighterBaseState
             return; // If transitioned from Knockup state, do not play the animation.
         } 
 
-        ActionDefault action = _ctx.ActionDictionary["Knockdown"] as ActionDefault;
-        AnimationClip clip = action.meshAnimation;
-        AnimationClip colClip = action.boxAnimation;
+        AnimationClip clip = meshAnimation;
+        AnimationClip colClip = boxAnimation;
 
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;

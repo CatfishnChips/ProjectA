@@ -11,9 +11,8 @@ public class ActionParry : ActionAttack_Class0
     // When an attack is dodged, immediately enter the Recovery state.
     protected bool m_isDodged = false;
 
-    public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
-        base.EnterStateFunction(ctx, state);
-        m_isDodged = false;
+    public override void EnterState(){
+        base.EnterState();
     }
 
     public override void SwitchActionStateFunction(){
@@ -35,7 +34,7 @@ public class ActionParry : ActionAttack_Class0
         } 
     }
 
-    public override void FixedUpdateFunction(){
+    public override void FixedUpdateState(){
         switch(_actionState)
         {
             case ActionStates.Start:
@@ -77,17 +76,17 @@ public class ActionParry : ActionAttack_Class0
         }
        
         // Invoke events.
-        foreach(FrameEvent e in Events){
-            if (_currentFrame == e.Frame){
-                e.Event(_ctx, _ctx.CurrentState as FighterAttackState);
-            }
-        }
+        // foreach(FrameEvent e in Events){
+        //     if (_currentFrame == e.Frame){
+        //         e.Event(_ctx, _ctx.CurrentState as FighterAttackState);
+        //     }
+        // }
 
         if (_ctx.IsHit) _ctx.IsHit = false;
         _currentFrame++;
     }
 
-    public override void ExitStateFunction(){
+    public override void ExitState(){
         _ctx.IsInvulnerable = false;
     }
 }

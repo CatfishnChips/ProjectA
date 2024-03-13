@@ -1,43 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class FighterIdleState : FighterBaseState
+[CreateAssetMenu(fileName = "Fighter Idle State", menuName = "FighterStates/Sub/IdleState")]
+public class FighterIdleState : ActionConditional
 {
-    private ActionDefault _action;
+    private AnimationData _animation;
 
-    public FighterIdleState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
-    :base(currentContext, fighterStateFactory){
+    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
+    {
+        base.Initialize(ctx, factory);
     }
 
     public override void CheckSwitchState()
     {
         if (_ctx.AttackInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
+            SwitchState(_factory.GetSubState(FighterStates.Attack));
         }
         else if (_ctx.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
+            SwitchState(_factory.GetSubState(FighterStates.Dodge));
         }
         else if (_ctx.DashInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dash));
+            SwitchState(_factory.GetSubState(FighterStates.Dash));
         }
         else if (_ctx.MovementInput.Read() != 0){
-            SwitchState(_factory.GetSubState(FighterSubStates.Walk));
+            SwitchState(_factory.GetSubState(FighterStates.Walk));
         }  
     }
 
     public override void EnterState()
     {
-        if (_ctx.CurrentRootState == FighterStates.Grounded) 
+        if (_ctx.CurrentRootState == FighterStates.Grounded)
         {
-            _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;
+            Debug.Log("Setting up the grounded animation.");
+            _animation = animationDict["Grounded"];
         }
         else if (_ctx.CurrentRootState == FighterStates.Airborne)
         {
-            _action = _ctx.ActionDictionary["AirborneIdle"] as ActionDefault;
+            _animation = animationDict["Airborne"];
         }
-        AnimationClip clip = _action.meshAnimation;
-        AnimationClip boxClip = _action.boxAnimation;
+        AnimationClip clip = _animation.meshAnimation;
+        AnimationClip boxClip = _animation.boxAnimation;
 
         _ctx.AnimOverrideCont["Idle"] = clip;
         _ctx.ColBoxOverrideCont["Box_Idle"] = boxClip;

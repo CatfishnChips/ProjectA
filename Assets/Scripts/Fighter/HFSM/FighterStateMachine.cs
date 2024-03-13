@@ -24,11 +24,9 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 {
     [SerializeField] protected FighterManager _fighterManager;
     public Dictionary<InputGestures, ActionAttack> AttackMoveDict{get{return _fighterManager.AttackMoveDict;}}
-    public Dictionary<string, ActionBase> ActionDictionary{get{return _fighterManager.ActionDictionary;}}
+    public Dictionary<FighterStates, FighterBaseState> StateDictionary{get{return _fighterManager.ActionDictionary;}}
 
     [SerializeField] protected Player _player;
-    protected Dictionary<string, ActionAttack> _aerialAttackMoveDict;
-    protected Dictionary<string, ActionBase> _actionDictionary;
 
     private ActionManager _actionManager;
     private InputGestures _chainActionGesture;
@@ -45,11 +43,11 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     protected AnimationClipOverrides _colBoxClipOverrides;
 
     protected FighterBaseState _currentState;
-    protected FighterStateFactory _states;
-    [ReadOnly] [SerializeField] protected FighterStates _currentRootState = default;
-    [ReadOnly] [SerializeField] protected FighterStates _currentSubState = default;
-    [ReadOnly] [SerializeField] protected FighterStates _previousRootState = default;
-    [ReadOnly] [SerializeField] protected FighterStates _previousSubState = default;
+    protected FighterStateFactory _stateFactory;
+    protected FighterStates _currentRootState = default;
+    protected FighterStates _currentSubState = default;
+    protected FighterStates _previousRootState = default;
+    protected FighterStates _previousSubState = default;
     [ReadOnly] [SerializeField] protected ActionStates _actionState = default;
     [ReadOnly] [SerializeField] protected int _currentFrame = 0;
 
@@ -119,7 +117,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     protected Vector2 _swipeDirection;
     protected int _dashDirection;
     protected bool _validAttackInputInterval;
-    protected ActionFighterAttack _fighterAttackAction;
+    protected FighterAttackState _fighterAttackAction;
 
     public Player Player {get{return _player;}}
     public Transform Mesh {get{return _mesh;}}
@@ -141,7 +139,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public TouchQueueInput<InputGestures> AttackInput { get => _attackInput; }
 
     //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
-    public ActionFighterAttack AttackAction{get{return _fighterAttackAction;}}
+    public FighterAttackState AttackAction{get{return _fighterAttackAction;}}
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public Vector2 RootMotion{get{return _rootMotion;} set{_rootMotion = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
@@ -205,6 +203,24 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     #endregion
 
+    protected virtual void GetComponents(){
+        if (TryGetComponent(out FighterController fighterController)) _fighterController = fighterController;
+        if (TryGetComponent(out HitResponder hitResponder)) _hitResponder = hitResponder;
+        if (TryGetComponent(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
+        if (TryGetComponent(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
+        if (TryGetComponent(out HealthManager healthManager)) _healthManager = healthManager;
+        if (TryGetComponent(out StaminaManager staminaManager)) _staminaManager = staminaManager;
+        if (TryGetComponent(out ParticleEffectManager particleEffectManager)) _particleEffectManager = particleEffectManager;
+        if (TryGetComponent(out SpiritManager spiritManager)) _spiritManager = spiritManager;
+        if (TryGetComponent(out ProjectileManager projectileManager)) m_projectileManager = projectileManager;
+    }
+
+    private bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
+    {
+        return potentialDescendant.IsSubclassOf(potentialBase)
+           || potentialDescendant == potentialBase;
+    }
+
     #region Virtual Monobehaviour Functions
 
     protected virtual void AwakeFunction(){
@@ -229,7 +245,9 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
         _colBoxAnimator = transform.Find("Hurtboxes").GetComponent<Animator>();
         
-        _states = new FighterStateFactory(this);
+        _stateFactory = new FighterStateFactory(this, _fighterManager);
+        foreach (FighterBaseState state in StateDictionary.Values){state.Initialize(this, _stateFactory);} // Initialize States.
+
         _actionManager = new ActionManager(_fighterManager.InputBasedActionTree.childrenDict);
         _chainActionGesture = InputGestures.None;
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
@@ -249,24 +267,6 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         GetComponents();
     }
 
-    protected virtual void GetComponents(){
-        if (TryGetComponent(out FighterController fighterController)) _fighterController = fighterController;
-        if (TryGetComponent(out HitResponder hitResponder)) _hitResponder = hitResponder;
-        if (TryGetComponent(out HurtResponder hurtResponder)) _hurtResponder = hurtResponder;
-        if (TryGetComponent(out Rigidbody2D rigidbody2D)) _rigidbody2D = rigidbody2D;
-        if (TryGetComponent(out HealthManager healthManager)) _healthManager = healthManager;
-        if (TryGetComponent(out StaminaManager staminaManager)) _staminaManager = staminaManager;
-        if (TryGetComponent(out ParticleEffectManager particleEffectManager)) _particleEffectManager = particleEffectManager;
-        if (TryGetComponent(out SpiritManager spiritManager)) _spiritManager = spiritManager;
-        if (TryGetComponent(out ProjectileManager projectileManager)) m_projectileManager = projectileManager;
-    }
-
-    private bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
-    {
-        return potentialDescendant.IsSubclassOf(potentialBase)
-           || potentialDescendant == potentialBase;
-    }
-
     protected virtual void StartFunction(){
 
         _fighterManager.fighterEvents.OnFighterAttackGesture += OnFighterAttackInput;
@@ -278,10 +278,11 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
         if (_hurtResponder) _hurtResponder.HurtResponse += OnHurt;
 
+        // Reset variables method also sets a state?
         ResetVariables();
 
         // Start default state.
-        _currentState = _states.GetRootState(FighterRootStates.Airborne);
+        _currentState = _stateFactory.GetRootState(FighterStates.Airborne);
         _currentState.EnterState();
     }
 
@@ -350,7 +351,9 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     public void SwitchState(StateMachineBaseState state)
     {
+        Debug.Log("Changing the current state.");
         _currentState = state as FighterBaseState;
+        Debug.Log(_currentState);
     }
 
     #region Event Functions
@@ -511,7 +514,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _healthManager?.Reset();
         _spiritManager?.Reset();
 
-        _currentState = _states.GetRootState(FighterRootStates.Grounded) as FighterBaseState;
+        _currentState = _stateFactory.GetRootState(FighterStates.Grounded);
         _currentState.EnterState();
     }
 

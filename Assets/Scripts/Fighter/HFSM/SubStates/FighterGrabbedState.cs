@@ -2,31 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FighterGrabbedState : FighterBaseState
+[CreateAssetMenu(fileName = "Fighter Grabbed State", menuName = "FighterStates/Sub/GrabbedState")]
+public class FighterGrabbedState : ActionDefault
 {
-    private ActionDefault _action;
     private CollisionData _collisionData;
     private ActionAttack _attackAction;
-    private int _currentFrame = 0;
 
-    public FighterGrabbedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
-    :base(currentContext, fighterStateFactory){
+    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
+    {
+        base.Initialize(ctx, factory);
     }
 
     public override void CheckSwitchState()
     {
 
         if (_ctx.AttackInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
+            SwitchState(_factory.GetSubState(FighterStates.Attack));
         }
         else if (_ctx.DodgeInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
+            SwitchState(_factory.GetSubState(FighterStates.Dodge));
         }
         else if (_ctx.DashInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dash));
+            SwitchState(_factory.GetSubState(FighterStates.Dash));
         }
         else if (_ctx.MovementInput.Read() != 0){            
-            SwitchState(_factory.GetSubState(FighterSubStates.Walk));
+            SwitchState(_factory.GetSubState(FighterStates.Walk));
         }  
     }
 
@@ -39,23 +39,14 @@ public class FighterGrabbedState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _attackAction = _collisionData.action;
         _ctx.IsHurt = false;
-        
-        if (_ctx.IsGrounded) 
-        {
-            _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;
-        }
-        else
-        {
-            _action = _ctx.ActionDictionary["AirborneIdle"] as ActionDefault;
-        }
 
-        AnimationClip clip = _action.meshAnimation;
-        AnimationClip boxClip = _action.boxAnimation;
+        AnimationClip clip = meshAnimation;
+        AnimationClip boxClip = boxAnimation;
 
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;
 
-        float speedVar = AdjustAnimationTime(clip, _action.frames);
+        float speedVar = AdjustAnimationTime(clip, frames);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
         _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
 

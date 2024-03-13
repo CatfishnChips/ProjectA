@@ -5,19 +5,19 @@ using UnityEngine.Events;
 //To achive a modifiable MoveSet system through inspector.
 [Serializable]
 public struct ActionAttribution{
-    public ActionBase action;
+    public FighterBaseState action;
 }
 
 [Serializable]
 public struct InputAttackAttribution
 {
     public InputGestures inputGesture;
-    public ActionFighterAttack actionFighterAttack;
+    public FighterAttackState actionFighterAttack;
 }
 
 [Serializable]
 public struct AttackActionAttribution{
-    public ActionFighterAttack fighterAttack;
+    public FighterAttackState fighterAttack;
 }
 
 //To achive a modifiable Combo system through inspector.
@@ -31,9 +31,9 @@ public struct ComboMove{
 public class ComboMoveSpecs{
     //public int comboName;
     public int moveNumber;
-    public ActionFighterAttack theMove;
+    public FighterAttackState theMove;
     public bool willOverride;
-    public ActionFighterAttack moveToOverride;
+    public FighterAttackState moveToOverride;
     public Dictionary<string, ComboMoveSpecs> possibleNextMoves;
 
     public ComboMoveSpecs(){
@@ -42,7 +42,7 @@ public class ComboMoveSpecs{
 
 }
 
-public delegate void FrameEventFunction(FighterStateMachine ctx, FighterAttackState state);
+public delegate void FrameEventFunction(FighterStateMachine ctx, ActionAttack state);
 
 public struct FrameEvent
 {   
@@ -53,7 +53,7 @@ public struct FrameEvent
         m_frame = frame;
         m_event = func;
     }
-    public void Event(FighterStateMachine ctx, FighterAttackState state) { m_event(ctx, state); }
+    public void Event(FighterStateMachine ctx, ActionAttack state) { m_event(ctx, state); }
 }
 
 public delegate void FrameEventFunction_Spirit(SpiritController ctx);

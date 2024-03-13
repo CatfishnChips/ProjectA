@@ -2,31 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FighterJumpState : FighterBaseState
+[CreateAssetMenu(fileName = "Fighter Jump State", menuName = "FighterStates/Sub/JumpState")]
+public class FighterJumpState : ActionDefault
 {
-    private ActionDefault _action;
     private Rigidbody2D _rb;
     private float _initialJumpVelocity;
-    private int _currentFrame = 0;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private Vector2 _velocity;
 
-    public FighterJumpState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
-    :base(currentContext, fighterStateFactory){
+    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
+    {
+        base.Initialize(ctx, factory);
     }
 
     public override void CheckSwitchState()
     {   
         if(_currentFrame >= _ctx.JumpTime){
-            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            SwitchState(_factory.GetSubState(FighterStates.Idle));
         }
     }
 
     public override void EnterState()
     {
         _currentFrame = 0;
-        _action = _ctx.ActionDictionary["Jump"] as ActionDefault;
-        AnimationClip clip = _action.meshAnimation;
+        AnimationClip clip = meshAnimation;
         _groundOffset = _ctx.transform.position.y;
 
         float direction = _ctx.SwipeDirection.x == 0 ? 0f : -Mathf.Sign(_ctx.SwipeDirection.x);
