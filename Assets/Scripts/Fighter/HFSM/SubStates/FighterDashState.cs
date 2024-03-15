@@ -1,43 +1,45 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter Dash State", menuName = "FighterStates/Sub/DashState")]
-public class FighterDashState : FighterCancelleableState
+public class FighterDashState : FighterBaseState
 {
-    public List<AnimationData> Animations;
-    public float AnimationSpeed(int index) { return AdjustAnimationTime(Animations[index].meshAnimation, Animations[0].frames); }
-
-    [SerializeField] private int m_cancelFrame;
-    [SerializeField] private int m_inputIgnoreFrames;
-
-    public int CancelFrame { get => m_cancelFrame; }
-    public int InputIgnoreFrames { get => m_inputIgnoreFrames; }
-
+    private ActionConditional _action;
+    private int _currentFrame = 0;
     private float _direction;
     private float _time;
     private float _initialVelocity;
     private float _drag;
 
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    private bool _listeningForChainInput;
+    private bool _performedChainMove;
+
+    public FighterDashState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
     }
 
     public override void CheckSwitchState()
     {
-        base.CheckSwitchState();
         if (_currentFrame >= _ctx.DashTime){
-            SwitchState(_factory.GetSubState(FighterStates.Idle));
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+        }
+        if(_currentFrame >= _action.CancelFrame && _ctx.ChainActionGesture != InputGestures.None){
+            _performedChainMove = true;
+            if(_ctx.ActionManager.PeekAction(_ctx.ChainActionGesture).GetType() == typeof(ActionFighterAttack)) SwitchState(_factory.GetSubState(FighterSubStates.Attack)); 
         }
     }
 
     public override void EnterState()
     {
-        base.EnterState();
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
         _drag = 0f;
+
+        if(_ctx.ChainActionGesture != InputGestures.None) _action = _ctx.ActionManager.GetAction(InputGestures.SwipeRightL) as ActionConditional;
+        else _action = _ctx.ActionManager.GetAction(InputGestures.SwipeRightL) as ActionConditional;
+
+        if(_action == null) { // Safety check if all the precautions to reset Action Manager somehow failed.
+            _ctx.ActionManager.Reset();
+            _action = _ctx.ActionManager.GetAction(InputGestures.SwipeRightL) as ActionConditional;
+        }
 
         _ctx.ChainActionGesture = InputGestures.None;
 
@@ -46,13 +48,13 @@ public class FighterDashState : FighterCancelleableState
 
         if (_ctx.DashDirection == -1)
         {
-            clip = Animations[0].meshAnimation;
-            colClip = Animations[0].boxAnimation;
+            clip = _action.Animations[0].meshAnimation;
+            colClip = _action.Animations[0].boxAnimation;
         }
         else
         {
-            clip = Animations[1].meshAnimation;
-            colClip = Animations[1].boxAnimation;
+            clip = _action.Animations[1].meshAnimation;
+            colClip = _action.Animations[1].boxAnimation;
         }
 
         _direction = _ctx.DashDirection;
@@ -83,12 +85,18 @@ public class FighterDashState : FighterCancelleableState
 
     public override void ExitState()
     {
-        base.ExitState();
         _drag = 0f;
         _direction = 0f;
         _time = 0f;
         _initialVelocity = 0f;
         _currentFrame = 0;
+
+        if(!_performedChainMove) {
+            _ctx.ChainActionGesture = InputGestures.None;
+            _ctx.ActionManager.Reset();
+        }
+        _performedChainMove = false;
+        _listeningForChainInput = true;
 
         _ctx.IsGravityApplied = true;
         _ctx.Gravity = 0f;
@@ -99,9 +107,19 @@ public class FighterDashState : FighterCancelleableState
 
     public override void FixedUpdateState()
     {
-        base.FixedUpdateState();
+        CancelCheck();
         CheckSwitchState();
         _currentFrame++;  
+    }
+
+    public void CancelCheck(){
+        if(_currentFrame <= _action.CancelFrame && _currentFrame > _action.InputIgnoreFrames && _ctx.AttackInput.Read() && _listeningForChainInput){
+            if(_ctx.ActionManager.CheckIfChain(_ctx.AttackInput.ReadContent())){
+                _ctx.ChainActionGesture = _ctx.AttackInput.ReadContent();
+            }else{
+                _listeningForChainInput = false;
+            }
+        }
     }
 
     public override void InitializeSubState()

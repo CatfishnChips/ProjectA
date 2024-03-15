@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter Block State", menuName = "FighterStates/Sub/BlockState")]
-public class FighterBlockState : ActionDefault
+public class FighterBlockState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
@@ -11,15 +10,14 @@ public class FighterBlockState : ActionDefault
     private Vector2 _velocity;
     private float _drag;
 
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
     }
 
     public override void CheckSwitchState()
     {
         if (_currentFrame >= _action.BlockStun){
-            SwitchState(_factory.GetSubState(FighterStates.Idle));
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 
@@ -29,6 +27,8 @@ public class FighterBlockState : ActionDefault
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
+        
+        ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
 
         float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
         float time = _action.BlockStun * Time.fixedDeltaTime;
@@ -46,8 +46,8 @@ public class FighterBlockState : ActionDefault
 
         if (_action.BlockStun == 0) return;
 
-        AnimationClip clip = meshAnimation;
-        AnimationClip colClip = boxAnimation;
+        AnimationClip clip = action.meshAnimation;
+        AnimationClip colClip = action.boxAnimation;
 
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;

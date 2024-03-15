@@ -3,32 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "Fighter Stunned State", menuName = "FighterStates/Base/StunnedState")]
 public class FighterStunnedState : FighterBaseState
-{
-
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
-        _isRootState = true;
-    }
-
+{   
     private CollisionData _collisionData;
     private ActionAttack _action;
+    private float _currentFrame = 0;
     private bool _isFirstTime = true;
     private StunnedState _state = default;
     
     public StunnedState State {get{return _state;} set{_state = value;}}
 
-    // public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
-    // :base(currentContext, fighterStateFactory){
-    //     _isRootState = true;
-    // }
+    public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
+        _isRootState = true;
+    }
 
     public override void CheckSwitchState()
     {
         if (_ctx.IsHurt && !_ctx.IsInvulnerable){
-            SwitchState(_factory.GetRootState(FighterStates.Stunned));
+            SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
         }
         
         // ">" is used instead of ">=" due to Root States' Fixed Update running before the Sub States' Fixed Update.
@@ -51,10 +44,10 @@ public class FighterStunnedState : FighterBaseState
             FighterBaseState state;   
 
             if (_ctx.IsGrounded){
-                state = _factory.GetRootState(FighterStates.Grounded);
+                state = _factory.GetRootState(FighterRootStates.Grounded);
             }
             else{
-                state = _factory.GetRootState(FighterStates.Airborne);
+                state = _factory.GetRootState(FighterRootStates.Airborne);
             }
             SwitchState(state);
 
@@ -127,25 +120,25 @@ public class FighterStunnedState : FighterBaseState
         FighterBaseState state;
         //Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
         if(!_action.IgnoreBlock && _ctx.CanBlock){
-            state = _factory.GetSubState(FighterStates.Block);
+            state = _factory.GetSubState(FighterSubStates.Block);
         }
         else if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
             if (Mathf.Sign(_action.Knockup) > 0) 
-            state = _factory.GetSubState(FighterStates.Knockup);
+            state = _factory.GetSubState(FighterSubStates.Knockup);
             else
-            state = _factory.GetSubState(FighterStates.SlamDunk);
+            state = _factory.GetSubState(FighterSubStates.SlamDunk);
         }
         else if (_action.KnockdownStun > 0){
-            state = _factory.GetSubState(FighterStates.Knockdown);
+            state = _factory.GetSubState(FighterSubStates.Knockdown);
         }
         else if (_action.KnockbackStun > 0){
             if(_ctx.IsGrounded)
-            state = _factory.GetSubState(FighterStates.Knockback);
+            state = _factory.GetSubState(FighterSubStates.Knockback);
             else
-            state = _factory.GetSubState(FighterStates.FreeFall);
+            state = _factory.GetSubState(FighterSubStates.FreeFall);
         }
         else{
-            state = _factory.GetSubState(FighterStates.Idle);
+            state = _factory.GetSubState(FighterSubStates.Idle);
         }
         SetSubState(state);
         state.EnterState();

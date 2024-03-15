@@ -1,26 +1,24 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter Walk State", menuName = "FighterStates/Sub/WalkState")]
 public class FighterWalkState : FighterBaseState
 {
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    public FighterWalkState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
     }
 
     public override void CheckSwitchState()
     {
         if (_ctx.AttackInput.Read()){
-            SwitchState(_factory.GetSubState(FighterStates.Attack));
+            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
         }
         else if (_ctx.DodgeInput.Read()){
-            SwitchState(_factory.GetSubState(FighterStates.Dodge));
+            SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
         }
         else if (_ctx.DashInput.Read()){
-            SwitchState(_factory.GetSubState(FighterStates.Dash));
+            SwitchState(_factory.GetSubState(FighterSubStates.Dash));
         }
         else if(_ctx.MovementInput.Read() == 0){
-            SwitchState(_factory.GetSubState(FighterStates.Idle));
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 

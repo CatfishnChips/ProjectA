@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using EditableFighterActions;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FighterManager : MonoBehaviour
@@ -15,11 +14,10 @@ public class FighterManager : MonoBehaviour
 
     private Dictionary<InputGestures, ActionAttack> _neutralAttackMoveDict;
     private Dictionary<string, ActionAttack> _attackMoveDictByName;
-    private Dictionary<FighterStates, FighterBaseState> _actionDictionary;
+    private Dictionary<string, ActionBase> _actionDictionary;
 
     public Dictionary<InputGestures, ActionAttack> AttackMoveDict { get => _neutralAttackMoveDict; set => _neutralAttackMoveDict = value; }
-    public Dictionary<FighterStates, FighterBaseState> ActionDictionary { get => _actionDictionary; set => _actionDictionary = value; }
-    public Dictionary<string, ActionAttack> AttackMoveDictByName { get => _attackMoveDictByName; set => _attackMoveDictByName = value; }
+    public Dictionary<string, ActionBase> ActionDictionary { get => _actionDictionary; set => _actionDictionary = value; }
     
     public RootNode InputBasedActionTree { get => _inputBasedActionTree; }
     public RootNode ConditionalActionTree { get => _conditionalActionTree; }
@@ -44,7 +42,7 @@ public class FighterManager : MonoBehaviour
     {
         _neutralAttackMoveDict = new Dictionary<InputGestures, ActionAttack>();
         _attackMoveDictByName = new Dictionary<string, ActionAttack>();
-        _actionDictionary = new Dictionary<FighterStates, FighterBaseState>();
+        _actionDictionary = new Dictionary<string, ActionBase>();
 
 
         List<BPNode> inputBasedActionNodes = new List<BPNode>();
@@ -54,7 +52,7 @@ public class FighterManager : MonoBehaviour
         {
             //Debug.Log(actionNode.fighterAction.name);
 
-            if(!_actionDictionary.ContainsKey(actionNode.fighterAction.stateName)) _actionDictionary.Add(actionNode.fighterAction.stateName, actionNode.fighterAction.Clone());
+            if(!_actionDictionary.ContainsKey(actionNode.fighterAction.name)) _actionDictionary.Add(actionNode.fighterAction.name, actionNode.fighterAction);
 
             ActionAttack actionAttack = actionNode.fighterAction as ActionAttack;
 
@@ -70,7 +68,7 @@ public class FighterManager : MonoBehaviour
 
         foreach (ActionNode actionNode in conditionalActionNodes)
         {
-            _actionDictionary.Add(actionNode.fighterAction.stateName, actionNode.fighterAction.Clone());
+            _actionDictionary.Add(actionNode.fighterAction.name, actionNode.fighterAction);
         }
 
     }
@@ -129,14 +127,14 @@ public class FighterManager : MonoBehaviour
     // Useful for some practices such as AI integration
     public void OnDirectAttackInputByAction(ActionAttack attack)
     {
-        if(attack.GetType() == typeof(FighterAttackState)) fighterEvents.OnFighterAttackByAction?.Invoke(attack as FighterAttackState);
+        if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttackByAction?.Invoke(attack as ActionFighterAttack);
         else fighterEvents.OnSpiritAttack?.Invoke(attack as ActionSpiritAttack);
     }
 
     public void OnDirectAttackInputByString(string attackName)
     {
         ActionAttack attack = _attackMoveDictByName[attackName];
-        if(attack.GetType() == typeof(FighterAttackState)) fighterEvents.OnFighterAttackByAction?.Invoke(attack as FighterAttackState);
+        if(attack.GetType() == typeof(ActionFighterAttack)) fighterEvents.OnFighterAttackByAction?.Invoke(attack as ActionFighterAttack);
         else fighterEvents.OnSpiritAttack?.Invoke(attack as ActionSpiritAttack);
     }
 

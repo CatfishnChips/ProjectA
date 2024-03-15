@@ -1,12 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter Grounded State", menuName = "FighterStates/Base/GroundedState")]
 public class FighterGroundedState : FighterBaseState
 {
-
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    public FighterGroundedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
         _isRootState = true;
     }
 
@@ -14,13 +11,11 @@ public class FighterGroundedState : FighterBaseState
     {
         if (_ctx.IsHurt && !_ctx.IsInvulnerable){
             //Debug.Log("FighterGroundedState(CheckSwitchState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
-            Debug.Log("CHANGING THE STATE, HURT");
-            SwitchState(_factory.GetRootState(FighterStates.Stunned));
+            SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
         }
 
         if (!_ctx.IsGrounded || (_ctx.JumpInput.Read() && (_ctx.CurrentSubState == FighterStates.Idle || _ctx.CurrentSubState == FighterStates.Walk))){
-            Debug.Log("CHANGING THE STATE, JUMP");
-            SwitchState(_factory.GetRootState(FighterStates.Airborne));
+            SwitchState(_factory.GetRootState(FighterRootStates.Airborne));
         }
     }
 
@@ -55,10 +50,10 @@ public class FighterGroundedState : FighterBaseState
     {
         FighterBaseState state;
         if(_ctx.MovementInput.Read() == 0){
-            state = _factory.GetSubState(FighterStates.Idle);
+            state = _factory.GetSubState(FighterSubStates.Idle);
         }
         else{
-            state = _factory.GetSubState(FighterStates.Walk);
+            state = _factory.GetSubState(FighterSubStates.Walk);
         }
         SetSubState(state);
         state.EnterState();

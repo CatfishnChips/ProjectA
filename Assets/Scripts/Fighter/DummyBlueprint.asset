@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cb01bcc9aece8c449131d635cd055a8, type: 3}
-  m_Name: Fighter KnockDown State
+  m_Script: {fileID: 11500000, guid: deb2aa5f56da486448c9add857b58065, type: 3}
+  m_Name: DummyBlueprint
   m_EditorClassIdentifier: 
-  name: FighterKnockdownState
-  inputGesture: 0
-  applyRootMotion: 0
+  rootNode: {fileID: 0}
+  nodes: []

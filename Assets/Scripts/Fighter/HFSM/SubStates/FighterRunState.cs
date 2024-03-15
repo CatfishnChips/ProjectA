@@ -1,21 +1,19 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter Run State", menuName = "FighterStates/Sub/RunState")]
 public class FighterRunState : FighterBaseState
 {
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    public FighterRunState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
     }
 
     public override void CheckSwitchState()
     {
         if (!(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f)){ // if fighter is not running
             if (_ctx.Velocity.x >= -0.5f && _ctx.Velocity.x <= 0.5f){ // if we just slowed sown
-                SwitchState(_factory.GetSubState(FighterStates.Idle));
+                SwitchState(_factory.GetSubState(FighterSubStates.Walk));
             }
             else{ // if we directly stopped
-                SwitchState(_factory.GetSubState(FighterStates.Idle));
+                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
             }
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class ActionAttack : FighterCancelleableState
+public abstract class ActionAttack : ActionBase
 {   
     [SerializeField] protected Tags m_tags;
     [Tooltip("Damage dealt upon a successful uncontested hit to the target.")]

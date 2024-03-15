@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Default Action", menuName = "ScriptableObject/Action/Conditional")]
-public abstract class ActionConditional : FighterBaseState
+public class ActionConditional : ActionBase
 {
-    public List<AnimationData> animationList;
-    public Dictionary<string, AnimationData> animationDict;
-    public float AnimationSpeed(int index) { return AdjustAnimationTime(animationList[index].meshAnimation, animationList[0].frames); }
-
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
-        animationDict = new Dictionary<string, AnimationData>();
-        foreach (AnimationData animationData in animationList){
-            animationDict.Add(animationData.name, animationData);
-        }
-    }
+    public List<AnimationData> Animations;
+    public float AnimationSpeed(int index) { return AdjustAnimationTime(Animations[index].meshAnimation, Animations[0].frames); }
 
     [SerializeField] private int m_cancelFrame;
     [SerializeField] private int m_inputIgnoreFrames;
@@ -28,9 +18,6 @@ public abstract class ActionConditional : FighterBaseState
 [Serializable]
 public struct AnimationData
 {
-    [Header("Animation Name")]
-    public string name;
-
     [Header("Frame Data")]
     public int frames;
 

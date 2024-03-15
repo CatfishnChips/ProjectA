@@ -5,7 +5,7 @@ namespace EditableFighterActions{
     public abstract class ActionNode : BPNode
     {
         public InputGestures inputGesture;
-        public FighterBaseState fighterAction;
+        public ActionBase fighterAction;
         [SerializeField]
         public Dictionary<InputGestures, ActionNode> childrenDict;
 

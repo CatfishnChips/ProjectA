@@ -1,10 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter FreeFall State", menuName = "FighterStates/Sub/FreeFallState")]
-public class FighterFreeFallState : ActionDefault
+public class FighterFreeFallState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
+    private int _currentFrame = 0;
     private Vector2 _velocity;
     private float _animationSpeed;
     private bool _isFirstTime = true;
@@ -14,22 +16,21 @@ public class FighterFreeFallState : ActionDefault
     private float _time;
     private int _frame;
 
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    public FighterFreeFallState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+   public override void CheckSwitchState()
     {
         if (_currentFrame >= _frame + _action.HitStop){   
             FighterBaseState state;         
             
             // Knockup always transitions to Knockdown state.
             if (_action.KnockdownStun > 0){
-                state = _factory.GetSubState(FighterStates.Knockdown);
+                state = _factory.GetSubState(FighterSubStates.Knockdown);
             }
             else{
-                state = _factory.GetSubState(FighterStates.Idle);
+                state = _factory.GetSubState(FighterSubStates.Idle);
             }
             SwitchState(state);
         }
@@ -67,8 +68,9 @@ public class FighterFreeFallState : ActionDefault
         _ctx.Gravity = _gravity;
         _ctx.CurrentMovement = _velocity;
 
-        AnimationClip clip = meshAnimation;
-        AnimationClip colClip = boxAnimation;
+        ActionDefault action = _ctx.ActionDictionary["Knockup"] as ActionDefault;
+        AnimationClip clip = action.meshAnimation;
+        AnimationClip colClip = action.boxAnimation;
 
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;

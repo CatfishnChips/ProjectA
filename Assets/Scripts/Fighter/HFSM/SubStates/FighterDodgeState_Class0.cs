@@ -1,11 +1,12 @@
+using System.Buffers.Text;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter Dodge State", menuName = "FighterStates/Class_0/Sub/DodgeState")]
 public class FighterDodgeState_Class0 : FighterDodgeState
 {
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    public FighterDodgeState_Class0(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
     }
 
     public override void FixedUpdateState()

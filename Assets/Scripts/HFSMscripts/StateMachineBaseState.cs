@@ -1,15 +1,13 @@
-using UnityEngine;
-
-public abstract class StateMachineBaseState : ScriptableObject
+public abstract class StateMachineBaseState 
 {
     protected bool _isRootState = false;
-    protected IStateMachineRunner _context;
+    protected IStateMachineRunner _ctx;
     protected StateMachineBaseState _currentSubState;
     protected StateMachineBaseState _currentSuperState;
 
-    public StateMachineBaseState GetCurrentSubState { get { return _currentSubState; } }
+    public StateMachineBaseState(IStateMachineRunner ctx) => _ctx = ctx;
 
-    public void Initialize(IStateMachineRunner ctx){_context = ctx;}
+    public StateMachineBaseState GetCurrentSubState { get { return _currentSubState; } }
 
     public abstract void EnterState();
 
@@ -57,7 +55,7 @@ public abstract class StateMachineBaseState : ScriptableObject
 
         if(_isRootState){
             // set current state of the context (FighterStateMachine) to a new state
-            _context.SwitchState(newState);
+            _ctx.SwitchState(newState);
         }
         else if(_currentSuperState != null){
             _currentSuperState.SetSubState(newState);

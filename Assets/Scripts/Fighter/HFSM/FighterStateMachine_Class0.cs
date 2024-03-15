@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,9 +18,9 @@ public class FighterStateMachine_Class0 : FighterStateMachine
         base.AwakeFunction();
 
         Dictionary<FighterStates, FighterBaseState> overrideDictionary = new Dictionary<FighterStates, FighterBaseState>(){
-            {FighterStates.Dodge, new FighterDodgeState_Class0()}
+            {FighterStates.Dodge, new FighterDodgeState_Class0(this, _states)}
         };
-        _stateFactory.OverrideDictionary(overrideDictionary);
+        _states.OverrideDictionary(overrideDictionary);
     }
 
     protected override void FixedUpdateFunction(){

@@ -53,12 +53,12 @@ namespace EditableFighterActions{
                 /* Scriptable Object Field */
 
                 var scriptableObjectField = new ObjectField("Action"){
-                    objectType = typeof(FighterBaseState),
+                    objectType = typeof(ActionBase),
                     value = actionNode.fighterAction
                 };
 
-                scriptableObjectField.RegisterValueChangedCallback((EventCallback<ChangeEvent<UnityEngine.Object>>)(evt => {
-                    actionNode.fighterAction = evt.newValue as FighterBaseState;
+                scriptableObjectField.RegisterValueChangedCallback(evt => {
+                    actionNode.fighterAction = evt.newValue as ActionBase;
 
                     if(actionNode.fighterAction != null){
                         this.title = initialTitle + " - " + actionNode.fighterAction.name;
@@ -67,7 +67,7 @@ namespace EditableFighterActions{
                         this.title = initialTitle;
                     }
                     
-                }));
+                });
 
                 mainContainer.Add(scriptableObjectField);
             }

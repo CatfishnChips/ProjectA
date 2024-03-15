@@ -20,7 +20,7 @@ public class ComboListener
     private bool _doesDictContainMove;
     public bool isActive;
 
-    private FighterAttackState _attackAction = null;
+    private ActionFighterAttack _attackAction = null;
 
     public ComboListener(FighterStateMachine ctx){
         _ctx = ctx;

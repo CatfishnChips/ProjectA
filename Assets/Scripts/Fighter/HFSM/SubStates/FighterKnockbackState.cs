@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Fighter KnockBack State", menuName = "FighterStates/Sub/KnockBackState")]
-public class FighterKnockbackState : ActionDefault
+public class FighterKnockbackState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
+    private int _currentFrame = 0;
     private float _animationSpeed;
     private bool _isFirstTime = true;
     private float _drag;
@@ -14,15 +14,14 @@ public class FighterKnockbackState : ActionDefault
     private float _direction;
     private float _time;
 
-    public override void Initialize(IStateMachineRunner ctx, FighterStateFactory factory)
-    {
-        base.Initialize(ctx, factory);
+    public FighterKnockbackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
+    :base(currentContext, fighterStateFactory){
     }
 
     public override void CheckSwitchState()
     {
         if (_currentFrame >= _action.KnockbackStun + _action.HitStop){   
-            SwitchState(_factory.GetSubState(FighterStates.Idle));
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
         }
     }
 
@@ -50,8 +49,9 @@ public class FighterKnockbackState : ActionDefault
 
         if (_action.KnockbackStun == 0) return;
 
-        AnimationClip clip = meshAnimation;
-        AnimationClip boxClip = boxAnimation;
+        ActionDefault action = _ctx.ActionDictionary["Stunned"] as ActionDefault;
+        AnimationClip clip = action.meshAnimation;
+        AnimationClip boxClip = action.boxAnimation;
 
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;

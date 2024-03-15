@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public abstract class ActionDefault : FighterBaseState
+[CreateAssetMenu(fileName = "New Default Action", menuName = "ScriptableObject/Action/Default")]
+public class ActionDefault : ActionBase
 {
     [Header("Frame Data")]
     public int frames;

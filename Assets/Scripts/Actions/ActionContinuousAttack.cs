@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Continuous Attack Action", menuName = "ScriptableObject/Action/ContinuousAttack")]
-public class ActionContinuousAttack : FighterAttackState
+public class ActionContinuousAttack : ActionFighterAttack
 {  
     [Header("Custom Variables")]
     [SerializeField] private bool m_startCondition;
@@ -17,14 +17,14 @@ public class ActionContinuousAttack : FighterAttackState
     public bool ActiveCondition { get{return m_activeCondition;} }
     public bool RecoveryCondition { get{return m_recoveryCondition;} }
 
-    public override void EnterState()
+    public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state)
     {
-        base.EnterState();
+        base.EnterStateFunction(ctx, state);
         _pauseTime = false;
         _timePaused = false;
     }
 
-    public override void FixedUpdateState()
+    public override void FixedUpdateFunction()
     {
         if (_currentFrame <= StartFrames){
             if(_firstFrameStartup){
@@ -63,8 +63,8 @@ public class ActionContinuousAttack : FighterAttackState
         _currentFrame++;
     }
 
-    public override void ExitState()
+    public override void ExitStateFunction()
     {
-        base.ExitState();
+        base.ExitStateFunction();
     }
 }

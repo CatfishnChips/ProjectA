@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Attack Action", menuName = "ScriptableObject/Action/Class0/Attack")]
-public class ActionAttack_Class0 : FighterAttackState
+public class ActionAttack_Class0 : ActionFighterAttack
 {
     protected FighterStateMachine_Class0 _ctx_0;
 
@@ -32,13 +32,14 @@ public class ActionAttack_Class0 : FighterAttackState
     public override float Knockup {get => m_focus ? m_focusKnockup : m_knockup;}
     public override float Knockback {get => m_focus ? m_focusKnockback : m_knockback;}
 
-    public override void EnterState(){
-        base.EnterState();
-        m_focus = ((FighterStateMachine_Class0)_ctx).Focus;
+    public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
+        base.EnterStateFunction(ctx, state);
+        _ctx = ctx as FighterStateMachine_Class0;
+        m_focus = ((FighterStateMachine_Class0)ctx).Focus;
     }
     
-    public override void ExitState(){
-        base.ExitState();
+    public override void ExitStateFunction(){
+        base.ExitStateFunction();
         _ctx_0.SetFocus(false);
     }
 }

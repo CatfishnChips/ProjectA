@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Spirit Attack Action", menuName = "ScriptableObject/Action/Attack/SpiritAttack")]
 public class ActionSpiritAttack : ActionAttack
 {
-    private SpiritController m_spiritCtx;
-
     protected float m_calculatedKnockup;
     protected float m_calculatedKnockback;
 
@@ -18,8 +16,7 @@ public class ActionSpiritAttack : ActionAttack
 
     protected virtual List<FrameEvent_Spirit> Events_Spirit {get {return new List<FrameEvent_Spirit>();}}
 
-    public virtual void EnterState(SpiritController ctx){
-        m_spiritCtx = ctx;
+    public virtual void EnterStateFunction(SpiritController ctx){
         _firstFrameStartup = true;
         _firstFrameActive = true;
         _firstFrameRecovery = true;
@@ -28,29 +25,29 @@ public class ActionSpiritAttack : ActionAttack
         _pauseFrames = 0;
     }
 
-    public virtual void SwitchActionStateFunction(){
-        if (m_spiritCtx.CurrentFrame <= m_spiritCtx.Action.StartFrames){
-            m_spiritCtx.ActionState = ActionStates.Start;
+    public virtual void SwitchActionStateFunction(SpiritController ctx){
+        if (ctx.CurrentFrame <= ctx.Action.StartFrames){
+            ctx.ActionState = ActionStates.Start;
         }
-        else if (m_spiritCtx.CurrentFrame > m_spiritCtx.Action.StartFrames && m_spiritCtx.CurrentFrame <= m_spiritCtx.Action.StartFrames + m_spiritCtx.Action.ActiveFrames){
-            m_spiritCtx.ActionState = ActionStates.Active;
+        else if (ctx.CurrentFrame > ctx.Action.StartFrames && ctx.CurrentFrame <= ctx.Action.StartFrames + ctx.Action.ActiveFrames){
+            ctx.ActionState = ActionStates.Active;
         }
-        else if (m_spiritCtx.CurrentFrame > m_spiritCtx.Action.StartFrames + m_spiritCtx.Action.ActiveFrames && 
-        m_spiritCtx.CurrentFrame <= m_spiritCtx.Action.StartFrames + m_spiritCtx.Action.ActiveFrames + m_spiritCtx.Action.RecoveryFrames){
-            m_spiritCtx.ActionState = ActionStates.Recovery;
+        else if (ctx.CurrentFrame > ctx.Action.StartFrames + ctx.Action.ActiveFrames && 
+        ctx.CurrentFrame <= ctx.Action.StartFrames + ctx.Action.ActiveFrames + ctx.Action.RecoveryFrames){
+            ctx.ActionState = ActionStates.Recovery;
         }
-        else m_spiritCtx.ActionState = ActionStates.None;
+        else ctx.ActionState = ActionStates.None;
     }
 
-    public override void FixedUpdateState(){
-        switch(m_spiritCtx.ActionState)
+    public virtual void FixedUpdateFunction(SpiritController ctx){
+        switch(ctx.ActionState)
         {
             case ActionStates.Start:
                 if(_firstFrameStartup){
                     //ctx.Animator.SetFloat("SpeedVar", ctx.Action.AnimSpeedS);
-                    m_spiritCtx.ColBoxAnimator.SetFloat("SpeedVar", m_spiritCtx.Action.AnimSpeedS);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", ctx.Action.AnimSpeedS);
                     //ctx.Animator.Play("AttackStart");
-                    m_spiritCtx.ColBoxAnimator.PlayInFixedTime("AttackStart");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackStart");
                     _firstFrameStartup = false;
                 }
             break;
@@ -58,9 +55,9 @@ public class ActionSpiritAttack : ActionAttack
             case ActionStates.Active:
                 if(_firstFrameActive){
                     //ctx.Animator.SetFloat("SpeedVar", ctx.Action.AnimSpeedA);
-                    m_spiritCtx.ColBoxAnimator.SetFloat("SpeedVar", m_spiritCtx.Action.AnimSpeedA);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", ctx.Action.AnimSpeedA);
                     //ctx.Animator.PlayInFixedTime("AttackActive");
-                    m_spiritCtx.ColBoxAnimator.PlayInFixedTime("AttackActive");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackActive");
                     _firstFrameActive = false;
                 }
             break;
@@ -68,9 +65,9 @@ public class ActionSpiritAttack : ActionAttack
             case ActionStates.Recovery:
                 if(_firstFrameRecovery){
                     //ctx.Animator.SetFloat("SpeedVar", ctx.Action.AnimSpeedR);
-                    m_spiritCtx.ColBoxAnimator.SetFloat("SpeedVar", m_spiritCtx.Action.AnimSpeedR);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", ctx.Action.AnimSpeedR);
                     //ctx.Animator.PlayInFixedTime("AttackRecover");
-                    m_spiritCtx.ColBoxAnimator.PlayInFixedTime("AttackRecover");
+                    ctx.ColBoxAnimator.PlayInFixedTime("AttackRecover");
                     _firstFrameRecovery = false;
                 }
             break;
@@ -78,13 +75,13 @@ public class ActionSpiritAttack : ActionAttack
        
         // Invoke events.
         foreach(FrameEvent_Spirit e in Events_Spirit){
-            if (m_spiritCtx.CurrentFrame == e.Frame){
-                e.Event(m_spiritCtx);
+            if (ctx.CurrentFrame == e.Frame){
+                e.Event(ctx);
             }
         }
 
-        if (m_spiritCtx.IsHit) {
-            m_spiritCtx.IsHit = false;
+        if (ctx.IsHit) {
+            ctx.IsHit = false;
 
             if (_firstTimePause){
                 _firstTimePause = false;
@@ -92,7 +89,7 @@ public class ActionSpiritAttack : ActionAttack
                 _pauseFrames = m_hitStop;
                 
                 //ctx.Animator.SetFloat("SpeedVar", 0);
-                m_spiritCtx.ColBoxAnimator.SetFloat("SpeedVar", 0);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", 0);
             }
         } 
 
@@ -101,25 +98,15 @@ public class ActionSpiritAttack : ActionAttack
             if (_pauseFrames <= 0){
                 _pause = false;
                 //ctx.Animator.SetFloat("SpeedVar", ctx.Action.AnimSpeedA);
-                m_spiritCtx.ColBoxAnimator.SetFloat("SpeedVar", m_spiritCtx.Action.AnimSpeedA);
+                ctx.ColBoxAnimator.SetFloat("SpeedVar", ctx.Action.AnimSpeedA);
             }
             _pauseFrames--;
         } 
         else
-        m_spiritCtx.CurrentFrame++;
+        ctx.CurrentFrame++;
     }
 
     public virtual void ExitStateFunction(SpiritController ctx){
         ctx.IsActive = false;
     }
-
-    public override void EnterState(){}
-
-    public override void UpdateState(){}
-
-    public override void ExitState(){}
-
-    public override void CheckSwitchState(){}
-
-    public override void InitializeSubState(){}
 }

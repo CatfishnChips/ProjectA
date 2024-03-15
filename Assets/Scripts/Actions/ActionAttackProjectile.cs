@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Projectile Attack Action", menuName = "ScriptableObject/Action/Projectile")]
-public class ActionAttackProjectile : FighterAttackState
+public class ActionAttackProjectile : ActionFighterAttack
 {   
     public ActionAttackProjectile(){
-        m_frameEvents.Add(new FrameEvent(21, (FighterStateMachine ctx, ActionAttack state) => PoolProjectile(ctx, state)));
+        m_frameEvents.Add(new FrameEvent(21, (FighterStateMachine ctx, FighterAttackState state) => PoolProjectile(ctx, state)));
     }
 
     private List<FrameEvent> m_frameEvents = new List<FrameEvent>(){
-        //new FrameEvent(30, (FighterStateMachine ctx, ActionAttack state) => Debug.Log("Frame: " + state._currentFrame + " Hello")),
-        // new FrameEvent(35, (FighterStateMachine ctx, ActionAttack state) => 
+        //new FrameEvent(30, (FighterStateMachine ctx, FighterAttackState state) => Debug.Log("Frame: " + state._currentFrame + " Hello")),
+        // new FrameEvent(35, (FighterStateMachine ctx, FighterAttackState state) => 
         // ((FighterStateMachine_Class1)ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].QueueReference))     
     };
 
-    protected void PoolProjectile(FighterStateMachine ctx, ActionAttack state){
+    protected void PoolProjectile(FighterStateMachine ctx, FighterAttackState state){
         //var obj = ((FighterStateMachine_Class1)ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].QueueReference); 
         var obj = ((FighterStateMachine)ctx).ProjectileManager.DequeueObject(((FighterStateMachine)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine)ctx).ProjectileManager.PoolableObjects[0].QueueReference); 
         var projectile = obj.GetComponent<Projectile>();
@@ -28,27 +28,27 @@ public class ActionAttackProjectile : FighterAttackState
 
     protected override List<FrameEvent> Events {get => m_frameEvents;}
      
-    public override void FixedUpdateState(){
+    public void FixedUpdateFunction(FighterStateMachine ctx, FighterAttackState state){
         switch(_actionState)
         {
             case ActionStates.Start:
                 if(_firstFrameStartup){
-                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
-                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
-                    _ctx.Animator.PlayInFixedTime("AttackStart");
-                    _ctx.ColBoxAnimator.Play("AttackStart");
+                    ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
+                    ctx.Animator.PlayInFixedTime("AttackStart");
+                    ctx.ColBoxAnimator.Play("AttackStart");
                     _firstFrameStartup = false;
                 }
             break;
 
             case ActionStates.Active:
                 if(_firstFrameActive){
-                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
-                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
-                    _ctx.Animator.PlayInFixedTime("AttackActive");
+                    ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
+                    ctx.Animator.PlayInFixedTime("AttackActive");
                     _firstFrameActive = false;
 
-                    // var obj = ((FighterStateMachine_Class1)_ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)_ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)_ctx).ProjectileManager.PoolableObjects[0].QueueReference);
+                    // var obj = ((FighterStateMachine_Class1)ctx).ProjectileManager.DequeueObject(((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].Prefab, ((FighterStateMachine_Class1)ctx).ProjectileManager.PoolableObjects[0].QueueReference);
                     // var pro = obj.GetComponent<Projectile>();
                     // pro.Action = this;
                 }
@@ -56,9 +56,9 @@ public class ActionAttackProjectile : FighterAttackState
 
             case ActionStates.Recovery:
                 if(_firstFrameRecovery){
-                    _ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
-                    _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
-                    _ctx.Animator.PlayInFixedTime("AttackRecover");
+                    ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
+                    ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
+                    ctx.Animator.PlayInFixedTime("AttackRecover");
                     _firstFrameRecovery = false;
                 }
             break;
@@ -67,11 +67,11 @@ public class ActionAttackProjectile : FighterAttackState
         // Invoke events.
         foreach(FrameEvent e in Events){
             if (_currentFrame == e.Frame){
-                e.Event(_ctx, this);
+                e.Event(ctx, state);
             }
         }
 
-        if (_ctx.IsHit) _ctx.IsHit = false;
+        if (ctx.IsHit) ctx.IsHit = false;
         _currentFrame++;
     }
 }
