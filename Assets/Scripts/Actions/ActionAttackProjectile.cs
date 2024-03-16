@@ -66,12 +66,12 @@ public class ActionAttackProjectile : ActionFighterAttack
        
         // Invoke events.
         foreach(FrameEvent e in Events){
-            if (_currentFrame == e.Frame){
+            if (_state.CurrentFrame == e.Frame){
                 e.Event(ctx, state);
             }
         }
 
         if (ctx.IsHit) ctx.IsHit = false;
-        _currentFrame++;
+        _state.CurrentFrame++;
     }
 }

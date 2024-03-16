@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class ActionBase : ScriptableObject
 {
     public new string name;
+    public FighterStates stateName;
     public InputGestures inputGesture;
     public bool applyRootMotion;
 

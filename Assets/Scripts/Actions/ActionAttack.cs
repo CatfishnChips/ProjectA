@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class ActionAttack : ActionBase
+public abstract class ActionAttack : CancellableAction
 {   
     [SerializeField] protected Tags m_tags;
     [Tooltip("Damage dealt upon a successful uncontested hit to the target.")]
@@ -66,8 +66,6 @@ public abstract class ActionAttack : ActionBase
     [SerializeField] protected int m_startFrames;
     [SerializeField] protected int m_activeFrames;
     [SerializeField] protected int m_recoveryFrames;
-    [SerializeField] protected int m_cancelFrame;
-    [SerializeField] protected int m_inputIgnoreFrames;
 
     [Header("AI Properties")]
     [SerializeField] protected int m_hitboxFrame;
@@ -112,8 +110,6 @@ public abstract class ActionAttack : ActionBase
     public virtual int StartFrames {get => m_startFrames;}
     public virtual int ActiveFrames {get => m_activeFrames;}
     public virtual int RecoveryFrames {get => m_recoveryFrames;}
-    public virtual int CancelFrames {get => m_cancelFrame;}
-    public virtual int InputIgnoreFrames {get => m_inputIgnoreFrames;}
     public virtual int FrameLenght {get => (m_startFrames + m_activeFrames + m_recoveryFrames);}
 
     public int HitboxFrame {get => m_hitboxFrame; set {m_hitboxFrame = value;}}

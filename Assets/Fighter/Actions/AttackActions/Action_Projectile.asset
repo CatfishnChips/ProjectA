@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Action_Projectile
   m_EditorClassIdentifier: 
   name: Projectile
-  inputGesture: 0
+  stateName: 32
+  inputGesture: 13
   applyRootMotion: 0
+  _cancelFrame: 28
+  _inputIgnoreFrames: 3
   m_tags: 96
   m_damage: 20
   m_priority: 0
@@ -41,8 +44,6 @@ MonoBehaviour:
   m_startFrames: 18
   m_activeFrames: 5
   m_recoveryFrames: 34
-  m_cancelFrames: 28
-  m_inputIgnoreFrames: 3
   m_hitboxFrame: 0
   m_hitboxOffset: {x: 0, y: 0}
   m_hitboxLocation: {x: 0, y: 0}

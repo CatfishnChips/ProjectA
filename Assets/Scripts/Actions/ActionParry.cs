@@ -17,17 +17,17 @@ public class ActionParry : ActionAttack_Class0
     }
 
     public override void SwitchActionStateFunction(){
-        if (_currentFrame <= StartFrames){
+        if (_state.CurrentFrame <= StartFrames){
             _actionState = ActionStates.Start;
         }
-        else if (_currentFrame > StartFrames && _currentFrame <= StartFrames + ActiveFrames){
+        else if (_state.CurrentFrame > StartFrames && _state.CurrentFrame <= StartFrames + ActiveFrames){
             if (m_isDodged){
                 _actionState = ActionStates.Recovery;
             }
             else _actionState = ActionStates.Active;
         }
-        else if (_currentFrame > StartFrames + ActiveFrames && 
-        _currentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
+        else if (_state.CurrentFrame > StartFrames + ActiveFrames && 
+        _state.CurrentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
             if (m_isDodged){
                 _actionState = ActionStates.Recovery;
             }
@@ -71,20 +71,20 @@ public class ActionParry : ActionAttack_Class0
                     _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
                     _ctx.Animator.Play("AttackRecover");
                     _firstFrameRecovery = false;
-                    _currentFrame = StartFrames + ActiveFrames;
+                    _state.CurrentFrame = StartFrames + ActiveFrames;
                 }
             break;
         }
        
         // Invoke events.
         foreach(FrameEvent e in Events){
-            if (_currentFrame == e.Frame){
+            if (_state.CurrentFrame == e.Frame){
                 e.Event(_ctx, _ctx.CurrentState as FighterAttackState);
             }
         }
 
         if (_ctx.IsHit) _ctx.IsHit = false;
-        _currentFrame++;
+        _state.CurrentFrame++;
     }
 
     public override void ExitStateFunction(){

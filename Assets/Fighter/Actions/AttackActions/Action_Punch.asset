@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Action_Punch
   m_EditorClassIdentifier: 
   name: Tap
+  stateName: 32
   inputGesture: 2
   applyRootMotion: 0
+  _cancelFrame: 15
+  _inputIgnoreFrames: 3
   m_tags: 1569
   m_damage: 10
   m_priority: 0
@@ -41,8 +44,6 @@ MonoBehaviour:
   m_startFrames: 5
   m_activeFrames: 5
   m_recoveryFrames: 14
-  m_cancelFrames: 14
-  m_inputIgnoreFrames: 3
   m_hitboxFrame: 0
   m_hitboxOffset: {x: 0.7, y: 1.44}
   m_hitboxLocation: {x: 0.7, y: 1.7559783}

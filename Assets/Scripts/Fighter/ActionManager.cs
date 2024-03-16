@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
-
+    private int _treeLevel;
+    private InputGestures _lastGesture;
     private Dictionary<InputGestures, ActionNode> _rootDict;
     private Dictionary<InputGestures, ActionNode> _currentSearchDict;
+
+    public int TreeLevel { get => _treeLevel; set => _treeLevel = value; }
 
     public ActionManager(Dictionary<InputGestures, ActionNode> rootDict){
         _rootDict = rootDict;
         _currentSearchDict = _rootDict;
+        _treeLevel = 0;
+        _lastGesture = InputGestures.None;
     }
 
-    public ActionBase GetAction(InputGestures gesture){
+    public CancellableAction GetAction(InputGestures gesture){
         // Debug.Log("Trying to get an action with gesture: " + gesture);
         int i = 0;
         foreach(KeyValuePair<InputGestures, ActionNode> keyValuePair in _currentSearchDict){
@@ -21,8 +26,8 @@ public class ActionManager : MonoBehaviour
             i++;
         }
         if(_currentSearchDict.ContainsKey(gesture)){
-            ActionBase action = _currentSearchDict[gesture].fighterAction;
-            _currentSearchDict = _currentSearchDict[gesture].childrenDict;
+            CancellableAction action = _currentSearchDict[gesture].fighterAction as CancellableAction;
+            _lastGesture = gesture;
             // Debug.Log("Found a key with the given gesture.");
             return action;
         }
@@ -32,9 +37,19 @@ public class ActionManager : MonoBehaviour
         } 
     }
 
-    public ActionBase PeekAction(InputGestures gesture){
+    public void ItarateForward(){
+        _currentSearchDict = _currentSearchDict[_lastGesture].childrenDict;
+        _treeLevel++;
+    }
+
+    public void StartChain(InputGestures gesture){
+        _currentSearchDict = _currentSearchDict[gesture].childrenDict;
+        _treeLevel++;
+    }
+
+    public CancellableAction PeekAction(InputGestures gesture){
         if(_currentSearchDict.ContainsKey(gesture)){
-            ActionBase action = _currentSearchDict[gesture].fighterAction;
+            CancellableAction action = _currentSearchDict[gesture].fighterAction as CancellableAction;
             return action;
         }
         else return null;
@@ -47,8 +62,9 @@ public class ActionManager : MonoBehaviour
     }
 
     public void Reset(){
-        // Debug.Log("Resetted.");
         _currentSearchDict = _rootDict;
+        _treeLevel = 0;
+        _lastGesture = InputGestures.None;
     }
 
 }

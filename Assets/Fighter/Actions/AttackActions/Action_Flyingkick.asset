@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Action_Flyingkick
   m_EditorClassIdentifier: 
   name: FlyingKick
+  stateName: 32
   inputGesture: 0
   applyRootMotion: 1
+  _cancelFrame: 32
+  _inputIgnoreFrames: 3
   m_tags: 1300
   m_damage: 25
   m_priority: 0
@@ -41,8 +44,6 @@ MonoBehaviour:
   m_startFrames: 20
   m_activeFrames: 8
   m_recoveryFrames: 30
-  m_cancelFrames: 35
-  m_inputIgnoreFrames: 3
   m_hitboxFrame: 7
   m_hitboxOffset: {x: 2.2562695, y: 1.6326367}
   m_hitboxLocation: {x: 3.0989473, y: 2.1326365}

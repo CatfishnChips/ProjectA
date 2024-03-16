@@ -18,7 +18,7 @@ public class ActionGrab : ActionFighterAttack
     // REWORK HERE, HAS THE OLD LOGIC
     public override void FixedUpdateFunction()
     {
-        if (_currentFrame <= StartFrames){
+        if (_state.CurrentFrame <= StartFrames){
             if(_firstFrameStartup){
                 _ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
@@ -27,7 +27,7 @@ public class ActionGrab : ActionFighterAttack
                 _firstFrameStartup = false;
             }
         }
-        else if (_currentFrame > StartFrames && _currentFrame <= StartFrames + ActiveFrames){
+        else if (_state.CurrentFrame > StartFrames && _state.CurrentFrame <= StartFrames + ActiveFrames){
             if(_firstFrameActive){
                 _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
@@ -35,8 +35,8 @@ public class ActionGrab : ActionFighterAttack
                 _firstFrameActive = false;
             }
         }
-        else if(_currentFrame > StartFrames + ActiveFrames && 
-        _currentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
+        else if(_state.CurrentFrame > StartFrames + ActiveFrames && 
+        _state.CurrentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
             if(_firstFrameRecovery){
                 // If attack successfuly connects, change the animation.
                 if (_ctx.IsHit){
@@ -58,7 +58,7 @@ public class ActionGrab : ActionFighterAttack
                 _firstFrameRecovery = false;
             }
         }
-        _currentFrame++;
+        _state.CurrentFrame++;
     }
 
     public override void ExitStateFunction()

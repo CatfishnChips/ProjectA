@@ -26,7 +26,7 @@ public class ActionContinuousAttack : ActionFighterAttack
 
     public override void FixedUpdateFunction()
     {
-        if (_currentFrame <= StartFrames){
+        if (_state.CurrentFrame <= StartFrames){
             if(_firstFrameStartup){
                 _ctx.Animator.SetFloat("SpeedVar", AnimSpeedS);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedS);
@@ -35,7 +35,7 @@ public class ActionContinuousAttack : ActionFighterAttack
                 _firstFrameStartup = false;
             }
         }
-        else if (_currentFrame > StartFrames && _currentFrame <= StartFrames + ActiveFrames){
+        else if (_state.CurrentFrame > StartFrames && _state.CurrentFrame <= StartFrames + ActiveFrames){
             if(_firstFrameActive){
                 _ctx.Animator.SetFloat("SpeedVar", AnimSpeedA);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedA);
@@ -49,8 +49,8 @@ public class ActionContinuousAttack : ActionFighterAttack
                 _timePaused = !_pauseTime;
             }
         }
-        else if(_currentFrame > StartFrames + ActiveFrames && 
-        _currentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
+        else if(_state.CurrentFrame > StartFrames + ActiveFrames && 
+        _state.CurrentFrame <= StartFrames + ActiveFrames + RecoveryFrames){
             if(_firstFrameRecovery){
                 _ctx.Animator.SetFloat("SpeedVar", AnimSpeedR);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", AnimSpeedR);
@@ -60,7 +60,7 @@ public class ActionContinuousAttack : ActionFighterAttack
         }
 
         if (!_pauseTime)
-        _currentFrame++;
+        _state.CurrentFrame++;
     }
 
     public override void ExitStateFunction()

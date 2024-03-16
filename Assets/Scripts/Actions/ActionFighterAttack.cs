@@ -7,27 +7,21 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
 {
     protected FighterStateMachine _ctx;
     protected FighterAttackState _state;
-    protected int _currentFrame = 0;
     protected ActionStates _actionState = default;
     protected bool _hadHit = false;
-
-    private bool performedChainMove = false;
-    private bool cancelInputRead = false;
-    protected bool _listeningForChainInput = true;
 
     protected bool isReading;
 
     public bool HadHit { get {return _hadHit;} set{ _hadHit = value;} }
-    public int CurrentFrame {get{return _currentFrame;}}
-    public bool CancelInputRead { get => cancelInputRead; set => cancelInputRead = value; }
 
     protected List<FrameEvent> _frameEvents = new List<FrameEvent>();
     protected virtual List<FrameEvent> Events {get {return _frameEvents;}}
 
 
     public ActionFighterAttack(){
-        // Add FrameEvents here:
-        //Events.Add(new FrameEvent(21, (FighterStateMachine ctx, FighterAttackState state) => Debug.Log("ActionFighterAttack Event Callback - Frame: " + state._currentFrame)));
+        if(stateName == FighterStates.None){
+            stateName = FighterStates.Attack;
+        }
     }
 
     public virtual FighterSubStates SwitchState(){
@@ -46,11 +40,6 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
                 return FighterSubStates.Idle;
             }
         }
-        else if (_currentFrame >= CancelFrames && _ctx.ChainActionGesture != InputGestures.None){
-            performedChainMove = true;
-            if(_ctx.ActionManager.PeekAction(_ctx.ChainActionGesture).GetType() == typeof(ActionConditional)) return FighterSubStates.Dash;
-            else if(_ctx.ActionManager.PeekAction(_ctx.ChainActionGesture).GetType() == typeof(ActionFighterAttack)) return FighterSubStates.Attack;
-        }
 
         return FighterSubStates.None;
     }
@@ -67,10 +56,10 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
         ctx.IsGravityApplied = m_gravity;
 
         //Debug.Log(name);
-        _currentFrame = 0;
+        _state.CurrentFrame = 0;
         _ctx.OnAttackStart?.Invoke();
         _hadHit = false;
-        _ctx.CurrentFrame =_currentFrame;
+        _ctx.CurrentFrame = _state.CurrentFrame;
         _actionState = ActionStates.Start;
         _ctx.ChainActionGesture = InputGestures.None;
         
@@ -93,14 +82,14 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
     }
 
     public virtual void SwitchActionStateFunction(){
-        if (_currentFrame <= m_startFrames){
+        if (_state.CurrentFrame <= m_startFrames){
             _actionState = ActionStates.Start;
         }
-        else if (_currentFrame > m_startFrames && _currentFrame <= m_startFrames + m_activeFrames){
+        else if (_state.CurrentFrame > m_startFrames && _state.CurrentFrame <= m_startFrames + m_activeFrames){
             _actionState = ActionStates.Active;
         }
-        else if (_currentFrame > m_startFrames + m_activeFrames && 
-        _currentFrame <= m_startFrames + m_activeFrames + RecoveryFrames){
+        else if (_state.CurrentFrame > m_startFrames + m_activeFrames && 
+        _state.CurrentFrame <= m_startFrames + m_activeFrames + RecoveryFrames){
             _actionState = ActionStates.Recovery;
         }
         else _actionState = ActionStates.None;
@@ -144,7 +133,7 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
        
         // Invoke events.
         foreach(FrameEvent e in Events){
-            if (_currentFrame == e.Frame){
+            if (_state.CurrentFrame == e.Frame){
                 e.Event(_ctx, _ctx.CurrentState as FighterAttackState);
             }
         }
@@ -172,24 +161,14 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
             }
             _pauseFrames--;
         } 
-        else _currentFrame++;
+        else _state.CurrentFrame++;
 
         _ctx.CurrentMovement = applyRootMotion ? _ctx.RootMotion : _ctx.CurrentMovement;
 
         SwitchActionStateFunction();
         _ctx.ActionState = _actionState;
 
-        _ctx.CurrentFrame =_currentFrame;
-    }
-
-    public void CancelCheck(){
-        if(CurrentFrame <= CancelFrames && CurrentFrame > InputIgnoreFrames && _ctx.AttackInput.Read() && _listeningForChainInput){
-            if(_ctx.ActionManager.CheckIfChain(_ctx.AttackInput.ReadContent())){
-                _ctx.ChainActionGesture = _ctx.AttackInput.ReadContent();
-            }else{
-                _listeningForChainInput = false;
-            }
-        }
+        _ctx.CurrentFrame = _state.CurrentFrame;
     }
 
     public virtual void ExitStateFunction(){
@@ -198,12 +177,6 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
         _ctx.IsGravityApplied = true;
         _ctx.ActionState = default;
         _ctx.OnAttackEnd?.Invoke();
-        if(!performedChainMove) {
-            _ctx.ChainActionGesture = InputGestures.None;
-            _ctx.ActionManager.Reset();
-        }
-        performedChainMove = false;
-        _listeningForChainInput = true;
         
         _ctx.Drag = 0f;
         _ctx.Gravity = 0f;

@@ -4,6 +4,9 @@ public abstract class FighterBaseState : StateMachineBaseState
 {
     protected new FighterStateMachine _ctx;
     protected FighterStateFactory _factory;
+    protected int _currentFrame;
+
+    public int CurrentFrame { get => _currentFrame; set => _currentFrame = value; }
 
     public FighterBaseState(IStateMachineRunner ctx, FighterStateFactory factory) : base(ctx)
     {
