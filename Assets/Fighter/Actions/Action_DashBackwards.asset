@@ -16,7 +16,7 @@ MonoBehaviour:
   stateName: 256
   inputGesture: 0
   applyRootMotion: 0
-  _cancelFrame: 10
+  _cancelFrame: 12
   _inputIgnoreFrames: 3
   dashTime: 15
   meshAnimation: {fileID: -203655887218126122, guid: 9d1fbdc2742ccab489b489c9d4bc23ac,

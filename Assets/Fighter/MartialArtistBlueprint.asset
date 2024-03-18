@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1992.0001, y: -202.00003}
+  positionOnGraph: {x: 548.65, y: 977.0133}
   children: []
   inputGesture: 0
   fighterAction: {fileID: 11400000, guid: 6f24950fb6be07a488a0a6e7087ea02b, type: 2}
@@ -33,6 +33,38 @@ MonoBehaviour:
   - {fileID: 3254030051327373464}
   inputGesture: 14
   fighterAction: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
+--- !u!114 &-7561546352412228438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
+  m_Name: ChainActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 1207, y: -864}
+  children: []
+  inputGesture: 14
+  fighterAction: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
+--- !u!114 &-7467621535099202739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
+  m_Name: ChainActionNode
+  m_EditorClassIdentifier: 
+  positionOnGraph: {x: 0, y: 0}
+  children: []
+  inputGesture: 0
+  fighterAction: {fileID: 0}
 --- !u!114 &-6891084032284580955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff69e6b1ad15ad47b003a915149a34d, type: 3}
   m_Name: RootNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: -217.88045, y: -321.50003}
+  positionOnGraph: {x: -222.02269, y: -264}
   children:
   - {fileID: 4499035773204513225}
   - {fileID: -7982413573524852727}
@@ -53,6 +85,7 @@ MonoBehaviour:
   - {fileID: 5458441699911745602}
   - {fileID: 8591419039009745688}
   - {fileID: 6866003890819645144}
+  - {fileID: 5945256160204151701}
   name: 
 --- !u!114 &-5237489429507526308
 MonoBehaviour:
@@ -66,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1992.0001, y: -14.999971}
+  positionOnGraph: {x: 548.65, y: 1164.0133}
   children: []
   inputGesture: 6
   fighterAction: {fileID: 11400000, guid: abc65f5054684844493cd8d1c25e1f13, type: 2}
@@ -82,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1372.0001, y: 209.00003}
+  positionOnGraph: {x: -71.349976, y: 1388.0133}
   children: []
   inputGesture: 0
   fighterAction: {fileID: 11400000, guid: 3f68611264b293a4287038a85230352f, type: 2}
@@ -100,8 +133,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionOnGraph: {x: 633, y: 71}
   children: []
-  inputGesture: 1
-  fighterAction: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
+  inputGesture: 2
+  fighterAction: {fileID: 11400000, guid: 7155732e14409394dacb8dfe1fcebdd4, type: 2}
 --- !u!114 &-1873962000301212949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1372.0001, y: 3.000019}
+  positionOnGraph: {x: -71.349976, y: 1182.0133}
   children: []
   inputGesture: 0
   fighterAction: {fileID: 11400000, guid: 5bd99419bb49ce34ba7e81e80bb1e420, type: 2}
@@ -144,7 +177,6 @@ MonoBehaviour:
   - {fileID: 7859536290328866274}
   - {fileID: 3254030051327373464}
   - {fileID: 3515973827919089645}
-  - {fileID: 3237958247849569587}
   - {fileID: -5237489429507526308}
   - {fileID: -8138331636262038485}
   - {fileID: 8591419039009745688}
@@ -158,6 +190,8 @@ MonoBehaviour:
   - {fileID: 4515152134383221044}
   - {fileID: -1904041246397830998}
   - {fileID: 5945256160204151701}
+  - {fileID: -7561546352412228438}
+  - {fileID: -7467621535099202739}
 --- !u!114 &1133765153074997452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1372.0001, y: -363}
+  positionOnGraph: {x: -71.349976, y: 816.0133}
   children: []
   inputGesture: 0
   fighterAction: {fileID: 11400000, guid: 8ee14044fb806f146a162d50263a24f3, type: 2}
@@ -202,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff69e6b1ad15ad47b003a915149a34d, type: 3}
   m_Name: RootNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1140.0001, y: -185}
+  positionOnGraph: {x: -303.34998, y: 994.0133}
   children:
   - {fileID: 5003424467209621410}
   - {fileID: 1414007061814015768}
@@ -224,26 +258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1372.0001, y: -187}
+  positionOnGraph: {x: -71.349976, y: 992.0133}
   children: []
   inputGesture: 0
   fighterAction: {fileID: 11400000, guid: 93a6d7f648e264e40ac86231467df887, type: 2}
---- !u!114 &3237958247849569587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
-  m_Name: ChainActionNode
-  m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1260.4258, y: -937.1459}
-  children: []
-  inputGesture: 2
-  fighterAction: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
 --- !u!114 &3254030051327373464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,10 +290,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
   m_Name: ChainActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1260.4258, y: -741.1459}
-  children: []
-  inputGesture: 11
-  fighterAction: {fileID: 11400000, guid: ff4e2ac14c31b594da66843169331705, type: 2}
+  positionOnGraph: {x: 680.4001, y: -784.0001}
+  children:
+  - {fileID: 7859536290328866274}
+  - {fileID: -7561546352412228438}
+  inputGesture: 2
+  fighterAction: {fileID: 11400000, guid: a5fe6a37f8d90b94589e923f9c87dc4b, type: 2}
 --- !u!114 &4499035773204513225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionOnGraph: {x: 151.42575, y: -784.1459}
   children:
-  - {fileID: 7859536290328866274}
+  - {fileID: 3515973827919089645}
   inputGesture: 2
   fighterAction: {fileID: 11400000, guid: 9d0e27a943ccb354690b316f474d6378, type: 2}
 --- !u!114 &4515152134383221044
@@ -307,8 +327,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionOnGraph: {x: 633, y: -108}
   children: []
-  inputGesture: 1
-  fighterAction: {fileID: 11400000, guid: 7155732e14409394dacb8dfe1fcebdd4, type: 2}
+  inputGesture: 2
+  fighterAction: {fileID: 11400000, guid: a9cae33bcf58baa4fb0f9386696dd957, type: 2}
 --- !u!114 &5003424467209621410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,7 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 1372.0001, y: -521}
+  positionOnGraph: {x: -71.349976, y: 658.01324}
   children: []
   inputGesture: 0
   fighterAction: {fileID: 11400000, guid: c598b1051af6a3c499a47fc65962a1f4, type: 2}
@@ -353,10 +373,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5df2da2c81212e42aa2014b259bd42c, type: 3}
   m_Name: NeutralActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 0, y: 0}
+  positionOnGraph: {x: 151, y: 220.92}
   children: []
-  inputGesture: 0
-  fighterAction: {fileID: 0}
+  inputGesture: 17
+  fighterAction: {fileID: 11400000, guid: 7155732e14409394dacb8dfe1fcebdd4, type: 2}
 --- !u!114 &6866003890819645144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,7 +392,7 @@ MonoBehaviour:
   positionOnGraph: {x: 151, y: 71}
   children:
   - {fileID: -1904041246397830998}
-  inputGesture: 9
+  inputGesture: 10
   fighterAction: {fileID: 11400000, guid: e085f203a1cdd9f41941b9fffebc1c68, type: 2}
 --- !u!114 &7859536290328866274
 MonoBehaviour:
@@ -386,10 +406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ebe3226fde463f46a05af10ff8d1522, type: 3}
   m_Name: ChainActionNode
   m_EditorClassIdentifier: 
-  positionOnGraph: {x: 716.4258, y: -842.1459}
-  children:
-  - {fileID: 3237958247849569587}
-  - {fileID: 3515973827919089645}
+  positionOnGraph: {x: 1207, y: -692}
+  children: []
   inputGesture: 2
   fighterAction: {fileID: 11400000, guid: f78d9a7c48473944c82a1d242b7dfa78, type: 2}
 --- !u!114 &8591419039009745688
@@ -407,5 +425,5 @@ MonoBehaviour:
   positionOnGraph: {x: 150.99997, y: -108.50001}
   children:
   - {fileID: 4515152134383221044}
-  inputGesture: 10
+  inputGesture: 9
   fighterAction: {fileID: 11400000, guid: bc54a1bc9a83a7d4c9661bee7392ec72, type: 2}
