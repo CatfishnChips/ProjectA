@@ -349,6 +349,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     }
     
     protected virtual void OnDirectInputGesture(InputGestures gesture){
+        Debug.Log(gesture);
         _actionInput.Write(gesture);
     }
 

@@ -246,6 +246,13 @@ public class TouchQueueInput<T> : TouchInput<T>
         }
     }
 
+    public void Remove(){
+        if(_contentQueue.Count > 0){
+            _contentQueue[0].Reset();
+            _contentQueue.RemoveAt(0);
+        }
+    }
+
 }
 
 public class TouchContinuousInput<T> : TouchInput<T>

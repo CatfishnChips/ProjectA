@@ -15,31 +15,38 @@ public abstract class FighterBaseState : StateMachineBaseState
     }
 
     public bool IdleStateSwitchCheck(){
-        if (_ctx.ActionInput.Read() && _ctx.GestureActionDict.ContainsKey(_ctx.ActionInput.PeekContent())){
-            FighterStates state = _ctx.GestureActionDict[_ctx.ActionInput.PeekContent()].stateName;
-            if(state == FighterStates.Attack){
-                SwitchState(_factory.GetSubState(FighterSubStates.Attack));
-                return true;
-            }
-            else if(state == FighterStates.Dash && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
-                SwitchState(_factory.GetSubState(FighterSubStates.Dash));
-                return true;
+        if (_ctx.ActionInput.Read()){
+            if(_ctx.GestureActionDict.ContainsKey(_ctx.ActionInput.PeekContent())){
+                FighterStates state = _ctx.GestureActionDict[_ctx.ActionInput.PeekContent()].stateName;
+                if(state == FighterStates.Dash){
+                    if(_ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.Dash));
+                        return true;
+                    }
+                    return false;
+                }
+                else{
+                    SwitchState(_factory.GetSubState((FighterSubStates)state));
+                    return true;
+                }
             }
             else{
-                return false;
+                _ctx.ActionInput.Remove();
             }
         }
-        else if (_ctx.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
+
+        if (_ctx.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
             SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
             return true;
         }
-        else if (_ctx.MovementInput.Read() != 0){
+
+        if (_ctx.MovementInput.Read() != 0){
             SwitchState(_factory.GetSubState(FighterSubStates.Walk));
             return true;
         }
-        else{
-            return false;
-        }
+
+        return false;
+        
     }
 
     public static float AdjustAnimationTime(AnimationClip clip, int frames){

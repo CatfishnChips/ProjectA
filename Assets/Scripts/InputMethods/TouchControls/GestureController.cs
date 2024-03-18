@@ -122,7 +122,7 @@ public class GestureController : MonoBehaviour, IInputInvoker
                 }
             }
             else{
-                InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapL);
+                InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapR);
             }
         }
 
@@ -182,12 +182,10 @@ public class GestureController : MonoBehaviour, IInputInvoker
         }
 
         if(!_touchA.IsActive && !_touchA.keepOpen){
-            if(_touchA.Type != TouchType.None) Debug.Log("Frame: " + debugIndex + " Touch A type reset.");
             _touchA.Type = TouchType.None;
         }
 
         if(!_touchB.IsActive && !_touchB.keepOpen){
-            if(_touchB.Type != TouchType.None) Debug.Log("Frame: " + debugIndex + " Touch B type reset.");
             _touchB.Type = TouchType.None;
         }
         debugIndex++;

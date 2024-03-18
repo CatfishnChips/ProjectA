@@ -9,24 +9,29 @@ public class FighterWalkState : FighterBaseState
     public override bool CheckSwitchState()
     {
         if (_ctx.ActionInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
-            return true;
+            if(_ctx.GestureActionDict.ContainsKey(_ctx.ActionInput.PeekContent())){
+                FighterStates state = _ctx.GestureActionDict[_ctx.ActionInput.PeekContent()].stateName;
+                SwitchState(_factory.GetSubState((FighterSubStates)state));
+                return true;
+            }
+            else{
+                _ctx.ActionInput.Remove();
+            }
         }
-        else if (_ctx.DodgeInput.Read()){
+
+        if (_ctx.DodgeInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
             return true;
         }
-        else if (_ctx.DashInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dash));
-            return true;
-        }
-        else if(_ctx.MovementInput.Read() == 0){
+
+        if(_ctx.MovementInput.Read() == 0){
             if(IdleStateSwitchCheck()) return true; 
             
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
             return true;
         }
-        else return false;
+        
+        return false;
     }
 
     public override void EnterState()
