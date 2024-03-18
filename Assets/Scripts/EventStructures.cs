@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class InputEvents
 {
+    public Action<InputGestures> OnDirectInputGesture;
     public Action<ScreenSide, GestureDirections, GestureDirections> OnSwipe;
     public Action<ScreenSide, GestureDirections> OnDrag;
     public Action<ScreenSide> OnHold;
@@ -27,6 +28,7 @@ public class FighterEvents
     public Action<int> OnDash;
     public Action<int> OnMove;
     public Action OnBlock;
+    public Action<InputGestures> OnDirectInputGesture;
     public UnityAction<InputGestures> OnFighterAttackGesture;
     public UnityAction<ActionAttack> OnFighterAttackByAction;
     public UnityAction<string> OnFighterAttackByName;

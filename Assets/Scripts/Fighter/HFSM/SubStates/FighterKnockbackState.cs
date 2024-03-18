@@ -6,7 +6,6 @@ public class FighterKnockbackState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private int _currentFrame = 0;
     private float _animationSpeed;
     private bool _isFirstTime = true;
     private float _drag;
@@ -18,10 +17,16 @@ public class FighterKnockbackState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if (_currentFrame >= _action.KnockbackStun + _action.HitStop){   
+            if(IdleStateSwitchCheck()) return true; 
+            
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

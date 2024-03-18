@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
         inputEvents.OnHold += fighterManager.OnHold;
         inputEvents.OnSwipe += fighterManager.OnSwipe;
         inputEvents.OnTap += fighterManager.OnTap;
+        inputEvents.OnDirectInputGesture += fighterManager.OnDirectInput;
         inputEvents.DirectAttackInputByAction += fighterManager.OnDirectAttackInputByAction;
         inputEvents.DirectAttackInputByString += fighterManager.OnDirectAttackInputByString;
     }

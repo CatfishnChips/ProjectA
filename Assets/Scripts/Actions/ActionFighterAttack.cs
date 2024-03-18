@@ -17,31 +17,12 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
     protected List<FrameEvent> _frameEvents = new List<FrameEvent>();
     protected virtual List<FrameEvent> Events {get {return _frameEvents;}}
 
+    public ActionStates ActionState { get => _actionState; set => _actionState = value; }
 
     public ActionFighterAttack(){
         if(stateName == FighterStates.None){
             stateName = FighterStates.Attack;
         }
-    }
-
-    public virtual FighterSubStates SwitchState(){
-        if (_actionState == ActionStates.None){
-
-            if(_ctx.Player == Player.P1) EventManager.Instance.FighterAttackEnded?.Invoke();
-            else if(_ctx.Player == Player.P2) EventManager.Instance.P2FighterAttackEnded?.Invoke();
-
-            _ctx.ActionState = default;
-            _ctx.ValidAttackInputInterval = false;
-
-            if (_ctx.AttackInput.Read()){
-                return FighterSubStates.Attack;
-            }
-            else{
-                return FighterSubStates.Idle;
-            }
-        }
-
-        return FighterSubStates.None;
     }
 
     public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
@@ -181,6 +162,12 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
         _ctx.Drag = 0f;
         _ctx.Gravity = 0f;
         _ctx.CurrentMovement = Vector2.zero;
+
+        if(_ctx.Player == Player.P1) EventManager.Instance.FighterAttackEnded?.Invoke();
+        else if(_ctx.Player == Player.P2) EventManager.Instance.P2FighterAttackEnded?.Invoke();
+
+        _ctx.ActionState = default;
+        _ctx.ValidAttackInputInterval = false;
 
     }
 }

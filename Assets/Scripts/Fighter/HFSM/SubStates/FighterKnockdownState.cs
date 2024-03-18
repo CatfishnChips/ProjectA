@@ -6,16 +6,21 @@ public class FighterKnockdownState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private int _currentFrame = 0;
 
     public FighterKnockdownState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if (_currentFrame >= _action.KnockdownStun){   
+            if(IdleStateSwitchCheck()) return true; 
+            
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

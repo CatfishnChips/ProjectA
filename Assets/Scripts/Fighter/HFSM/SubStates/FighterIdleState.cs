@@ -10,20 +10,9 @@ public class FighterIdleState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
-        if (_ctx.AttackInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
-        }
-        else if (_ctx.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
-        }
-        else if (_ctx.DashInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dash));
-        }
-        else if (_ctx.MovementInput.Read() != 0){
-            SwitchState(_factory.GetSubState(FighterSubStates.Walk));
-        }  
+        return IdleStateSwitchCheck();
     }
 
     public override void EnterState()

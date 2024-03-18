@@ -37,12 +37,7 @@ public class ActionManager : MonoBehaviour
         } 
     }
 
-    public void ItarateForward(){
-        _currentSearchDict = _currentSearchDict[_lastGesture].childrenDict;
-        _treeLevel++;
-    }
-
-    public void StartChain(InputGestures gesture){
+    public void ItarateForward(InputGestures gesture){
         _currentSearchDict = _currentSearchDict[gesture].childrenDict;
         _treeLevel++;
     }
@@ -62,6 +57,7 @@ public class ActionManager : MonoBehaviour
     }
 
     public void Reset(){
+        //Debug.Log("Resetted.");
         _currentSearchDict = _rootDict;
         _treeLevel = 0;
         _lastGesture = InputGestures.None;

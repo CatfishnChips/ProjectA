@@ -8,6 +8,7 @@ public enum TouchState
 public enum TouchType
 {
     None,
+    ForceHold,
     Hold,
     Tap,
     Swipe,

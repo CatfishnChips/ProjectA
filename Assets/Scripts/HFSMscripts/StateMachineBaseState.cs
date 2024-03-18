@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public abstract class StateMachineBaseState 
 {
     protected bool _isRootState = false;
@@ -17,7 +19,7 @@ public abstract class StateMachineBaseState
 
     public abstract void ExitState();
 
-    public abstract void CheckSwitchState();
+    public abstract bool CheckSwitchState();
 
     public abstract void InitializeSubState();
 

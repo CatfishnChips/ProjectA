@@ -198,6 +198,7 @@ public class TouchQueueInput<T> : TouchInput<T>
 
     public T PeekContent()
     {
+        if(_contentQueue.Count == 0) return default;
         return _contentQueue[0].Content;
     }
 

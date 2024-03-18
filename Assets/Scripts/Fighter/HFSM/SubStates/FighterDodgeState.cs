@@ -1,21 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FighterDodgeState : FighterBaseState
 {
     protected ActionDefault _action;
-    protected int _currentFrame = 0;
     protected bool _isFirstTime = true;
 
     public FighterDodgeState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if (_currentFrame >= _ctx.DodgeTime.x + _ctx.DodgeTime.y){
+            if(IdleStateSwitchCheck()) return true; 
+            
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
+            
+        }
+        else{
+            return false;
         }
     }
 

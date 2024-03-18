@@ -8,21 +8,23 @@ public abstract class FighterCancellableState : FighterBaseState
 
     protected FighterCancellableState(IStateMachineRunner ctx, FighterStateFactory factory) : base(ctx, factory){}
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if(_ctx.ChainActionGesture != InputGestures.None && _currentFrame >= _cancellableAction.CancelFrame){
             _isChainSuccessful = true;
             CancellableAction action = _ctx.ActionManager.GetAction(_ctx.ChainActionGesture);
             SwitchState(_factory.GetSubState((FighterSubStates)action.stateName));
-            return;
+            return true;
         }
+        return false;
     }
 
     public override void EnterState()
     {
-        if(_ctx.ChainActionGesture == InputGestures.None) _ctx.ChainActionGesture = _ctx.AttackInput.ReadContent();
+        if(_ctx.ChainActionGesture == InputGestures.None) _ctx.ChainActionGesture = _ctx.ActionInput.ReadContent();
+        //Debug.Log(_ctx.ChainActionGesture);
         _cancellableAction = _ctx.ActionManager.GetAction(_ctx.ChainActionGesture);
-        _ctx.ActionManager.ItarateForward();
+        _ctx.ActionManager.ItarateForward(_ctx.ChainActionGesture);
         _ctx.ChainActionGesture = InputGestures.None;
         _listeningForChainInput = true;
         _isChainSuccessful = false;
@@ -45,10 +47,8 @@ public abstract class FighterCancellableState : FighterBaseState
     }
 
     public void CancelCheck(){
-        Debug.Log("Current Frame: " + _currentFrame);
-        if(_currentFrame <= _cancellableAction.CancelFrame && _currentFrame > _cancellableAction.InputIgnoreFrames && _ctx.AttackInput.Read() && _listeningForChainInput){
-            Debug.Log("Input performed.");
-            InputGestures chainGesture = _ctx.AttackInput.ReadContent();
+        if(_currentFrame <= _cancellableAction.CancelFrame && _currentFrame > _cancellableAction.InputIgnoreFrames && _ctx.ActionInput.Read() && _listeningForChainInput){
+            InputGestures chainGesture = _ctx.ActionInput.ReadContent();
             if(_ctx.ActionManager.CheckIfChain(chainGesture)){
                 _ctx.ChainActionGesture = chainGesture;
             }else{

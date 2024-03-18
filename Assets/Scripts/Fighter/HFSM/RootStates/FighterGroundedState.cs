@@ -7,16 +7,21 @@ public class FighterGroundedState : FighterBaseState
         _isRootState = true;
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if (_ctx.IsHurt && !_ctx.IsInvulnerable){
             //Debug.Log("FighterGroundedState(CheckSwitchState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
             SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
+            return true;
         }
 
         if (!_ctx.IsGrounded || (_ctx.JumpInput.Read() && (_ctx.CurrentSubState == FighterStates.Idle || _ctx.CurrentSubState == FighterStates.Walk))){
             SwitchState(_factory.GetRootState(FighterRootStates.Airborne));
+            return true;
         }
+
+        return false;
+
     }
 
     public override void EnterState()

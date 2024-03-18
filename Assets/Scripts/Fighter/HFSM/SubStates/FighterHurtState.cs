@@ -6,7 +6,6 @@ public class FighterHurtState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private int _currentFrame = 0;
     private Vector2 _velocity;
     private float _animationSpeed;
     private float _colliderAnimationSpeed;
@@ -23,20 +22,23 @@ public class FighterHurtState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
-        if (_currentFrame >= _action.KnockupStun.x + _action.KnockupStun.y + _action.HitStop){   
-            FighterBaseState state;         
-            
+        if (_currentFrame >= _action.KnockupStun.x + _action.KnockupStun.y + _action.HitStop){
             // Knockup always transitions to Knockdown state.
             if (_action.KnockdownStun > 0){
-                state = _factory.GetSubState(FighterSubStates.Knockdown);
+                SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                return true;
             }
             else{
-                state = _factory.GetSubState(FighterSubStates.Idle);
+                if(IdleStateSwitchCheck()) return true; 
+                
+                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                return true;
             }
-            SwitchState(state);
         }
+        else return false;
+        
     }
 
     public override void EnterState()

@@ -7,7 +7,6 @@ public class FighterJumpState : FighterBaseState
     private ActionDefault _action;
     private Rigidbody2D _rb;
     private float _initialJumpVelocity;
-    private int _currentFrame = 0;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private Vector2 _velocity;
 
@@ -15,10 +14,16 @@ public class FighterJumpState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {   
         if(_currentFrame >= _ctx.JumpTime){
+            if(IdleStateSwitchCheck()) return true; 
+            
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
+        }
+        else{
+            return false;
         }
     }
 

@@ -11,12 +11,20 @@ public class FighterAttackState : FighterCancellableState
         _ctx.ChainActionGesture = InputGestures.None;
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
-        base.CheckSwitchState();
-        FighterSubStates newState;
-        newState = _action.SwitchState();
-        if(newState != FighterSubStates.None) SwitchState(_factory.GetSubState(newState));
+        if(base.CheckSwitchState()) return true;
+        if (_action.ActionState == ActionStates.None){
+            
+            if(IdleStateSwitchCheck()) return true; 
+            
+            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
+            
+        }
+        else{
+            return false;
+        }
     }
 
     public override void EnterState()

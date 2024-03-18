@@ -25,7 +25,10 @@ public class GestureController : MonoBehaviour, IInputInvoker
     [SerializeField] private float _minSwipeDistance; // Minimum distance required to register as a swipe. // Can also use Screen.width and Screen.height.
     [SerializeField] private float _minSwipeSpeed; // How fast the finger should move to register a gsture as a swipe. 
     [SerializeField] private float _swipeTimeLimit;
+    [SerializeField] private float _doubleGestureTimeLimit;
     [SerializeField] private float _holdThreshold; // Minimum amount of time required to register a stationary touch as holding.
+    [SerializeField] private bool _concurrentTap; // If the input listener will listen for double tap.
+    [SerializeField] private float _concurrentTapTimeLimit; // The amount time that will be waited for the second tap input.
     [SerializeField] private float _joystickDeadzone;
 
     public float SwipeDistance { get => _minSwipeDistance; }
@@ -65,9 +68,10 @@ public class GestureController : MonoBehaviour, IInputInvoker
         TouchInputReader.Instance.OnTouchBEnd -= _touchB.OnTouchEnd;
     }
 
+    int debugIndex = 0;
     private void Update() 
     {
-        if(_touchA.IsActive && _touchB.IsActive) {
+        if(_touchA.Type == TouchType.ForceHold && _touchB.Type == TouchType.ForceHold) {
             _inputEvents.OnHold?.Invoke(ScreenSide.LeftNRight);
         }
         else if(_touchA.Type == TouchType.Hold) {
@@ -81,40 +85,143 @@ public class GestureController : MonoBehaviour, IInputInvoker
             _inputEvents.OnDrag?.Invoke(ScreenSide.Left, _touchA.DragDirection);
         }
 
-        if(_touchA.Type == TouchType.Tap && _touchB.Type == TouchType.Tap) 
+        if(_touchA.Type == TouchType.Tap) 
         {
-            _inputEvents.OnTap?.Invoke(ScreenSide.LeftNRight);
-        }
-        else if(_touchA.Type == TouchType.Tap) 
-        {
-            _inputEvents.OnTap?.Invoke(ScreenSide.Left);
+            if(_concurrentTap){
+                if(_touchB.Type == TouchType.Tap){
+                    InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapD);
+                } 
+                else if(_touchA.doubleTapTimeCounter <= _concurrentTapTimeLimit){
+                    _touchA.keepOpen = true;
+                    _touchA.doubleTapTimeCounter += Time.deltaTime;
+                }
+                else{
+                    InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapL);
+                    _touchA.keepOpen = false;
+                    _touchA.doubleTapTimeCounter = 0;
+                }
+            }
+            else{
+                InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapL);
+            }
         }
         else if(_touchB.Type == TouchType.Tap) 
         {
-            _inputEvents.OnTap?.Invoke(ScreenSide.Right);
+            if(_concurrentTap){
+                if(_touchA.Type == TouchType.Tap){
+                    InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapD);
+                } 
+                else if(_touchB.doubleTapTimeCounter <= _concurrentTapTimeLimit){
+                    _touchB.keepOpen = true;
+                    _touchB.doubleTapTimeCounter += Time.deltaTime;
+                }
+                else{
+                    InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapR);
+                    _touchB.keepOpen = false;
+                    _touchB.doubleTapTimeCounter = 0;
+                }
+            }
+            else{
+                InvokeInput(_inputEvents.OnDirectInputGesture, InputGestures.TapL);
+            }
         }
 
-        if(_touchA.Type == TouchType.Swipe && _touchB.Type == TouchType.Swipe) 
+        if(_touchA.Type == TouchType.Swipe) 
         {
-            _inputEvents.OnSwipe?.Invoke(ScreenSide.LeftNRight, _touchA.SwipeDirection, _touchB.SwipeDirection);
-        }
-        else if(_touchA.Type == TouchType.Swipe) 
-        {
-            _inputEvents.OnSwipe?.Invoke(ScreenSide.Left, _touchA.SwipeDirection, GestureDirections.None);
+            GestureDirections swipeDirection = _touchA.SwipeDirection;
+            if(_touchB.IsActive){
+                if(_touchB.Type != TouchType.None){
+                    Debug.Log("Frame: " + debugIndex + " " + GetSwipeInputGesture(swipeDirection, ScreenSide.Left));
+                    InvokeInput(_inputEvents.OnDirectInputGesture, GetSwipeInputGesture(swipeDirection, ScreenSide.Left));
+                }
+                else{
+                    if(_touchA.doubleSwipeTimeCounter <= _swipeTimeLimit){
+                        _touchA.keepOpen = true;
+                        _touchA.doubleSwipeTimeCounter += Time.deltaTime;
+                    }
+                }
+                Debug.Log(_touchA.doubleSwipeTimeCounter + " / " + _swipeTimeLimit);
+            }
+            else{
+                if(_touchB.Type == TouchType.Swipe && (_touchB.SwipeDirection == _touchA.SwipeDirection)){
+                    Debug.Log("Frame: " + debugIndex + " " + GetSwipeInputGesture(swipeDirection, ScreenSide.LeftNRight));
+                    InvokeInput(_inputEvents.OnDirectInputGesture, GetSwipeInputGesture(swipeDirection, ScreenSide.LeftNRight));
+                }
+                else{
+                    Debug.Log("Frame: " + debugIndex + " " + GetSwipeInputGesture(swipeDirection, ScreenSide.Left));
+                    InvokeInput(_inputEvents.OnDirectInputGesture, GetSwipeInputGesture(swipeDirection, ScreenSide.Left));
+                }
+            }
         }
         else if(_touchB.Type == TouchType.Swipe) 
         {
-            _inputEvents.OnSwipe?.Invoke(ScreenSide.Right, GestureDirections.None,  _touchB.SwipeDirection);
+            GestureDirections swipeDirection = _touchB.SwipeDirection;
+            if(_touchA.IsActive){
+                if(_touchA.Type != TouchType.None){
+                    Debug.Log("Frame: " + debugIndex + " " + GetSwipeInputGesture(swipeDirection, ScreenSide.Right));
+                    InvokeInput(_inputEvents.OnDirectInputGesture, GetSwipeInputGesture(swipeDirection, ScreenSide.Right));
+                }
+                else{
+                    if(_touchB.doubleSwipeTimeCounter <= _swipeTimeLimit){
+                        _touchB.keepOpen = true;
+                        _touchB.doubleSwipeTimeCounter += Time.deltaTime;
+                    }
+                }
+                Debug.Log(_touchB.doubleSwipeTimeCounter + " / " + _swipeTimeLimit);
+            }
+            else{
+                if(_touchA.Type == TouchType.Swipe && (_touchA.SwipeDirection == _touchB.SwipeDirection)){
+                    Debug.Log("Frame: " + debugIndex + " " + GetSwipeInputGesture(swipeDirection, ScreenSide.LeftNRight));
+                    InvokeInput(_inputEvents.OnDirectInputGesture, GetSwipeInputGesture(swipeDirection, ScreenSide.LeftNRight));
+                }
+                else{
+                    Debug.Log("Frame: " + debugIndex + " " + GetSwipeInputGesture(swipeDirection, ScreenSide.Right));
+                    InvokeInput(_inputEvents.OnDirectInputGesture, GetSwipeInputGesture(swipeDirection, ScreenSide.Right));
+                }
+            }
         }
 
-        if(!_touchA.IsActive){
+        if(!_touchA.IsActive && !_touchA.keepOpen){
+            if(_touchA.Type != TouchType.None) Debug.Log("Frame: " + debugIndex + " Touch A type reset.");
             _touchA.Type = TouchType.None;
         }
 
-        if(!_touchB.IsActive){
+        if(!_touchB.IsActive && !_touchB.keepOpen){
+            if(_touchB.Type != TouchType.None) Debug.Log("Frame: " + debugIndex + " Touch B type reset.");
             _touchB.Type = TouchType.None;
         }
+        debugIndex++;
+    }
 
+    private void InvokeInput(Action<InputGestures> action, InputGestures gesture){
+        _touchA.keepOpen = false;
+        _touchA.doubleSwipeTimeCounter = 0;
+        _touchB.keepOpen = false;
+        _touchB.doubleSwipeTimeCounter = 0;
+        action?.Invoke(gesture);
+    }
+
+    private InputGestures GetSwipeInputGesture(GestureDirections gestureDirection, ScreenSide side){
+        if(side == ScreenSide.Right){
+            if(gestureDirection == GestureDirections.Up) return InputGestures.SwipeUpR;
+            else if(gestureDirection == GestureDirections.Down) return InputGestures.SwipeDownR;
+            else if(gestureDirection == GestureDirections.Right) return InputGestures.SwipeRightR;
+            else if(gestureDirection == GestureDirections.Left) return InputGestures.SwipeLeftR;
+        }
+        else if(side == ScreenSide.Left){
+            if(gestureDirection == GestureDirections.Up) return InputGestures.SwipeUpL;
+            else if(gestureDirection == GestureDirections.Down) return InputGestures.SwipeDownL;
+            else if(gestureDirection == GestureDirections.Right) return InputGestures.SwipeRightL;
+            else if(gestureDirection == GestureDirections.Left) return InputGestures.SwipeLeftL;
+        }
+        else if(side == ScreenSide.LeftNRight){
+            if(gestureDirection == GestureDirections.Up) return InputGestures.SwipeUpD;
+            else if(gestureDirection == GestureDirections.Down) return InputGestures.SwipeDownD;
+            else if(gestureDirection == GestureDirections.Right) return InputGestures.SwipeRightD;
+            else if(gestureDirection == GestureDirections.Left) return InputGestures.SwipeLeftD;
+        }
+        
+        return InputGestures.None;
     }
 
     public InputEvents GetInputEvents()
@@ -144,6 +251,9 @@ public class TouchData{
     public float HoldTime;
     public bool HasMoved;
     public bool IsActive;
+    public bool keepOpen = false;
+    public float doubleSwipeTimeCounter = 0;
+    public float doubleTapTimeCounter = 0;
     public GestureDirections SwipeDirection;
     public GestureDirections DragDirection;
     public TouchState State;
@@ -180,15 +290,22 @@ public class TouchData{
         if(HoldTime > GestureController.Instance.HoldThreshold) {
             Type = TouchType.Hold;  
         }
+        else{
+            Type = TouchType.ForceHold;  
+        }
     }
 
     public virtual void OnTouchDrag(InputEventParams inputEventDragParams) 
     {  
         TimeOnScreen += Time.deltaTime;
 
-        if(TimeOnScreen > GestureController.Instance.HoldThreshold && inputEventDragParams.DeltaSpeed < GestureController.Instance.SwipeSpeed)
+        if(inputEventDragParams.DeltaSpeed < GestureController.Instance.SwipeSpeed)
         {
-            Type = TouchType.Hold;  
+            Type = TouchType.ForceHold;
+
+            if(TimeOnScreen > GestureController.Instance.HoldThreshold){
+                Type = TouchType.Hold;
+            }
         }
 
         if(State != TouchState.Move) 
@@ -248,6 +365,9 @@ public class TouchData{
         HoldTime = 0f;
         HasMoved = false;
         IsActive = false;
+        keepOpen = false;
+        doubleSwipeTimeCounter = 0;
+        doubleTapTimeCounter = 0;
         State = TouchState.None;
     }
 

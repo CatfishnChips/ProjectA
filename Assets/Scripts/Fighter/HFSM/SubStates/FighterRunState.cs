@@ -6,16 +6,21 @@ public class FighterRunState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if (!(_ctx.Velocity.x < -0.5f || _ctx.Velocity.x > 0.5f)){ // if fighter is not running
             if (_ctx.Velocity.x >= -0.5f && _ctx.Velocity.x <= 0.5f){ // if we just slowed sown
                 SwitchState(_factory.GetSubState(FighterSubStates.Walk));
+                return true;
             }
             else{ // if we directly stopped
+                if(IdleStateSwitchCheck()) return true; 
+                
                 SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                return true;
             }
         }
+        else return false;
     }
 
     public override void EnterState()

@@ -7,27 +7,14 @@ public class FighterGrabbedState : FighterBaseState
     private ActionDefault _action;
     private CollisionData _collisionData;
     private ActionAttack _attackAction;
-    private int _currentFrame = 0;
 
     public FighterGrabbedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
-
-        if (_ctx.AttackInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Attack));
-        }
-        else if (_ctx.DodgeInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
-        }
-        else if (_ctx.DashInput.Read()){
-            SwitchState(_factory.GetSubState(FighterSubStates.Dash));
-        }
-        else if (_ctx.MovementInput.Read() != 0){            
-            SwitchState(_factory.GetSubState(FighterSubStates.Walk));
-        }  
+        return false;
     }
 
     public override void EnterState()

@@ -7,7 +7,6 @@ public class FighterStunnedState : FighterBaseState
 {   
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private float _currentFrame = 0;
     private bool _isFirstTime = true;
     private StunnedState _state = default;
     
@@ -18,10 +17,11 @@ public class FighterStunnedState : FighterBaseState
         _isRootState = true;
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if (_ctx.IsHurt && !_ctx.IsInvulnerable){
             SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
+            return true;
         }
         
         // ">" is used instead of ">=" due to Root States' Fixed Update running before the Sub States' Fixed Update.
@@ -40,16 +40,16 @@ public class FighterStunnedState : FighterBaseState
         //     SwitchState(state);
         // }
 
-        if (_ctx.CurrentSubState == FighterStates.Idle){   
-            FighterBaseState state;   
+        if (_ctx.CurrentSubState == FighterStates.Idle){
 
             if (_ctx.IsGrounded){
-                state = _factory.GetRootState(FighterRootStates.Grounded);
+                SwitchState(_factory.GetRootState(FighterRootStates.Grounded));
+                return true;
             }
             else{
-                state = _factory.GetRootState(FighterRootStates.Airborne);
+                SwitchState(_factory.GetRootState(FighterRootStates.Airborne));
+                return true;
             }
-            SwitchState(state);
 
 
             // if (_isFirstTime) {
@@ -59,6 +59,7 @@ public class FighterStunnedState : FighterBaseState
                 
             // }
         }
+        return false;
     }
 
     public override void EnterState()

@@ -23,7 +23,7 @@ public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, Animation
 public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 {
     [SerializeField] protected FighterManager _fighterManager;
-    public Dictionary<InputGestures, ActionAttack> AttackMoveDict{get{return _fighterManager.AttackMoveDict;}}
+    public Dictionary<InputGestures, ActionBase> GestureActionDict{get{return _fighterManager.GestureActionDict;}}
     public Dictionary<string, ActionBase> ActionDictionary{get{return _fighterManager.ActionDictionary;}}
 
     [SerializeField] protected Player _player;
@@ -81,7 +81,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     private TouchContinuousInput<int> _movementInput = new TouchContinuousInput<int>(0, InputTypes.Drag, SubInputTypes.None);
     private TouchContinuousInput<bool> _holdAInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
     private TouchContinuousInput<bool> _holdBInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
-    private TouchQueueInput<InputGestures> _attackInput = new TouchQueueInput<InputGestures>(InputTypes.Gesture, SubInputTypes.None);
+    private TouchQueueInput<InputGestures> _actionInput = new TouchQueueInput<InputGestures>(InputTypes.Gesture, SubInputTypes.None);
     protected List<ITouchInput> _inputsList;
 
     #endregion
@@ -138,7 +138,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public TouchContinuousInput<int> MovementInput { get => _movementInput; }
     public TouchContinuousInput<bool> HoldAInput { get => _holdAInput; }
     public TouchContinuousInput<bool> HoldBInput { get => _holdBInput; }
-    public TouchQueueInput<InputGestures> AttackInput { get => _attackInput; }
+    public TouchQueueInput<InputGestures> ActionInput { get => _actionInput; }
 
     //public string AttackName{get{return _isAttackPerformed.Queue.Peek();}}
     public ActionFighterAttack AttackAction{get{return _fighterAttackAction;}}
@@ -217,7 +217,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
             _movementInput,
             _holdAInput,
             _holdBInput,
-            _attackInput
+            _actionInput
         };
 
         _mesh = transform.Find("Mesh");
@@ -269,10 +269,11 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     protected virtual void StartFunction(){
 
-        _fighterManager.fighterEvents.OnFighterAttackGesture += OnFighterAttackInput;
+        //_fighterManager.fighterEvents.OnFighterAttackGesture += OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack += OnSpiritAttackInput;
         _fighterManager.fighterEvents.OnMove += OnMove;
         _fighterManager.fighterEvents.OnDash += OnDash;
+        _fighterManager.fighterEvents.OnDirectInputGesture += OnDirectInputGesture;
 
         // Subscribe to component based events.
         if(_hitResponder) _hitResponder.HitResponse += OnHit;
@@ -313,10 +314,11 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     protected virtual void OnDisableFunction(){
         
-        _fighterManager.fighterEvents.OnFighterAttackGesture -= OnFighterAttackInput;
+        //_fighterManager.fighterEvents.OnFighterAttackGesture -= OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack -= OnSpiritAttackInput;
         _fighterManager.fighterEvents.OnMove -= OnMove;
         _fighterManager.fighterEvents.OnDash -= OnDash;
+        _fighterManager.fighterEvents.OnDirectInputGesture -= OnDirectInputGesture;
 
         // Component based events.
         if(_hitResponder) _hitResponder.HitResponse -= OnHit;
@@ -338,12 +340,16 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _movementInput.Write(value);
     }
 
-    protected virtual void OnFighterAttackInput(InputGestures gesture){
-        _attackInput.Write(gesture);
-    }
+    // protected virtual void OnFighterAttackInput(InputGestures gesture){
+    //     _actionInput.Write(gesture);
+    // }
 
     protected virtual void OnSpiritAttackInput(ActionSpiritAttack attackAction){
         _spiritManager?.SpawnSpirit(attackAction);
+    }
+    
+    protected virtual void OnDirectInputGesture(InputGestures gesture){
+        _actionInput.Write(gesture);
     }
 
     #endregion

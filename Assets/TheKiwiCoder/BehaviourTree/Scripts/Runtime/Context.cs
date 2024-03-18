@@ -46,12 +46,12 @@ namespace TheKiwiCoder {
             {
                 case AIPositionMethod.ArithmeticMean:
                     float xTotal = 0.0f;
-                    foreach (KeyValuePair<InputGestures, ActionAttack> attack in selfFSM.AttackMoveDict)
+                    foreach (KeyValuePair<InputGestures, ActionBase> attack in selfFSM.GestureActionDict)
                     {
                         // Debug.Log("Attack Name: " + attack.Key + ", Attack Distance: " + attack.Value.HitboxOffset.x);
-                        xTotal += attack.Value.HitboxOffset.x;
+                        xTotal += (attack.Value as ActionAttack).HitboxOffset.x;
                     }
-                    return xTotal / selfFSM.AttackMoveDict.Count;
+                    return xTotal / selfFSM.GestureActionDict.Count;
                 default:
                     return 10.0f; // Place Holder
             }

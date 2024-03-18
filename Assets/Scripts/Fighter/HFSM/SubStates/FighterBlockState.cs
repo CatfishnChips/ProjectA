@@ -6,7 +6,6 @@ public class FighterBlockState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private float _currentFrame = 0;
     private Vector2 _velocity;
     private float _drag;
 
@@ -14,10 +13,17 @@ public class FighterBlockState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
         if (_currentFrame >= _action.BlockStun){
+            if(IdleStateSwitchCheck()) return true; 
+            
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
+            
+        }
+        else{
+            return false;
         }
     }
 

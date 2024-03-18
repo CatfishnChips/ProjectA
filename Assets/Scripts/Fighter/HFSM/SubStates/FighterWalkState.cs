@@ -6,20 +6,27 @@ public class FighterWalkState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
-        if (_ctx.AttackInput.Read()){
+        if (_ctx.ActionInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Attack));
+            return true;
         }
         else if (_ctx.DodgeInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
+            return true;
         }
         else if (_ctx.DashInput.Read()){
             SwitchState(_factory.GetSubState(FighterSubStates.Dash));
+            return true;
         }
         else if(_ctx.MovementInput.Read() == 0){
+            if(IdleStateSwitchCheck()) return true; 
+            
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
         }
+        else return false;
     }
 
     public override void EnterState()

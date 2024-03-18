@@ -12,11 +12,11 @@ public class FighterManager : MonoBehaviour
 
     public FighterEvents fighterEvents;
 
-    private Dictionary<InputGestures, ActionAttack> _neutralAttackMoveDict;
+    private Dictionary<InputGestures, ActionBase> _neutralActionMoveDict;
     private Dictionary<string, ActionAttack> _attackMoveDictByName;
     private Dictionary<string, ActionBase> _actionDictionary;
 
-    public Dictionary<InputGestures, ActionAttack> AttackMoveDict { get => _neutralAttackMoveDict; set => _neutralAttackMoveDict = value; }
+    public Dictionary<InputGestures, ActionBase> GestureActionDict { get => _neutralActionMoveDict; set => _neutralActionMoveDict = value; }
     public Dictionary<string, ActionBase> ActionDictionary { get => _actionDictionary; set => _actionDictionary = value; }
     
     public RootNode InputBasedActionTree { get => _inputBasedActionTree; }
@@ -40,7 +40,7 @@ public class FighterManager : MonoBehaviour
 
     void InitializeDictionaries()
     {
-        _neutralAttackMoveDict = new Dictionary<InputGestures, ActionAttack>();
+        _neutralActionMoveDict = new Dictionary<InputGestures, ActionBase>();
         _attackMoveDictByName = new Dictionary<string, ActionAttack>();
         _actionDictionary = new Dictionary<string, ActionBase>();
 
@@ -54,12 +54,16 @@ public class FighterManager : MonoBehaviour
 
             if(!_actionDictionary.ContainsKey(actionNode.fighterAction.name)) _actionDictionary.Add(actionNode.fighterAction.name, actionNode.fighterAction);
 
-            ActionAttack actionAttack = actionNode.fighterAction as ActionAttack;
+            CancellableAction cancellableAction = actionNode.fighterAction as CancellableAction;
 
-            if(actionAttack){
-                if(actionNode.GetType() == typeof(NeutralActionNode)) _neutralAttackMoveDict.Add(actionNode.inputGesture, actionAttack); // Neutral Attack Actions
+            if(cancellableAction){
+                if(actionNode.GetType() == typeof(NeutralActionNode)) _neutralActionMoveDict.Add(actionNode.inputGesture, cancellableAction); // Neutral Attack Actions
+            }
+            
+            ActionAttack attackAction = actionNode.fighterAction as ActionAttack;
 
-                if(!_attackMoveDictByName.ContainsKey(actionNode.fighterAction.name)) _attackMoveDictByName.Add(actionNode.fighterAction.name, actionAttack); // All attack actions
+            if(attackAction){
+                if(!_attackMoveDictByName.ContainsKey(actionNode.fighterAction.name)) _attackMoveDictByName.Add(actionNode.fighterAction.name, attackAction); // All attack actions
             }
         }
 
@@ -89,6 +93,7 @@ public class FighterManager : MonoBehaviour
 
     public void OnHold(ScreenSide side)
     {
+        Debug.Log("Hold side: " + side); 
         if(side == ScreenSide.LeftNRight) fighterEvents.OnBlock?.Invoke();
     }
 
@@ -121,6 +126,10 @@ public class FighterManager : MonoBehaviour
             if(inputGesture != InputGestures.None) fighterEvents.OnFighterAttackGesture?.Invoke(inputGesture);
         }
 
+    }
+
+    public void OnDirectInput(InputGestures gesture){
+        fighterEvents.OnDirectInputGesture?.Invoke(gesture);
     }
 
     // To listen for direct attack inputs. With this method an attackcen be directly performed by providing it to the method as a parameter

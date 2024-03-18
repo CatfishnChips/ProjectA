@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class FighterDashState : FighterBaseState
+public class FighterDashState : FighterCancellableState
 {
-    private ActionConditional _action;
+    private ActionDash _action;
     private float _direction;
     private float _time;
     private float _initialVelocity;
@@ -12,39 +12,40 @@ public class FighterDashState : FighterBaseState
     :base(currentContext, fighterStateFactory){
     }
 
-    public override void CheckSwitchState()
+    public override bool CheckSwitchState()
     {
+        if(base.CheckSwitchState()) return true;
         if (_currentFrame >= _ctx.DashTime){
+            if(IdleStateSwitchCheck()) return true; 
+            
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+            return true;
+            
+        }
+        else{
+            return false;
         }
     }
 
     public override void EnterState()
     {
+        base.EnterState();
         _currentFrame = 0;
         _ctx.IsGravityApplied = false;
         _drag = 0f;
 
-        _action = _ctx.ActionDictionary["Dash"] as ActionConditional;
+        _action = _cancellableAction as ActionDash;
 
         _ctx.ChainActionGesture = InputGestures.None;
 
         AnimationClip clip;
         AnimationClip colClip;
 
-        if (_ctx.DashDirection == -1)
-        {
-            clip = _action.Animations[0].meshAnimation;
-            colClip = _action.Animations[0].boxAnimation;
-        }
-        else
-        {
-            clip = _action.Animations[1].meshAnimation;
-            colClip = _action.Animations[1].boxAnimation;
-        }
+        clip = _action.meshAnimation;
+        colClip = _action.boxAnimation;        
 
-        _direction = _ctx.DashDirection;
-        _time = _ctx.DashTime * Time.fixedDeltaTime;
+        _direction = _action.direction;
+        _time = _action.dashTime * Time.fixedDeltaTime;
 
         _drag = -2 * _ctx.DashDistance / Mathf.Pow(_time, 2);
         _drag *= _direction;
@@ -71,6 +72,7 @@ public class FighterDashState : FighterBaseState
 
     public override void ExitState()
     {
+        base.ExitState();
         _drag = 0f;
         _direction = 0f;
         _time = 0f;
@@ -86,6 +88,7 @@ public class FighterDashState : FighterBaseState
 
     public override void FixedUpdateState()
     {
+        base.FixedUpdateState();
         CheckSwitchState();
         _currentFrame++;  
     }
