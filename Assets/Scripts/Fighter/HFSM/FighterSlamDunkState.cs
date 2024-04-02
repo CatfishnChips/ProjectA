@@ -44,6 +44,14 @@ public class FighterSlamDunkState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
+        // h = ut + 1/2gt^2
+        // h = Height (Known)
+        // t = Time (Known)
+        // g = Gravity (Calculated)
+        // u = Initial Velocity (Known)
+
+        // g = 2 (h - ut) / t^2
+
         _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
         float horizontalDirection = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
         float _time = _action.KnockupStun.y * Time.fixedDeltaTime;

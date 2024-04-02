@@ -10,6 +10,10 @@ public class FighterJumpState : FighterBaseState
     private int _currentFrame = 0;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
     private Vector2 _velocity;
+    private float _gravity1, _gravity2;
+    private float _drag;
+    private float _time;
+    private float _direction;
 
     public FighterJumpState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -24,28 +28,59 @@ public class FighterJumpState : FighterBaseState
 
     public override void EnterState()
     {
-        _ctx.IsJumpPressed = false;
+        _ctx.Gravity = 0f;
+        _ctx.Drag = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
+
         _currentFrame = 0;
-        _action = _ctx.ActionDictionary["Jump"] as ActionDefault;
-        AnimationClip clip = _action.meshAnimation;
-        _groundOffset = _ctx.transform.position.y;
 
-        float direction = _ctx.SwipeDirection.x == 0 ? 0f : -Mathf.Sign(_ctx.SwipeDirection.x);
+        // Free Fall: h = ut + 1/2gt^2
+        // Gravity: g = -2(h - ut) / t^2
+        // Initial Velocity: u = 2h / t 
 
-        float time = _ctx.JumpTime * Time.fixedDeltaTime;
+        // h = Height (Known)
+        // t = Time (Known)
+        // g = Gravity (Calculated)
+        // u = Initial Velocity (Calculated) 
+        
+        // Initial Velocity: u = 2x / t
+        // Drag: a = -2x / t^2
+        // Kinematic Movement: Δx = v + at
 
-        _ctx.Gravity = -_ctx.JumpHeight / (time * time);
-        _ctx.Drag = (-_ctx.JumpDistance / (time * time)) * direction;
-        _velocity.x = _ctx.JumpDistance / ((_ctx.JumpTime + _ctx.FallTime) * Time.fixedDeltaTime); // Initial horizontal velocity;
-        _velocity.y = _ctx.JumpHeight / time; // Initial vertical velocity;
-        _velocity.x *= direction;
+        // x = Distance (Known)
+        // t = Time (Known)
+        // a = Drag (Calculated)    
+        // u = Initial Velocity (Calculated) 
+        
+        // Jump Action
+        if (_ctx.JumpInput.Read() && _ctx.IsGrounded && _ctx.PreviousRootState == FighterStates.Grounded){
+        
+            _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
+            _direction = _ctx.SwipeDirection.x == 0 ? 0f : _ctx.SwipeDirection.x;
+                
+            _time = _ctx.JumpTime * Time.fixedDeltaTime;
 
-        float speedVar = AdjustAnimationTime(clip, _ctx.JumpTime);
-        _ctx.Animator.SetFloat("SpeedVar", speedVar);
-        _ctx.Animator.Play("Jump");
+            _drag = -2 * _ctx.JumpDistance / Mathf.Pow(_time, 2);
+            _drag *= _direction;
 
+            _velocity.x = 2 * _ctx.JumpDistance / _time; // Initial horizontal velocity;
+            _velocity.x *= _direction;
+            
+            // Zone 1
+            float time1 = _ctx.JumpTime * Time.fixedDeltaTime;
+            _gravity1 = - 2 * _ctx.JumpHeight / Mathf.Pow(time1, 2); // g = 2h/t^2
+            _velocity.y = 2 * _ctx.JumpHeight / time1; // Initial vertical velocity. V0y = 2h/t
+        }
+        else{
+            _ctx.Gravity = Physics2D.gravity.y;
+            _ctx.Drag = 0f;
+        }
+       
         _ctx.CurrentMovement = _velocity;
-        //Debug.Log("Jump Velocity: " + _ctx.Velocity);
+
+        InitializeSubState();
     }
 
     public override void ExitState()
