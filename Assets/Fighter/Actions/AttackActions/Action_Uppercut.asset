@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Action_Uppercut
   m_EditorClassIdentifier: 
   name: Uppercut
+  stateName: 32
+  inputGesture: 11
   applyRootMotion: 0
+  _cancelFrame: 20
+  _inputIgnoreFrames: 3
   m_tags: 1297
   m_damage: 25
   m_priority: 0

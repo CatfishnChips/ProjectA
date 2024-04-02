@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TrainingScene 1.unity
     guid: e903319c046acef47a5d49e3ecc557f2
+  - enabled: 1
+    path: Assets/Scenes/TrainingScene C.unity
+    guid: a79229b11e64744409fac2996a664556
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,
       guid: ccb2d1f71af53fb4c8705101cfe59bd5, type: 2}

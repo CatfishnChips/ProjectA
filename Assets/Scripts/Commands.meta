@@ -1,6 +1,10 @@
 fileFormatVersion: 2
-guid: 98d9ff9b4973e36468b012dd2a35c275
+<<<<<<<< HEAD:Assets/Scripts/Commands.meta
+guid: d75b1ca03847b854eb60ea2433ffe760
 folderAsset: yes
+========
+guid: dbb1158fb4709ca418ef659cca9fe6ba
+>>>>>>>> input_design_v2:Assets/Scenes/Studio 1.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

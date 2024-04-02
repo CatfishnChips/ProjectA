@@ -1,78 +1,52 @@
 using UnityEngine;
 
-public abstract class FighterBaseState
+public abstract class FighterBaseState : StateMachineBaseState
 {
-    protected bool _isRootState = false;
-    protected FighterStateMachine _ctx;
+    protected new FighterStateMachine _ctx;
     protected FighterStateFactory _factory;
-    protected FighterBaseState _currentSubState;
-    protected FighterBaseState _currentSuperState;
+    protected int _currentFrame;
 
-    public FighterBaseState GetCurrentSubState { get { return _currentSubState; } }
+    public int CurrentFrame { get => _currentFrame; set => _currentFrame = value; }
 
-    protected FighterBaseState(FighterStateMachine currentState, FighterStateFactory fighterStateFactory)
-    =>(_ctx, _factory) = (currentState, fighterStateFactory);
-
-    public abstract void EnterState();
-
-    public abstract void UpdateState();
-    
-    public abstract void FixedUpdateState();
-
-    public abstract void ExitState();
-
-    public abstract void CheckSwitchState();
-
-    public abstract void InitializeSubState();
-
-    public void UpdateStates(){ // This function allows for a chained multi-substate architecture by calling update of every substate of supdates.
-    //Debug.Log(_stateName);
-        if(_currentSubState != null){
-            //Debug.Log(_currentSubState._stateName);
-        }
-        UpdateState();
-        if(_currentSubState != null){
-            _currentSubState.UpdateStates();
-        }
+    public FighterBaseState(IStateMachineRunner ctx, FighterStateFactory factory) : base(ctx)
+    {
+        _ctx = ctx as FighterStateMachine;
+        _factory = factory;
     }
 
-    public void FixedUpdateStates(){ // This function allows for a chained multi-substate architecture by calling update of every substate of supdates.
-        if(_currentSubState != null){
-            //Debug.Log("FighterBaseState(FixedUpdateStates) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " State: " + _currentSubState);
-            _currentSubState.FixedUpdateStates();  
+    public bool IdleStateSwitchCheck(){
+        if (_ctx.ActionInput.Read()){
+            if(_ctx.GestureActionDict.ContainsKey(_ctx.ActionInput.PeekContent())){
+                FighterStates state = _ctx.GestureActionDict[_ctx.ActionInput.PeekContent()].stateName;
+                if(state == FighterStates.Dash){
+                    if(_ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.Dash));
+                        return true;
+                    }
+                    return false;
+                }
+                else{
+                    SwitchState(_factory.GetSubState((FighterSubStates)state));
+                    return true;
+                }
+            }
+            else{
+                _ctx.ActionInput.Remove();
+            }
         }
-        //Debug.Log("FighterBaseState(FixedUpdateStates) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " State: " + this);
-        FixedUpdateState();
-    }
 
-    public void ExitStates(){
-        if(_currentSubState != null){
-            _currentSubState.ExitStates();
+        if (_ctx.DodgeInput.Read() && _ctx.IsGrounded && _ctx.CurrentRootState == FighterStates.Grounded){
+            SwitchState(_factory.GetSubState(FighterSubStates.Dodge));
+            return true;
         }
-        ExitState();
-    }
 
-    protected void SwitchState(FighterBaseState newState){
-        ExitStates();
-
-        newState.EnterState();
-
-        if(_isRootState){
-            // set current state of the context (FighterStateMachine) to a new state
-            _ctx.CurrentState = newState;
+        if (_ctx.MovementInput.Read() != 0){
+            SwitchState(_factory.GetSubState(FighterSubStates.Walk));
+            return true;
         }
-        else if(_currentSuperState != null){
-            _currentSuperState.SetSubState(newState);
-        }
-    }
 
-    protected void SetSuperState(FighterBaseState newSuperState){
-        _currentSuperState = newSuperState;
-    }
-
-    protected void SetSubState(FighterBaseState newSubState){
-        _currentSubState = newSubState;
-        _currentSubState.SetSuperState(this);
+        return false;
+        
     }
 
     public static float AdjustAnimationTime(AnimationClip clip, int frames){

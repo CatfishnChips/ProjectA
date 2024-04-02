@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Action_Hook
   m_EditorClassIdentifier: 
   name: Flick
+  stateName: 32
+  inputGesture: 14
   applyRootMotion: 0
+  _cancelFrame: 16
+  _inputIgnoreFrames: 3
   m_tags: 1297
   m_damage: 20
   m_priority: 0

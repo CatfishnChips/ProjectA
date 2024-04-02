@@ -5,7 +5,7 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-     #region Singleton
+    #region Singleton
 
     public static CameraController Instance;
 

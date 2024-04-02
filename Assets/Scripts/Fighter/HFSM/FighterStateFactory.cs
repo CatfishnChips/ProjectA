@@ -46,6 +46,13 @@ public class FighterStateFactory
         _context.CurrentSubState = (FighterStates)state;
         return _states[(FighterStates)state];
     }
+
+    // public FighterBaseState GetChainState(FighterStates state){
+    //     _context.PreviousSubState = _context.CurrentSubState;
+    //     _context.CurrentSubState = state;
+    //     return _states[state];
+    // }
+
 }
 
 // public struct StateFactoryElement

@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Action_Punch
   m_EditorClassIdentifier: 
   name: Tap
+  stateName: 32
+  inputGesture: 2
   applyRootMotion: 0
+  _cancelFrame: 15
+  _inputIgnoreFrames: 3
   m_tags: 1569
   m_damage: 10
   m_priority: 0

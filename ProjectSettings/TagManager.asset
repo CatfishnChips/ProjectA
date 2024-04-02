@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bot
+  - Player2
+  - Player1
   layers:
   - Default
   - TransparentFX

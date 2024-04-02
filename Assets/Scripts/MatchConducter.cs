@@ -70,6 +70,8 @@ public class MatchConducter : MonoBehaviour
 
     public PolygonCollider2D StageConfineBorders {get => m_stageConfineBorders;}
     public Vector4 StageBorders {get => m_stageBorders;}
+    public FighterStateMachine FighterSlot1 { get => m_fighterSlot1; set => m_fighterSlot1 = value; }
+    public FighterStateMachine FighterSlot2 { get => m_fighterSlot2; set => m_fighterSlot2 = value; }
 
     #endregion
 

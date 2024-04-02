@@ -13,8 +13,9 @@ namespace TheKiwiCoder {
         public AIDifficultySettings difficultySettings;
         public FighterStateMachine selfFSM;
         public FighterStateMachine enemyFSM;
+        public InputEvents inputEvents;
 
-        public Dictionary<string, ActionAttack> hittingAttacks = new Dictionary<string, ActionAttack>();
+        public Dictionary<InputGestures, ActionAttack> hittingAttacks = new Dictionary<InputGestures, ActionAttack>();
 
         public Vector2 distanceToOpponent = new Vector2();
         public AIPositionMethod optimalDistanceMethod;
@@ -28,15 +29,15 @@ namespace TheKiwiCoder {
             // Fetch all commonly used components
             BehaviourTreeRunner btr = gameObject.GetComponent<BehaviourTreeRunner>();
             difficultySettings = btr.DifficultySettings;
-            selfFSM = gameObject.GetComponent<FighterStateMachine>();
-            enemyFSM = GameObject.FindWithTag("Player").GetComponent<FighterStateMachine>();
+            //Match conducter singleton gerektiriyor.
+            selfFSM = MatchConducter.Instance.FighterSlot2.GetComponent<FighterStateMachine>();
+            enemyFSM = MatchConducter.Instance.FighterSlot1.GetComponent<FighterStateMachine>();
 
             attackBoxFlexibilityMargin = btr.AttackBoxFlexibilityMargin;
             distanceMargin = btr.DistanceMargin;
             optimalDistanceMethod = btr.OptimalDistanceMethod;
 
             optimalDistance = CalcOptimalXDistance(optimalDistanceMethod);
-            // Add whatever else you need here...
         }
 
         private float CalcOptimalXDistance(AIPositionMethod method)
@@ -45,12 +46,12 @@ namespace TheKiwiCoder {
             {
                 case AIPositionMethod.ArithmeticMean:
                     float xTotal = 0.0f;
-                    foreach (KeyValuePair<string, ActionAttack> attack in selfFSM.GroundedAttackMoveDict)
+                    foreach (KeyValuePair<InputGestures, ActionBase> attack in selfFSM.GestureActionDict)
                     {
                         // Debug.Log("Attack Name: " + attack.Key + ", Attack Distance: " + attack.Value.HitboxOffset.x);
-                        xTotal += attack.Value.HitboxOffset.x;
+                        xTotal += (attack.Value as ActionAttack).HitboxOffset.x;
                     }
-                    return xTotal / selfFSM.GroundedAttackMoveDict.Count;
+                    return xTotal / selfFSM.GestureActionDict.Count;
                 default:
                     return 10.0f; // Place Holder
             }
