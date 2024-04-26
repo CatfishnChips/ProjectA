@@ -13,13 +13,27 @@ MonoBehaviour:
   m_Name: CrossPunch_Knockback
   m_EditorClassIdentifier: 
   name: Stab
+  stateName: 32
+  inputGesture: 0
+  applyRootMotion: 0
+  _cancelFrame: 0
+  _inputIgnoreFrames: 0
   m_tags: 0
   m_damage: 30
-  m_chipDamage: 5
+  m_juggle: 0
+  m_face: 0
+  m_hitFlags: 1
+  m_wallBounceVelocity: {x: 0, y: 0}
+  m_wallBounceStun: 0
+  m_groundBounceVelocity: {x: 0, y: 0}
+  m_groundBounceStun: {x: 0, y: 0}
+  m_wallSplatStun: 0
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 5
   m_blockStun: 30
+  blockKnocback: 0
+  m_ignoreBlock: 0
   m_hitStop: 10
   m_knockbackStun: 25
   m_knockdownStun: 0

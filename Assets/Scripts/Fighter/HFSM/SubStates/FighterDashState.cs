@@ -55,7 +55,7 @@ public class FighterDashState : FighterCancellableState
 
         // Apply Calculated Variables
         _ctx.Drag = _drag;
-        _ctx.Gravity = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.CurrentMovement = new Vector2(_initialVelocity, _ctx.CurrentMovement.y);
 
         _ctx.AnimOverrideCont["Action"] = clip;
@@ -80,7 +80,7 @@ public class FighterDashState : FighterCancellableState
         _currentFrame = 0;
 
         _ctx.IsGravityApplied = true;
-        _ctx.Gravity = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;

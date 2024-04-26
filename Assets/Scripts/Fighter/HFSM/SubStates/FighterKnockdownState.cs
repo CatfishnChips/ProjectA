@@ -13,7 +13,7 @@ public class FighterKnockdownState : FighterBaseState
 
     public override bool CheckSwitchState()
     {
-        if (_currentFrame >= _action.KnockdownStun){   
+        if (_currentFrame >= _action.Knockdown.Stun.stun){   
             if(IdleStateSwitchCheck()) return true; 
             
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
@@ -30,8 +30,9 @@ public class FighterKnockdownState : FighterBaseState
         _ctx.CurrentFrame = _currentFrame;
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
+        _ctx.HealthManager.UpdateHealth(_collisionData.action.Knockdown.damage);
 
-        if (_action.KnockdownStun == 0) return;
+        if (_action.Knockdown.Stun.stun == 0) return;
 
         if (_ctx.PreviousSubState == FighterStates.Knockup || _ctx.PreviousSubState == FighterStates.SlamDunk){
             CameraController.Instance.ScreenShake(new Vector3(0f, -0.1f, 0f));
@@ -57,12 +58,11 @@ public class FighterKnockdownState : FighterBaseState
     public override void ExitState()
     {
         _ctx.CurrentFrame = 0;
-        _ctx.Gravity = 0f;
+        //_ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = Vector2.zero;
-        //_ctx.Rigidbody2D.velocity = Vector2.zero;
-        _ctx.FighterController.targetVelocity = Vector2.zero;
+        _ctx.Velocity = _ctx.CurrentMovement;
+        _ctx.FighterController.targetVelocity = _ctx.Velocity;
     }
 
     public override void FixedUpdateState()

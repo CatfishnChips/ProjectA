@@ -20,6 +20,14 @@ MonoBehaviour:
   _inputIgnoreFrames: 3
   m_tags: 1569
   m_damage: 10
+  m_juggle: 0
+  m_face: 0
+  m_hitFlags: 1
+  m_wallBounceVelocity: {x: 0, y: 0}
+  m_wallBounceStun: 0
+  m_groundBounceVelocity: {x: 0, y: 0}
+  m_groundBounceStun: {x: 0, y: 0}
+  m_wallSplatStun: 0
   m_priority: 0
   m_part: 1
   m_chipDamage: 0

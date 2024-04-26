@@ -90,6 +90,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     [SerializeField] protected float _dashDistance = 1f;
     [SerializeField] protected int _dashTime; // in frames
     [SerializeField] protected Vector2Int _dodgeTime; // X: Startup Y: Active // in frames
+    [SerializeField] protected float _gravityConstant = -9.8f;
 
     [Header("Airborne State")]
     [SerializeField] protected float _airMoveSpeed;
@@ -121,6 +122,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     protected bool _validAttackInputInterval;
     protected ActionFighterAttack _fighterAttackAction;
 
+    protected int _juggle;
+
     public Player Player {get{return _player;}}
     public Transform Mesh {get{return _mesh;}}
 
@@ -145,6 +148,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public Vector2 Velocity{get{return _velocity;} set{_velocity = value;}}
     public Vector2 RootMotion{get{return _rootMotion;} set{_rootMotion = value;}}
     public float AirMoveSpeed{get{return _airMoveSpeed;}}
+
+    public int Juggle{get{return _juggle;} set{_juggle = value;}}
 
     public Animator Animator{get{return _animator;}}
     public AnimatorOverrideController AnimOverrideCont{get{return _animOverrideCont;} set{_animOverrideCont = value;}}
@@ -179,6 +184,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public int JumpTime {get{return _jumpTime;}}
     public int FallTime {get{return _fallTime;}}
     public float Gravity {get{return _gravity;} set{_gravity = value;}}
+    public float GravityConstant {get{return _gravityConstant;}}
     public float Drag {get{return _drag;} set{_drag = value;}}
     public Vector2 SwipeDirection {get{return _swipeDirection;}} // SwipeDirection is affected by FaceDirection
     public int DashDirection {get {return _dashDirection;}}
@@ -282,8 +288,9 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         ResetVariables();
 
         // Start default state.
-        _currentState = _states.GetRootState(FighterRootStates.Airborne);
+        _currentState = _states.GetRootState(FighterRootStates.Grounded);
         _currentState.EnterState();
+        _currentState.InitializeSubState();
     }
 
     protected virtual void UpdateFunction(){
@@ -296,7 +303,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
             input.OnTick();
         }
 
-        _isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastOffset, Vector2.down, _rayCastLenght, _rayCastLayerMask);
+        //_isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastOffset, Vector2.down, _rayCastLenght, _rayCastLayerMask);
+        _isGrounded = FighterController.IsGrounded;
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
 
         // if(_comboListener.isActive){
@@ -505,8 +513,10 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         _isHurt = false;
         _isInvulnerable = false;
         _isGravityApplied = true;
-        _gravity = 0f;
+        _gravity = Physics2D.gravity.y;
         _drag = 0f;
+
+        _juggle = 15;
 
         _currentMovement = Vector2.zero;
         _velocity = Vector2.zero;

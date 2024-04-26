@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c65530f4e8e1c0b47bb697a55d33b870, type: 3}
-  m_Name: JumpAction
+  m_Name: Action_WallSplat
   m_EditorClassIdentifier: 
-  name: Jump
-  stateName: 8
-  inputGesture: 11
+  name: WallSplat
+  stateName: 524288
+  inputGesture: 0
   applyRootMotion: 0
   frames: 0
-  meshAnimation: {fileID: -203655887218126122, guid: 826b8bc3dd7328149825d094048e0db3,
-    type: 3}
-  boxAnimation: {fileID: 7400000, guid: e98a173f0853d1c49a6d2c642d27c564, type: 2}
+  meshAnimation: {fileID: 0}
+  boxAnimation: {fileID: 0}

@@ -99,7 +99,7 @@ public class FighterHurtState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentFrame = 0;
         //Debug.Log("FighterHurtState - Exit State");

@@ -23,21 +23,37 @@ public class KinematicPhysics2D : MonoBehaviour
 
     #endregion
 
-    private List<Action> updateList = new List<Action>();
+    #region MonoBehaviour
 
-    public void Subscribe(Action action){
-        updateList.Add(action);
+    private void FixedUpdate(){
+        KinematicPhysicsUpdate();
+    }
+
+    #endregion
+
+    [ReadOnly] [SerializeField] private List<FighterController> _controllers = new List<FighterController>();
+
+    public void Subscribe(FighterController controller){
+        _controllers.Add(controller);
+    }
+
+    public void Unsubscribe(FighterController controller){
+        _controllers.Remove(controller);
     }
 
     public void Initialize(){
         // Set the Physics2D simulation mode to manual.
-        //Physics2D.simulationMode = SimulationMode2D.Script; 
+        Physics2D.simulationMode = SimulationMode2D.Script; 
     }
 
     public void KinematicPhysicsUpdate(){
 
-        foreach (Action action in updateList){
-            action?.Invoke();
+        foreach (FighterController controller in _controllers){
+            controller.Simulate();
+        }
+
+        foreach (FighterController controller in _controllers){
+            controller.LateFixedUpdate();
         }
 
         // Call Physics2D.Simulate().

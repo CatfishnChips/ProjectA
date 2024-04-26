@@ -33,6 +33,8 @@ public class FighterBlockState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
+
+        _ctx.HealthManager.UpdateHealth(_ctx.IsGrounded ? _collisionData.action.Ground.Block.damage : _collisionData.action.Air.Block.damage);
         
         ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
 
@@ -45,7 +47,7 @@ public class FighterBlockState : FighterBaseState
         
        // Apply Calculated Variables
         _ctx.Drag = _drag;
-        _ctx.Gravity = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.CurrentMovement = _velocity;
 
         _ctx.StaminaManager.UpdateBlock(-1);
@@ -68,7 +70,7 @@ public class FighterBlockState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
     }

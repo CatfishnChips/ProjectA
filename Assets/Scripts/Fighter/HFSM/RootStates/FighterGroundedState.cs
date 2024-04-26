@@ -26,17 +26,25 @@ public class FighterGroundedState : FighterBaseState
 
     public override void EnterState()
     {
-        InitializeSubState();
+        // Reset Gravity to zero.
+        _ctx.Gravity = 0f;
+
+        _ctx.Drag = 0f;
+        _ctx.CurrentMovement = Vector2.zero;
+        _ctx.Velocity = Vector2.zero;
+        _ctx.FighterController.targetVelocity = Vector2.zero;
     }
 
     public override void ExitState()
     {    
-        _ctx.Gravity = 0f;
-        _ctx.Drag = 0f;
-        _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = Vector2.zero;
+        // Reset Gravity to default.
+        _ctx.Gravity = Physics2D.gravity.y;
+
+        // _ctx.Drag = 0f;
+        // _ctx.CurrentMovement = Vector2.zero;
+        // _ctx.Velocity = Vector2.zero;
         //_ctx.Rigidbody2D.velocity = Vector2.zero;
-        _ctx.FighterController.targetVelocity = Vector2.zero;
+        // _ctx.FighterController.targetVelocity = Vector2.zero;
         //Debug.Log("FighterGroundedState(ExitState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
     }
 

@@ -45,6 +45,8 @@ public class FighterSlamDunkState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
+        _ctx.HealthManager.UpdateHealth(_collisionData.action.Damage);
+
         // h = ut + 1/2gt^2
         // h = Height (Known)
         // t = Time (Known)
@@ -60,8 +62,9 @@ public class FighterSlamDunkState : FighterBaseState
         _gravity = Physics2D.gravity.y; // Gravity Constant
         _velocity.y = (_action.Knockup - (_gravity * Mathf.Pow(_time, 2) / 2)) / _time; // Initial Velocity
 
-        _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
-        _drag *= horizontalDirection;
+        // _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
+        // _drag *= horizontalDirection;
+        _drag = 0;
 
         _velocity.x = 2 * _action.Knockback / _time; // Initial horizontal velocity;
         _velocity.x *= horizontalDirection;
@@ -97,7 +100,7 @@ public class FighterSlamDunkState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = 0f;
+        //_ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;

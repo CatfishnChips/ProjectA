@@ -9,38 +9,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1f64798f3180f248af4c14b875a0a25, type: 3}
-  m_Name: Uppercut
+  m_Script: {fileID: 11500000, guid: 17cc22cdaedad324db47ca5d1f612be8, type: 3}
+  m_Name: LauncherAttackTest
   m_EditorClassIdentifier: 
-  name: Uppercut
+  name: 
   stateName: 32
   inputGesture: 0
   applyRootMotion: 0
   _cancelFrame: 0
   _inputIgnoreFrames: 0
-  m_tags: 1024
-  m_damage: 50
+  m_tags: 0
+  m_damage: 0
   m_juggle: 0
   m_face: 0
-  m_hitFlags: 5
-  m_wallBounceVelocity: {x: 0, y: 0}
-  m_wallBounceStun: 0
-  m_groundBounceVelocity: {x: 0, y: 0}
-  m_groundBounceStun: {x: 0, y: 0}
-  m_wallSplatStun: 0
+  m_hitFlags: 0
+  m_bounceCoeff: 0
+  m_bounceTreshold: {x: 0, y: 0}
   m_priority: 0
   m_part: 1
   m_chipDamage: 0
-  m_blockStun: 5
+  m_blockStun: 0
   blockKnocback: 0
   m_ignoreBlock: 0
   m_hitStop: 0
-  m_knockbackStun: 80
-  m_knockdownStun: 20
+  m_knockbackStun: 0
+  m_knockdownStun: 0
   m_knockupStun: {x: 0, y: 0}
-  m_knockup: 25
-  m_knockback: 1
-  m_gravity: 0
+  m_knockup: 0
+  m_knockback: 0
+  m_gravity: 1
   m_staminaRecovery: 0
   m_spiritRecovery: 0
   m_sound: {fileID: 0}
@@ -49,19 +46,16 @@ MonoBehaviour:
   m_cameraPosition: {x: 0, y: 0, z: 0}
   m_cameraRotation: {x: 0, y: 0, z: 0}
   m_cameraEaseFactor: 0
-  m_startFrames: 45
-  m_activeFrames: 7
-  m_recoveryFrames: 12
-  m_hitboxFrame: -1
-  m_hitboxOffset: {x: 2, y: 2}
+  m_startFrames: 0
+  m_activeFrames: 0
+  m_recoveryFrames: 0
+  m_hitboxFrame: 0
+  m_hitboxOffset: {x: 0, y: 0}
   m_hitboxLocation: {x: 0, y: 0}
-  m_hitboxSize: {x: 0.89, y: 2.8}
-  m_meshAnimationS: {fileID: -911751757983084618, guid: d489b905b20129841a1f1398b3665cff,
-    type: 3}
-  m_meshAnimationA: {fileID: -2584105986153280350, guid: d489b905b20129841a1f1398b3665cff,
-    type: 3}
-  m_meshAnimationR: {fileID: 3709316462808488434, guid: d489b905b20129841a1f1398b3665cff,
-    type: 3}
+  m_hitboxSize: {x: 0, y: 0}
+  m_meshAnimationS: {fileID: 0}
+  m_meshAnimationA: {fileID: 0}
+  m_meshAnimationR: {fileID: 0}
   m_boxAnimationS: {fileID: 0}
   m_boxAnimationA: {fileID: 0}
   m_boxAnimationR: {fileID: 0}

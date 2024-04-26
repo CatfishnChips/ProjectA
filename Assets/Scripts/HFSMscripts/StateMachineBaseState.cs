@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class StateMachineBaseState 
 {
     protected bool _isRootState = false;
+    protected bool _preserveSubstates = false;
     protected IStateMachineRunner _ctx;
     protected StateMachineBaseState _currentSubState;
     protected StateMachineBaseState _currentSuperState;
@@ -44,16 +45,39 @@ public abstract class StateMachineBaseState
     }
 
     public void ExitStates(){
-        if(_currentSubState != null){
-            _currentSubState.ExitStates();
+        if (_preserveSubstates){
+            ExitState();
+            return;
+        }
+
+        StateMachineBaseState subState = _currentSubState;
+        while(subState != null){
+            //Debug.Log("Exitted Substate : " + subState + " Current Substate : " + _currentSubState);
+            subState.ExitState();
+            subState = subState._currentSubState;
         }
         ExitState();
+        //Debug.Log("Exitted State : " + this);
+
+        // if(_currentSubState != null && !_preserveSubstates){
+        //     _currentSubState.ExitStates();
+        //     _currentSubState = null;
+        // }
+        // ExitState();
     }
 
     protected void SwitchState(StateMachineBaseState newState){
         ExitStates();
 
         newState.EnterState();
+        if (_preserveSubstates){
+            newState._currentSubState = _currentSubState;
+            newState._currentSubState.SetSuperState(newState);
+        }
+        else{
+            newState.InitializeSubState();
+            //if (_isRootState) Debug.Log("Root State : " + newState + " New Sub State : " + newState._currentSubState);
+        }
 
         if(_isRootState){
             // set current state of the context (FighterStateMachine) to a new state
@@ -62,6 +86,8 @@ public abstract class StateMachineBaseState
         else if(_currentSuperState != null){
             _currentSuperState.SetSubState(newState);
         }
+
+        //_currentSubState = null;
     }
 
     protected void SetSuperState(StateMachineBaseState newSuperState){

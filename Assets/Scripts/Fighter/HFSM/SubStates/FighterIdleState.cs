@@ -17,6 +17,11 @@ public class FighterIdleState : FighterBaseState
 
     public override void EnterState()
     {
+        // There is already a set _ctx.Gravity in affect.
+        // if (_ctx.CurrentRootState == FighterStates.Airborne){
+        //     _ctx.Gravity = Physics2D.gravity.y;
+        // }
+
         if (_ctx.CurrentRootState == FighterStates.Grounded) 
         {
             _action = _ctx.ActionDictionary["GroundedIdle"] as ActionDefault;
@@ -41,12 +46,12 @@ public class FighterIdleState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
-        _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = Vector2.zero;
+        //_ctx.CurrentMovement = Vector2.zero;
+        //_ctx.Velocity = Vector2.zero;
         //_ctx.Rigidbody2D.velocity = Vector2.zero;
-        _ctx.FighterController.targetVelocity = Vector2.zero;
+        //_ctx.FighterController.targetVelocity = Vector2.zero;
         //Debug.Log("FighterIdleState(ExitState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad  + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
     }
 

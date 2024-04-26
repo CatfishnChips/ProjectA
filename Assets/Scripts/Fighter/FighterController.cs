@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class FighterController : MonoBehaviour
 {   
@@ -17,7 +18,10 @@ public class FighterController : MonoBehaviour
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _minGroundNormalY = 0.65f;
     [ReadOnly] public Vector2 _velocity;
+
     [ReadOnly] private bool _grounded;
+    public bool IsGrounded { get => _grounded; }
+    
     private Vector2 _groundNormal = new Vector2(0, 1);
     private const float minMoveDistance = 0.001f;
     private const float skinWidth = 0.01f;
@@ -46,8 +50,6 @@ public class FighterController : MonoBehaviour
     public Vector2 Position { get => _rigidbody.position; }
     public ScreenSide Side { get => _rigidbody.position.x < 0 ? ScreenSide.Left : ScreenSide.Right; }
 
-    private Action _action;
-
     public enum ScreenSide
     {
         Left,
@@ -58,13 +60,12 @@ public class FighterController : MonoBehaviour
         // Set the Physics2D simulation mode to manual.
         //Physics2D.simulationMode = SimulationMode2D.Script; 
 
-        _action = LateFixedUpdate;
-        KinematicPhysics2D.Instance.Subscribe(_action);
+        KinematicPhysics2D.Instance.Subscribe(this);
     }
 
-    private void LateFixedUpdate(){
+    public void LateFixedUpdate(){
         // Set the last position as _targetPosition.
-        _targetPosition = _rigidbody.position;
+        //_targetPosition = _rigidbody.position;
 
         // Reset the rigidbody position to start.
         _rigidbody.position = _initialPosition;
@@ -120,15 +121,18 @@ public class FighterController : MonoBehaviour
         _targetPosition = _rigidbody.position;
 
         // Reset the rigidbody position to start.
-        _rigidbody.position = _initialPosition;
+        //_rigidbody.position = _initialPosition;
 
 
         // Call Rigidbody2D.MovePosition() to interpolate between the start and end position.
         //_rigidbody.MovePosition(_rigidbody.position + _targetDeltaPosition);
-        _rigidbody.MovePosition(_targetPosition);
+        //_rigidbody.MovePosition(_targetPosition);
 
         // Simulate Physics in LateFixedUpdate().
         //Physics2D.Simulate(0);
+
+        // Ground check based on ground height.
+        _grounded = transform.position.y <= 0.55f ? true : false;
 
         _frame ++;
     }

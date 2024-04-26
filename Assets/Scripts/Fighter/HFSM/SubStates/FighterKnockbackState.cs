@@ -12,6 +12,9 @@ public class FighterKnockbackState : FighterBaseState
     private float _initialVelocity;
     private float _direction;
     private float _time;
+    
+    private int _stun;
+    private int _hitStop;
 
     public FighterKnockbackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -19,7 +22,21 @@ public class FighterKnockbackState : FighterBaseState
 
     public override bool CheckSwitchState()
     {
-        if (_currentFrame >= _action.KnockbackStun + _action.HitStop){   
+        if (_action.HitFlags.HasFlag(HitFlags.BOUNCE_WALL)){
+            if(_ctx.FighterController.IsTouchingWall){
+                SwitchState(_factory.GetSubState(FighterSubStates.WallBounce));
+                return true;
+            }
+        } 
+
+        if (_action.HitFlags.HasFlag(HitFlags.SPLAT_WALL)){
+            if(_ctx.FighterController.IsTouchingWall){
+                SwitchState(_factory.GetSubState(FighterSubStates.WallSplat));
+                return true;
+            }
+        } 
+
+        if (_currentFrame >= _action.KnockbackStun + _action.HitStop){  
             if(IdleStateSwitchCheck()) return true; 
             
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
@@ -38,11 +55,17 @@ public class FighterKnockbackState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
+        _ctx.HealthManager.UpdateHealth(_collisionData.action.Damage);
+
+        // REWORK THIS STATE INTO SLIDE
+
+        _stun = _ctx.IsGrounded ? _action.Ground.Stun.stun : _action.Air.Stun.stun;
+        _hitStop = _ctx.IsGrounded ? _action.Ground.Stun.hitStop : _action.Air.Stun.hitStop ;
 
         _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
-        _time = _action.KnockbackStun * Time.fixedDeltaTime;
+        _time = _stun * Time.fixedDeltaTime;
 
-        _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
+        _drag = -2 * _action.Ground.Slide.slide / Mathf.Pow(_time, 2);
         _drag *= _direction;
 
         _initialVelocity = 2 * _action.Knockback / _time; // Initial horizontal velocity;
@@ -50,9 +73,9 @@ public class FighterKnockbackState : FighterBaseState
 
         // Apply Calculated Variables
         _ctx.Drag = _drag;
-        _ctx.Gravity = 0f;
+        //_ctx.Gravity = 0f;
 
-        if (_action.KnockbackStun == 0) return;
+        if (_stun == 0) return;
 
         ActionDefault action = _ctx.ActionDictionary["Stunned"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
@@ -85,7 +108,7 @@ public class FighterKnockbackState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        if (_currentFrame >= _action.HitStop){
+        if (_currentFrame >= _hitStop){
 
             if (_isFirstTime){
                 _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
@@ -110,4 +133,3 @@ public class FighterKnockbackState : FighterBaseState
     {
     }
 }
-

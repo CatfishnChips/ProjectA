@@ -47,6 +47,8 @@ public class FighterFreeFallState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
+        _ctx.HealthManager.UpdateHealth(_collisionData.action.Damage);
+
         _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
         float horizontalDirection = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
 
@@ -93,7 +95,7 @@ public class FighterFreeFallState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentFrame = 0;
         _ctx.CurrentMovement = Vector2.zero;

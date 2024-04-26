@@ -13,13 +13,27 @@ MonoBehaviour:
   m_Name: DirectPunch
   m_EditorClassIdentifier: 
   name: DirectPunch
+  stateName: 32
+  inputGesture: 0
+  applyRootMotion: 0
+  _cancelFrame: 0
+  _inputIgnoreFrames: 0
   m_tags: 1569
   m_damage: 10
-  m_chipDamage: 0
+  m_juggle: 0
+  m_face: 0
+  m_hitFlags: 1
+  m_wallBounceVelocity: {x: 0, y: 0}
+  m_wallBounceStun: 0
+  m_groundBounceVelocity: {x: 0, y: 0}
+  m_groundBounceStun: {x: 0, y: 0}
+  m_wallSplatStun: 0
   m_priority: 0
   m_part: 1
-  m_ignoreBlock: 0
+  m_chipDamage: 0
   m_blockStun: 0
+  blockKnocback: 0
+  m_ignoreBlock: 0
   m_hitStop: 0
   m_knockbackStun: 0
   m_knockdownStun: 0
@@ -28,6 +42,7 @@ MonoBehaviour:
   m_knockback: 0
   m_gravity: 0
   m_staminaRecovery: 0
+  m_spiritRecovery: 0
   m_sound: {fileID: 0}
   m_soundLevel: 0
   m_screenShakeVelocity: {x: 0, y: 0, z: 0}
@@ -39,6 +54,7 @@ MonoBehaviour:
   m_recoveryFrames: 12
   m_hitboxFrame: 0
   m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxLocation: {x: 0, y: 0}
   m_hitboxSize: {x: 0, y: 0}
   m_meshAnimationS: {fileID: 7400000, guid: 648a004d605219c40a22f94edfd1b63a, type: 2}
   m_meshAnimationA: {fileID: 7400000, guid: 3bd3356cc31efad40831afb3c9597c3d, type: 2}

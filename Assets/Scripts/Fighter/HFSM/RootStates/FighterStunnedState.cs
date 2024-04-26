@@ -12,6 +12,8 @@ public class FighterStunnedState : FighterBaseState
     
     public StunnedState State {get{return _state;} set{_state = value;}}
 
+    private int _stun;
+
     public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
         _isRootState = true;
@@ -20,8 +22,10 @@ public class FighterStunnedState : FighterBaseState
     public override bool CheckSwitchState()
     {
         if (_ctx.IsHurt && !_ctx.IsInvulnerable){
-            SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
-            return true;
+            if (_action.Juggle <= _ctx.Juggle){
+                SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
+                return true;
+            }
         }
         
         // ">" is used instead of ">=" due to Root States' Fixed Update running before the Sub States' Fixed Update.
@@ -40,15 +44,18 @@ public class FighterStunnedState : FighterBaseState
         //     SwitchState(state);
         // }
 
-        if (_ctx.CurrentSubState == FighterStates.Idle){
-
-            if (_ctx.IsGrounded){
-                SwitchState(_factory.GetRootState(FighterRootStates.Grounded));
-                return true;
-            }
-            else{
-                SwitchState(_factory.GetRootState(FighterRootStates.Airborne));
-                return true;
+        // if (_ctx.CurrentSubState == FighterStates.Idle){
+        if (_currentFrame >= _stun){
+            if (_ctx.CurrentSubState == FighterStates.Idle){
+                if (_ctx.IsGrounded){
+                    SwitchState(_factory.GetRootState(FighterRootStates.Grounded));
+                    return true;
+                }
+                // else{
+                //     Debug.Log(_currentFrame);
+                //     SwitchState(_factory.GetRootState(FighterRootStates.Airborne));
+                //     return true;
+                // }
             }
 
 
@@ -69,11 +76,8 @@ public class FighterStunnedState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _isFirstTime = true;
-
-        _ctx.HealthManager.UpdateHealth(_ctx.CanBlock ? -_collisionData.action.ChipDamage : -_collisionData.action.Damage);
-        InitializeSubState();
-
         _ctx.IsHurt = false;
+        // _ctx.HealthManager.UpdateHealth(_ctx.CanBlock ? -_collisionData.action.ChipDamage : -_collisionData.action.Damage);
 
         _ctx.Velocity = _ctx.CurrentMovement;
         //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
@@ -82,13 +86,12 @@ public class FighterStunnedState : FighterBaseState
 
     public override void ExitState()
     {
-        _ctx.Gravity = 0f;
-        _ctx.Drag = 0f;
-        _ctx.CurrentFrame = 0;
-        _ctx.CurrentMovement = Vector2.zero;
-        _ctx.Velocity = Vector2.zero;
-        // _ctx.Rigidbody2D.velocity = Vector2.zero;
-        _ctx.FighterController.targetVelocity = Vector2.zero;
+        // _ctx.Gravity = 0f;
+        // _ctx.Drag = 0f;
+        // _ctx.CurrentFrame = 0;
+        // _ctx.CurrentMovement = Vector2.zero;
+        // _ctx.Velocity = Vector2.zero;
+        // _ctx.FighterController.targetVelocity = Vector2.zero;
 
         switch(_ctx.Player){
             case Player.P1:
@@ -99,6 +102,8 @@ public class FighterStunnedState : FighterBaseState
             EventManager.Instance.RecoveredFromStun_P2?.Invoke();
             break;
         }
+
+        Debug.Log("Fighter Stunned Root State - Exit State");
     }
 
     public override void FixedUpdateState()
@@ -120,27 +125,61 @@ public class FighterStunnedState : FighterBaseState
         //Debug.Log("FighterStunnedState(InitializeSubState)");
         FighterBaseState state;
         //Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
+
         if(!_action.IgnoreBlock && _ctx.CanBlock){
             state = _factory.GetSubState(FighterSubStates.Block);
         }
-        else if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
-            if (Mathf.Sign(_action.Knockup) > 0) 
-            state = _factory.GetSubState(FighterSubStates.Knockup);
+        // else if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
+        //     if (Mathf.Sign(_action.Knockup) > 0) 
+        //     state = _factory.GetSubState(FighterSubStates.Knockup);
+        //     else
+        //     state = _factory.GetSubState(FighterSubStates.SlamDunk);
+        // }
+        // else if (_action.KnockdownStun > 0){
+        //     state = _factory.GetSubState(FighterSubStates.Knockdown);
+        // }
+        // else if (_action.KnockbackStun > 0){
+        //     if(_ctx.IsGrounded)
+        //     state = _factory.GetSubState(FighterSubStates.Knockback);
+        //     else
+        //     state = _factory.GetSubState(FighterSubStates.FreeFall);
+        // }
+        // else{
+        //     state = _factory.GetSubState(FighterSubStates.Idle);
+        // }
+        else if (_action.HitFlags.HasFlag(HitFlags.KNOCK_UP)){
+            //float apex = _ctx.IsGrounded ? _action.Ground.Arc.apex : _action.Air.Arc.apex;
+            // if (Mathf.Sign(apex) > 0) 
+            Trajectory trajectory = _ctx.IsGrounded ? _action.Ground.trajectory : _action.Air.trajectory;
+            if (trajectory == Trajectory.ARC)
+                state = _factory.GetSubState(FighterSubStates.Knockup);
             else
-            state = _factory.GetSubState(FighterSubStates.SlamDunk);
+                state = _factory.GetSubState(FighterSubStates.SlamDunk);
         }
-        else if (_action.KnockdownStun > 0){
+        else if(_action.HitFlags.HasFlag(HitFlags.BOUNCE_GROUND)){
+            state = _factory.GetSubState(FighterSubStates.GroundBounce);
+        }
+        else if (_action.HitFlags.HasFlag(HitFlags.KNOCK_DOWN)){
             state = _factory.GetSubState(FighterSubStates.Knockdown);
         }
-        else if (_action.KnockbackStun > 0){
+        else if(_action.HitFlags.HasFlag(HitFlags.KNOCK_BACK)){
             if(_ctx.IsGrounded)
-            state = _factory.GetSubState(FighterSubStates.Knockback);
+                state = _factory.GetSubState(FighterSubStates.Knockback);
             else
-            state = _factory.GetSubState(FighterSubStates.FreeFall);
+                state = _factory.GetSubState(FighterSubStates.FreeFall);
         }
+        // else if(_action.HitFlags.HasFlag(HitFlags.BOUNCE_WALL)){
+        //     // Unnecessary statement.
+        //     state = _factory.GetSubState(FighterSubStates.WallBounce);
+        // }
+        // else if(_action.HitFlags.HasFlag(HitFlags.SPLAT_WALL)){
+        //     // Unnecessary statement.
+        //     state = _factory.GetSubState(FighterSubStates.WallSplat);
+        // }
         else{
             state = _factory.GetSubState(FighterSubStates.Idle);
         }
+        
         SetSubState(state);
         state.EnterState();
     }

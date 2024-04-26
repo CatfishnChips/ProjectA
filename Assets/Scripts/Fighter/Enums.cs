@@ -31,7 +31,10 @@ public enum FighterStates
     Knockback = 1 << 13,
     Grabbed = 1 << 14,
     SlamDunk = 1 << 15,
-    FreeFall = 1 << 16
+    FreeFall = 1 << 16,
+    WallBounce = 1 << 17,
+    GroundBounce = 1 << 18,
+    WallSplat = 1 << 19
 }
 
 public enum FighterRootStates
@@ -56,7 +59,10 @@ public enum FighterSubStates
     Knockback = FighterStates.Knockback,
     Grabbed = FighterStates.Grabbed,
     SlamDunk = FighterStates.SlamDunk,
-    FreeFall = FighterStates.FreeFall
+    FreeFall = FighterStates.FreeFall,
+    WallBounce = FighterStates.WallBounce,
+    GroundBounce = FighterStates.GroundBounce,
+    WallSplat = FighterStates.WallSplat
 }
 
 public enum Player

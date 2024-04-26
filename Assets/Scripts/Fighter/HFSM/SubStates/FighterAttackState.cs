@@ -16,11 +16,12 @@ public class FighterAttackState : FighterCancellableState
         if(base.CheckSwitchState()) return true;
         if (_action.ActionState == ActionStates.None){
             
+            if (_action.CheckSwithStateFunction(_factory)) return true;
+
             if(IdleStateSwitchCheck()) return true; 
             
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
             return true;
-            
         }
         else{
             return false;

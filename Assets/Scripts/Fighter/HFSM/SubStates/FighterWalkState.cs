@@ -47,11 +47,10 @@ public class FighterWalkState : FighterBaseState
     public override void ExitState()
     {
         _ctx.Animator.SetFloat("Blend", 0f);
-        _ctx.Gravity = 0f;
+        //_ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = new Vector2(0, _ctx.Velocity.y);
         _ctx.Velocity = _ctx.CurrentMovement;
-        //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
         _ctx.FighterController.targetVelocity = _ctx.Velocity;
     }
 

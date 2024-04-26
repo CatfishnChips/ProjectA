@@ -27,6 +27,9 @@ public class FighterStateFactory
         _states[FighterStates.Grabbed] = new FighterGrabbedState(_context, this);
         _states[FighterStates.SlamDunk] = new FighterSlamDunkState(_context, this);
         _states[FighterStates.FreeFall] = new FighterFreeFallState(_context, this);
+        _states[FighterStates.WallBounce] = new FighterWallBounceState(_context, this);
+        _states[FighterStates.WallSplat] = new FighterWallSplatState(_context, this);
+        _states[FighterStates.GroundBounce] = new FighterGroundBounceState(_context, this);
     }
 
     public void OverrideDictionary(Dictionary<FighterStates, FighterBaseState> dictionary){

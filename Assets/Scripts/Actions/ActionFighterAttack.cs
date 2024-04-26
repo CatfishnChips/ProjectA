@@ -25,6 +25,10 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
         }
     }
 
+    public virtual bool CheckSwithStateFunction(FighterStateFactory factory){
+        return false;
+    }
+
     public virtual void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
         _ctx = ctx;
         _state = state;
@@ -133,7 +137,6 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
             }
         } 
 
-
         if (_pause){
             if (_pauseFrames <= 0){
                 _pause = false;
@@ -159,8 +162,8 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
         _ctx.ActionState = default;
         _ctx.OnAttackEnd?.Invoke();
         
-        _ctx.Drag = 0f;
-        _ctx.Gravity = 0f;
+        // _ctx.Drag = 0f;
+        // _ctx.Gravity = 0f;
         _ctx.CurrentMovement = Vector2.zero;
 
         if(_ctx.Player == Player.P1) EventManager.Instance.FighterAttackEnded?.Invoke();

@@ -33,7 +33,7 @@ public class FighterJumpState : FighterBaseState
 
     public override void EnterState()
     {
-        _ctx.Gravity = 0f;
+        //_ctx.Gravity = 0f;
         _ctx.Drag = 0f;
         _ctx.CurrentMovement = Vector2.zero;
         _ctx.Velocity = Vector2.zero;
