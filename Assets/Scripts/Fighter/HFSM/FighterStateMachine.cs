@@ -303,8 +303,11 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
             input.OnTick();
         }
 
+        // Ground Check
         //_isGrounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y) + _rayCastOffset, Vector2.down, _rayCastLenght, _rayCastLayerMask);
-        _isGrounded = FighterController.IsGrounded;
+        //_isGrounded = FighterController.IsGrounded;
+        _isGrounded = transform.position.y <= 0.55f ? true : false;
+
         _faceDirection = (int)Mathf.Sign(transform.forward.x);
 
         // if(_comboListener.isActive){

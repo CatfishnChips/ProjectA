@@ -132,7 +132,7 @@ public class FighterController : MonoBehaviour
         //Physics2D.Simulate(0);
 
         // Ground check based on ground height.
-        _grounded = transform.position.y <= 0.55f ? true : false;
+        //_grounded = transform.position.y <= 0.55f ? true : false;
 
         _frame ++;
     }
