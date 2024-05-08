@@ -11,8 +11,8 @@ public class ActionSpiritAttack : ActionAttack
     public float CalculatedKnockup {get{return m_calculatedKnockup;} set{m_calculatedKnockup = value;}}
     public float CalculatedKnockback {get{return m_calculatedKnockback;} set{m_calculatedKnockback = value;}}
 
-    public override float Knockup {get => m_calculatedKnockup;}
-    public override float Knockback {get => m_calculatedKnockback;}
+    public float Knockup {get => m_calculatedKnockup;}
+    public float Knockback {get => m_calculatedKnockback;}
 
     protected virtual List<FrameEvent_Spirit> Events_Spirit {get {return new List<FrameEvent_Spirit>();}}
 
@@ -86,7 +86,7 @@ public class ActionSpiritAttack : ActionAttack
             if (_firstTimePause){
                 _firstTimePause = false;
                 _pause = true;
-                _pauseFrames = m_hitStop;
+                _pauseFrames = Air.Stun.hitStop;
                 
                 //ctx.Animator.SetFloat("SpeedVar", 0);
                 ctx.ColBoxAnimator.SetFloat("SpeedVar", 0);

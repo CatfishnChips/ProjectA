@@ -15,6 +15,8 @@ public class FighterKnockbackState : FighterBaseState
     
     private int _stun;
     private int _hitStop;
+    private int _slide;
+    private float _distance;
 
     public FighterKnockbackState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -36,7 +38,7 @@ public class FighterKnockbackState : FighterBaseState
             }
         } 
 
-        if (_currentFrame >= _action.KnockbackStun + _action.HitStop){  
+        if (_currentFrame >= _slide + _hitStop){  
             if(IdleStateSwitchCheck()) return true; 
             
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
@@ -57,10 +59,11 @@ public class FighterKnockbackState : FighterBaseState
         _ctx.IsHurt = false;
         _ctx.HealthManager.UpdateHealth(_collisionData.action.Damage);
 
-        // REWORK THIS STATE INTO SLIDE
+        _stun = _action.Ground.Stun.stun;
+        _hitStop =  _action.Ground.Stun.hitStop;
 
-        _stun = _ctx.IsGrounded ? _action.Ground.Stun.stun : _action.Air.Stun.stun;
-        _hitStop = _ctx.IsGrounded ? _action.Ground.Stun.hitStop : _action.Air.Stun.hitStop ;
+        _slide = _action.Ground.Slide.slide;
+        _distance = _action.Ground.Slide.distance;
 
         _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
         _time = _stun * Time.fixedDeltaTime;
@@ -68,7 +71,7 @@ public class FighterKnockbackState : FighterBaseState
         _drag = -2 * _action.Ground.Slide.slide / Mathf.Pow(_time, 2);
         _drag *= _direction;
 
-        _initialVelocity = 2 * _action.Knockback / _time; // Initial horizontal velocity;
+        _initialVelocity = 2 * _distance / _time; // Initial horizontal velocity;
         _initialVelocity *= _direction;
 
         // Apply Calculated Variables
@@ -84,9 +87,9 @@ public class FighterKnockbackState : FighterBaseState
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;
 
-        _animationSpeed = AdjustAnimationTime(clip, _action.KnockbackStun); 
+        _animationSpeed = AdjustAnimationTime(clip, _slide); 
 
-        if (_action.HitStop != 0){
+        if (_hitStop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
             _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0f);
         }

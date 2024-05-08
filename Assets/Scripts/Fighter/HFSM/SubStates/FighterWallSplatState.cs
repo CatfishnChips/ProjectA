@@ -7,6 +7,7 @@ public class FighterWallSplatState : FighterBaseState
     private CollisionData _collisionData;
     private ActionAttack _action;
     private float _animationSpeed;
+    private bool _isFirstTime = true;
 
     private int _stun;
     private int _hitstop;
@@ -46,7 +47,7 @@ public class FighterWallSplatState : FighterBaseState
         _ctx.Drag = 0f;
         //_ctx.Gravity = 0f;
 
-        if (_action.WallSplatStun == 0) return;
+        if (_stun == 0) return;
 
         ActionDefault action = _ctx.ActionDictionary["Stunned"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
@@ -55,7 +56,7 @@ public class FighterWallSplatState : FighterBaseState
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = boxClip;
 
-        _animationSpeed = AdjustAnimationTime(clip, _action.WallSplatStun); 
+        _animationSpeed = AdjustAnimationTime(clip, _stun); 
 
         _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
         _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
@@ -73,6 +74,17 @@ public class FighterWallSplatState : FighterBaseState
 
     public override void FixedUpdateState()
     {
+        if (_currentFrame >= _hitstop){
+
+            if (_isFirstTime){
+                _ctx.Animator.SetFloat("SpeedVar", 1f);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", 1f);
+                _isFirstTime = false;
+            }
+
+            //Debug.Log("Fighter Wall Splat State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
+        }
+
         CheckSwitchState();
         _currentFrame++;
         _ctx.CurrentFrame =_currentFrame;

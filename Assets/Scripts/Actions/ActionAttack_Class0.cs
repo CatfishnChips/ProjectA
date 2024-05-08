@@ -21,16 +21,16 @@ public class ActionAttack_Class0 : ActionFighterAttack
 
     [SerializeField] [ReadOnly] protected bool m_focus = false; 
 
-    public override int Damage {get => m_focus ? m_focusDamage : m_damage;}
-    public override int ChipDamage {get => m_focus ? m_focusChipDamage : m_chipDamage;}
-    public override bool IgnoreBlock {get => m_focus ? m_focusIgnoreBlock : m_ignoreBlock;}
-    public override int BlockStun {get => m_focus ? m_focusBlockStun : m_blockStun;}
-    public override int HitStop {get => m_focus ? m_focusHitStop : m_hitStop;}
-    public override int KnockbackStun {get => m_focus ? m_focusKnockbackStun : m_knockbackStun;}
-    public override Vector2Int KnockupStun {get => m_focus ? m_focusKnockupStun : m_knockupStun;}
-    public override int KnockdownStun {get => m_focus ? m_focusKnockdownStun : m_knockdownStun;}
-    public override float Knockup {get => m_focus ? m_focusKnockup : m_knockup;}
-    public override float Knockback {get => m_focus ? m_focusKnockback : m_knockback;}
+    // public override int Damage {get => m_focus ? m_focusDamage : m_damage;}
+    // public override int ChipDamage {get => m_focus ? m_focusChipDamage : m_chipDamage;}
+    // public override bool IgnoreBlock {get => m_focus ? m_focusIgnoreBlock : m_ignoreBlock;}
+    // public override int BlockStun {get => m_focus ? m_focusBlockStun : m_blockStun;}
+    //public override int HitStop {get => m_focus ? m_focusHitStop : m_hitStop;}
+    // public override int KnockbackStun {get => m_focus ? m_focusKnockbackStun : m_knockbackStun;}
+    // public override Vector2Int KnockupStun {get => m_focus ? m_focusKnockupStun : m_knockupStun;}
+    // public override int KnockdownStun {get => m_focus ? m_focusKnockdownStun : m_knockdownStun;}
+    // public override float Knockup {get => m_focus ? m_focusKnockup : m_knockup;}
+    // public override float Knockback {get => m_focus ? m_focusKnockback : m_knockback;}
 
     public override void EnterStateFunction(FighterStateMachine ctx, FighterAttackState state){
         base.EnterStateFunction(ctx, state);

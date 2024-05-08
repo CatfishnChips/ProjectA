@@ -26,6 +26,7 @@ public class FighterGroundBounceState : FighterBaseState
     protected float _apex;
     protected float _range;
     protected int _hitStop;
+    protected int _stun;
        
 
     public FighterGroundBounceState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
@@ -61,16 +62,18 @@ public class FighterGroundBounceState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
-        _timeToApex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Bounce.Arc.timeToApex : _action.Air.GroundBounce.Bounce.Arc.timeToApex;
-        _timeAtApex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Bounce.Arc.timeAtApex : _action.Air.GroundBounce.Bounce.Arc.timeAtApex;
-        _timeToFall = _ctx.IsGrounded ? _action.Ground.GroundBounce.Bounce.Arc.timeToFall : _action.Air.GroundBounce.Bounce.Arc.timeToFall;
+        _timeToApex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.timeToApex : _action.Air.GroundBounce.Arc.timeToApex;
+        _timeAtApex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.timeAtApex : _action.Air.GroundBounce.Arc.timeAtApex;
+        _timeToFall = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.timeToFall : _action.Air.GroundBounce.Arc.timeToFall;
 
-        _apex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Bounce.Arc.apex : _action.Air.GroundBounce.Bounce.Arc.apex;
-        _range = _ctx.IsGrounded ? _action.Ground.GroundBounce.Bounce.Arc.range : _action.Air.GroundBounce.Bounce.Arc.range;
+        _apex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.apex : _action.Air.GroundBounce.Arc.apex;
+        _range = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.range : _action.Air.GroundBounce.Arc.range;
 
-        _hitStop = _ctx.IsGrounded ? _action.Ground.GroundBounce.Bounce.Stun.hitStop : _action.Air.GroundBounce.Bounce.Stun.hitStop;
+        _hitStop = _ctx.IsGrounded ? _action.Ground.GroundBounce.Stun.hitStop : _action.Air.GroundBounce.Stun.hitStop;
 
-        _ctx.HealthManager.UpdateHealth(_ctx.IsGrounded ? _collisionData.action.Ground.GroundBounce.Bounce.damage : _collisionData.action.Air.GroundBounce.Bounce.damage);
+        _stun = _ctx.IsGrounded ? _action.Ground.GroundBounce.Stun.stun : _action.Air.GroundBounce.Stun.stun;
+
+        _ctx.HealthManager.UpdateHealth(_ctx.IsGrounded ? _collisionData.action.Ground.GroundBounce.damage : _collisionData.action.Air.GroundBounce.damage);
 
         //_groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
         _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
@@ -109,9 +112,9 @@ public class FighterGroundBounceState : FighterBaseState
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
 
-        _animationSpeed = AdjustAnimationTime(clip, _action.GroundBounceStun.x + _action.GroundBounceStun.y); 
+        _animationSpeed = AdjustAnimationTime(clip, _stun); 
 
-        if (_action.HitStop != 0){
+        if (_hitStop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
             _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0f);
         }
@@ -139,7 +142,7 @@ public class FighterGroundBounceState : FighterBaseState
     {
         //Debug.Log("FighterKnockupState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
        _ctx.Drag = _drag;
-        _ctx.Gravity = _currentFrame < _action.KnockupStun.x + _action.HitStop ? _gravity1 : _gravity2;
+        _ctx.Gravity = _currentFrame < _timeToApex + _hitStop ? _gravity1 : _gravity2;
         //Debug.Log("FighterKnockupState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
         //Debug.Log("Fighter Knockup State - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
     

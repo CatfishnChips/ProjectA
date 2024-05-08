@@ -9,13 +9,16 @@ public class FighterBlockState : FighterBaseState
     private Vector2 _velocity;
     private float _drag;
 
+    private int _stun;
+    private int _distance;
+
     public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
 
     public override bool CheckSwitchState()
     {
-        if (_currentFrame >= _action.BlockStun){
+        if (_currentFrame >= _stun){
             if(IdleStateSwitchCheck()) return true; 
             
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
@@ -34,15 +37,18 @@ public class FighterBlockState : FighterBaseState
         _action = _collisionData.action;
         _ctx.IsHurt = false;
 
-        _ctx.HealthManager.UpdateHealth(_ctx.IsGrounded ? _collisionData.action.Ground.Block.damage : _collisionData.action.Air.Block.damage);
+        _stun = _action.Block.Stun.stun;
+        _distance = _action.Block.Slide.distance;
+
+        _ctx.HealthManager.UpdateHealth(_action.Block.chipDamage);
         
         ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
 
         float direction = -Mathf.Sign(_collisionData.hurtbox.Transform.right.x);
-        float time = _action.BlockStun * Time.fixedDeltaTime;
-        _drag = _action.BlockKnocback / (time * time) * direction;
+        float time = _stun * Time.fixedDeltaTime;
+        _drag = _distance / (time * time) * direction;
 
-        _velocity.x = _action.BlockKnocback / time; // Initial horizontal velocity;
+        _velocity.x = _distance / time; // Initial horizontal velocity;
         _velocity.x *= direction;
         
        // Apply Calculated Variables
@@ -52,7 +58,7 @@ public class FighterBlockState : FighterBaseState
 
         _ctx.StaminaManager.UpdateBlock(-1);
 
-        if (_action.BlockStun == 0) return;
+        if (_stun == 0) return;
 
         AnimationClip clip = action.meshAnimation;
         AnimationClip colClip = action.boxAnimation;
@@ -60,7 +66,7 @@ public class FighterBlockState : FighterBaseState
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
 
-        float speedVar = AdjustAnimationTime(clip, _action.BlockStun);
+        float speedVar = AdjustAnimationTime(clip, _stun);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
         _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
 

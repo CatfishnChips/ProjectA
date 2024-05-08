@@ -96,12 +96,12 @@ public class FighterKnockupState : FighterBaseState
     }
 
     protected virtual void SetExternalVariables(){
-        _timeToApex = _ctx.IsGrounded ? _action.Ground.Arc.timeToApex : _action.Air.Arc.timeToApex;
-        _timeAtApex = _ctx.IsGrounded ? _action.Ground.Arc.timeAtApex : _action.Air.Arc.timeAtApex;
-        _timeToFall = _ctx.IsGrounded ? _action.Ground.Arc.timeToFall : _action.Air.Arc.timeToFall;
+        _timeToApex = _ctx.IsGrounded ? _action.Ground.Trajectory.Arc.timeToApex : _action.Air.Trajectory.Arc.timeToApex;
+        _timeAtApex = _ctx.IsGrounded ? _action.Ground.Trajectory.Arc.timeAtApex : _action.Air.Trajectory.Arc.timeAtApex;
+        _timeToFall = _ctx.IsGrounded ? _action.Ground.Trajectory.Arc.timeToFall : _action.Air.Trajectory.Arc.timeToFall;
 
-        _apex = _ctx.IsGrounded ? _action.Ground.Arc.apex : _action.Air.Arc.apex;
-        _range = _ctx.IsGrounded ? _action.Ground.Arc.range : _action.Air.Arc.range;
+        _apex = _ctx.IsGrounded ? _action.Ground.Trajectory.Arc.apex : _action.Air.Trajectory.Arc.apex;
+        _range = _ctx.IsGrounded ? _action.Ground.Trajectory.Arc.range : _action.Air.Trajectory.Arc.range;
 
         _hitStop = _ctx.IsGrounded ? _action.Ground.Stun.hitStop : _action.Air.Stun.hitStop;
     }
@@ -165,7 +165,7 @@ public class FighterKnockupState : FighterBaseState
 
         _animationSpeed = AdjustAnimationTime(clip, _timeToApex + _timeAtApex + _timeToFall); 
 
-        if (_action.HitStop != 0){
+        if (_hitStop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
             _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0f);
         }

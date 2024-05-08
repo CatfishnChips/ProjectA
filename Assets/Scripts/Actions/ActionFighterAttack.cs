@@ -130,7 +130,7 @@ public class ActionFighterAttack : ActionAttack, ICancellableAction
             if (_firstTimePause){
                 _firstTimePause = false;
                 _pause = true;
-                _pauseFrames = m_hitStop;
+                _pauseFrames = _ctx.IsGrounded ? Ground.Stun.hitStop : Air.Stun.hitStop;
                 
                 _ctx.Animator.SetFloat("SpeedVar", 0);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0);

@@ -7,13 +7,16 @@ public class FighterKnockdownState : FighterBaseState
     private CollisionData _collisionData;
     private ActionAttack _action;
 
+    private int _stun;
+
+
     public FighterKnockdownState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
 
     public override bool CheckSwitchState()
     {
-        if (_currentFrame >= _action.Knockdown.Stun.stun){   
+        if (_currentFrame >= _stun){   
             if(IdleStateSwitchCheck()) return true; 
             
             SwitchState(_factory.GetSubState(FighterSubStates.Idle));
@@ -32,7 +35,9 @@ public class FighterKnockdownState : FighterBaseState
         _action = _collisionData.action;
         _ctx.HealthManager.UpdateHealth(_collisionData.action.Knockdown.damage);
 
-        if (_action.Knockdown.Stun.stun == 0) return;
+        _stun = _action.Knockdown.Stun.stun;
+
+        if (_stun == 0) return;
 
         if (_ctx.PreviousSubState == FighterStates.Knockup || _ctx.PreviousSubState == FighterStates.SlamDunk){
             CameraController.Instance.ScreenShake(new Vector3(0f, -0.1f, 0f));
@@ -47,7 +52,7 @@ public class FighterKnockdownState : FighterBaseState
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
         
 
-        float speedVar = AdjustAnimationTime(clip, _action.KnockdownStun);
+        float speedVar = AdjustAnimationTime(clip, _stun);
         _ctx.Animator.SetFloat("SpeedVar", speedVar);
         _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
 

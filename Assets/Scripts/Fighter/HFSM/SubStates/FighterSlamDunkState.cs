@@ -13,15 +13,18 @@ public class FighterSlamDunkState : FighterBaseState
     private float _gravity;
     private float _drag;
 
+    private int _stun;
+    private int _hitstop;
+
     public FighterSlamDunkState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
 
     public override bool CheckSwitchState()
     {
-        if (_currentFrame >= _action.KnockupStun.y + _action.HitStop){ 
+        if (_ctx.IsGrounded){ 
             // Knockup always transitions to Knockdown state.
-            if (_action.KnockdownStun > 0){
+            if (_action.HitFlags.HasFlag(HitFlags.KNOCK_DOWN)){
                 SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
                 return true;
             }
@@ -47,6 +50,9 @@ public class FighterSlamDunkState : FighterBaseState
 
         _ctx.HealthManager.UpdateHealth(_collisionData.action.Damage);
 
+        _hitstop = _action.Air.Stun.hitStop;
+        _stun = _action.Air.Stun.stun; 
+
         // h = ut + 1/2gt^2
         // h = Height (Known)
         // t = Time (Known)
@@ -55,26 +61,34 @@ public class FighterSlamDunkState : FighterBaseState
 
         // g = 2 (h - ut) / t^2
 
-        _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
-        float horizontalDirection = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
-        float _time = _action.KnockupStun.y * Time.fixedDeltaTime;
+        // _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
+        // float horizontalDirection = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
+        // float _time = _action.KnockupStun.y * Time.fixedDeltaTime;
 
-        _gravity = Physics2D.gravity.y; // Gravity Constant
-        _velocity.y = (_action.Knockup - (_gravity * Mathf.Pow(_time, 2) / 2)) / _time; // Initial Velocity
+        // _gravity = Physics2D.gravity.y; // Gravity Constant
+        // _velocity.y = (_action.Knockup - (_gravity * Mathf.Pow(_time, 2) / 2)) / _time; // Initial Velocity
 
-        // _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
-        // _drag *= horizontalDirection;
+        // // _drag = -2 * _action.Knockback / Mathf.Pow(_time, 2);
+        // // _drag *= horizontalDirection;
+        // _drag = 0;
+
+        // _velocity.x = 2 * _action.Knockback / _time; // Initial horizontal velocity;
+        // _velocity.x *= horizontalDirection;
+
+        _velocity = _action.Air.WallBounce.Bounce.Trajectory.Line.velocity;
+
         _drag = 0;
 
-        _velocity.x = 2 * _action.Knockback / _time; // Initial horizontal velocity;
-        _velocity.x *= horizontalDirection;
+        // Apply Calculated Variables
+        _ctx.Drag = _drag;
+        _ctx.Gravity = _ctx.GravityConstant;
 
         // Apply Calculated Variables
         // _ctx.Drag = _drag;
         // _ctx.Gravity = _gravity;
         // _ctx.CurrentMovement = _velocity;
 
-        if (_action.KnockupStun.y == 0) return;
+        //if (_action.KnockupStun.y == 0) return;
 
         ActionDefault action = _ctx.ActionDictionary["Knockup"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
@@ -83,15 +97,15 @@ public class FighterSlamDunkState : FighterBaseState
         _ctx.AnimOverrideCont["Action"] = clip;
         _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
 
-        _animationSpeed = AdjustAnimationTime(clip, _action.KnockupStun.y); 
+        //_animationSpeed = AdjustAnimationTime(clip, _action.KnockupStun.y); 
 
-        if (_action.HitStop != 0){
+        if (_hitstop != 0){
             _ctx.Animator.SetFloat("SpeedVar", 0f);
             _ctx.ColBoxAnimator.SetFloat("SpeedVar", 0f);
         }
         else{
-            _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
-            _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
+            _ctx.Animator.SetFloat("SpeedVar", 1f);
+            _ctx.ColBoxAnimator.SetFloat("SpeedVar", 1f);
         }
 
         _ctx.Animator.PlayInFixedTime("Action");
@@ -109,11 +123,11 @@ public class FighterSlamDunkState : FighterBaseState
 
     public override void FixedUpdateState()
     {
-        if (_currentFrame >= _action.HitStop){
+        if (_currentFrame >= _hitstop){
 
             if (_isFirstTime){
-                _ctx.Animator.SetFloat("SpeedVar", _animationSpeed);
-                _ctx.ColBoxAnimator.SetFloat("SpeedVar", _animationSpeed);
+                _ctx.Animator.SetFloat("SpeedVar", 1f);
+                _ctx.ColBoxAnimator.SetFloat("SpeedVar", 1f);
                 _isFirstTime = false;
             }
 

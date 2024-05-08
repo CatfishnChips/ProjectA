@@ -13,6 +13,7 @@ public class FighterStunnedState : FighterBaseState
     public StunnedState State {get{return _state;} set{_state = value;}}
 
     private int _stun;
+    private int _hitstop;
 
     public FighterStunnedState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
@@ -77,6 +78,9 @@ public class FighterStunnedState : FighterBaseState
         _action = _collisionData.action;
         _isFirstTime = true;
         _ctx.IsHurt = false;
+
+        _hitstop = _ctx.IsGrounded ? _action.Ground.Stun.hitStop : _action.Air.Stun.hitStop;
+
         // _ctx.HealthManager.UpdateHealth(_ctx.CanBlock ? -_collisionData.action.ChipDamage : -_collisionData.action.Damage);
 
         _ctx.Velocity = _ctx.CurrentMovement;
@@ -110,7 +114,7 @@ public class FighterStunnedState : FighterBaseState
     {   
         //Debug.Log("FighterStunnedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
         //Debug.Log("FighterStunnedState(FixedUpdateState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Drag: " + _ctx.Drag + " Gravity: " + _ctx.Gravity + " Current Movement: " + _ctx.CurrentMovement + " Velocity: " + _ctx.Velocity);
-        if (_currentFrame > _action.HitStop){  
+        if (_currentFrame > _hitstop){  
             _ctx.CurrentMovement += new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime;
             _ctx.Velocity = _ctx.CurrentMovement;
             //_ctx.Rigidbody2D.velocity = _ctx.Velocity;
@@ -148,9 +152,7 @@ public class FighterStunnedState : FighterBaseState
         //     state = _factory.GetSubState(FighterSubStates.Idle);
         // }
         else if (_action.HitFlags.HasFlag(HitFlags.KNOCK_UP)){
-            //float apex = _ctx.IsGrounded ? _action.Ground.Arc.apex : _action.Air.Arc.apex;
-            // if (Mathf.Sign(apex) > 0) 
-            Trajectory trajectory = _ctx.IsGrounded ? _action.Ground.trajectory : _action.Air.trajectory;
+            Trajectory trajectory = _ctx.IsGrounded ? _action.Ground.Trajectory.trajectory : _action.Air.Trajectory.trajectory;
             if (trajectory == Trajectory.ARC)
                 state = _factory.GetSubState(FighterSubStates.Knockup);
             else

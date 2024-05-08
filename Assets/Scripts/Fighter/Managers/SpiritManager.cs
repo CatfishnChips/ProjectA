@@ -128,7 +128,7 @@ public class SpiritManager : MonoBehaviour
             UpdateSpirit(-1);
 
             _action_Spirit = action;
-            _targetFrame = _target.CurrentFrame + _action_Spirit.StartFrames - _action.HitStop;
+            _targetFrame = _target.CurrentFrame + _action_Spirit.StartFrames - _action.Air.Stun.hitStop;
 
             CalculateSpawnLocation();
             CheckAgainstStageBorders();
@@ -161,7 +161,7 @@ public class SpiritManager : MonoBehaviour
 
         switch(_state){
             case SpiritState.Knockback:
-                CalculateLinePosition();
+                //CalculateLinePosition();
             break;
 
             case SpiritState.Knockup:
@@ -187,15 +187,15 @@ public class SpiritManager : MonoBehaviour
         _direction = Mathf.Sign(data.hitbox.Transform.right.x);
         _initialPos = new Vector2(_target.transform.position.x, _target.transform.position.y);
 
-        if (_action.KnockupStun.x + _action.KnockupStun.y > 0){
+        if (_action.HitFlags.HasFlag(HitFlags.KNOCK_UP)){
             _state = SpiritState.Knockup;
-            _duration = _action.KnockupStun.x + _action.KnockupStun.y;
+            _duration = _action.Air.Trajectory.Arc.timeToApex + _action.Air.Trajectory.Arc.timeAtApex + _action.Air.Trajectory.Arc.timeToFall;
             CalculateArcData();
         }
-        else if (_action.KnockbackStun > 0){
+        else if (_action.HitFlags.HasFlag(HitFlags.KNOCK_BACK)){
             _state = SpiritState.Knockback;
-            _duration = _action.KnockbackStun;
-            CalculateLineData();
+            _duration = _action.Air.Stun.stun;
+            //CalculateLineData();
         }
         else{
             _state = SpiritState.Idle;
@@ -238,7 +238,7 @@ public class SpiritManager : MonoBehaviour
             _frame = currentStep;  
             switch(_state){
                 case SpiritState.Knockback:
-                    CalculateLinePosition();
+                    // CalculateLinePosition();
                 break;
 
                 case SpiritState.Knockup:
@@ -257,18 +257,17 @@ public class SpiritManager : MonoBehaviour
         if (_state != SpiritState.Knockup) return;
 
         // Zone 1 - Projectile Motion
-        _time1 = _action.KnockupStun.x * Time.fixedDeltaTime;
-        _gravity1 = - 2 * _action.Knockup / Mathf.Pow(_time1, 2); // g = 2h/t^2
-        _velocity.y = 2 * _action.Knockup / _time1; // Initial vertical velocity. V0y = 2h/t
+        _time1 = _action.Air.Trajectory.Arc.timeToApex * Time.fixedDeltaTime;
+        _gravity1 = - 2 * _action.Air.Trajectory.Arc.apex / Mathf.Pow(_time1, 2); // g = 2h/t^2
+        _velocity.y = 2 * _action.Air.Trajectory.Arc.apex / _time1; // Initial vertical velocity. V0y = 2h/t
 
         // Zone 2 - Free Fall
-        _time2 = _action.KnockupStun.y * Time.fixedDeltaTime; 
-        _gravity2 = -2 * (_action.Knockup + _groundOffset) / (_time2 * _time2); // Free Fall h = (1/2)gt^2 --> g = 2h/t^2
+        _time2 = _action.Air.Trajectory.Arc.timeToFall * Time.fixedDeltaTime; 
+        _gravity2 = -2 * (_action.Air.Trajectory.Arc.apex + _groundOffset) / (_time2 * _time2); // Free Fall h = (1/2)gt^2 --> g = 2h/t^2
 
-        _drag = -2 * _action.Knockback / Mathf.Pow(_time1 + _time2, 2);
-        _drag *= _direction;
+        _drag = 0;
 
-        _velocity.x = 2 * _action.Knockback / (_time1 + _time2); // Initial horizontal velocity;
+        _velocity.x = 2 * _action.Air.Trajectory.Arc.range / (_time1 + _time2); // Initial horizontal velocity;
         _velocity.x *= _direction; 
     }
 
@@ -276,7 +275,7 @@ public class SpiritManager : MonoBehaviour
         _time = _frame * Time.fixedDeltaTime;
         _position.x = (_drag * Mathf.Pow(_time, 2) / 2) + (_velocity.x * _time) + _initialPos.x; // Projectile Motion
 
-        if (_frame < _action.KnockupStun.x)
+        if (_frame < _action.Air.Trajectory.Arc.timeToApex)
         {
             //Zone 1
             _position.y = (_gravity1 * Mathf.Pow(_time, 2) / 2) + (_velocity.y * _time) + _initialPos.y; // Projectile Motion y = y0 + v0y * t − (1/2)gt^2
@@ -284,7 +283,7 @@ public class SpiritManager : MonoBehaviour
         else
         {
             //Zone 2
-            _frame -= _action.KnockupStun.x;
+            _frame -= _action.Air.Trajectory.Arc.timeToApex;
             _time = _frame * Time.fixedDeltaTime;
             
             float maxHeight = (_gravity1 * Mathf.Pow(_time1, 2) / 2) + (_velocity.y * _time1) + _initialPos.y;
@@ -296,21 +295,21 @@ public class SpiritManager : MonoBehaviour
 
     #region Knockback (Line) Functions
 
-    private void CalculateLineData(){
-        float time = _action.KnockbackStun * Time.fixedDeltaTime;
+    // private void CalculateLineData(){
+    //     float time = _action.Air.Stun.stun * Time.fixedDeltaTime;
 
-        _drag = -2 * _action.Knockback / Mathf.Pow(time, 2);
-        _drag *= _direction;
+    //     _drag = -2 * _action.Knockback / Mathf.Pow(time, 2);
+    //     _drag *= _direction;
 
-        _velocity.x = 2 * _action.Knockback / time; // Initial horizontal velocity;
-        _velocity.x *= _direction;
-    }
+    //     _velocity.x = 2 * _action.Knockback / time; // Initial horizontal velocity;
+    //     _velocity.x *= _direction;
+    // }
 
-    private void CalculateLinePosition(){
-        _time = _frame * Time.fixedDeltaTime;
-        _position.x = (_drag * Mathf.Pow(_time, 2) / 2) + (_velocity.x * _time) + _initialPos.x;
-        _position.y = _initialPos.y;
-    }
+    // private void CalculateLinePosition(){
+    //     _time = _frame * Time.fixedDeltaTime;
+    //     _position.x = (_drag * Mathf.Pow(_time, 2) / 2) + (_velocity.x * _time) + _initialPos.x;
+    //     _position.y = _initialPos.y;
+    // }
 
     #endregion
 

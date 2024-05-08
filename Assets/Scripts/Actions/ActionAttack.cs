@@ -14,21 +14,21 @@ public abstract class ActionAttack : CancellableAction
     [Tooltip("Properties of the hit. Determines which state the opponent will be in.")]
     [SerializeField] protected HitFlags m_hitFlags;
 
-    [Header("Wall Bounce Properties")]
-    [Tooltip("Velocity of the bounce after hitting a wall.")]
-    [SerializeField] protected Vector2 m_wallBounceVelocity;
-    [Tooltip("Duration of the stun received after bouncing of a wall (in frames).")]
-    [SerializeField] protected int m_wallBounceStun;
+    // [Header("Wall Bounce Properties")]
+    // [Tooltip("Velocity of the bounce after hitting a wall.")]
+    // [SerializeField] protected Vector2 m_wallBounceVelocity;
+    // [Tooltip("Duration of the stun received after bouncing of a wall (in frames).")]
+    // [SerializeField] protected int m_wallBounceStun;
 
-    [Header("Ground Bounce Properties")]
-    [Tooltip("Velocity of the bounce after hitting the ground.")]
-    [SerializeField] protected Vector2 m_groundBounceVelocity;
-    [Tooltip("Duration of the stun recieved after bouncing of the ground x: Rise Time, y: Fall Time (in frames).")]
-    [SerializeField] protected Vector2Int m_groundBounceStun;
+    // [Header("Ground Bounce Properties")]
+    // [Tooltip("Velocity of the bounce after hitting the ground.")]
+    // [SerializeField] protected Vector2 m_groundBounceVelocity;
+    // [Tooltip("Duration of the stun recieved after bouncing of the ground x: Rise Time, y: Fall Time (in frames).")]
+    // [SerializeField] protected Vector2Int m_groundBounceStun;
 
-    [Header("Wall Splat Properties")]
-    [Tooltip("Duration of the stun received after splatting to a wall (in frames).")]
-    [SerializeField] protected int m_wallSplatStun;
+    // [Header("Wall Splat Properties")]
+    // [Tooltip("Duration of the stun received after splatting to a wall (in frames).")]
+    // [SerializeField] protected int m_wallSplatStun;
 
     [Header("Hitbox Properties")]
     [Tooltip("Which type of hitbox is prioritized for hit detection.")] // Probably won't be used.
@@ -36,35 +36,27 @@ public abstract class ActionAttack : CancellableAction
     [Tooltip("Dictates how many times a move can hit. Set to 1 for single hit moves.")]
     [SerializeField] protected int m_part = 1;
 
-    [Header("Block Properties")]
-    [Tooltip("Damage dealt upon a successful hit to a blocking target.")]
-    [SerializeField] protected int m_chipDamage;
-    [Tooltip("Stun inflicted upon hitting the target that is blocking (in frames).")]
-    [SerializeField] protected int m_blockStun;
-    [Tooltip("Distance of pushback of hit when blocked.")]
-    [SerializeField] protected float blockKnocback;
+    [SerializeField] private BlockProperties _block;
 
-    [Header("Stun Properties")]
-    [Tooltip("Does attack ignore target's Block state?")]
-    [SerializeField] protected bool m_ignoreBlock;
+    // [Header("Stun Properties")]
 
-    [Tooltip("Time stop applied to the target and self upon hit (in frames).")]
-    [SerializeField] protected int m_hitStop;
+    // [Tooltip("Time stop applied to the target and self upon hit (in frames).")]
+    // [SerializeField] protected int m_hitStop;
 
-    [Tooltip("Stun inflicted upon hitting the target (in frames).")]
-    [SerializeField] protected int m_knockbackStun;
+    // [Tooltip("Stun inflicted upon hitting the target (in frames).")]
+    // [SerializeField] protected int m_knockbackStun;
 
-    [Tooltip("Duration that the target will stay lying on ground, inflicted upon hitting the target (in frames).")]
-    [SerializeField] protected int m_knockdownStun;
+    // [Tooltip("Duration that the target will stay lying on ground, inflicted upon hitting the target (in frames).")]
+    // [SerializeField] protected int m_knockdownStun;
 
-    [Tooltip("Time it takes to complete the arc. x: Rise Time, y: Fall Time (in frames)")]
-    [SerializeField] protected Vector2Int m_knockupStun;
+    // [Tooltip("Time it takes to complete the arc. x: Rise Time, y: Fall Time (in frames)")]
+    // [SerializeField] protected Vector2Int m_knockupStun;
 
-    [Header("Knockback Properties")]
-    [Tooltip("Distance of the knockup.")]
-    [SerializeField] protected float m_knockup;
-    [Tooltip("Distance of the knockback.")]
-    [SerializeField] protected float m_knockback;
+    // [Header("Knockback Properties")]
+    // [Tooltip("Distance of the knockup.")]
+    // [SerializeField] protected float m_knockup;
+    // [Tooltip("Distance of the knockback.")]
+    // [SerializeField] protected float m_knockback;
 
     [Header("Gravity Properties")]
     [Tooltip("Is gravity applied to the performing character during the action?")]
@@ -108,23 +100,23 @@ public abstract class ActionAttack : CancellableAction
     public float AnimSpeedS {get{return AdjustAnimationTime(m_meshAnimationS, m_startFrames);}}
     public float AnimSpeedA {get{return AdjustAnimationTime(m_meshAnimationA, m_activeFrames);}}
     public float AnimSpeedR {get{return AdjustAnimationTime(m_meshAnimationR, m_recoveryFrames);}}
-    public float AnimSpeedAExtended {get{return AdjustAnimationTime(m_meshAnimationA, m_activeFrames + m_hitStop);}}
+    //public float AnimSpeedAExtended {get{return AdjustAnimationTime(m_meshAnimationA, m_activeFrames + m_hitStop);}}
 
     public virtual HitFlags HitFlags {get => m_hitFlags;}
     public virtual Tags Tags {get => m_tags;}
     public virtual int Damage {get => m_damage;}
-    public virtual int ChipDamage {get => m_chipDamage;}
-    public float BlockKnocback {get => blockKnocback;}
+    public virtual int ChipDamage {get => Block.chipDamage;}
+    // public float BlockKnocback {get => blockKnocback;}
     public virtual int Priority {get => m_priority;}
     public virtual int Part {get => m_part;}
-    public virtual bool IgnoreBlock {get => m_ignoreBlock;}
-    public virtual int BlockStun {get => m_blockStun;}
-    public virtual int HitStop {get => m_hitStop;}
-    public virtual int KnockbackStun {get => m_knockbackStun;}
-    public virtual Vector2Int KnockupStun {get => m_knockupStun;}
-    public virtual int KnockdownStun {get => m_knockdownStun;}
-    public virtual float Knockup {get => m_knockup;}
-    public virtual float Knockback {get => m_knockback;}
+    public virtual bool IgnoreBlock {get => Block.ignoreBlock;}
+    // public virtual int BlockStun {get => m_blockStun;}
+    //public virtual int HitStop {get => m_hitStop;}
+    // public virtual int KnockbackStun {get => m_knockbackStun;}
+    // public virtual Vector2Int KnockupStun {get => m_knockupStun;}
+    // public virtual int KnockdownStun {get => m_knockdownStun;}
+    // public virtual float Knockup {get => m_knockup;}
+    // public virtual float Knockback {get => m_knockback;}
     public virtual bool Gravity {get => m_gravity;}
     public virtual float StaminaRecovery {get => m_staminaRecovery;}
     public virtual float SpiritRecovery {get => m_spiritRecovery;}
@@ -134,13 +126,13 @@ public abstract class ActionAttack : CancellableAction
 
     public virtual int Juggle {get => m_juggle;}
 
-    public virtual Vector2 WallBounceVelocity {get => m_wallBounceVelocity;}
-    public virtual int WallBounceStun {get => m_wallBounceStun;}
+    // public virtual Vector2 WallBounceVelocity {get => m_wallBounceVelocity;}
+    // public virtual int WallBounceStun {get => m_wallBounceStun;}
 
-    public virtual Vector2 GroundBounceVelocity {get => m_groundBounceVelocity;}
-    public virtual Vector2Int GroundBounceStun {get => m_groundBounceStun;}
+    // public virtual Vector2 GroundBounceVelocity {get => m_groundBounceVelocity;}
+    // public virtual Vector2Int GroundBounceStun {get => m_groundBounceStun;}
 
-    public virtual int WallSplatStun {get => m_wallSplatStun;}
+    // public virtual int WallSplatStun {get => m_wallSplatStun;}
 
     public virtual int StartFrames {get => m_startFrames;}
     public virtual int ActiveFrames {get => m_activeFrames;}
@@ -218,6 +210,7 @@ public abstract class ActionAttack : CancellableAction
     [SerializeField] private AirProperties _air;
     [SerializeField] private KnockdownProperties _knockdown;
 
+    public BlockProperties Block { get => _block; }
     public GroundProperties Ground { get => _ground; }
     public AirProperties Air { get => _air; }
     public KnockdownProperties Knockdown { get => _knockdown; }
@@ -318,31 +311,31 @@ public struct SlideProperties{
 }
 
 [Serializable]
-public struct GroundProperties
-{
+public struct TrajectoryProperties{
+    [Header("Trajectory Properties")]
+    public Trajectory trajectory;
+    public ArcProperties Arc;
+    public LineProperties Line;
+}
+
+[Serializable]
+public struct GroundProperties{
     [Header("Ground Properties")]
 
     public StunProperties Stun;
     public SlideProperties Slide;
-    public Trajectory trajectory;
-    public ArcProperties Arc;
-    public LineProperties Line;
-    public BlockProperties Block;
+    public TrajectoryProperties Trajectory;
     public WallBounceProperties WallBounce;
     public GroundBounceProperties GroundBounce;
     public WallSplatProperties WallSplat;
 }
 
 [Serializable]
-public struct AirProperties
-{
+public struct AirProperties{
     [Header("Air Properties")]
 
     public StunProperties Stun;
-    public Trajectory trajectory;
-    public ArcProperties Arc;
-    public LineProperties Line;
-    public BlockProperties Block;
+    public TrajectoryProperties Trajectory;
     public WallBounceProperties WallBounce;
     public GroundBounceProperties GroundBounce;
     public WallSplatProperties WallSplat;
@@ -357,7 +350,7 @@ public struct BlockProperties
     public bool ignoreBlock;
 
     [Tooltip("Damage dealt upon a successful hit to a blocking target.")]
-    public int damage;
+    public int chipDamage;
 
     public StunProperties Stun;
     public SlideProperties Slide;
@@ -371,9 +364,7 @@ public struct BounceProperties{
     public int damage;
 
     public StunProperties Stun;
-    public Trajectory trajectory;
-    public ArcProperties Arc;
-    public LineProperties Line;
+    public TrajectoryProperties Trajectory;
 }
 
 [Serializable]
@@ -387,7 +378,12 @@ public struct WallBounceProperties{
 public struct GroundBounceProperties{
     [Header("Ground Bounce Properties")]
 
-    public BounceProperties Bounce;
+    [Tooltip("Damage inflicted upon hitting an obstacle.")]
+    public int damage;
+
+    public StunProperties Stun;
+
+    public ArcProperties Arc;
 }
 
 [Serializable]
