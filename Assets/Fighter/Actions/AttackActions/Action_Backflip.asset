@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f64798f3180f248af4c14b875a0a25, type: 3}
+  m_Name: Action_Backflip
+  m_EditorClassIdentifier: 
+  name: Backflip
+  stateName: 32
+  inputGesture: 11
+  applyRootMotion: 0
+  _cancelFrame: 25
+  _inputIgnoreFrames: 3
+  m_tags: 0
+  m_damage: 0
+  m_juggle: 0
+  m_face: 0
+  m_hitFlags: 0
+  m_priority: 0
+  m_part: 1
+  _block:
+    ignoreBlock: 0
+    chipDamage: 0
+    Stun:
+      hitStop: 0
+      stun: 0
+    Slide:
+      slide: 0
+      distance: 0
+  m_gravity: 1
+  m_staminaRecovery: 0
+  m_spiritRecovery: 0
+  m_sound: {fileID: 0}
+  m_soundLevel: 0
+  m_screenShakeVelocity: {x: 0, y: 0, z: 0}
+  m_cameraPosition: {x: 0, y: 0, z: 0}
+  m_cameraRotation: {x: 0, y: 0, z: 0}
+  m_cameraEaseFactor: 0
+  m_startFrames: 15
+  m_activeFrames: 4
+  m_recoveryFrames: 20
+  m_hitboxFrame: 0
+  m_hitboxOffset: {x: 0, y: 0}
+  m_hitboxLocation: {x: 0, y: 0}
+  m_hitboxSize: {x: 0, y: 0}
+  m_meshAnimationS: {fileID: -203655887218126122, guid: 7b62a85fee828c346bb94f27983b6a7d,
+    type: 3}
+  m_meshAnimationA: {fileID: 4061839508520268033, guid: 7b62a85fee828c346bb94f27983b6a7d,
+    type: 3}
+  m_meshAnimationR: {fileID: 8842878171678463616, guid: 7b62a85fee828c346bb94f27983b6a7d,
+    type: 3}
+  m_boxAnimationS: {fileID: 7400000, guid: 87108bdb80c63b9418a04d92dd8653a4, type: 2}
+  m_boxAnimationA: {fileID: -203655887218126122, guid: bea97e006afba214e80d315fdf03a9c7,
+    type: 3}
+  m_boxAnimationR: {fileID: -2087373694239626325, guid: bea97e006afba214e80d315fdf03a9c7,
+    type: 3}
+  _velocity: {x: 0, y: 0}
+  Time: 0
+  Frame: 0
+  Apex: 0
+  Displacement: 0
+  _ground:
+    Stun:
+      hitStop: 0
+      stun: 0
+    Slide:
+      slide: 0
+      distance: 0
+    Trajectory:
+      trajectory: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+      Line:
+        velocity: {x: 0, y: 0}
+    WallBounce:
+      Bounce:
+        damage: 0
+        Stun:
+          hitStop: 0
+          stun: 0
+        Trajectory:
+          trajectory: 0
+          Arc:
+            apex: 0
+            range: 0
+            timeToApex: 0
+            timeAtApex: 0
+            timeToFall: 0
+          Line:
+            velocity: {x: 0, y: 0}
+    GroundBounce:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+    WallSplat:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+  _air:
+    Stun:
+      hitStop: 0
+      stun: 0
+    Trajectory:
+      trajectory: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+      Line:
+        velocity: {x: 0, y: 0}
+    WallBounce:
+      Bounce:
+        damage: 0
+        Stun:
+          hitStop: 0
+          stun: 0
+        Trajectory:
+          trajectory: 0
+          Arc:
+            apex: 0
+            range: 0
+            timeToApex: 0
+            timeAtApex: 0
+            timeToFall: 0
+          Line:
+            velocity: {x: 0, y: 0}
+    GroundBounce:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+    WallSplat:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+  _knockdown:
+    damage: 0
+    Stun:
+      hitStop: 0
+      stun: 0
