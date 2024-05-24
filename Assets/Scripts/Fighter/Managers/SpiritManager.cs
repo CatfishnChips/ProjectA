@@ -187,19 +187,21 @@ public class SpiritManager : MonoBehaviour
         _direction = Mathf.Sign(data.hitbox.Transform.right.x);
         _initialPos = new Vector2(_target.transform.position.x, _target.transform.position.y);
 
-        if (_action.HitFlags.HasFlag(HitFlags.KNOCK_UP)){
-            _state = SpiritState.Knockup;
-            _duration = _action.Air.Trajectory.Arc.timeToApex + _action.Air.Trajectory.Arc.timeAtApex + _action.Air.Trajectory.Arc.timeToFall;
-            CalculateArcData();
-        }
-        else if (_action.HitFlags.HasFlag(HitFlags.KNOCK_BACK)){
-            _state = SpiritState.Knockback;
-            _duration = _action.Air.Stun.stun;
-            //CalculateLineData();
-        }
-        else{
-            _state = SpiritState.Idle;
-        }
+        
+
+        // if (_action.HitFlags.HasFlag(HitFlags.KNOCK_UP)){
+        //     _state = SpiritState.Knockup;
+        //     _duration = _action.Air.Trajectory.Arc.timeToApex + _action.Air.Trajectory.Arc.timeAtApex + _action.Air.Trajectory.Arc.timeToFall;
+        //     CalculateArcData();
+        // }
+        // else if (_action.HitFlags.HasFlag(HitFlags.KNOCK_BACK)){
+        //     _state = SpiritState.Knockback;
+        //     _duration = _action.Air.Stun.stun;
+        //     //CalculateLineData();
+        // }
+        // else{
+        //     _state = SpiritState.Idle;
+        // }
     }
 
     private void CheckAgainstStageBorders(){

@@ -36,16 +36,31 @@ public class FighterGroundBounceState : FighterBaseState
     public override bool CheckSwitchState()
     {   
         if (_currentFrame >= _timeToApex + _timeAtApex + _timeToFall){   
-            // GroundBounce always transitions to Knockdown state.
-            if (_action.HitFlags.HasFlag(HitFlags.KNOCK_DOWN)){
-                SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
-                return true;
+            if (_ctx.WasGrounded){
+                // GroundBounce always transitions to Knockdown state.
+                if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
+                    SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                    return true;
+                }
+                else{
+                    if(IdleStateSwitchCheck()) return true; 
+                    
+                    SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                    return true;
+                }
             }
-            else{
-                if(IdleStateSwitchCheck()) return true; 
-                
-                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
-                return true;
+            else {
+                // GroundBounce always transitions to Knockdown state.
+                if (((HitFlags)_action.Air.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
+                    SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                    return true;
+                }
+                else{
+                    if(IdleStateSwitchCheck()) return true; 
+                    
+                    SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                    return true;
+                }
             }
         }
         else return false;
@@ -62,18 +77,18 @@ public class FighterGroundBounceState : FighterBaseState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
-        _timeToApex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.timeToApex : _action.Air.GroundBounce.Arc.timeToApex;
-        _timeAtApex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.timeAtApex : _action.Air.GroundBounce.Arc.timeAtApex;
-        _timeToFall = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.timeToFall : _action.Air.GroundBounce.Arc.timeToFall;
+        _timeToApex = _ctx.WasGrounded ? _action.Ground.GroundBounce.Arc.timeToApex : _action.Air.GroundBounce.Arc.timeToApex;
+        _timeAtApex = _ctx.WasGrounded ? _action.Ground.GroundBounce.Arc.timeAtApex : _action.Air.GroundBounce.Arc.timeAtApex;
+        _timeToFall = _ctx.WasGrounded ? _action.Ground.GroundBounce.Arc.timeToFall : _action.Air.GroundBounce.Arc.timeToFall;
 
-        _apex = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.apex : _action.Air.GroundBounce.Arc.apex;
-        _range = _ctx.IsGrounded ? _action.Ground.GroundBounce.Arc.range : _action.Air.GroundBounce.Arc.range;
+        _apex = _ctx.WasGrounded ? _action.Ground.GroundBounce.Arc.apex : _action.Air.GroundBounce.Arc.apex;
+        _range = _ctx.WasGrounded ? _action.Ground.GroundBounce.Arc.range : _action.Air.GroundBounce.Arc.range;
 
-        _hitStop = _ctx.IsGrounded ? _action.Ground.GroundBounce.Stun.hitStop : _action.Air.GroundBounce.Stun.hitStop;
+        _hitStop = _ctx.WasGrounded ? _action.Ground.GroundBounce.Stun.hitStop : _action.Air.GroundBounce.Stun.hitStop;
 
-        _stun = _ctx.IsGrounded ? _action.Ground.GroundBounce.Stun.stun : _action.Air.GroundBounce.Stun.stun;
+        _stun = _ctx.WasGrounded ? _action.Ground.GroundBounce.Stun.stun : _action.Air.GroundBounce.Stun.stun;
 
-        _ctx.HealthManager.UpdateHealth(_ctx.IsGrounded ? _collisionData.action.Ground.GroundBounce.damage : _collisionData.action.Air.GroundBounce.damage);
+        _ctx.HealthManager.UpdateHealth(_ctx.WasGrounded ? _collisionData.action.Ground.GroundBounce.damage : _collisionData.action.Air.GroundBounce.damage);
 
         //_groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
         _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);

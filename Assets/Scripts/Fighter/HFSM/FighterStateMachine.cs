@@ -101,6 +101,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     [Header("Raycast")]
     [SerializeField] [ReadOnly] bool _isGrounded;
+    [SerializeField] [ReadOnly] bool _wasGrounded;
     [SerializeField] protected LayerMask _rayCastLayerMask;
     [SerializeField] protected float _rayCastLenght = 1f;
     [SerializeField] protected Vector2 _rayCastOffset;
@@ -122,7 +123,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     protected bool _validAttackInputInterval;
     protected ActionFighterAttack _fighterAttackAction;
 
-    protected int _juggle;
+    [SerializeField] protected int _juggle = 15;
 
     public Player Player {get{return _player;}}
     public Transform Mesh {get{return _mesh;}}
@@ -180,6 +181,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public FighterController FighterController {get{return _fighterController;}}   
 
     public bool IsGrounded{get{return _isGrounded;}}
+    public bool WasGrounded{get{return _wasGrounded;} set{_wasGrounded = value;}}
     public float JumpHeight {get{return _jumpHeight;}}
     public int JumpTime {get{return _jumpTime;}}
     public int FallTime {get{return _fallTime;}}
