@@ -20,6 +20,7 @@ public class Projectile : MonoBehaviour, IPoolableObject
     [SerializeField] private int m_duration; // In Frames
     [SerializeField] private float m_speed;
     [SerializeField] private Vector2 m_direction;
+    [SerializeField] private FighterController m_controller;
     private ActionAttack m_action;
     private HitResponder m_hitResponder;
     private Rigidbody2D m_rigidbody;
@@ -57,6 +58,6 @@ public class Projectile : MonoBehaviour, IPoolableObject
     }
 
     private void FixedUpdate(){
-        m_rigidbody.velocity = m_direction * m_speed * Time.fixedDeltaTime;
+        m_controller._velocity = m_direction * m_speed * Time.fixedDeltaTime;
     }
 }

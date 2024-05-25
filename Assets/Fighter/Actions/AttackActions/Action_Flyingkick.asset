@@ -23,23 +23,17 @@ MonoBehaviour:
   m_juggle: 0
   m_face: 0
   m_hitFlags: 33
-  m_wallBounceVelocity: {x: 0, y: 0}
-  m_wallBounceStun: 0
-  m_groundBounceVelocity: {x: 0, y: 0}
-  m_groundBounceStun: {x: 0, y: 0}
-  m_wallSplatStun: 0
   m_priority: 0
   m_part: 1
-  m_chipDamage: 0
-  m_blockStun: 30
-  blockKnocback: 2
-  m_ignoreBlock: 0
-  m_hitStop: 10
-  m_knockbackStun: 20
-  m_knockdownStun: 0
-  m_knockupStun: {x: 0, y: 0}
-  m_knockup: 0
-  m_knockback: 3
+  _block:
+    ignoreBlock: 0
+    chipDamage: 0
+    Stun:
+      hitStop: 0
+      stun: 0
+    Slide:
+      slide: 0
+      distance: 0
   m_gravity: 1
   m_staminaRecovery: 0
   m_spiritRecovery: 0
@@ -62,3 +56,112 @@ MonoBehaviour:
   m_boxAnimationS: {fileID: 7400000, guid: 4b00e771bf7e42f4c862861f565e7d23, type: 2}
   m_boxAnimationA: {fileID: 7400000, guid: 142a890a7d43efb46a0b8e3e1697c57b, type: 2}
   m_boxAnimationR: {fileID: 7400000, guid: 86eb3750def0b794795ba14499322ab7, type: 2}
+  _velocity: {x: 0, y: 0}
+  Time: 0
+  Frame: 0
+  Apex: 0
+  Displacement: 0
+  _ground:
+    HitTrajectory: 1
+    HitFlags: 8
+    Stun:
+      hitStop: 0
+      stun: 0
+    Slide:
+      slide: 0
+      distance: 0
+    Trajectory:
+      trajectory: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+      Line:
+        velocity: {x: 0, y: 0}
+    WallBounce:
+      Bounce:
+        damage: 0
+        Stun:
+          hitStop: 0
+          stun: 0
+        Trajectory:
+          trajectory: 0
+          Arc:
+            apex: 0
+            range: 0
+            timeToApex: 0
+            timeAtApex: 0
+            timeToFall: 0
+          Line:
+            velocity: {x: 0, y: 0}
+    GroundBounce:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+    WallSplat:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+  _air:
+    HitTrajectory: 0
+    HitFlags: 0
+    Stun:
+      hitStop: 0
+      stun: 0
+    Trajectory:
+      trajectory: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+      Line:
+        velocity: {x: 0, y: 0}
+    WallBounce:
+      Bounce:
+        damage: 0
+        Stun:
+          hitStop: 0
+          stun: 0
+        Trajectory:
+          trajectory: 0
+          Arc:
+            apex: 0
+            range: 0
+            timeToApex: 0
+            timeAtApex: 0
+            timeToFall: 0
+          Line:
+            velocity: {x: 0, y: 0}
+    GroundBounce:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+      Arc:
+        apex: 0
+        range: 0
+        timeToApex: 0
+        timeAtApex: 0
+        timeToFall: 0
+    WallSplat:
+      damage: 0
+      Stun:
+        hitStop: 0
+        stun: 0
+  _knockdown:
+    damage: 0
+    Stun:
+      hitStop: 0
+      stun: 0

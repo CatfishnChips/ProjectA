@@ -24,7 +24,7 @@ public class FighterSlamDunkState : FighterBaseState
     {
         if (_ctx.IsGrounded){ 
             // Knockup always transitions to Knockdown state.
-            if (_action.HitFlags.HasFlag(HitFlags.KNOCK_DOWN)){
+            if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
                 SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
                 return true;
             }

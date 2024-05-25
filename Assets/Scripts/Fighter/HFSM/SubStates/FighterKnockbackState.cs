@@ -24,14 +24,14 @@ public class FighterKnockbackState : FighterBaseState
 
     public override bool CheckSwitchState()
     {
-        if (_action.HitFlags.HasFlag(HitFlags.BOUNCE_WALL)){
+        if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.BOUNCE_WALL)){
             if(_ctx.FighterController.IsTouchingWall){
                 SwitchState(_factory.GetSubState(FighterSubStates.WallBounce));
                 return true;
             }
         } 
 
-        if (_action.HitFlags.HasFlag(HitFlags.SPLAT_WALL)){
+        if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.SPLAT_WALL)){
             if(_ctx.FighterController.IsTouchingWall){
                 SwitchState(_factory.GetSubState(FighterSubStates.WallSplat));
                 return true;
@@ -66,9 +66,9 @@ public class FighterKnockbackState : FighterBaseState
         _distance = _action.Ground.Slide.distance;
 
         _direction = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
-        _time = _stun * Time.fixedDeltaTime;
+        _time = _slide * Time.fixedDeltaTime;
 
-        _drag = -2 * _action.Ground.Slide.slide / Mathf.Pow(_time, 2);
+        _drag = -2 * _distance / Mathf.Pow(_time, 2);
         _drag *= _direction;
 
         _initialVelocity = 2 * _distance / _time; // Initial horizontal velocity;

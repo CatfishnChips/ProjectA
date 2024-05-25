@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomPropertyDrawer(typeof(TrajectoryProperties))]
-public class TrajectoryPropertyCustomDrawer : PropertyDrawer
+public class TrajectoryPropertiesCustomDrawer : PropertyDrawer
 {
     private int m_toolbarInt;
 
-  public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         int totalLine = 4;
 
@@ -45,16 +45,16 @@ public class TrajectoryPropertyCustomDrawer : PropertyDrawer
         EditorGUI.PropertyField(rect, trajectoryProp, false);
         m_toolbarInt = trajectoryProp.enumValueIndex;
 
-        switch(m_toolbarInt){
+        switch (m_toolbarInt){
             case 0: 
                 var arcProp = property.FindPropertyRelative("Arc");
-                rect = new Rect(position.x, position.y + EditorGUI.GetPropertyHeight(trajectoryProp, label, true), position.width, EditorGUI.GetPropertyHeight(arcProp, label, true));
+                rect = new Rect(position.x, position.y + EditorGUI.GetPropertyHeight(trajectoryProp, label, true) + EditorGUIUtility.singleLineHeight, position.width, EditorGUI.GetPropertyHeight(arcProp, label, true));
                 EditorGUI.PropertyField(rect, arcProp, true);
             break;
 
             case 1:
                 var lineProp = property.FindPropertyRelative("Line");
-                rect = new Rect(position.x, position.y + EditorGUI.GetPropertyHeight(trajectoryProp, label, true), position.width, EditorGUI.GetPropertyHeight(lineProp, label, true));
+                rect = new Rect(position.x, position.y + EditorGUI.GetPropertyHeight(trajectoryProp, label, true) + EditorGUIUtility.singleLineHeight, position.width, EditorGUI.GetPropertyHeight(lineProp, label, true));
                 EditorGUI.PropertyField(rect, lineProp, true);
             break;
         }

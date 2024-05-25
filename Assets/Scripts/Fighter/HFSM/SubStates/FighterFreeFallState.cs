@@ -6,7 +6,7 @@ public class FighterFreeFallState : FighterBaseState
 {
     private CollisionData _collisionData;
     private ActionAttack _action;
-    private Vector2 _velocity;
+    private Vector2 _initialVelocity;
     private float _animationSpeed;
     private bool _isFirstTime = true;
     private float _groundOffset; // Character's starting distance from the ground (this assumes the ground level is y = 0).
@@ -22,7 +22,7 @@ public class FighterFreeFallState : FighterBaseState
     {
         if (_ctx.IsGrounded){ 
             // Knockup always transitions to Knockdown state.
-            if (_action.HitFlags.HasFlag(HitFlags.KNOCK_DOWN)){
+            if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
                 SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
                 return true;
             }
@@ -44,29 +44,25 @@ public class FighterFreeFallState : FighterBaseState
         _collisionData = _ctx.HurtCollisionData;
         _action = _collisionData.action;
         _ctx.IsHurt = false;
-        _velocity = Vector2.zero;
+        _initialVelocity = Vector2.zero;
 
-        _hitStop = _ctx.IsGrounded ? _action.Ground.Stun.hitStop : _action.Air.Stun.hitStop;
+        _hitStop = _action.Air.Stun.hitStop;
 
         _ctx.HealthManager.UpdateHealth(_action.Damage);
 
         _groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
         float horizontalDirection = Mathf.Sign(_collisionData.hitbox.Transform.right.x);
 
-        _velocity = _ctx.IsGrounded ? _action.Ground.Trajectory.Line.velocity : _action.Air.Trajectory.Line.velocity;
-        _velocity.x *= horizontalDirection;
+        _initialVelocity = _action.Air.Trajectory.Line.velocity;
+        _initialVelocity.x *= horizontalDirection;
 
         _drag = 0;
 
         // Apply Calculated Variables
+        _ctx.CurrentMovement = _initialVelocity;
         _ctx.Drag = _drag;
         _ctx.Gravity = _ctx.GravityConstant;
-
-        // Apply Calculated Variables
-        _ctx.Drag = _drag;
-        _ctx.Gravity = _gravity;
         
-
         ActionDefault action = _ctx.ActionDictionary["Knockup"] as ActionDefault;
         AnimationClip clip = action.meshAnimation;
         AnimationClip colClip = action.boxAnimation;
@@ -106,12 +102,10 @@ public class FighterFreeFallState : FighterBaseState
                 _ctx.Animator.SetFloat("SpeedVar", 1f);
                 _ctx.ColBoxAnimator.SetFloat("SpeedVar", 1f);
                 _isFirstTime = false;
-            }
 
-            // Apply Calculated Variables
-            _ctx.CurrentMovement = _velocity;
-            _ctx.Drag = _drag;
-            _ctx.Gravity = _gravity;
+                // Apply Calculated Initial Velocity
+                _ctx.CurrentMovement = _initialVelocity;
+            }
 
             //Debug.Log("FighterFreeFallState - Frame: " + _currentFrame + " Velocity Applied: " + (_ctx.CurrentMovement + new Vector2(_ctx.Drag, _ctx.Gravity) * Time.fixedDeltaTime));
         }

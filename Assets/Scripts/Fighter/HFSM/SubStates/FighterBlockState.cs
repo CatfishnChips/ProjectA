@@ -10,7 +10,7 @@ public class FighterBlockState : FighterBaseState
     private float _drag;
 
     private int _stun;
-    private int _distance;
+    private float _distance;
 
     public FighterBlockState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){

@@ -28,60 +28,107 @@ public class FighterKnockupState : FighterBaseState
     protected int _hitStop;
 
     protected bool _air;
-    protected bool _isGrounded;
    
-
     public FighterKnockupState(FighterStateMachine currentContext, FighterStateFactory fighterStateFactory)
     :base(currentContext, fighterStateFactory){
     }
 
     public override bool CheckSwitchState()
     {
-        if (_action.HitFlags.HasFlag(HitFlags.BOUNCE_WALL)){
-            if(_ctx.FighterController.IsTouchingWall){
-                SwitchState(_factory.GetSubState(FighterSubStates.WallBounce));
-                return true;
-            }
-        } 
-
-        if (_action.HitFlags.HasFlag(HitFlags.SPLAT_WALL)){
-            if(_ctx.FighterController.IsTouchingWall){
-                SwitchState(_factory.GetSubState(FighterSubStates.WallSplat));
-                return true;
-            }
-        } 
-
-        if (_action.HitFlags.HasFlag(HitFlags.BOUNCE_GROUND)){
-            if (_air){
-                if(_ctx.IsGrounded){
-                    SwitchState(_factory.GetSubState(FighterSubStates.GroundBounce));
+        if (_ctx.WasGrounded){
+            if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.BOUNCE_WALL)){
+                if(_ctx.FighterController.IsTouchingWall){
+                    SwitchState(_factory.GetSubState(FighterSubStates.WallBounce));
                     return true;
                 }
-            }
-        } 
+            } 
 
-        if (_currentFrame >= _timeToApex + _timeAtApex + _timeToFall + _hitStop){
-            if (_action.HitFlags.HasFlag(HitFlags.BOUNCE_GROUND)){
-                if(_ctx.IsGrounded){
-                    SwitchState(_factory.GetSubState(FighterSubStates.GroundBounce));
+            if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.SPLAT_WALL)){
+                if(_ctx.FighterController.IsTouchingWall){
+                    SwitchState(_factory.GetSubState(FighterSubStates.WallSplat));
                     return true;
+                }
+            } 
+
+            if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.BOUNCE_GROUND)){
+                if (_air){
+                    if(_ctx.IsGrounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.GroundBounce));
+                        return true;
+                    }
+                }
+            } 
+
+            if (_currentFrame >= _timeToApex + _timeAtApex + _timeToFall + _hitStop){
+                if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.BOUNCE_GROUND)){
+                    if(_ctx.IsGrounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.GroundBounce));
+                        return true;
+                    }   
                 }   
-            }   
 
-            if (_action.HitFlags.HasFlag(HitFlags.KNOCK_DOWN)){
-                if(_ctx.IsGrounded){
-                    SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
+                    if(_ctx.IsGrounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                        return true;
+                    }
+                }
+            
+                if(IdleStateSwitchCheck()) return true; 
+                
+                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                return true;
+                
+            }
+            else return false;
+        }
+        else {
+            if (((HitFlags)_action.Air.HitFlags).HasFlag(HitFlags.BOUNCE_WALL)){
+                if(_ctx.FighterController.IsTouchingWall){
+                    SwitchState(_factory.GetSubState(FighterSubStates.WallBounce));
                     return true;
                 }
+            } 
+
+            if (((HitFlags)_action.Air.HitFlags).HasFlag(HitFlags.SPLAT_WALL)){
+                if(_ctx.FighterController.IsTouchingWall){
+                    SwitchState(_factory.GetSubState(FighterSubStates.WallSplat));
+                    return true;
+                }
+            } 
+
+            if (((HitFlags)_action.Air.HitFlags).HasFlag(HitFlags.BOUNCE_GROUND)){
+                if (_air){
+                    if(_ctx.IsGrounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.GroundBounce));
+                        return true;
+                    }
+                }
+            } 
+
+            if (_currentFrame >= _timeToApex + _timeAtApex + _timeToFall + _hitStop){
+                if (((HitFlags)_action.Air.HitFlags).HasFlag(HitFlags.BOUNCE_GROUND)){
+                    if(_ctx.IsGrounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.GroundBounce));
+                        return true;
+                    }   
+                }   
+
+                if (((HitFlags)_action.Air.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
+                    if(_ctx.IsGrounded){
+                        SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                        return true;
+                    }
+                }
+            
+                if(IdleStateSwitchCheck()) return true; 
+                
+                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                return true;
+                
             }
-           
-            if(IdleStateSwitchCheck()) return true; 
-            
-            SwitchState(_factory.GetSubState(FighterSubStates.Idle));
-            return true;
-            
+            else return false;
         }
-        else return false;
     }
 
     protected virtual void SetInternalVariables(){

@@ -25,17 +25,33 @@ public class FighterWallBounceState : FighterKnockupState
         }
         
         if (condition){ 
-            // Knockup always transitions to Knockdown state.
-            if (_action.HitFlags.HasFlag(HitFlags.KNOCK_DOWN)){
-                SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
-                return true;
+            if (_ctx.WasGrounded){
+                // Knockup always transitions to Knockdown state.
+                if (((HitFlags)_action.Ground.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
+                    SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                    return true;
+                }
+                else{
+                    if(IdleStateSwitchCheck()) return true; 
+                    
+                    SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                    return true;
+                }
             }
-            else{
-                if(IdleStateSwitchCheck()) return true; 
-                
-                SwitchState(_factory.GetSubState(FighterSubStates.Idle));
-                return true;
+            else {
+                // Knockup always transitions to Knockdown state.
+                if (((HitFlags)_action.Air.HitFlags).HasFlag(HitFlags.KNOCK_DOWN)){
+                    SwitchState(_factory.GetSubState(FighterSubStates.Knockdown));
+                    return true;
+                }
+                else{
+                    if(IdleStateSwitchCheck()) return true; 
+                    
+                    SwitchState(_factory.GetSubState(FighterSubStates.Idle));
+                    return true;
+                }
             }
+
         }
         else return false;
     }
@@ -50,12 +66,11 @@ public class FighterWallBounceState : FighterKnockupState
         _ctx.IsHurt = false;
         _velocity = Vector2.zero;
 
-        _isGrounded = _ctx.IsGrounded;
-        _trajectory = _isGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.trajectory : _action.Air.WallBounce.Bounce.Trajectory.trajectory;
+        _trajectory = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.trajectory : _action.Air.WallBounce.Bounce.Trajectory.trajectory;
 
-        _hitStop = _isGrounded ? _action.Ground.WallBounce.Bounce.Stun.hitStop : _action.Air.WallBounce.Bounce.Stun.hitStop;
+        _hitStop = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Stun.hitStop : _action.Air.WallBounce.Bounce.Stun.hitStop;
 
-        _ctx.HealthManager.UpdateHealth(_isGrounded ? _collisionData.action.Ground.WallBounce.Bounce.damage : _collisionData.action.Air.WallBounce.Bounce.damage);
+        _ctx.HealthManager.UpdateHealth(_ctx.WasGrounded ? _collisionData.action.Ground.WallBounce.Bounce.damage : _collisionData.action.Air.WallBounce.Bounce.damage);
 
         switch(_ctx.FighterController.Side){
             case FighterController.ScreenSide.Left:
@@ -73,13 +88,13 @@ public class FighterWallBounceState : FighterKnockupState
 
                 //_groundOffset = _ctx.transform.position.y - 0.5f; // y = 0.5f is the centre position of the character.
 
-                _timeToApex = _isGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.timeToApex : _action.Air.WallBounce.Bounce.Trajectory.Arc.timeToApex;
-                _timeAtApex = _isGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.timeAtApex : _action.Air.WallBounce.Bounce.Trajectory.Arc.timeAtApex;
-                _timeToFall = _isGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.timeToFall : _action.Air.WallBounce.Bounce.Trajectory.Arc.timeToFall;
+                _timeToApex = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.timeToApex : _action.Air.WallBounce.Bounce.Trajectory.Arc.timeToApex;
+                _timeAtApex = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.timeAtApex : _action.Air.WallBounce.Bounce.Trajectory.Arc.timeAtApex;
+                _timeToFall = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.timeToFall : _action.Air.WallBounce.Bounce.Trajectory.Arc.timeToFall;
 
-                _apex = _isGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.apex : _action.Air.WallBounce.Bounce.Trajectory.Arc.apex;
+                _apex = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.apex : _action.Air.WallBounce.Bounce.Trajectory.Arc.apex;
                 _apex = Mathf.Abs(_apex);
-                _range = _isGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.range : _action.Air.WallBounce.Bounce.Trajectory.Arc.range;
+                _range = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Arc.range : _action.Air.WallBounce.Bounce.Trajectory.Arc.range;
 
                 // Projectile Motion Calculations
                 _time = _timeToApex + _timeAtApex + _timeToFall + _hitStop;
@@ -105,7 +120,7 @@ public class FighterWallBounceState : FighterKnockupState
             break;
 
             case Trajectory.LINE: 
-                _velocity = _isGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Line.velocity : _action.Air.WallBounce.Bounce.Trajectory.Line.velocity;
+                _velocity = _ctx.WasGrounded ? _action.Ground.WallBounce.Bounce.Trajectory.Line.velocity : _action.Air.WallBounce.Bounce.Trajectory.Line.velocity;
 
                 _drag = 0;
 

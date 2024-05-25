@@ -37,10 +37,10 @@ public class FighterWallSplatState : FighterBaseState
         _action = _collisionData.action;
         _ctx.IsHurt = false;
 
-        _stun = _ctx.IsGrounded ? _action.Ground.WallSplat.Stun.stun : _action.Air.WallSplat.Stun.stun;
-        _hitstop = _ctx.IsGrounded ? _action.Ground.WallSplat.Stun.hitStop : _action.Air.WallSplat.Stun.hitStop;
+        _stun = _ctx.WasGrounded ? _action.Ground.WallSplat.Stun.stun : _action.Air.WallSplat.Stun.stun;
+        _hitstop = _ctx.WasGrounded ? _action.Ground.WallSplat.Stun.hitStop : _action.Air.WallSplat.Stun.hitStop;
 
-        _ctx.HealthManager.UpdateHealth(_ctx.IsGrounded ? _collisionData.action.Ground.WallSplat.damage : _collisionData.action.Air.WallSplat.damage);
+        _ctx.HealthManager.UpdateHealth(_ctx.WasGrounded ? _collisionData.action.Ground.WallSplat.damage : _collisionData.action.Air.WallSplat.damage);
 
         // Apply Calculated Variables
         _ctx.CurrentMovement = Vector2.zero;
