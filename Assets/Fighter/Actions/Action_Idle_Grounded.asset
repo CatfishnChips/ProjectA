@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: Action_Idle_Grounded
   m_EditorClassIdentifier: 
   name: GroundedIdle
-  stateName: 0
-  inputGesture: 0
-  applyRootMotion: 0
   frames: 109
-  meshAnimation: {fileID: 7400000, guid: 40d4e3de7f1e2524c8333678e27577dc, type: 2}
+  meshAnimation: {fileID: -203655887218126122, guid: 9d1fbdc2742ccab489b489c9d4bc23ac,
+    type: 3}
   boxAnimation: {fileID: 7400000, guid: 707d46d6098031648b0287e7cfb9938d, type: 2}

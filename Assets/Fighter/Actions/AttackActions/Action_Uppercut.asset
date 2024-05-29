@@ -23,17 +23,23 @@ MonoBehaviour:
   m_juggle: 0
   m_face: 0
   m_hitFlags: 6
+  m_wallBounceVelocity: {x: 0, y: 0}
+  m_wallBounceStun: 0
+  m_groundBounceVelocity: {x: 0, y: 0}
+  m_groundBounceStun: {x: 0, y: 0}
+  m_wallSplatStun: 0
   m_priority: 0
   m_part: 1
-  _block:
-    ignoreBlock: 0
-    chipDamage: 0
-    Stun:
-      hitStop: 0
-      stun: 0
-    Slide:
-      slide: 0
-      distance: 0
+  m_chipDamage: 10
+  m_blockStun: 15
+  blockKnocback: 0
+  m_ignoreBlock: 0
+  m_hitStop: 10
+  m_knockbackStun: 0
+  m_knockdownStun: 15
+  m_knockupStun: {x: 20, y: 15}
+  m_knockup: 2
+  m_knockback: 3
   m_gravity: 1
   m_staminaRecovery: 0
   m_spiritRecovery: 0
@@ -50,114 +56,11 @@ MonoBehaviour:
   m_hitboxOffset: {x: 0.66, y: 1.42}
   m_hitboxLocation: {x: 0.66, y: 1.8792427}
   m_hitboxSize: {x: 0.49, y: 0.75}
-  m_meshAnimationS: {fileID: 7400000, guid: 420d48b220d59ee4e846c6430498e470, type: 2}
-  m_meshAnimationA: {fileID: 7400000, guid: c80e6cb26c4d75d4dbfb05cc9bf6f98b, type: 2}
-  m_meshAnimationR: {fileID: 7400000, guid: 19cd2783f4cd82c4caa2afde99bab479, type: 2}
+  m_meshAnimationS: {fileID: -203655887218126122, guid: 675a6ebacb2ad774b86daeddd92a7a7c,
+    type: 3}
+  m_meshAnimationA: {fileID: -598762420102177020, guid: 675a6ebacb2ad774b86daeddd92a7a7c,
+    type: 3}
+  m_meshAnimationR: {fileID: 7400000, guid: c5412c8b603d05a488254c5ba1032625, type: 2}
   m_boxAnimationS: {fileID: 7400000, guid: 658d885311c94134fb6c5a666e16495f, type: 2}
   m_boxAnimationA: {fileID: 7400000, guid: 51d3f6b9e02458744a2b66c41db5ed92, type: 2}
   m_boxAnimationR: {fileID: 7400000, guid: 8b7321275ce51694a9d2481633c87e0d, type: 2}
-  _velocity: {x: 0, y: 0}
-  Time: 0
-  Frame: 0
-  Apex: 0
-  Displacement: 0
-  _ground:
-    Stun:
-      hitStop: 0
-      stun: 0
-    Slide:
-      slide: 0
-      distance: 0
-    Trajectory:
-      trajectory: 0
-      Arc:
-        apex: 0
-        range: 0
-        timeToApex: 0
-        timeAtApex: 0
-        timeToFall: 0
-      Line:
-        velocity: {x: 0, y: 0}
-    WallBounce:
-      Bounce:
-        damage: 0
-        Stun:
-          hitStop: 0
-          stun: 0
-        Trajectory:
-          trajectory: 0
-          Arc:
-            apex: 0
-            range: 0
-            timeToApex: 0
-            timeAtApex: 0
-            timeToFall: 0
-          Line:
-            velocity: {x: 0, y: 0}
-    GroundBounce:
-      damage: 0
-      Stun:
-        hitStop: 0
-        stun: 0
-      Arc:
-        apex: 0
-        range: 0
-        timeToApex: 0
-        timeAtApex: 0
-        timeToFall: 0
-    WallSplat:
-      damage: 0
-      Stun:
-        hitStop: 0
-        stun: 0
-  _air:
-    Stun:
-      hitStop: 0
-      stun: 0
-    Trajectory:
-      trajectory: 0
-      Arc:
-        apex: 0
-        range: 0
-        timeToApex: 0
-        timeAtApex: 0
-        timeToFall: 0
-      Line:
-        velocity: {x: 0, y: 0}
-    WallBounce:
-      Bounce:
-        damage: 0
-        Stun:
-          hitStop: 0
-          stun: 0
-        Trajectory:
-          trajectory: 0
-          Arc:
-            apex: 0
-            range: 0
-            timeToApex: 0
-            timeAtApex: 0
-            timeToFall: 0
-          Line:
-            velocity: {x: 0, y: 0}
-    GroundBounce:
-      damage: 0
-      Stun:
-        hitStop: 0
-        stun: 0
-      Arc:
-        apex: 0
-        range: 0
-        timeToApex: 0
-        timeAtApex: 0
-        timeToFall: 0
-    WallSplat:
-      damage: 0
-      Stun:
-        hitStop: 0
-        stun: 0
-  _knockdown:
-    damage: 0
-    Stun:
-      hitStop: 0
-      stun: 0
