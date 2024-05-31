@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour
 {
-
-    [SerializeField] private FighterStateMachine _ctx;
-
     private void Start()
     {
         if(IsOwner)
@@ -20,13 +17,13 @@ public class PlayerNetwork : NetworkBehaviour
         
     }
 
-    private struct NetworkAttackInput : INetworkSerializable
+    private struct NetworkSpikeInput : INetworkSerializable
     {
         public int tick;
         public bool hasPerformedAttack;
         public string performedAttackName;
 
-        public NetworkAttackInput(int tick, bool hasPerformedAttack, string performedAttackName)
+        public NetworkSpikeInput(int tick, bool hasPerformedAttack, string performedAttackName)
         {   
             this.tick = tick;
             this.hasPerformedAttack = hasPerformedAttack;
@@ -41,34 +38,32 @@ public class PlayerNetwork : NetworkBehaviour
         }
     }
 
-    private NetworkVariable<NetworkAttackInput> networkAttackInput = new NetworkVariable<NetworkAttackInput>(
-        new NetworkAttackInput
+    private NetworkVariable<NetworkSpikeInput> networkSpikeInput = new NetworkVariable<NetworkSpikeInput>(
+        new NetworkSpikeInput
         {
             tick = 60,
             hasPerformedAttack = false,
             performedAttackName = "None"
-        }, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        }, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner
+    );
 
     public override void OnNetworkSpawn()
     {
-        networkAttackInput.OnValueChanged += (NetworkAttackInput previousValue, NetworkAttackInput newValue) =>
-        {
-            Debug.Log(OwnerClientId + "; Tick: " + newValue.tick + "; Has Performed Attack: " + newValue.hasPerformedAttack + "; Performed Attack: " + newValue.performedAttackName);    
-        };
+        networkSpikeInput.OnValueChanged += InputSpikeListener;
     }
 
-    private void Update()
+    private void InputSpikeListener(NetworkSpikeInput previousValue, NetworkSpikeInput newValue){
+        Debug.Log(OwnerClientId + "; Tick: " + newValue.tick + "; Has Performed Attack: " + newValue.hasPerformedAttack + "; Performed Attack: " + newValue.performedAttackName);
+    }
+
+    public void Update()
     {
         if(!IsOwner) return;
 
-        bool c = true;
-        int i = c ? 50 : 23;
         if(Input.GetKeyDown(KeyCode.T))
         {
-            JumpServerRpc(new ServerRpcParams());
-
             // Debug.Log("Locally listened.");
-            // networkAttackInput.Value = new NetworkAttackInput{
+            // networkSpikeInput.Value = new NetworkSpikeInput{
             //     tick = 50,
             //     hasPerformedAttack = true,
             //     performedAttackName = "Aduket"
@@ -77,9 +72,15 @@ public class PlayerNetwork : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void JumpServerRpc(ServerRpcParams serverRpcParams)
+    public void SendGestureServerRpc(InputGestures gesture, ServerRpcParams serverRpcParams)
     {
-        Debug.Log(" ClientId: " + serverRpcParams.Receive.SenderClientId.ToString());
+        Debug.Log(" ClientId: " + serverRpcParams.Receive.SenderClientId.ToString() + "Performed: " + gesture);
+        TestClientRpc(new ClientRpcParams());
+    }
+
+    [ClientRpc]
+    public void TestClientRpc(ClientRpcParams clientRpcParams){
+        Debug.Log("Take action");
     }
 
 

@@ -1,4 +1,5 @@
 using System;
+using PDollarGestureRecognizer;
 using UnityEngine;
 
 public class GestureController : MonoBehaviour, IInputInvoker
@@ -41,8 +42,8 @@ public class GestureController : MonoBehaviour, IInputInvoker
 
     private void Start() 
     {
-        _touchA = new VariantTouchData();
-        _touchB = new TouchData();
+        _touchA = new VariantTouchData(this);
+        _touchB = new TouchData(this);
 
         TouchInputReader.Instance.OnTouchABegin += _touchA.OnTouchBegin;
         TouchInputReader.Instance.OnTouchAStationary += _touchA.OnTouchStationary;
@@ -240,6 +241,8 @@ public class GestureController : MonoBehaviour, IInputInvoker
 
 public class TouchData{
 
+    protected GestureController gestureController;
+
     public Vector2 InitialScreenPosition;
     public Vector3 InitialWorldPosition;
     public Vector2 DragStartScreenPosition;
@@ -257,8 +260,9 @@ public class TouchData{
     public TouchState State;
     public TouchType Type;
 
-    public TouchData()
+    public TouchData(GestureController controller)
     {
+        gestureController = controller; 
         State = TouchState.None;
         Type = TouchType.None;
     }
@@ -377,6 +381,8 @@ public class TouchData{
 }
 
 public class VariantTouchData : TouchData{
+
+    public VariantTouchData(GestureController controller) : base(controller) { }
 
     public override void OnTouchStationary(InputEventParams inputEventParams)
     {

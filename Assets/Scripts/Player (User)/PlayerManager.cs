@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    private PlayerID _playerID;
+    protected PlayerID _playerID;
     [SerializeField] private FighterManager _fighterManager;
-    private IInputInvoker _inputInvoker;
+    protected IInputInvoker _inputInvoker;
 
     public InputEvents inputEvents = new InputEvents(); 
 
     void Start()
     {
+        OnStart();
+    }
+
+    public virtual void OnStart(){
         IInputInvoker[] inputInvokers = transform.GetComponents<IInputInvoker>();
         foreach(IInputInvoker invoker in inputInvokers)
         {
@@ -24,7 +28,7 @@ public class PlayerManager : MonoBehaviour
         PossessFighter(_fighterManager);
     }
 
-    void PossessFighter(FighterManager fighterManager){
+    protected virtual void PossessFighter(FighterManager fighterManager){
         inputEvents.OnDrag += fighterManager.OnDrag;
         inputEvents.OnHold += fighterManager.OnHold;
         inputEvents.OnSwipe += fighterManager.OnSwipe;

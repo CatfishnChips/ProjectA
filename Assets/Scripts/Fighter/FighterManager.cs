@@ -7,6 +7,7 @@ using UnityEngine;
 public class FighterManager : MonoBehaviour
 {
     [SerializeField] private FighterBlueprint _fighterBlueprint;
+    public Player fighterID;
     private RootNode _inputBasedActionTree;
     private RootNode _conditionalActionTree;
 
