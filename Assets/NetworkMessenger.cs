@@ -3,7 +3,7 @@ using Unity.Netcode;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 
-public class NetworkMessenger : NetworkBehaviour
+public class NetworkMessenger : MonoBehaviour
 {
     #region singleton
 
@@ -22,14 +22,7 @@ public class NetworkMessenger : NetworkBehaviour
     #endregion
 
 
-
-    public void RunMessenger(){
-        Debug.Log("I ran the messenger.");
-
-
-
-    }
-
-
+    public Dictionary<Player, FighterManager> fighterManagerAttribution = new Dictionary<Player, FighterManager>();
+    public Dictionary<int, Player> clientFighterOwnership = new Dictionary<int, Player>();
 
 }

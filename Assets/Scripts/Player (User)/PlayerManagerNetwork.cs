@@ -12,9 +12,6 @@ public class PlayerManagerNetwork : NetworkBehaviour
     public InputEvents inputEvents = new InputEvents(); 
     protected InputEvents _networkInputEvents = new InputEvents();
 
-    Dictionary<Player, FighterManager> fighterManagerAttribution = new Dictionary<Player, FighterManager>();
-    Dictionary<int, Player> clientFighterOwnership = new Dictionary<int, Player>();
-
     public override void OnNetworkSpawn(){
         if(!IsOwner) return;
 
@@ -25,7 +22,7 @@ public class PlayerManagerNetwork : NetworkBehaviour
 
         FighterManager[] managers = FindObjectsOfType<FighterManager>();
         foreach(FighterManager manager in managers){
-            fighterManagerAttribution.Add(manager.fighterID, manager);    
+            NetworkMessenger.Instance.fighterManagerAttribution.Add(manager.fighterID, manager);    
         }
 
         JoinNetworkServerRpc((int)OwnerClientId, fighterID);
@@ -57,20 +54,18 @@ public class PlayerManagerNetwork : NetworkBehaviour
     public void Update(){
         if(!IsOwner) return;
         if(Input.GetKeyDown(KeyCode.T)){
-            foreach(KeyValuePair<int, Player> clientFighter in clientFighterOwnership){
+            foreach(KeyValuePair<int, Player> clientFighter in NetworkMessenger.Instance.clientFighterOwnership){
                 Debug.Log(clientFighter.Key + " " + clientFighter.Value);
             }
         }
     }
 
-    #region input listener functions
-
     [ServerRpc (RequireOwnership = false)]
     public void JoinNetworkServerRpc(int clientID, Player fighterID){
         Debug.Log("Adding value to dictionary.");
-        if(!clientFighterOwnership.ContainsKey(clientID)) clientFighterOwnership.Add(clientID, fighterID);
+        if(!NetworkMessenger.Instance.clientFighterOwnership.ContainsKey(clientID)) NetworkMessenger.Instance.clientFighterOwnership.Add(clientID, fighterID);
         Debug.Log("Server Received new client. ");
-        foreach(KeyValuePair<int, Player> clientFighter in clientFighterOwnership){
+        foreach(KeyValuePair<int, Player> clientFighter in NetworkMessenger.Instance.clientFighterOwnership){
             Debug.Log("Server sending message to add clientID: " + clientFighter.Key + " fighterID: " + clientFighter.Value);
             JoinNetworkClientRpc(clientFighter.Key, clientFighter.Value);
         }
@@ -79,9 +74,9 @@ public class PlayerManagerNetwork : NetworkBehaviour
     [ClientRpc]
     public void JoinNetworkClientRpc(int clientID, Player fighterID){
         Debug.Log("Adding to the network.");
-        if(!clientFighterOwnership.ContainsKey(clientID)){
-            clientFighterOwnership.Add(clientID, fighterID);
-            Debug.Log("Added Client to network, clientID is: " + clientID + " fighterID is: " + clientFighterOwnership[clientID]);
+        if(!NetworkMessenger.Instance.clientFighterOwnership.ContainsKey(clientID)){
+            NetworkMessenger.Instance.clientFighterOwnership.Add(clientID, fighterID);
+            Debug.Log("Added Client to network, clientID is: " + clientID + " fighterID is: " + NetworkMessenger.Instance.clientFighterOwnership[clientID]);
         } 
         
     }
@@ -93,8 +88,10 @@ public class PlayerManagerNetwork : NetworkBehaviour
 
     [ClientRpc]
     public void GestureInputClientRpc(int clientID, InputGestures gesture){
-        fighterManagerAttribution[clientFighterOwnership[clientID]].fighterEvents.OnDirectInputGesture(gesture);
+        NetworkMessenger.Instance.fighterManagerAttribution[NetworkMessenger.Instance.clientFighterOwnership[clientID]].fighterEvents.OnDirectInputGesture(gesture);
     } 
+
+    #region input listener functions
 
     public void OnDirectInput(InputGestures gesture){
         GestureInputServerRpc((int)OwnerClientId, gesture);
