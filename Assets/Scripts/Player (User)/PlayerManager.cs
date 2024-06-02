@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     public virtual void OnStart(){
-        IInputInvoker[] inputInvokers = transform.GetComponents<IInputInvoker>();
+        IInputInvoker[] inputInvokers = GameObject.FindGameObjectWithTag("InputManager").GetComponents<IInputInvoker>();
         foreach(IInputInvoker invoker in inputInvokers)
         {
             if(invoker.IsActiveAndEnabled()){

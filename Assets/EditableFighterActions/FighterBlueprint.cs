@@ -10,6 +10,7 @@ namespace EditableFighterActions{
         public RootNodeAttribution[] rootNodes;
         public List<BPNode> nodes = new List<BPNode>();
 
+        #if UNITY_EDITOR
         public BPNode CreateNode(System.Type type){
             BPNode node = ScriptableObject.CreateInstance(type) as BPNode;
             node.name = type.Name;
@@ -40,6 +41,8 @@ namespace EditableFighterActions{
             return parent.Children;
         }
 
+        #endif
+
         public Dictionary<ActionTypes, RootNode> GetRootDict(){
             Dictionary<ActionTypes, RootNode> dict = new Dictionary<ActionTypes, RootNode>();
             for(int i = 0; i < rootNodes.Length; i++){
@@ -52,6 +55,7 @@ namespace EditableFighterActions{
         public void InitializeDictionaries(){
             nodes.ForEach(n => n.InitializeDictionary());
         }
+        
     }
 
     [Serializable]
