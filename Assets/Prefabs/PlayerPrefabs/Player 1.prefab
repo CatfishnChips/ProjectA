@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7699235267919987235}
   - component: {fileID: 7699235267919987233}
   - component: {fileID: 9215249920356687981}
+  - component: {fileID: 2440605561337699318}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -78,3 +79,23 @@ MonoBehaviour:
   _attackBoxFlexibilityMargin: 0.25
   _distanceMargin: 1
   _optimalDistanceMethod: 1
+--- !u!114 &2440605561337699318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7699235267919987229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4301f7838e3e4a4f885e4deda97be28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minSwipeDistance: 50
+  _minSwipeSpeed: 1250
+  _swipeTimeLimit: 0.25
+  _doubleGestureTimeLimit: 5
+  _holdThreshold: 0.2
+  _concurrentTap: 0
+  _concurrentTapTimeLimit: 0.05
+  _joystickDeadzone: 25

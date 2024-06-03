@@ -1,12 +1,13 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 
-public class NetworkSynchedData : MonoBehaviour
+public class NetworkMessenger : MonoBehaviour
 {
     #region singleton
 
-    public static NetworkSynchedData Instance;
+    public static NetworkMessenger Instance;
 
     private void Awake()
     {

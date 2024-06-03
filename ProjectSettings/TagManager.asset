@@ -7,7 +7,6 @@ TagManager:
   - Bot
   - Player2
   - Player1
-  - InputManager
   layers:
   - Default
   - TransparentFX

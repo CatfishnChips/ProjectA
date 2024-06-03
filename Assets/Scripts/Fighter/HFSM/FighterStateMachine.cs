@@ -362,15 +362,8 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     }
     
     protected virtual void OnDirectInputGesture(InputGestures gesture){
-        Debug.Log(gesture + " FaceDirection: " + _faceDirection);
-        InputGestures finalGesture = gesture;
-
-        if(_faceDirection == -1){
-            if(gesture == InputGestures.SwipeLeftR) finalGesture = InputGestures.SwipeRightR;
-            if(gesture == InputGestures.SwipeRightR) finalGesture = InputGestures.SwipeLeftR;
-        }
-
-        _actionInput.Write(finalGesture);
+        Debug.Log(gesture);
+        _actionInput.Write(gesture);
     }
 
     #endregion
