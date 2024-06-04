@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MultiplayerSettingsUI : MonoBehaviour
 {
+    public Button startServerBtn;
     public Button hostGameButton;
     public Button joinMenuButton;
     public Button joinGameButton;
@@ -12,6 +13,7 @@ public class MultiplayerSettingsUI : MonoBehaviour
     void Start(){
         hostGameButton.onClick.AddListener(OnHostBtnClicked);
         joinGameButton.onClick.AddListener(OnConnecBtnClicked);
+        startServerBtn.onClick.AddListener(OnServerBtnClicked);
         Debug.Log("Added listeners");
     }
 
@@ -30,6 +32,11 @@ public class MultiplayerSettingsUI : MonoBehaviour
         else{
             Debug.LogError("Server IP is Empty");
         }
+    }
+
+    private void OnServerBtnClicked(){
+        MultiplayerConnectionData.networkRole = MultiplayerConnectionData.NetworkRole.Server;
+        SceneManager.LoadScene("ServerScene");
     }
 
 }

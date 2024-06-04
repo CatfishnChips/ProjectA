@@ -18,6 +18,9 @@ public class NetworkConnectionHandler : MonoBehaviour
         else if(MultiplayerConnectionData.networkRole == MultiplayerConnectionData.NetworkRole.Host){
             StartHost();
         }
+        else if(MultiplayerConnectionData.networkRole == MultiplayerConnectionData.NetworkRole.Server){
+            StartServer();
+        }
 
         //StartHost();
 
@@ -45,7 +48,10 @@ public class NetworkConnectionHandler : MonoBehaviour
     }
 
     void StartServer(){
-
+        NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = NetworkUtils.GetLocalIPAddress();
+        NetworkManager.Singleton.StartServer();
+        hostIpText.text = NetworkUtils.GetLocalIPAddress();
+        hostPortText.text = NetworkUtils.GetPort().ToString();
     }
 
 }
