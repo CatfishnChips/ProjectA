@@ -22,6 +22,8 @@ public class GestureController : MonoBehaviour, IInputInvoker
 
     protected InputEvents _inputEvents;
 
+    [SerializeField] private InputType _inputType;
+
     [Header("Swipe Settings")]
     [SerializeField] private float _minSwipeDistance; // Minimum distance required to register as a swipe. // Can also use Screen.width and Screen.height.
     [SerializeField] private float _minSwipeSpeed; // How fast the finger should move to register a gsture as a swipe. 
@@ -223,6 +225,12 @@ public class GestureController : MonoBehaviour, IInputInvoker
         return InputGestures.None;
     }
 
+    public void SetActiveAndEnabled(bool state){
+        if(state){
+            this.enabled = state;
+        }
+    }
+
     public InputEvents GetInputEvents()
     {
         return _inputEvents;
@@ -231,6 +239,10 @@ public class GestureController : MonoBehaviour, IInputInvoker
     public void SetInputEvents(InputEvents inputEvents)
     {
         _inputEvents = inputEvents;
+    }
+
+    public InputType GetInputType(){
+        return _inputType;
     }
 
     public bool IsActiveAndEnabled()

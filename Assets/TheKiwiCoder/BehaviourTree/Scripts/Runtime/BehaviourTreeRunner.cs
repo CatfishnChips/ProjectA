@@ -5,6 +5,8 @@ using UnityEngine;
 namespace TheKiwiCoder {
     public class BehaviourTreeRunner : MonoBehaviour, IInputInvoker {
 
+        [SerializeField] private InputType _inputType;
+
         // The main behaviour tree asset
         public BehaviourTree tree;
         [SerializeField] private AIDifficultySettings difficultySettings;
@@ -92,9 +94,19 @@ namespace TheKiwiCoder {
             _inputEvents = inputEvents;
         }
 
+        public InputType GetInputType(){
+            return _inputType;
+        }
+
         public bool IsActiveAndEnabled()
         {
             return isActiveAndEnabled;
+        }
+
+        public void SetActiveAndEnabled(bool state){
+            if(state){
+                this.enabled = state;
+            }
         }
     }
 }

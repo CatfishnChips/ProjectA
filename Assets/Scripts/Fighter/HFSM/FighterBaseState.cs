@@ -40,6 +40,12 @@ public abstract class FighterBaseState : StateMachineBaseState
             return true;
         }
 
+        if(_ctx.BlockInput.Read() && _ctx.StaminaManager.Block > 0){
+            Debug.Log("Block Input is read.");
+            SwitchState(_factory.GetSubState(FighterSubStates.Block));
+            return true;
+        }
+
         if (_ctx.MovementInput.Read() != 0){
             SwitchState(_factory.GetSubState(FighterSubStates.Walk));
             return true;

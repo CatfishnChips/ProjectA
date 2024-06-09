@@ -130,3 +130,11 @@ public enum RandomCallMethod
     OnEachFrame,
     OncePerCall
 }
+
+[Flags]
+public enum InputType{
+    None = 0 << 0,
+    TouchInput = 1 << 1,
+    KBMInput = 1 << 2,
+    AIInput = 1 << 3,
+}

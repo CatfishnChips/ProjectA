@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum InputTypes
+public enum TouchInputTypes
 {
     Tap,
     Slide,
@@ -14,12 +14,12 @@ public enum InputTypes
     Multitouch
 }
 
-public enum SubInputTypes
+public enum SubTouchInputTypes
 {
-    Jump = InputTypes.Jump,
-    Dash = InputTypes.Dash,
-    Dodge = InputTypes.Dodge,
-    Multitouch = InputTypes.Multitouch,
+    Jump = TouchInputTypes.Jump,
+    Dash = TouchInputTypes.Dash,
+    Dodge = TouchInputTypes.Dodge,
+    Multitouch = TouchInputTypes.Multitouch,
     None
 }
 
@@ -42,10 +42,10 @@ public class TouchInput<T> : ITouchInput
     protected int _bufferFrameCounter;
     protected int _delayFrameCounter;
 
-    protected InputTypes _inputType;
-    protected SubInputTypes _subInputType;
+    protected TouchInputTypes _inputType;
+    protected SubTouchInputTypes _subInputType;
 
-    public TouchInput(T value, InputTypes inputType, SubInputTypes subInputType)
+    public TouchInput(T value, TouchInputTypes inputType, SubTouchInputTypes subInputType)
     {
         _value = value;
         _defaultValue = _value;
@@ -160,7 +160,7 @@ public class TouchQueueInput<T> : TouchInput<T>
     private List<QueueableContent> _contentQueue;
     private bool _isContentRead;
 
-    public TouchQueueInput(InputTypes inputType, SubInputTypes subInputType) : base(default(T), inputType, subInputType)
+    public TouchQueueInput(TouchInputTypes inputType, SubTouchInputTypes subInputType) : base(default(T), inputType, subInputType)
     {
         _contentHolder = new QueueableContent[15];
         for(int i = 0; i < _contentHolder.Length; i++) _contentHolder[i] = new QueueableContent();
@@ -261,7 +261,7 @@ public class TouchContinuousInput<T> : TouchInput<T>
     private bool _writtenToInput = false;
     private int _resetFrameCounter;
 
-    public TouchContinuousInput(T value, InputTypes inputType, SubInputTypes subInputType) : base(value, inputType, subInputType){
+    public TouchContinuousInput(T value, TouchInputTypes inputType, SubTouchInputTypes subInputType) : base(value, inputType, subInputType){
         _resetFrameCounter = 0;
     }
 

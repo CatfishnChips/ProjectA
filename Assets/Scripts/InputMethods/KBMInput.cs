@@ -3,12 +3,17 @@ using UnityEngine;
 public class KBMInput : MonoBehaviour, IInputInvoker
 {
     InputEvents _inputEvents;
+    [SerializeField] private InputType _inputType;
     public string attackToPerform;
     public string secondAttackToPerform;
 
     public InputEvents GetInputEvents()
     {
         return _inputEvents;
+    }
+
+    public InputType GetInputType(){
+        return _inputType;
     }
 
     public bool IsActiveAndEnabled()
@@ -19,6 +24,12 @@ public class KBMInput : MonoBehaviour, IInputInvoker
     public void SetInputEvents(InputEvents inputEvents)
     {
         _inputEvents = inputEvents;
+    }
+
+    public void SetActiveAndEnabled(bool state){
+        if(state){
+            this.enabled = state;
+        }
     }
 
     // Update is called once per frame

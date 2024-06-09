@@ -74,14 +74,14 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     #region Input Variables
     
-    private TouchInput<bool> _jumpInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Jump);
-    private TouchInput<bool> _dashInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Dash);
-    private TouchInput<bool> _dodgeInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Dodge);
-    private TouchInput<bool> _blockInput = new TouchInput<bool>(false, InputTypes.Slide, SubInputTypes.Dodge);
-    private TouchContinuousInput<int> _movementInput = new TouchContinuousInput<int>(0, InputTypes.Drag, SubInputTypes.None);
-    private TouchContinuousInput<bool> _holdAInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
-    private TouchContinuousInput<bool> _holdBInput = new TouchContinuousInput<bool>(false, InputTypes.Hold, SubInputTypes.None);
-    private TouchQueueInput<InputGestures> _actionInput = new TouchQueueInput<InputGestures>(InputTypes.Gesture, SubInputTypes.None);
+    private TouchInput<bool> _jumpInput = new TouchInput<bool>(false, TouchInputTypes.Slide, SubTouchInputTypes.Jump);
+    private TouchInput<bool> _dashInput = new TouchInput<bool>(false, TouchInputTypes.Slide, SubTouchInputTypes.Dash);
+    private TouchInput<bool> _dodgeInput = new TouchInput<bool>(false, TouchInputTypes.Slide, SubTouchInputTypes.Dodge);
+    private TouchContinuousInput<int> _movementInput = new TouchContinuousInput<int>(0, TouchInputTypes.Drag, SubTouchInputTypes.None);
+    private TouchContinuousInput<bool> _blockInput = new TouchContinuousInput<bool>(false, TouchInputTypes.Slide, SubTouchInputTypes.Dodge);
+    private TouchContinuousInput<bool> _holdAInput = new TouchContinuousInput<bool>(false, TouchInputTypes.Hold, SubTouchInputTypes.None);
+    private TouchContinuousInput<bool> _holdBInput = new TouchContinuousInput<bool>(false, TouchInputTypes.Hold, SubTouchInputTypes.None);
+    private TouchQueueInput<InputGestures> _actionInput = new TouchQueueInput<InputGestures>(TouchInputTypes.Gesture, SubTouchInputTypes.None);
     protected List<ITouchInput> _inputsList;
 
     #endregion
@@ -140,6 +140,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public TouchInput<bool> DashInput { get => _dashInput; }
     public TouchInput<bool> DodgeInput { get => _dodgeInput; }
     public TouchContinuousInput<int> MovementInput { get => _movementInput; }
+    public TouchContinuousInput<bool> BlockInput { get => _blockInput; }
     public TouchContinuousInput<bool> HoldAInput { get => _holdAInput; }
     public TouchContinuousInput<bool> HoldBInput { get => _holdBInput; }
     public TouchQueueInput<InputGestures> ActionInput { get => _actionInput; }
@@ -173,7 +174,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     public ProjectileManager ProjectileManager {get => m_projectileManager;}
     public bool IsHit {get{return _isHit;} set{_isHit = value;}}
     public bool IsHurt {get{return _isHurt;} set{_isHurt = value;}}
-    public bool CanBlock {get{return _staminaManager.CanBlock && (_currentRootState == FighterStates.Grounded || _previousRootState == FighterStates.Grounded) && (_currentSubState == FighterStates.Idle || _currentSubState == FighterStates.Walk);}}
+    //public bool CanBlock {get{return _staminaManager.CanBlock && (_currentRootState == FighterStates.Grounded || _previousRootState == FighterStates.Grounded) && (_currentSubState == FighterStates.Idle || _currentSubState == FighterStates.Walk);}}
     public bool IsInvulnerable {get{return _isInvulnerable;} set{_isInvulnerable = value;}}
     public bool IsGravityApplied {get{return _isGravityApplied;} set{_isGravityApplied = value;}}
     public Rigidbody2D Rigidbody2D {get{return _rigidbody2D;}}
@@ -223,6 +224,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
             _dashInput,
             _dodgeInput,
             _movementInput,
+            _blockInput,
             _holdAInput,
             _holdBInput,
             _actionInput
@@ -279,6 +281,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
         //_fighterManager.fighterEvents.OnFighterAttackGesture += OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack += OnSpiritAttackInput;
+        _fighterManager.fighterEvents.OnBlock += OnBlock;
         _fighterManager.fighterEvents.OnMove += OnMove;
         _fighterManager.fighterEvents.OnDash += OnDash;
         _fighterManager.fighterEvents.OnDirectInputGesture += OnDirectInputGesture;
@@ -329,6 +332,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
         
         //_fighterManager.fighterEvents.OnFighterAttackGesture -= OnFighterAttackInput;
         _fighterManager.fighterEvents.OnSpiritAttack -= OnSpiritAttackInput;
+        _fighterManager.fighterEvents.OnBlock -= OnBlock;
         _fighterManager.fighterEvents.OnMove -= OnMove;
         _fighterManager.fighterEvents.OnDash -= OnDash;
         _fighterManager.fighterEvents.OnDirectInputGesture -= OnDirectInputGesture;
@@ -351,6 +355,10 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
 
     protected virtual void OnMove(int value){
         _movementInput.Write(value);
+    }
+
+    protected virtual void OnBlock(){
+        _blockInput.Write(true);
     }
 
     // protected virtual void OnFighterAttackInput(InputGestures gesture){
@@ -394,18 +402,15 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
          // Hit VFX
         if (_particleEffectManager != null){
             GameObject obj;
-            if (target.CanBlock){
-                obj = _particleEffectManager.DequeueObject(_particleEffectManager.PoolableObjects[1].Prefab, _particleEffectManager.PoolableObjects[1].QueueReference);
-            }
-            else{
-                obj = _particleEffectManager.DequeueObject(_particleEffectManager.PoolableObjects[0].Prefab, _particleEffectManager.PoolableObjects[0].QueueReference);
-            }
+
+            obj = _particleEffectManager.DequeueObject(_particleEffectManager.PoolableObjects[0].Prefab, _particleEffectManager.PoolableObjects[0].QueueReference);
+            
             
             obj.transform.position = new Vector3(data.collisionPoint.x, data.collisionPoint.y, -1f);
             ParticleSystem particle = obj.GetComponent<ParticleSystem>();
         }
 
-        if (target.CanBlock || target.IsInvulnerable) return; // If hit opponent blocked/can block the attack.
+        //if (target.CanBlock || target.IsInvulnerable) return; // If hit opponent blocked/can block the attack.
 
         if (target.CurrentSubState == FighterStates.Block){
             // Break
@@ -483,6 +488,7 @@ public abstract class FighterStateMachine : MonoBehaviour, IStateMachineRunner
     }
 
     protected virtual void OnHurt(CollisionData data){
+        Debug.Log("Hurt detected.");
         if (_isHurt) return;
         _hurtCollisionData = data;
         _isHurt = true;

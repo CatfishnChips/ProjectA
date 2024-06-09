@@ -6,7 +6,9 @@ public class PlayerManager : MonoBehaviour
 {
     protected PlayerID _playerID;
     [SerializeField] private FighterManager _fighterManager;
-    protected IInputInvoker _inputInvoker;
+    protected List<IInputInvoker> _inputInvokers;
+
+    [SerializeField] private InputType _inputType;
 
     public InputEvents inputEvents = new InputEvents(); 
 
@@ -16,31 +18,29 @@ public class PlayerManager : MonoBehaviour
     }
 
     public virtual void OnStart(){
+        _inputInvokers = new List<IInputInvoker>();
         IInputInvoker[] inputInvokers = GameObject.FindGameObjectWithTag("InputManager").GetComponents<IInputInvoker>();
         foreach(IInputInvoker invoker in inputInvokers)
         {
-            if(invoker.IsActiveAndEnabled()){
-                _inputInvoker = invoker;
-                break;
-            }
+            if((_inputType & invoker.GetInputType()) != 0){
+                invoker.SetActiveAndEnabled(true);
+                _inputInvokers.Add(invoker);
+            } 
+            
         }
         ConnectInputs();
-        PossessFighter(_fighterManager);
+        ControlFighter(_fighterManager);
     }
 
-    protected virtual void PossessFighter(FighterManager fighterManager){
-        inputEvents.OnDrag += fighterManager.OnDrag;
-        inputEvents.OnHold += fighterManager.OnHold;
-        inputEvents.OnSwipe += fighterManager.OnSwipe;
-        inputEvents.OnTap += fighterManager.OnTap;
-        inputEvents.OnDirectInputGesture += fighterManager.OnDirectInput;
-        inputEvents.DirectAttackInputByAction += fighterManager.OnDirectAttackInputByAction;
-        inputEvents.DirectAttackInputByString += fighterManager.OnDirectAttackInputByString;
+    protected virtual void ControlFighter(FighterManager fighterManager){
+        fighterManager.SubscribeInput(inputEvents);
     }
 
     void ConnectInputs(){
-        if(_inputInvoker == null) return;
-        _inputInvoker.SetInputEvents(inputEvents);
+        if(_inputInvokers.Count == 0) return;
+        foreach(IInputInvoker invoker in _inputInvokers){
+            invoker.SetInputEvents(inputEvents);
+        }
     }
 
     void OnDisable(){

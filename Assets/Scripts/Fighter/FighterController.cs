@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
+using System.Data.Common;
 
 public class FighterController : MonoBehaviour
 {   
@@ -96,6 +98,13 @@ public class FighterController : MonoBehaviour
         _targetDeltaPosition = Collision(_targetDeltaPosition, false, out surface, out leftover);
 
         // Move the Rigidbody for QueryInteractions.
+        if(float.IsNaN(_targetDeltaPosition.x)){
+            _targetDeltaPosition.x = 0f;
+        }
+        if(float.IsNaN(_targetDeltaPosition.y)){
+            _targetDeltaPosition.y = 0f;
+        }
+
         _rigidbody.position = _initialPosition + _targetDeltaPosition;
 
         //Debug.Log(transform.name + " Collision Delta: " + collision);
@@ -108,12 +117,24 @@ public class FighterController : MonoBehaviour
         //Debug.Log("Overlap - " + transform.name + " Overlap Final Target Delta: " + _targetDeltaPosition + " Frame: " + _frame);
 
         // Move the Rigidbody for QueryInteractions.
+        if(float.IsNaN(_targetDeltaPosition.x)){
+            _targetDeltaPosition.x = 0f;
+        }
+        if(float.IsNaN(_targetDeltaPosition.y)){
+            _targetDeltaPosition.y = 0f;
+        }
         _rigidbody.position = _initialPosition + _targetDeltaPosition;
 
         // Vertical Pass
         _targetDeltaPosition += Collision(deltaPosition * Vector2.up, true, out _, out leftover);
 
         // Move the Rigidbody for QueryInteractions.
+        if(float.IsNaN(_targetDeltaPosition.x)){
+            _targetDeltaPosition.x = 0f;
+        }
+        if(float.IsNaN(_targetDeltaPosition.y)){
+            _targetDeltaPosition.y = 0f;
+        }
         _rigidbody.position = _initialPosition + _targetDeltaPosition;
 
         // Set the last position as _targetPosition.

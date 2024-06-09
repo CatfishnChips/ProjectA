@@ -156,8 +156,8 @@ MonoBehaviour:
     ignoreBlock: 0
     chipDamage: 0
     Stun:
-      hitStop: 0
-      stun: 0
+      hitStop: 1
+      stun: 5
     Slide:
       slide: 0
       distance: 0

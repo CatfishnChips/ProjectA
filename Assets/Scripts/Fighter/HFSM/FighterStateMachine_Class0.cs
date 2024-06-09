@@ -37,9 +37,6 @@ public class FighterStateMachine_Class0 : FighterStateMachine
         if (_isInvulnerable) return;
 
         // This part alternatively be in a modifed Stunned state.
-        if(!CanBlock) {
-            SetFocus(false);
-        }
     }
 
     public override void ResetVariables()

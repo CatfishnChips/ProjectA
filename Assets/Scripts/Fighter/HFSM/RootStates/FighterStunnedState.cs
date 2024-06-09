@@ -34,40 +34,23 @@ public class FighterStunnedState : FighterBaseState
         // Ex. Calculations in the Sub State's 49th frame are applied to Root State in the 50th frame.
         // This only applies to situations which the fighter's velocity is controled.
 
-        // if (_currentFrame > _action.KnockbackStun + _action.KnockupStun.x + _action.KnockupStun.y + _action.KnockdownStun + _action.HitStop){   
-        //     FighterBaseState state;         
-
-        //     if (_ctx.IsGrounded){
-        //         state = _factory.GetRootState(FighterRootStates.Grounded);
-        //     }
-        //     else{
-        //         state = _factory.GetRootState(FighterRootStates.Airborne);
-        //     }
-        //     SwitchState(state);
-        // }
-
-        // if (_ctx.CurrentSubState == FighterStates.Idle){
-        if (_currentFrame >= _stun){
-            if (_ctx.CurrentSubState == FighterStates.Idle){
-                if (_ctx.IsGrounded){
-                    SwitchState(_factory.GetRootState(FighterRootStates.Grounded));
-                    return true;
-                }
-                // else{
-                //     Debug.Log(_currentFrame);
-                //     SwitchState(_factory.GetRootState(FighterRootStates.Airborne));
-                //     return true;
-                // }
+        if(_ctx.CurrentSubState == FighterStates.Block){
+            if (_currentFrame >= _stun){
+                SwitchState(_factory.GetRootState(FighterRootStates.Grounded));
+                return true;
             }
-
-
-            // if (_isFirstTime) {
-            //     _isFirstTime = false;
-            // }      
-            // else{
-                
-            // }
         }
+        else{
+            if (_currentFrame >= _stun){
+                if (_ctx.CurrentSubState == FighterStates.Idle){
+                    if (_ctx.IsGrounded){
+                        SwitchState(_factory.GetRootState(FighterRootStates.Grounded));
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
@@ -110,7 +93,6 @@ public class FighterStunnedState : FighterBaseState
             break;
         }
 
-        Debug.Log("Fighter Stunned Root State - Exit State");
     }
 
     public override void FixedUpdateState()
@@ -129,11 +111,9 @@ public class FighterStunnedState : FighterBaseState
 
     public override void InitializeSubState()
     { 
-        //Debug.Log("FighterStunnedState(InitializeSubState)");
         FighterBaseState state;
-        //Debug.Log("Script: Stunned State " + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + _ctx.CanBlock);
         if (_ctx.IsGrounded){
-            if(!_action.IgnoreBlock && _ctx.CanBlock){
+            if(!_action.IgnoreBlock && _ctx.CurrentSubState == FighterStates.Block){
                 state = _factory.GetSubState(FighterSubStates.Block);
             }
             else if (((HitFlags)_action.Ground.HitTrajectory).HasFlag(HitFlags.KNOCK_UP)){

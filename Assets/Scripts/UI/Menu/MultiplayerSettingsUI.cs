@@ -20,14 +20,14 @@ public class MultiplayerSettingsUI : MonoBehaviour
     private void OnHostBtnClicked(){
         Debug.Log("Trying to load the scene.");
         MultiplayerConnectionData.networkRole = MultiplayerConnectionData.NetworkRole.Host;
-        SceneManager.LoadScene("TrainingScene C");
+        SceneManager.LoadScene("TrainingScene Online");
     }
 
     private void OnConnecBtnClicked(){
         if(!string.IsNullOrEmpty(serverIpInput.text)){
             MultiplayerConnectionData.ServerIP = serverIpInput.text;
             MultiplayerConnectionData.networkRole = MultiplayerConnectionData.NetworkRole.Client;
-            SceneManager.LoadScene("TrainingScene C");
+            SceneManager.LoadScene("TrainingScene Online");
         }
         else{
             Debug.LogError("Server IP is Empty");

@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4822988217880536771}
   - component: {fileID: 4822988217880536768}
-  - component: {fileID: 3921325304210189217}
   - component: {fileID: 4131916204273866501}
+  - component: {fileID: 3921325304210189217}
+  - component: {fileID: 3597026019982755020}
+  - component: {fileID: 3763858660825027910}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: InputManager
@@ -49,26 +51,6 @@ MonoBehaviour:
   InputDelay: 2
   InputBuffer: 20
   ContinousInputDefaultAfterFrames: 1
---- !u!114 &3921325304210189217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4822988217880536769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4301f7838e3e4a4f885e4deda97be28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _minSwipeDistance: 50
-  _minSwipeSpeed: 1250
-  _swipeTimeLimit: 0.25
-  _doubleGestureTimeLimit: 5
-  _holdThreshold: 0.2
-  _concurrentTap: 0
-  _concurrentTapTimeLimit: 0.05
-  _joystickDeadzone: 25
 --- !u!114 &4131916204273866501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,3 +65,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _touchMoveSensitivityA: 0.05
   _touchMoveSensitivityB: 3
+--- !u!114 &3921325304210189217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4822988217880536769}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4301f7838e3e4a4f885e4deda97be28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputType: 2
+  _minSwipeDistance: 50
+  _minSwipeSpeed: 1250
+  _swipeTimeLimit: 0.25
+  _doubleGestureTimeLimit: 5
+  _holdThreshold: 0.2
+  _concurrentTap: 0
+  _concurrentTapTimeLimit: 0.05
+  _joystickDeadzone: 25
+--- !u!114 &3597026019982755020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4822988217880536769}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c708ba68616972499a07c97b77c9683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputType: 4
+  attackToPerform: 
+  secondAttackToPerform: 
+--- !u!114 &3763858660825027910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4822988217880536769}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c6f9b140a52a14881ec09eaebb66eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputType: 8
+  tree: {fileID: 0}
+  difficultySettings: {fileID: 0}
+  _attackBoxFlexibilityMargin: 0
+  _distanceMargin: 0
+  _optimalDistanceMethod: 0

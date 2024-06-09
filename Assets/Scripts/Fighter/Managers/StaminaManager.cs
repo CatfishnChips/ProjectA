@@ -11,6 +11,10 @@ public class StaminaManager : MonoBehaviour
 
     [Tooltip("How much stamina is recovered in a single frame.")]
     [SerializeField] private float m_staminaRegen;
+
+    [Tooltip("How many frames will be waited after a received attack to start regenerating stamina")]
+    [SerializeField] private int m_staminaRegenDelay;
+    private int m_staminaRegenCounter;
     
     [SerializeField] [ReadOnly] private float m_currentStamina;
     [SerializeField] [ReadOnly] private int m_currentBlock;
@@ -62,6 +66,7 @@ public class StaminaManager : MonoBehaviour
     }
 
     public void UpdateBlock(int value){
+        if(value < 0) m_staminaRegenCounter = 0;
         m_currentBlock += value;
         m_currentBlock = Mathf.Clamp(m_currentBlock, 0, m_block);
 
@@ -93,6 +98,11 @@ public class StaminaManager : MonoBehaviour
 
     private void FixedUpdate(){
         if (m_currentBlock >= m_block) return;
+
+        if(m_staminaRegenCounter < m_staminaRegenDelay){
+            m_staminaRegenCounter++;
+            return;
+        }
 
         m_currentStamina += m_staminaRegen;
 

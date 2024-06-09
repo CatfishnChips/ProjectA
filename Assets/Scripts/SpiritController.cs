@@ -152,7 +152,7 @@ public class SpiritController : MonoBehaviour
 
         //if (target.StaminaManager.CanBlock && target.StaminaManager) return; // If hit opponent blocked the attack.
         //Debug.Log("Script: FighterStateMachine" + "Time: " + Time.timeSinceLevelLoad + " Target Can Block?: " + target.CanBlock);
-        if (target.CanBlock) return; // If hit opponent blocked/can block the attack.
+        if (target.CurrentSubState == FighterStates.Block) return; // If hit opponent blocked/can block the attack.
 
         if (target.CurrentSubState == FighterStates.Block){
             // Break

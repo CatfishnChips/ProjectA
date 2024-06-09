@@ -21,7 +21,12 @@ public class NetworkSynchedData : MonoBehaviour
     #endregion
 
 
-    public Dictionary<Player, FighterManager> fighterManagerAttribution = new Dictionary<Player, FighterManager>();
+    public class SyncedVariables{
+        public FighterManager fighterManager;
+        public int serverMovementInput;
+    }
+
     public Dictionary<int, Player> clientFighterOwnership = new Dictionary<int, Player>();
+    public Dictionary<Player, SyncedVariables> synchedVariables = new Dictionary<Player, SyncedVariables>();
 
 }

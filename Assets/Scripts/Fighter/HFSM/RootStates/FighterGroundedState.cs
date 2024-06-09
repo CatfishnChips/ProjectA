@@ -11,6 +11,7 @@ public class FighterGroundedState : FighterBaseState
     {
         if (_ctx.IsHurt && !_ctx.IsInvulnerable){
             //Debug.Log("FighterGroundedState(CheckSwitchState) - Player: " + _ctx.Player + " Time: " + Time.timeSinceLevelLoad + " Root State: " + _ctx.CurrentRootState + " SubState: " + _ctx.CurrentSubState);
+            if(_ctx.CurrentSubState == FighterStates.Block)_preserveSubstates = true;
             SwitchState(_factory.GetRootState(FighterRootStates.Stunned));
             return true;
         }
