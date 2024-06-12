@@ -99,7 +99,9 @@ public class FighterManager : MonoBehaviour
 
     public void OnHold(ScreenSide side)
     {
-        if(side == ScreenSide.LeftNRight) fighterEvents.OnBlock?.Invoke();
+        if(side == ScreenSide.LeftNRight) {
+            fighterEvents.OnBlock?.Invoke();
+        }
     }
 
     public void OnDrag(ScreenSide side, GestureDirections direction)

@@ -68,7 +68,6 @@ public abstract class StateMachineBaseState
 
     public void SwitchState(StateMachineBaseState newState){
         ExitStates();
-        Debug.Log(_preserveSubstates);
         newState.EnterState();
         if (_preserveSubstates){
             newState._currentSubState = _currentSubState;

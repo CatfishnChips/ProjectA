@@ -24,6 +24,7 @@ public class NetworkSynchedData : MonoBehaviour
     public class SyncedVariables{
         public FighterManager fighterManager;
         public int serverMovementInput;
+        public bool serverBlockInput;
     }
 
     public Dictionary<int, Player> clientFighterOwnership = new Dictionary<int, Player>();

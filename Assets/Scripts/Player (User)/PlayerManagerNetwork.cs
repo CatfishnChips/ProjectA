@@ -12,12 +12,17 @@ public class PlayerManagerNetwork : NetworkBehaviour
     public InputEvents inputEvents = new InputEvents(); 
     protected InputEvents _networkInputEvents = new InputEvents();
 
+    private bool _invokerBlockInput = false;
+    private bool _prevInvokerBlockInput = false;
+    private bool _serverBlockInput = false;
+
     private int _invokerDragInput = 0;
     private int _prevInvokerDragInput = 0;
     private int _serverDragInput = 0;
 
     public override void OnNetworkSpawn(){
         if(!IsOwner) return;
+        Debug.Log("HELOOO");
 
         FighterManager[] managers = FindObjectsOfType<FighterManager>();
         foreach(FighterManager manager in managers){
@@ -38,11 +43,11 @@ public class PlayerManagerNetwork : NetworkBehaviour
             }
         }
         ConnectInputDevice();
-        VirtualButtonsMultiplayer.fighterManager = GetSynchedVariablesById((int)OwnerClientId).fighterManager;
 
         #region Event Subscription
         inputEvents.OnDirectInputGesture += OnDirectInput;
         inputEvents.OnDrag += OnDrag;
+        inputEvents.OnHold += OnBlock;
         #endregion
     }
 
@@ -61,8 +66,16 @@ public class PlayerManagerNetwork : NetworkBehaviour
                 MoveInputServerRpc((int)OwnerClientId, _invokerDragInput);
             }
 
+            if(_prevInvokerBlockInput != _invokerBlockInput){
+                Debug.Log("SERVER RPC");
+                BlockInputServerRpc((int)OwnerClientId, _invokerBlockInput);
+            }
+
             _prevInvokerDragInput = _invokerDragInput;
             _invokerDragInput = 0;
+
+            _prevInvokerBlockInput = _invokerBlockInput;
+            _invokerBlockInput = false;
         
         }
             
@@ -74,6 +87,13 @@ public class PlayerManagerNetwork : NetworkBehaviour
         FighterManager manager = GetSynchedVariablesById((int)OwnerClientId).fighterManager;
         int serverDragInput = GetSynchedVariablesById((int)OwnerClientId).serverMovementInput;
         if(serverDragInput != 0) manager.fighterEvents.OnMove(serverDragInput);
+
+        bool serverBlockInput = GetSynchedVariablesById((int)OwnerClientId).serverBlockInput;
+        if(serverBlockInput) {
+            Debug.Log(manager.fighterID);
+            Debug.Log("Triggering On Block.");
+            manager.fighterEvents.OnBlock?.Invoke();
+        }
     }
 
     [ServerRpc (RequireOwnership = false)]
@@ -108,6 +128,10 @@ public class PlayerManagerNetwork : NetworkBehaviour
             NetworkSynchedData.Instance.clientFighterOwnership.Add(clientID, fighterID);
             Debug.Log("Added Client to network, clientID is: " + clientID + " fighterID is: " + NetworkSynchedData.Instance.clientFighterOwnership[clientID]);
         } 
+        if(clientID == (int)OwnerClientId){
+            VirtualButtonsMultiplayer.fighterManager = GetSynchedVariablesById((int)OwnerClientId).fighterManager;
+        }
+        
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -131,6 +155,18 @@ public class PlayerManagerNetwork : NetworkBehaviour
         GetSynchedVariablesById(clientID).serverMovementInput = invokerInput;
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void BlockInputServerRpc(int clientID, bool invokerBlockInput){
+        BlockInputClientRpc(clientID, invokerBlockInput);
+    }
+
+    [ClientRpc]
+    public void BlockInputClientRpc(int clientID, bool invokerBlockInput){
+        _serverBlockInput = invokerBlockInput;
+        GetSynchedVariablesById(clientID).serverBlockInput = invokerBlockInput;
+        Debug.Log("Server block input is set to: " + GetSynchedVariablesById(clientID).serverBlockInput);
+    }
+
     #region input listener functions
 
     public void OnDirectInput(InputGestures gesture){
@@ -142,6 +178,10 @@ public class PlayerManagerNetwork : NetworkBehaviour
             if(direction == GestureDirections.Left) _invokerDragInput = -1; //fighterEvents.OnMove?.Invoke(-1);
             else if(direction == GestureDirections.Right) _invokerDragInput = 1; //fighterEvents.OnMove?.Invoke(1);
         } 
+    }
+
+    public void OnBlock(ScreenSide side){
+        if(side == ScreenSide.LeftNRight) _invokerBlockInput = true;
     }
 
     #endregion

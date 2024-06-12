@@ -28,12 +28,12 @@ public class VirtualButtonsMultiplayer : MonoBehaviour
 
     private void MethodToCall()
     {
-        fighterManager.OnHold(ScreenSide.LeftNRight);
+        Debug.Log("Invoking");
+        GestureController.Instance._inputEvents.OnHold?.Invoke(ScreenSide.LeftNRight);
     }
 
     public void StartHolding1()
     {
-        Debug.Log("Holding  the button");
         _isHolding1 = true;
     }
 
@@ -45,7 +45,6 @@ public class VirtualButtonsMultiplayer : MonoBehaviour
 
     public void StartHolding2()
     {
-        Debug.Log("Holding  the button");
         _isHolding2 = true;
     }
 

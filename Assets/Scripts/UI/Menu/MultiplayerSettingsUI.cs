@@ -36,7 +36,7 @@ public class MultiplayerSettingsUI : MonoBehaviour
 
     private void OnServerBtnClicked(){
         MultiplayerConnectionData.networkRole = MultiplayerConnectionData.NetworkRole.Server;
-        SceneManager.LoadScene("ServerScene");
+        SceneManager.LoadScene("TrainingScene Online");
     }
 
 }

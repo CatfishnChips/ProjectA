@@ -4648,7 +4648,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c6de4a7fafbf24caf0f6638a6a0c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fighterID: {fileID: 11400000, guid: ea5578ad3fb67f14cb07c9e5b6069595, type: 2}
+  _fighterBlueprint: {fileID: 11400000, guid: 0852fc9953ef7a14496fa27d84183c0c, type: 2}
+  fighterID: 2
 --- !u!114 &7917765846017289381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4673,12 +4674,14 @@ MonoBehaviour:
   _dashDistance: 3
   _dashTime: 15
   _dodgeTime: {x: 0, y: 45}
+  _gravityConstant: -29.4
   _airMoveSpeed: 1
   _jumpHeight: 2.5
   _jumpDistance: 3
   _jumpTime: 24
   _fallTime: 18
   _isGrounded: 0
+  _wasGrounded: 0
   _rayCastLayerMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -4688,6 +4691,7 @@ MonoBehaviour:
   _faceDirection: 0
   _gravity: 0
   _drag: 0
+  _juggle: 15
   m_focus: 0
   m_focusTime: 500
   m_focusTimer: 0
@@ -4753,7 +4757,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_stamina: 100
   m_block: 5
-  m_staminaRegen: 0.001
+  m_staminaRegen: 2
+  m_staminaRegenDelay: 25
   m_currentStamina: 0
   m_currentBlock: 0
 --- !u!114 &7917765846017289390

@@ -20,7 +20,7 @@ public class GestureController : MonoBehaviour, IInputInvoker
 
     #endregion
 
-    protected InputEvents _inputEvents;
+    public InputEvents _inputEvents; // make it protected after TEKMER
 
     [SerializeField] private InputType _inputType;
 
