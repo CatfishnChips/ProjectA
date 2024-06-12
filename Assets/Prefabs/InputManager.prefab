@@ -85,7 +85,7 @@ MonoBehaviour:
   _holdThreshold: 0.2
   _concurrentTap: 0
   _concurrentTapTimeLimit: 0.05
-  _joystickDeadzone: 25
+  _joystickDeadzone: 75
 --- !u!114 &3597026019982755020
 MonoBehaviour:
   m_ObjectHideFlags: 0

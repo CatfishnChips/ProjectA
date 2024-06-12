@@ -38,6 +38,7 @@ public class PlayerManagerNetwork : NetworkBehaviour
             }
         }
         ConnectInputDevice();
+        VirtualButtonsMultiplayer.fighterManager = GetSynchedVariablesById((int)OwnerClientId).fighterManager;
 
         #region Event Subscription
         inputEvents.OnDirectInputGesture += OnDirectInput;

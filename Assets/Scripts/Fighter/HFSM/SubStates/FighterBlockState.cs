@@ -38,18 +38,18 @@ public class FighterBlockState : FighterBaseState
 
         ActionDefault action = _ctx.ActionDictionary["Block"] as ActionDefault;
 
-        // AnimationClip clip = action.meshAnimation;
-        // AnimationClip colClip = action.boxAnimation;
+        AnimationClip clip = action.meshAnimation;
+        AnimationClip colClip = action.boxAnimation;
 
-        // _ctx.AnimOverrideCont["Action"] = clip;
-        // _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
+        _ctx.AnimOverrideCont["Action"] = clip;
+        _ctx.ColBoxOverrideCont["Box_Action"] = colClip;
 
         // float speedVar = AdjustAnimationTime(clip, _stun);
-        // _ctx.Animator.SetFloat("SpeedVar", speedVar);
-        // _ctx.ColBoxAnimator.SetFloat("SpeedVar", speedVar);
+        _ctx.Animator.SetFloat("SpeedVar", 1f);
+        _ctx.ColBoxAnimator.SetFloat("SpeedVar", 1f);
 
-        // _ctx.Animator.PlayInFixedTime("Action");
-        // _ctx.ColBoxAnimator.PlayInFixedTime("Action");
+        _ctx.Animator.PlayInFixedTime("Action");
+        _ctx.ColBoxAnimator.PlayInFixedTime("Action");
     }
 
     public override void ExitState()

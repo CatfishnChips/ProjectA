@@ -125,6 +125,7 @@ public class TouchIndicatorController : MonoBehaviour
             //_lineObject.transform.localPosition = Vector3.zero;
             //_lineObject.transform.localScale = Vector3.one;
             _lineRenderer = _lineObject.AddComponent<LineRenderer>();
+            _lineRenderer.sortingOrder = 8;
             _lineRenderer.useWorldSpace = true;
             _lineRenderer.widthCurve = _lineCurve;
             _lineRenderer.material = _lineMaterial;

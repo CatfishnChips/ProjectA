@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Action_Block
   m_EditorClassIdentifier: 
   name: Block
+  stateName: 0
+  inputGesture: 0
+  applyRootMotion: 0
   frames: 0
-  meshAnimation: {fileID: -203655887218126122, guid: 73a35c1f74346ba42a843d5dd561b0f7,
+  meshAnimation: {fileID: -203655887218126122, guid: c143d8f12f55ac64ebfc472efbd1ee5f,
     type: 3}
   boxAnimation: {fileID: 7400000, guid: 707d46d6098031648b0287e7cfb9938d, type: 2}

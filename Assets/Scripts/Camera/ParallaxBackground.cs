@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ParallaxBackground : MonoBehaviour
 {
-    [SerializeField] [Range(0, 1)] private float _parallax;
+    [SerializeField] [Range(0, 1)] private float _parallaxStrenght;
     [SerializeField] private float _lenght;
-    private Transform _camera;
     private Vector2 _startPosition;
+    private Transform _camera;
     private Vector2 _targetPosition;    
 
     private void Awake() 
@@ -22,8 +22,8 @@ public class ParallaxBackground : MonoBehaviour
 
     void LateUpdate()
     {
-        float temp = (_camera.position.x * (1 - _parallax));
-        float distance = (_camera.position.x * _parallax);
+        float temp = (_camera.position.x * (1 - _parallaxStrenght));
+        float distance = (_camera.position.x * _parallaxStrenght);
 
         transform.position = new Vector3(_startPosition.x + distance, transform.position.y, transform.position.z);
 
