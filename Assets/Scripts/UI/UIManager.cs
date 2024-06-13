@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject m_pauseOverlay;
     [SerializeField] private GameObject m_debugOverlay;
     [SerializeField] private GameObject m_AISettings;
+    [SerializeField] private GameObject _inputObject;
 
     private HealthbarController m_healthbarController;
     private StaminabarController m_staminabarController;
@@ -72,7 +73,8 @@ public class UIManager : MonoBehaviour
     }
 
     public void Button_Pause(){
-        EventManager.Instance.PauseMatch();
+        //EventManager.Instance.PauseMatch();
+        //_inputObject.SetActive(!_inputObject.activeSelf);
         m_pauseOverlay.SetActive(!m_pauseOverlay.activeSelf);
     }
 

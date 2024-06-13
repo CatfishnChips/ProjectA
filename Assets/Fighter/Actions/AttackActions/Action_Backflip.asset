@@ -22,18 +22,8 @@ MonoBehaviour:
   m_damage: 0
   m_juggle: 0
   m_face: 0
-  m_hitFlags: 0
   m_priority: 0
   m_part: 1
-  _block:
-    ignoreBlock: 0
-    chipDamage: 0
-    Stun:
-      hitStop: 0
-      stun: 0
-    Slide:
-      slide: 0
-      distance: 0
   m_gravity: 1
   m_staminaRecovery: 0
   m_spiritRecovery: 0
@@ -57,19 +47,15 @@ MonoBehaviour:
   m_meshAnimationR: {fileID: 8842878171678463616, guid: 7b62a85fee828c346bb94f27983b6a7d,
     type: 3}
   m_boxAnimationS: {fileID: 7400000, guid: 87108bdb80c63b9418a04d92dd8653a4, type: 2}
-  m_boxAnimationA: {fileID: -203655887218126122, guid: bea97e006afba214e80d315fdf03a9c7,
-    type: 3}
+  m_boxAnimationA: {fileID: 7400000, guid: b73acf99542f37042a2fa4b786414860, type: 2}
   m_boxAnimationR: {fileID: -2087373694239626325, guid: bea97e006afba214e80d315fdf03a9c7,
     type: 3}
-  _velocity: {x: 0, y: 0}
-  Time: 0
-  Frame: 0
-  Apex: 0
-  Displacement: 0
   _ground:
     Stun:
       hitStop: 0
       stun: 0
+    HitTrajectory: 0
+    HitFlags: 0
     Slide:
       slide: 0
       distance: 0
@@ -119,6 +105,8 @@ MonoBehaviour:
     Stun:
       hitStop: 0
       stun: 0
+    HitTrajectory: 1
+    HitFlags: 8
     Trajectory:
       trajectory: 0
       Arc:
@@ -128,21 +116,21 @@ MonoBehaviour:
         timeAtApex: 0
         timeToFall: 0
       Line:
-        velocity: {x: 0, y: 0}
+        velocity: {x: 6, y: 10}
     WallBounce:
       Bounce:
-        damage: 0
+        damage: 12
         Stun:
-          hitStop: 0
-          stun: 0
+          hitStop: 10
+          stun: 10
         Trajectory:
           trajectory: 0
           Arc:
-            apex: 0
-            range: 0
-            timeToApex: 0
-            timeAtApex: 0
-            timeToFall: 0
+            apex: 2
+            range: 2
+            timeToApex: 15
+            timeAtApex: 15
+            timeToFall: 15
           Line:
             velocity: {x: 0, y: 0}
     GroundBounce:
@@ -166,3 +154,12 @@ MonoBehaviour:
     Stun:
       hitStop: 0
       stun: 0
+  _block:
+    ignoreBlock: 0
+    chipDamage: 0
+    Stun:
+      hitStop: 0
+      stun: 0
+    Slide:
+      slide: 0
+      distance: 0

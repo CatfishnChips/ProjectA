@@ -22,18 +22,8 @@ MonoBehaviour:
   m_damage: 0
   m_juggle: 0
   m_face: 0
-  m_hitFlags: 0
   m_priority: 0
   m_part: 1
-  _block:
-    ignoreBlock: 0
-    chipDamage: 0
-    Stun:
-      hitStop: 0
-      stun: 0
-    Slide:
-      slide: 0
-      distance: 0
   m_gravity: 1
   m_staminaRecovery: 0
   m_spiritRecovery: 0
@@ -56,26 +46,23 @@ MonoBehaviour:
   m_boxAnimationS: {fileID: 7400000, guid: 87108bdb80c63b9418a04d92dd8653a4, type: 2}
   m_boxAnimationA: {fileID: 7400000, guid: f96bbb5c4ff1a0f418166b30f4d2bd89, type: 2}
   m_boxAnimationR: {fileID: 7400000, guid: bea3d88880cc0ee448c8be2ab1877e75, type: 2}
-  _velocity: {x: 0, y: 0}
-  Time: 0
-  Frame: 0
-  Apex: 0
-  Displacement: 0
   _ground:
     Stun:
-      hitStop: 0
-      stun: 0
+      hitStop: 10
+      stun: 15
+    HitTrajectory: 2
+    HitFlags: 0
     Slide:
       slide: 0
       distance: 0
     Trajectory:
       trajectory: 0
       Arc:
-        apex: 0
-        range: 0
-        timeToApex: 0
-        timeAtApex: 0
-        timeToFall: 0
+        apex: 4
+        range: 3
+        timeToApex: 20
+        timeAtApex: 18
+        timeToFall: 20
       Line:
         velocity: {x: 0, y: 0}
     WallBounce:
@@ -95,16 +82,16 @@ MonoBehaviour:
           Line:
             velocity: {x: 0, y: 0}
     GroundBounce:
-      damage: 0
+      damage: 10
       Stun:
-        hitStop: 0
-        stun: 0
+        hitStop: 5
+        stun: 30
       Arc:
-        apex: 0
+        apex: 4
         range: 0
-        timeToApex: 0
-        timeAtApex: 0
-        timeToFall: 0
+        timeToApex: 8
+        timeAtApex: 15
+        timeToFall: 10
     WallSplat:
       damage: 0
       Stun:
@@ -114,6 +101,8 @@ MonoBehaviour:
     Stun:
       hitStop: 0
       stun: 0
+    HitTrajectory: 0
+    HitFlags: 0
     Trajectory:
       trajectory: 0
       Arc:
@@ -161,3 +150,12 @@ MonoBehaviour:
     Stun:
       hitStop: 0
       stun: 0
+  _block:
+    ignoreBlock: 0
+    chipDamage: 0
+    Stun:
+      hitStop: 0
+      stun: 0
+    Slide:
+      slide: 0
+      distance: 0
