@@ -6,13 +6,12 @@ using UnityEngine.SceneManagement;
 public class PauseMenuUI : MonoBehaviour
 {
 
-    public GameObject MovesetLayout;
+    public NetworkConnectionHandler connectionHandler;
 
     public void OnMainMenuButton(){
+        if(SceneManager.GetActiveScene().name == "TrainingScene Online"){
+            connectionHandler.Shutdown();
+        }
         SceneManager.LoadScene("MainMenu");
-    }
-
-    public void OnMoveSetButton(){
-        
     }
 }

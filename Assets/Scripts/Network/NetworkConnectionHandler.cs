@@ -55,4 +55,8 @@ public class NetworkConnectionHandler : MonoBehaviour
         FindObjectOfType<ServerManager>().SetupServer();
     }
 
+    public void Shutdown(){
+        NetworkManager.Singleton.Shutdown();
+    }
+
 }
